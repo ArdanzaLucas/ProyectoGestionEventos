@@ -62,7 +62,13 @@ namespace ProyectoPresupuestoEvento.Repository
 
         public void removeUbication(int id)
         {
-
+            Ubication ubicationToRemove = getUbicationById(id);
+            if (ubicationToRemove == null)
+            {
+                return;
+            }
+            ubications.Remove(ubicationToRemove);
+            
         }
 
     }

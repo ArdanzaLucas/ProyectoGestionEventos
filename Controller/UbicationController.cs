@@ -34,8 +34,10 @@ namespace ProyectoPresupuestoEvento.Controller
 
         }
 
-        public void removeUbication()
+        public void removeUbication(int id)
         {
+            UbicationService service = new UbicationService();
+            service.removeUbication(id);
 
         }
 

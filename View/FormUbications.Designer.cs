@@ -272,6 +272,7 @@
             btnUbicationRemove.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnUbicationRemove.UseAccentColor = false;
             btnUbicationRemove.UseVisualStyleBackColor = true;
+            btnUbicationRemove.Click += btnUbicationRemove_Click;
             // 
             // btnUbicationEdit
             // 

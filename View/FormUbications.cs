@@ -89,21 +89,28 @@ namespace ProyectoPresupuestoEvento.View
             }
 
             ListViewItem selectedUbication = mtLvUbications.SelectedItems[0];
+            UbicationDto selected = (UbicationDto)selectedUbication.Tag;
 
-            int id = int.Parse(selectedUbication.SubItems[0].Text);
-            string name = selectedUbication.SubItems[1].Text;
-            decimal price = decimal.Parse(selectedUbication.SubItems[2].Text);
+
+            mtbUbicationName.Text = selected.Name;
+            mtbUbicationPrice.Text = selected.Price.ToString();
+
 
 
             panel2.Visible = false;
             panel3.Visible = true;
 
-            mtbUbicationName.Text = name;
-            mtbUbicationPrice.Text = Convert.ToString(price);
-
         }
 
+        private void btnUbicationRemove_Click(object sender, EventArgs e)
+        {
+            ListViewItem selectedUbication = mtLvUbications.SelectedItems[0];
+            UbicationDto selected = (UbicationDto)selectedUbication.Tag;
 
+            ubicationController.removeUbication(selected.Id);
+            reloadMtlv();
+
+        }
 
 
 
@@ -133,6 +140,6 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-
+        
     }
 }

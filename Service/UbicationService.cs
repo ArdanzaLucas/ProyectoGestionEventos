@@ -41,8 +41,9 @@ namespace ProyectoPresupuestoEvento.Service
 
         }
 
-        public void removeUbication()
+        public void removeUbication(int id)
         {
+            UbicationRepository.getInstance().removeUbication(id);
 
         }
         

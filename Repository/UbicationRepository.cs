@@ -57,7 +57,13 @@ namespace ProyectoPresupuestoEvento.Repository
 
         public void update(int id, Ubication ubication)
         {
-
+            Ubication existente = getById(id);
+            if (existente == null)
+            {
+                return;
+            }
+            existente.Name = ubication.Name;
+            existente.Price = ubication.Price;
         }
 
         public void removeById(int id)

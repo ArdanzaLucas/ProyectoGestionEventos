@@ -11,6 +11,7 @@ namespace ProyectoPresupuestoEvento.Model
         private int _id;
         private string _name;
         private decimal _price;
+        private bool _isActive = true;
 
 
         //constructor
@@ -47,6 +48,21 @@ namespace ProyectoPresupuestoEvento.Model
         {
             get { return _id; }
             set { _id = value; }
+        }
+
+        // solo lectura: para desactivarla se usa deactivate()
+        public bool IsActive
+        {
+            get { return _isActive; }
+        }
+
+
+        //metodos
+
+        // baja logica: la ubicacion no se borra, queda inactiva
+        public void deactivate()
+        {
+            _isActive = false;
         }
 
 

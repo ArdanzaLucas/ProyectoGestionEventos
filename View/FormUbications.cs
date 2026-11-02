@@ -16,6 +16,9 @@ namespace ProyectoPresupuestoEvento.View
     {
         private UbicationController ubicationController;
 
+        // id de la ubicacion que se esta editando. Vale 0 cuando se crea una nueva.
+        private int idEditando = 0;
+
 
         public FormUbications(UbicationController controller)
         {
@@ -33,7 +36,7 @@ namespace ProyectoPresupuestoEvento.View
             panel2.Visible = true;
             panel3.Visible = false;
 
-
+            reloadMtlv();
         }
 
         private void reloadMtlv()
@@ -69,6 +72,8 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnUbicationCreate_Click(object sender, EventArgs e)
         {
+            idEditando = 0;
+
             panel2.Visible = false;
             panel3.Visible = true;
             panel3.Dock = DockStyle.Fill;
@@ -92,6 +97,8 @@ namespace ProyectoPresupuestoEvento.View
             UbicationDto selected = (UbicationDto)selectedUbication.Tag;
 
 
+            idEditando = selected.Id;
+
             mtbUbicationName.Text = selected.Name;
             mtbUbicationPrice.Text = selected.Price.ToString();
 
@@ -99,13 +106,30 @@ namespace ProyectoPresupuestoEvento.View
 
             panel2.Visible = false;
             panel3.Visible = true;
+            panel3.Dock = DockStyle.Fill;
+            panelUpload.Dock = DockStyle.Fill;
 
         }
 
         private void btnUbicationRemove_Click(object sender, EventArgs e)
         {
+            if (mtLvUbications.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("seleccione una ubicacion para eliminar");
+                return;
+            }
+
             ListViewItem selectedUbication = mtLvUbications.SelectedItems[0];
             UbicationDto selected = (UbicationDto)selectedUbication.Tag;
+
+            DialogResult respuesta = MessageBox.Show(
+                "¿Eliminar la ubicacion " + selected.Name + "?",
+                "Confirmar", MessageBoxButtons.YesNo);
+
+            if (respuesta == DialogResult.No)
+            {
+                return;
+            }
 
             ubicationController.removeUbication(selected.Id);
             reloadMtlv();
@@ -126,18 +150,43 @@ namespace ProyectoPresupuestoEvento.View
 
             mtbUbicationName.Text = null;
             mtbUbicationPrice.Text = null;
+
+            idEditando = 0;
         }
 
         private void btnGuardarUbicacion_Click(object sender, EventArgs e)
         {
-            string name = mtbUbicationName.Text;
-            decimal price = Convert.ToDecimal(mtbUbicationPrice.Text);
+            // Trim saca los espacios del principio y del final
+            string name = mtbUbicationName.Text.Trim();
+            if (name == "")
+            {
+                MessageBox.Show("ingrese un nombre");
+                return;
+            }
+
+            decimal price;
+            if (!decimal.TryParse(mtbUbicationPrice.Text, out price) || price < 0)
+            {
+                MessageBox.Show("ingrese un precio valido");
+                return;
+            }
 
             UbicationDto ubicationDto = new UbicationDto(name, price);
 
 
-            ubicationController.addToRepository(ubicationDto);
+            if (idEditando == 0)
+            {
+                ubicationController.addToRepository(ubicationDto);
+            }
+            else
+            {
+                ubicationController.updateUbication(idEditando, ubicationDto);
+            }
+
             reloadMtlv();
+
+            // vuelve a la lista y limpia los campos, igual que el boton Volver
+            btnVolverAtras_Click(sender, e);
         }
 
         

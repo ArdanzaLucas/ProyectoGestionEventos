@@ -29,9 +29,10 @@ namespace ProyectoPresupuestoEvento.Controller
            return service.getUbications();
         }
 
-        public void updateUbication()
+        public void updateUbication(int id, UbicationDto dto)
         {
-
+            UbicationService service = new UbicationService();
+            service.updateUbication(id, dto);
         }
 
         public void removeUbication(int id)

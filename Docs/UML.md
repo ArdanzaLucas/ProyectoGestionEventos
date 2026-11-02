@@ -13,6 +13,7 @@ en el navegador.
 - `Quote` agrega `_state`, `_totalUbication`, `_total` y los métodos `calculateTotals`, `accept`, `cancel`, `clone` e `isEditable`.
 - **Precios congelados:** `Quote`, `DetailMenu` y la nueva clase `DetailOptionItem` guardan una copia de los precios. Al aceptar un presupuesto, el detalle línea por línea y los totales quedan fijos.
 - `MenuTag` pasa a ser una entidad con su propio CRUD (`MenuTagRepository`, `MenuTagService`, `MenuTagController`, `FormMenuTags`). Las etiquetas se crean desde un botón **Etiquetas** en la pestaña Catering, y al crear o editar un menú se eligen de una lista con casillas.
+- Las etiquetas funcionan como **variantes del plato**: cada `DetailMenu` agrega `_tagDescription`, así un presupuesto puede pedir, por ejemplo, 10 milanesas estándar y 5 veganas. Todo menú tiene al menos una etiqueta.
 - `Ubication`, `Menu` y `OptionItem` agregan `_isActive` y `deactivate()`, para la baja lógica.
 - Los DTO referencian otras entidades por **id** (`UbicationId`, `MenuId`), no por objeto del Model.
 - `FormIndex` usa `QuoteController`: lista presupuestos, no eventos.
@@ -71,11 +72,12 @@ class Quote {
 
 class DetailMenu {
   -Menu _menu
+  -string _tagDescription
   -int _adultQuantity
   -int _childQuantity
   -decimal _unitPriceAdult
   -decimal _unitPriceChild
-  +DetailMenu(Menu menu, int adultQuantity, int childQuantity)
+  +DetailMenu(Menu menu, string tagDescription, int adultQuantity, int childQuantity)
   +refreshPrices() void
   +calculateSubtotal() decimal
 }
@@ -141,6 +143,7 @@ Quote "1" *-- "0..*" DetailMenu : catering
 Quote "1" *-- "0..*" DetailOptionItem : servicios
 Quote --> EstadoPresupuesto : estado
 DetailMenu "0..*" --> "1" Menu
+DetailMenu ..> MenuTag : copia la descripcion
 DetailOptionItem "0..*" --> "1" OptionItem
 Menu "0..*" o-- "0..*" MenuTag : etiquetas
 ```
@@ -149,6 +152,12 @@ Menu "0..*" o-- "0..*" MenuTag : etiquetas
 - Cada presupuesto guarda **su propia copia** de los precios: `_ubicationPrice` en `Quote`, `_unitPriceAdult` y `_unitPriceChild` en `DetailMenu`, `_unitPrice` en `DetailOptionItem`.
 - Mientras el presupuesto está Pendiente, `calculateTotals(duration)` llama a `refreshPrices()`, que copia los precios actuales, y después calcula.
 - Si está Aceptado o Cancelado, `calculateTotals` no hace nada. Así, el detalle y el total siempre coinciden con lo que se acordó.
+
+**Etiquetas como variantes del plato:**
+- Un `Menu` tiene una o más etiquetas: las variantes que ofrece (por ejemplo, la Milanesa se ofrece estándar, vegana y sin TACC).
+- Cada `DetailMenu` es **una variante**: menú + etiqueta + cantidad de adultos y de niños. Para pedir 10 milanesas estándar y 5 veganas se cargan dos líneas.
+- La etiqueta no cambia el precio: todas las variantes usan el precio por adulto y por niño del menú.
+- `DetailMenu` guarda el **texto** de la etiqueta (`_tagDescription`), no el objeto `MenuTag`. Por eso la relación es punteada: copia la descripción al armar la línea y después no depende de la etiqueta.
 
 ---
 
@@ -295,6 +304,7 @@ erDiagram
     INTEGER EventItemId PK, FK
     INTEGER QuoteId PK, FK
     INTEGER MenuId PK, FK
+    TEXT TagDescription PK
     INTEGER AdultQuantity
     INTEGER ChildQuantity
     TEXT UnitPriceAdult
@@ -326,6 +336,7 @@ Decisiones del esquema:
 - **Borrado en cascada:** las claves foráneas que salen de `EVENT_ITEM` y `QUOTE` llevan `ON DELETE CASCADE`. Así, borrar un evento borra sus presupuestos y sus detalles (regla I2). Hay que activar `PRAGMA foreign_keys = ON` al abrir la conexión.
 - **Baja lógica:** como `UBICATION`, `MENU` y `OPTION_ITEM` nunca se borran físicamente, las claves foráneas desde los presupuestos nunca quedan colgadas.
 - **Precios congelados:** `QUOTE.UbicationPrice`, `DETAIL_MENU.UnitPriceAdult` y `UnitPriceChild`, y `DETAIL_OPTION_ITEM.UnitPrice` guardan el precio de cada línea al momento del presupuesto (regla E3).
+- **Etiqueta de cada línea:** `DETAIL_MENU.TagDescription` guarda el **texto** de la etiqueta, no su id. Así se puede borrar o renombrar una etiqueta sin tocar los presupuestos. Forma parte de la clave: el mismo menú puede estar varias veces en un presupuesto, una por etiqueta (V7).
 - **Totales:** también se guardan, porque `TotalUbication` depende de la duración del evento. Si después se cambia la duración, un presupuesto Aceptado tiene que conservar su total.
 
 ---
@@ -373,6 +384,7 @@ class EventItemDto {
 class DetailMenuDto {
   +int MenuId
   +string MenuDescription
+  +string TagDescription
   +int AdultQuantity
   +int ChildQuantity
   +decimal UnitPriceAdult
@@ -422,6 +434,7 @@ class MenuTagService {
   +updateMenuTag(int id, MenuTagDto dto) void
   +removeMenuTag(int id) void
   +countMenusUsing(int id) int
+  +getMenusWithOnlyThisTag(int id) List~string~
   -validate(MenuTag tag) void
   +toModel(MenuTagDto dto) MenuTag
   +toDto(MenuTag model) MenuTagDto
@@ -495,6 +508,7 @@ class MenuTagController {
   +updateMenuTag(int id, MenuTagDto dto) void
   +removeMenuTag(int id) void
   +countMenusUsing(int id) int
+  +getMenusWithOnlyThisTag(int id) List~string~
 }
 class OptionItemController {
   -OptionItemService service
@@ -540,8 +554,10 @@ EventItemService ..> QuoteDto
 
 Cada Service crea sus repositorios en el constructor (por ejemplo, `Irepository<Ubication> repository = new UbicationRepository()`) y los usa **solo a través de `Irepository<T>`**.
 En `MenuTagService`:
-- `removeMenuTag(id)` borra la etiqueta **físicamente** y la quita de todos los menús que la tengan: para cada menú con `hasTag(id)`, llama a `removeTag(id)` y lo guarda con `update`. Así funciona igual con listas en memoria y con SQLite, donde además la cascada lo garantiza.
+- `getMenusWithOnlyThisTag(id)` devuelve los nombres de los menús cuya **única** etiqueta es esa. Si la lista no está vacía, la etiqueta no se puede borrar, porque esos menús quedarían sin etiquetas (V14). La View muestra el mensaje ("No se puede eliminar: es la única etiqueta de Milanesa, Ravioles").
+- `removeMenuTag(id)` primero revisa `getMenusWithOnlyThisTag(id)` y, si hay alguno, lanza `InvalidOperationException`. Si no, borra la etiqueta **físicamente** y la quita de todos los menús que la tengan: para cada menú con `hasTag(id)`, llama a `removeTag(id)` y lo guarda con `update`. Así funciona igual con listas en memoria y con SQLite, donde además la cascada lo garantiza.
 - `countMenusUsing(id)` le sirve a la View para el mensaje de confirmación ("Esta etiqueta está asignada a 3 menús. ¿Eliminarla igualmente?").
+- Borrar una etiqueta **no afecta a los presupuestos**: cada línea de catering guarda una copia del texto de la etiqueta (`_tagDescription`), igual que guarda los precios.
 - En `MenuService.toModel`, los ids de `MenuDto.TagList` se convierten en objetos `MenuTag` buscándolos en `menuTagRepository`.
 
 En `UbicationService`, `MenuService` y `OptionItemService`:
@@ -774,6 +790,7 @@ namespace Controller {
     +updateMenuTag(int id, MenuTagDto dto) void
     +removeMenuTag(int id) void
     +countMenusUsing(int id) int
+    +getMenusWithOnlyThisTag(int id) List~string~
   }
   class OptionItemController {
     -OptionItemService service
@@ -823,6 +840,7 @@ namespace Service {
     +updateMenuTag(int id, MenuTagDto dto) void
     +removeMenuTag(int id) void
     +countMenusUsing(int id) int
+    +getMenusWithOnlyThisTag(int id) List~string~
     -validate(MenuTag tag) void
     +toModel(MenuTagDto dto) MenuTag
     +toDto(MenuTag model) MenuTagDto
@@ -907,6 +925,7 @@ namespace Dto {
   class DetailMenuDto {
     +int MenuId
     +string MenuDescription
+    +string TagDescription
     +int AdultQuantity
     +int ChildQuantity
     +decimal UnitPriceAdult
@@ -978,11 +997,12 @@ namespace Model {
   }
   class DetailMenu {
     -Menu _menu
+    -string _tagDescription
     -int _adultQuantity
     -int _childQuantity
     -decimal _unitPriceAdult
     -decimal _unitPriceChild
-    +DetailMenu(Menu menu, int adultQuantity, int childQuantity)
+    +DetailMenu(Menu menu, string tagDescription, int adultQuantity, int childQuantity)
     +refreshPrices() void
     +calculateSubtotal() decimal
   }
@@ -1148,6 +1168,7 @@ Quote "1" *-- "0..*" DetailMenu : catering
 Quote "1" *-- "0..*" DetailOptionItem : servicios
 Quote --> EstadoPresupuesto : estado
 DetailMenu "0..*" --> "1" Menu
+DetailMenu ..> MenuTag : copia la descripcion
 DetailOptionItem "0..*" --> "1" OptionItem
 Menu "0..*" o-- "0..*" MenuTag : etiquetas
 

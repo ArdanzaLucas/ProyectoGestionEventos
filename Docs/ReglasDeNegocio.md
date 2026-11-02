@@ -12,10 +12,10 @@ Este documento define **qué calcula y qué valida** el sistema. El diagrama de 
 | `EventItem` | Un evento a presupuestar (ej. "Casamiento Pérez"). Es el **contenedor** de sus presupuestos | nombre, invitados adultos, invitados niños, duración (horas), lista de presupuestos |
 | `Ubication` | Un salón o lugar | nombre, precio **por hora**, activo |
 | `Menu` | Un menú de catering | descripción, precio por adulto, precio por niño, etiquetas, activo |
-| `MenuTag` | Etiqueta que se le puede asignar a un menú (ej. "Vegano", "Sin TACC"). Las crea el usuario | descripción |
+| `MenuTag` | Etiqueta que se le puede asignar a un menú (ej. "Estándar", "Vegana", "Sin TACC"). Las crea el usuario. Funciona como **variante del plato** | descripción |
 | `OptionItem` | Un servicio adicional (DJ, fotógrafo, decoración…) | nombre, precio fijo por evento, activo |
 | `Quote` | Un presupuesto. Vive dentro de su `EventItem` | ubicación, menús, servicios, estado, totales |
-| `DetailMenu` | Una línea de catering dentro del presupuesto | menú, cantidad de adultos, cantidad de niños, precio unitario por adulto y por niño (copia) |
+| `DetailMenu` | Una línea de catering dentro del presupuesto: un menú en **una** de sus variantes | menú, etiqueta (copia del texto), cantidad de adultos, cantidad de niños, precio unitario por adulto y por niño (copia) |
 | `DetailOptionItem` | Una línea de servicio dentro del presupuesto | servicio, precio unitario (copia) |
 | `EstadoPresupuesto` | Estado del presupuesto (enum) | Pendiente, Aceptado, Cancelado |
 
@@ -34,10 +34,16 @@ Los cálculos usan siempre los **precios copiados en el presupuesto**, nunca los
 | `Total` | `TotalUbication + TotalMenus + TotalOptionItems` |
 
 **Ejemplo:** evento de 5 h, 80 adultos y 20 niños, en un salón de $50.000/h.
-Un menú de $15.000 por adulto y $8.000 por niño para todos. DJ $200.000.
+El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres variantes. DJ $200.000.
+
+| Línea de catering | Adultos | Niños | Subtotal |
+|---|---|---|---|
+| Milanesa · Estándar | 65 | 18 | 15.000 × 65 + 8.000 × 18 = 1.119.000 |
+| Milanesa · Vegana | 10 | 0 | 15.000 × 10 = 150.000 |
+| Milanesa · Sin TACC | 5 | 2 | 15.000 × 5 + 8.000 × 2 = 91.000 |
 
 - Ubicación: 50.000 × 5 = **250.000**
-- Menús: 15.000 × 80 + 8.000 × 20 = **1.360.000**
+- Menús: 1.119.000 + 150.000 + 91.000 = **1.360.000** (las variantes cuestan lo mismo)
 - Servicios: **200.000**
 - **Total = 1.810.000**
 
@@ -52,11 +58,13 @@ Un menú de $15.000 por adulto y $8.000 por niño para todos. DJ $200.000.
 
 ### Etiquetas y menús (las hacen `MenuTagService` y `MenuService`)
 - V13. La descripción de una etiqueta es obligatoria y **única**, sin distinguir mayúsculas: "vegano" y "Vegano" son la misma.
-- V14. Un menú puede tener **0 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú.
+- V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, no se guarda (por ejemplo, se usa "Estándar" para el plato común).
+- La etiqueta **no cambia el precio**: todas las variantes de un menú cuestan lo mismo, según su precio por adulto y por niño.
 
 ### Presupuesto (las hace `EventItemService.validateQuote` antes de guardar)
 - V6. Un presupuesto debe tener ubicación.
-- V7. Un mismo menú no puede aparecer dos veces en el mismo presupuesto.
+- V7. Un mismo menú **con la misma etiqueta** no puede aparecer dos veces en el mismo presupuesto. El mismo menú con etiquetas distintas sí: por ejemplo, Milanesa estándar y Milanesa vegana son dos líneas.
+- V15. La etiqueta de una línea de catering tiene que ser una de las que **ese menú tiene asignadas**. Si la Milanesa no tiene "Sin TACC", no se puede pedir Milanesa sin TACC.
 - V8. Un mismo servicio no puede aparecer dos veces en el mismo presupuesto.
 - V9. La suma de adultos de todos los `DetailMenu` no puede superar `GuestAdults` del evento. Lo mismo vale para niños. Se permite que sea menor, por ejemplo para invitados sin catering.
 - V12. Un presupuesto nuevo o clonado solo puede usar ubicación, menús y servicios **activos**. Al editar un presupuesto Pendiente se pueden conservar los elementos que ya tenía aunque se hayan dado de baja, pero no se pueden agregar elementos inactivos.
@@ -90,7 +98,10 @@ Cancelado
   - Los presupuestos que ya la usan no cambian y siguen mostrando su nombre y su precio.
   - No se puede ofrecer para presupuestos nuevos (V12).
 - I4. `EventItem` y `Quote` sí se borran físicamente, con `removeById`.
-- I5. **Etiquetas:** se borran físicamente. Si la etiqueta está asignada a algún menú, la View primero pide confirmación indicando a cuántos menús afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús. No hace falta conservarla, porque no tiene precio ni afecta a los presupuestos.
+- I5. **Etiquetas:** se borran físicamente.
+  - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`), y primero hay que asignarles otra.
+  - Si está asignada a otros menús que tienen más etiquetas, la View pide confirmación indicando a cuántos afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús.
+  - Los presupuestos **no cambian**: cada línea de catering guardó una copia del texto de la etiqueta, así que sigue diciendo, por ejemplo, "Vegana", aunque la etiqueta ya no exista o se haya renombrado.
 - I2. Eliminar un `EventItem` elimina también todos sus presupuestos. Ocurre solo, por la composición: los presupuestos viven dentro del evento.
 - I3. Los IDs los asigna el repositorio (`idCounter`), nunca la View. Los IDs de los presupuestos los asigna su `EventItem` (`_quoteIdCounter`), así que un presupuesto se identifica por el par (id de evento, id de presupuesto).
 
@@ -100,7 +111,7 @@ Cancelado
 |---|---|---|
 | **View** | Leer y validar el formato de los campos, mostrar mensajes, refrescar listas | V10, V11 |
 | **Controller** | Puente fino entre View y Service. No tiene lógica | `ubicationController.addToRepository(dto)` |
-| **Service** | Reglas que involucran varias entidades o repositorios, conversión entre DTO y Model | V6–V9, V12–V14, I1, I5 |
+| **Service** | Reglas que involucran varias entidades o repositorios, conversión entre DTO y Model | V6–V9, V12–V15, I1, I5 |
 | **Model** | Reglas de una entidad y de lo que contiene, cálculos | V1–V5, E1–E6, I2, `calculateTotals()` |
 | **Repository** | Guardar y buscar en la base SQLite. Implementa `Irepository<T>` | `getById`, `removeById` |
 | **Dto** | Transportar datos entre View y Service. No tiene lógica. Referencia otras entidades por **id**, no por objeto | `QuoteDto.UbicationId` |

@@ -8,24 +8,65 @@ namespace ProyectoPresupuestoEvento.Dto
 {
     public class MenuDto
     {
-        //Atributos
-        private int? id;
-        private string description;
-        private decimal price;
+        private int _id;
+        private string _description;
+        private decimal _priceAdult;
+        private decimal _priceChild;
+        private List<MenuTagDto> _tagList;
+
 
         //constructor
-        public MenuDto(int id, string description, decimal price)
+
+        public MenuDto(int id, string description, decimal priceAdult, decimal priceChild, List<MenuTagDto> tagList)
         {
-           this.id = id;
-           this.description = description;
-           this.price = price;
+            Id = id;
+            Description = description;
+            PriceAdult = priceAdult;
+            PriceChild = priceChild;
+            TagList = tagList;
         }
 
-        public MenuDto(string description, decimal price)
+        public MenuDto(string description, decimal priceAdult, decimal priceChild, List<MenuTagDto> tagList)
         {
-            this.description = description;
-            this.price = price;
+            Description = description;
+            PriceAdult = priceAdult;
+            PriceChild = priceChild;
+            TagList = tagList;
         }
+
+
+        //propiedades
+
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
+        public decimal PriceAdult
+        {
+            get { return _priceAdult; }
+            set { _priceAdult = value; }
+        }
+
+        public decimal PriceChild
+        {
+            get { return _priceChild; }
+            set { _priceChild = value; }
+        }
+
+        public List<MenuTagDto> TagList
+        {
+            get { return _tagList; }
+            set { _tagList = value; }
+        }
+
 
     }
 }

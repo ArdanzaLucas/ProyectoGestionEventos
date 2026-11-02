@@ -10,6 +10,7 @@ namespace ProyectoPresupuestoEvento
     {
         private EventItemController eventsController;
         private MenuController menuController;
+        private MenuTagController menuTagController;
         private OptionItemController optionItemsController;
         private QuoteController quoteController;
         private UbicationController ubicationController;
@@ -29,6 +30,7 @@ namespace ProyectoPresupuestoEvento
             //controllers
             eventsController = new EventItemController();
             menuController= new MenuController();
+            menuTagController = new MenuTagController();
             optionItemsController= new OptionItemController();
             quoteController = new QuoteController();
             ubicationController = new UbicationController();
@@ -63,11 +65,17 @@ namespace ProyectoPresupuestoEvento
             this.pnlCntOpIts.Controls.Add(frmOI);
             frmOI.Show();
             //menus de comida
-            FormMenus frmMenus = new FormMenus(menuController);
+            FormMenus frmMenus = new FormMenus(menuController, menuTagController);
             frmMenus.TopLevel = false;
             frmMenus.Dock = DockStyle.Fill;
             this.pnlCntCatering.Controls.Add(frmMenus);
             frmMenus.Show();
+            //etiquetas de los menus: van en el mismo panel que los menus y empiezan ocultas
+            FormMenuTags frmMenuTags = new FormMenuTags(menuTagController, frmMenus);
+            frmMenuTags.TopLevel = false;
+            frmMenuTags.Dock = DockStyle.Fill;
+            this.pnlCntCatering.Controls.Add(frmMenuTags);
+            frmMenus.setFormMenuTags(frmMenuTags);
 
 
         }

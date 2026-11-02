@@ -63,10 +63,9 @@
             // panel3
             // 
             panel3.Controls.Add(panelUpload);
-            panel3.Location = new Point(918, 0);
-            panel3.Margin = new Padding(3, 4, 3, 4);
+            panel3.Location = new Point(803, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(763, 960);
+            panel3.Size = new Size(668, 720);
             panel3.TabIndex = 4;
             // 
             // panelUpload
@@ -79,17 +78,18 @@
             panelUpload.Controls.Add(btnGuardarUbicacion);
             panelUpload.Controls.Add(btnVolverAtras);
             panelUpload.Location = new Point(0, 0);
+            panelUpload.Margin = new Padding(3, 2, 3, 2);
             panelUpload.Name = "panelUpload";
-            panelUpload.Size = new Size(1681, 788);
+            panelUpload.Size = new Size(1471, 591);
             panelUpload.TabIndex = 10;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Georgia", 19.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(282, 75);
+            label1.Location = new Point(247, 56);
             label1.Name = "label1";
-            label1.Size = new Size(378, 38);
+            label1.Size = new Size(307, 30);
             label1.TabIndex = 7;
             label1.Text = "Carga de nueva ubicacion";
             // 
@@ -97,9 +97,9 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(82, 367);
+            label3.Location = new Point(72, 275);
             label3.Name = "label3";
-            label3.Size = new Size(487, 27);
+            label3.Size = new Size(377, 21);
             label3.TabIndex = 9;
             label3.Text = "Ingrese un valor para el precio de la ubicacion.";
             // 
@@ -110,12 +110,13 @@
             mtbUbicationPrice.Depth = 0;
             mtbUbicationPrice.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbUbicationPrice.LeadingIcon = null;
-            mtbUbicationPrice.Location = new Point(88, 435);
+            mtbUbicationPrice.Location = new Point(77, 326);
+            mtbUbicationPrice.Margin = new Padding(3, 2, 3, 2);
             mtbUbicationPrice.MaxLength = 50;
             mtbUbicationPrice.MouseState = MaterialSkin.MouseState.OUT;
             mtbUbicationPrice.Multiline = false;
             mtbUbicationPrice.Name = "mtbUbicationPrice";
-            mtbUbicationPrice.Size = new Size(200, 50);
+            mtbUbicationPrice.Size = new Size(175, 50);
             mtbUbicationPrice.TabIndex = 0;
             mtbUbicationPrice.Text = "";
             mtbUbicationPrice.TrailingIcon = null;
@@ -124,9 +125,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(82, 171);
+            label2.Location = new Point(72, 128);
             label2.Name = "label2";
-            label2.Size = new Size(578, 27);
+            label2.Size = new Size(452, 21);
             label2.TabIndex = 8;
             label2.Text = "Ingrese un nombre o descripcion de la nueva ubicacion.";
             // 
@@ -137,12 +138,13 @@
             mtbUbicationName.Depth = 0;
             mtbUbicationName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbUbicationName.LeadingIcon = null;
-            mtbUbicationName.Location = new Point(89, 237);
+            mtbUbicationName.Location = new Point(78, 178);
+            mtbUbicationName.Margin = new Padding(3, 2, 3, 2);
             mtbUbicationName.MaxLength = 50;
             mtbUbicationName.MouseState = MaterialSkin.MouseState.OUT;
             mtbUbicationName.Multiline = false;
             mtbUbicationName.Name = "mtbUbicationName";
-            mtbUbicationName.Size = new Size(271, 50);
+            mtbUbicationName.Size = new Size(237, 50);
             mtbUbicationName.TabIndex = 1;
             mtbUbicationName.Text = "";
             mtbUbicationName.TrailingIcon = null;
@@ -156,8 +158,8 @@
             btnGuardarUbicacion.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGuardarUbicacion.HighEmphasis = true;
             btnGuardarUbicacion.Icon = null;
-            btnGuardarUbicacion.Location = new Point(432, 589);
-            btnGuardarUbicacion.Margin = new Padding(5);
+            btnGuardarUbicacion.Location = new Point(378, 442);
+            btnGuardarUbicacion.Margin = new Padding(4);
             btnGuardarUbicacion.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarUbicacion.Name = "btnGuardarUbicacion";
             btnGuardarUbicacion.NoAccentTextColor = Color.Empty;
@@ -176,13 +178,13 @@
             btnVolverAtras.Depth = 0;
             btnVolverAtras.HighEmphasis = true;
             btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(432, 719);
-            btnVolverAtras.Margin = new Padding(5);
-            btnVolverAtras.MinimumSize = new Size(88, 0);
+            btnVolverAtras.Location = new Point(378, 539);
+            btnVolverAtras.Margin = new Padding(4);
+            btnVolverAtras.MinimumSize = new Size(77, 0);
             btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverAtras.Name = "btnVolverAtras";
             btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(88, 36);
+            btnVolverAtras.Size = new Size(77, 36);
             btnVolverAtras.TabIndex = 6;
             btnVolverAtras.Text = "Volver";
             btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -196,9 +198,8 @@
             panel2.Controls.Add(panelCrudCtrlUb);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 0);
-            panel2.Margin = new Padding(3, 4, 3, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1681, 960);
+            panel2.Size = new Size(1471, 720);
             panel2.TabIndex = 3;
             // 
             // mtLvUbications
@@ -211,14 +212,13 @@
             mtLvUbications.Dock = DockStyle.Fill;
             mtLvUbications.FullRowSelect = true;
             mtLvUbications.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            mtLvUbications.Location = new Point(166, 0);
-            mtLvUbications.Margin = new Padding(3, 4, 3, 4);
-            mtLvUbications.MinimumSize = new Size(229, 133);
+            mtLvUbications.Location = new Point(145, 0);
+            mtLvUbications.MinimumSize = new Size(200, 100);
             mtLvUbications.MouseLocation = new Point(-1, -1);
             mtLvUbications.MouseState = MaterialSkin.MouseState.OUT;
             mtLvUbications.Name = "mtLvUbications";
             mtLvUbications.OwnerDraw = true;
-            mtLvUbications.Size = new Size(1515, 960);
+            mtLvUbications.Size = new Size(1326, 720);
             mtLvUbications.TabIndex = 1;
             mtLvUbications.UseCompatibleStateImageBehavior = false;
             mtLvUbications.View = System.Windows.Forms.View.Details;
@@ -248,9 +248,8 @@
             panelCrudCtrlUb.Controls.Add(btnUbicationCreate);
             panelCrudCtrlUb.Dock = DockStyle.Left;
             panelCrudCtrlUb.Location = new Point(0, 0);
-            panelCrudCtrlUb.Margin = new Padding(3, 4, 3, 4);
             panelCrudCtrlUb.Name = "panelCrudCtrlUb";
-            panelCrudCtrlUb.Size = new Size(166, 960);
+            panelCrudCtrlUb.Size = new Size(145, 720);
             panelCrudCtrlUb.TabIndex = 5;
             // 
             // btnUbicationRemove
@@ -261,12 +260,12 @@
             btnUbicationRemove.Depth = 0;
             btnUbicationRemove.HighEmphasis = true;
             btnUbicationRemove.Icon = null;
-            btnUbicationRemove.Location = new Point(41, 461);
-            btnUbicationRemove.Margin = new Padding(5, 8, 5, 8);
+            btnUbicationRemove.Location = new Point(36, 346);
+            btnUbicationRemove.Margin = new Padding(4, 6, 4, 6);
             btnUbicationRemove.MouseState = MaterialSkin.MouseState.HOVER;
             btnUbicationRemove.Name = "btnUbicationRemove";
             btnUbicationRemove.NoAccentTextColor = Color.Empty;
-            btnUbicationRemove.Size = new Size(103, 48);
+            btnUbicationRemove.Size = new Size(90, 36);
             btnUbicationRemove.TabIndex = 2;
             btnUbicationRemove.Text = "Eliminar";
             btnUbicationRemove.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -282,12 +281,12 @@
             btnUbicationEdit.Depth = 0;
             btnUbicationEdit.HighEmphasis = true;
             btnUbicationEdit.Icon = null;
-            btnUbicationEdit.Location = new Point(41, 317);
-            btnUbicationEdit.Margin = new Padding(5, 8, 5, 8);
+            btnUbicationEdit.Location = new Point(36, 238);
+            btnUbicationEdit.Margin = new Padding(4, 6, 4, 6);
             btnUbicationEdit.MouseState = MaterialSkin.MouseState.HOVER;
             btnUbicationEdit.Name = "btnUbicationEdit";
             btnUbicationEdit.NoAccentTextColor = Color.Empty;
-            btnUbicationEdit.Size = new Size(103, 48);
+            btnUbicationEdit.Size = new Size(90, 36);
             btnUbicationEdit.TabIndex = 1;
             btnUbicationEdit.Text = "Editar";
             btnUbicationEdit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -303,12 +302,12 @@
             btnUbicationCreate.Depth = 0;
             btnUbicationCreate.HighEmphasis = true;
             btnUbicationCreate.Icon = null;
-            btnUbicationCreate.Location = new Point(41, 153);
-            btnUbicationCreate.Margin = new Padding(5, 8, 5, 8);
+            btnUbicationCreate.Location = new Point(36, 115);
+            btnUbicationCreate.Margin = new Padding(4, 6, 4, 6);
             btnUbicationCreate.MouseState = MaterialSkin.MouseState.HOVER;
             btnUbicationCreate.Name = "btnUbicationCreate";
             btnUbicationCreate.NoAccentTextColor = Color.Empty;
-            btnUbicationCreate.Size = new Size(103, 48);
+            btnUbicationCreate.Size = new Size(90, 36);
             btnUbicationCreate.TabIndex = 0;
             btnUbicationCreate.Text = "Crear";
             btnUbicationCreate.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -318,13 +317,12 @@
             // 
             // FormUbications
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1681, 960);
+            ClientSize = new Size(1471, 720);
             Controls.Add(panel3);
             Controls.Add(panel2);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "FormUbications";
             Text = "FormUbications";
             Load += FormUbications_Load;

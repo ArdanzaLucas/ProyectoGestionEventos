@@ -4,62 +4,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Repository
 {
-    internal class MenuRepository
+    public class MenuRepository : Irepository<Menu>
     {
-        //atributos
 
         private List<Menu> menus;
-        private MenuRepository instance;
-        private int idCounter;
-
-        //constructor
+        private static MenuRepository instance;
+        private int idCounter = 0;
 
         private MenuRepository()
         {
             menus = new List<Menu>();
         }
 
-        //singleton
 
-        public MenuRepository getInstance()
+        public static MenuRepository getInstance()
         {
-            if(instance == null)
+            if (instance == null)
             {
                 instance = new MenuRepository();
             }
             return instance;
         }
 
-
-        //metodos
-
-        public void addToRepository(Menu menuModel)
+        public void addToRepository(Menu menu)
         {
             idCounter++;
-            menuModel.Id = idCounter;
-            menus.Add(menuModel);
+            menu.Id = idCounter;
+            menus.Add(menu);
         }
 
-        public List<Menu> getMenus()
+        public List<Menu> getAll()
         {
-            foreach(Menu menu in menus)
+            return menus;
+        }
+
+        public Menu getById(int id)
+        {
+            foreach (Menu menu in menus)
             {
-                return null;
+                if (menu.Id == id)
+                {
+                    return menu;
+                }
             }
             return null;
-
-        }
-        
-        public Menu getMenuById(int id)
-        {
-            return null;
         }
 
-        public void updateMenu(int id, Menu menuModel)
+        public void update(int id, Menu menu)
         {
+            Menu existente = getById(id);
+            if (existente == null)
+            {
+                return;
+            }
+            existente.Description = menu.Description;
+            existente.PriceAdult = menu.PriceAdult;
+            existente.PriceChild = menu.PriceChild;
+            existente.TagList = menu.TagList;
+        }
+
+        public void removeById(int id)
+        {
+            Menu menuToRemove = getById(id);
+            if (menuToRemove == null)
+            {
+                return;
+            }
+            menus.Remove(menuToRemove);
 
         }
 

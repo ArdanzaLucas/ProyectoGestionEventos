@@ -14,6 +14,7 @@ en el navegador.
 - **Precios congelados:** `Quote`, `DetailMenu` y la nueva clase `DetailOptionItem` guardan una copia de los precios. Al aceptar un presupuesto, el detalle línea por línea y los totales quedan fijos.
 - `MenuTag` pasa a ser una entidad con su propio CRUD (`MenuTagRepository`, `MenuTagService`, `MenuTagController`, `FormMenuTags`). Las etiquetas se crean desde un botón **Etiquetas** en la pestaña Catering, y al crear o editar un menú se eligen de una lista con casillas.
 - Las etiquetas funcionan como **variantes del plato**: cada `DetailMenu` agrega `_tagDescription`, así un presupuesto puede pedir, por ejemplo, 10 milanesas estándar y 5 veganas. Todo menú tiene al menos una etiqueta.
+- `EventItem` agrega `_clientName` (nombre del cliente) y `_date` (fecha y hora de inicio).
 - `Ubication`, `Menu` y `OptionItem` agregan `_isActive` y `deactivate()`, para la baja lógica.
 - Los DTO referencian otras entidades por **id** (`UbicationId`, `MenuId`), no por objeto del Model.
 - `FormIndex` usa `QuoteController`: lista presupuestos, no eventos.
@@ -31,13 +32,15 @@ direction LR
 class EventItem {
   -int _id
   -string _name
+  -string _clientName
+  -DateTime _date
   -int _guestAdults
   -int _guestChilds
   -int _duration
   -List~Quote~ _quotes
   -int _quoteIdCounter
-  +EventItem(string name, int guestAdults, int guestChilds, int duration)
-  +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+  +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+  +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
   +getTotalGuests() int
   +addQuote(Quote quote) void
   +getQuotes() List~Quote~
@@ -284,6 +287,8 @@ erDiagram
   EVENT_ITEM {
     INTEGER Id PK
     TEXT Name
+    TEXT ClientName
+    TEXT Date
     INTEGER GuestAdults
     INTEGER GuestChilds
     INTEGER Duration
@@ -332,6 +337,7 @@ Decisiones del esquema:
 - **Enums:** `EstadoPresupuesto` se guarda como su número (`INTEGER`).
 - **Etiquetas:** la relación muchos a muchos entre menús y etiquetas se resuelve con la tabla intermedia `MENU_MENU_TAG`. Sus dos claves foráneas llevan `ON DELETE CASCADE`: borrar una etiqueta la quita de todos los menús. `MENU_TAG.Description` es `UNIQUE COLLATE NOCASE`, para que no haya dos etiquetas con el mismo nombre (V13).
 - **Booleanos:** `IsActive` es `0/1`.
+- **Fechas:** `EVENT_ITEM.Date` se guarda como `TEXT` en formato ISO (`yyyy-MM-dd HH:mm`).
 - **Clave del presupuesto:** `QUOTE` tiene clave compuesta (`EventItemId`, `Id`), porque el id del presupuesto lo asigna su evento.
 - **Borrado en cascada:** las claves foráneas que salen de `EVENT_ITEM` y `QUOTE` llevan `ON DELETE CASCADE`. Así, borrar un evento borra sus presupuestos y sus detalles (regla I2). Hay que activar `PRAGMA foreign_keys = ON` al abrir la conexión.
 - **Baja lógica:** como `UBICATION`, `MENU` y `OPTION_ITEM` nunca se borran físicamente, las claves foráneas desde los presupuestos nunca quedan colgadas.
@@ -377,6 +383,8 @@ MenuDto o-- "0..*" MenuTagDto
 class EventItemDto {
   +int Id
   +string Name
+  +string ClientName
+  +DateTime Date
   +int GuestAdults
   +int GuestChilds
   +int Duration
@@ -470,6 +478,7 @@ class EventItemService {
   +getEventItemById(int id) EventItemDto
   +updateEventItem(int id, EventItemDto dto) void
   +removeEventItem(int id) void
+  +countQuotes(int id) int
   +toModel(EventItemDto dto) EventItem
   +toDto(EventItem model) EventItemDto
   +addQuote(int eventItemId, QuoteDto dto) void
@@ -523,6 +532,7 @@ class EventItemController {
   +getEventItems() List~EventItemDto~
   +updateEventItem(int id, EventItemDto dto) void
   +removeEventItem(int id) void
+  +countQuotes(int id) int
 }
 class QuoteController {
   -EventItemService service
@@ -805,6 +815,7 @@ namespace Controller {
     +getEventItems() List~EventItemDto~
     +updateEventItem(int id, EventItemDto dto) void
     +removeEventItem(int id) void
+    +countQuotes(int id) int
   }
   class QuoteController {
     -EventItemService service
@@ -876,6 +887,7 @@ namespace Service {
     +getEventItemById(int id) EventItemDto
     +updateEventItem(int id, EventItemDto dto) void
     +removeEventItem(int id) void
+    +countQuotes(int id) int
     +toModel(EventItemDto dto) EventItem
     +toDto(EventItem model) EventItemDto
     +addQuote(int eventItemId, QuoteDto dto) void
@@ -918,6 +930,8 @@ namespace Dto {
   class EventItemDto {
     +int Id
     +string Name
+    +string ClientName
+    +DateTime Date
     +int GuestAdults
     +int GuestChilds
     +int Duration
@@ -958,13 +972,15 @@ namespace Model {
   class EventItem {
     -int _id
     -string _name
+    -string _clientName
+    -DateTime _date
     -int _guestAdults
     -int _guestChilds
     -int _duration
     -List~Quote~ _quotes
     -int _quoteIdCounter
-    +EventItem(string name, int guestAdults, int guestChilds, int duration)
-    +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+    +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+    +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
     +getTotalGuests() int
     +addQuote(Quote quote) void
     +getQuotes() List~Quote~

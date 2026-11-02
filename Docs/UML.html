@@ -16,13 +16,15 @@ direction LR
 class EventItem {
   -int _id
   -string _name
+  -string _clientName
+  -DateTime _date
   -int _guestAdults
   -int _guestChilds
   -int _duration
   -List~Quote~ _quotes
   -int _quoteIdCounter
-  +EventItem(string name, int guestAdults, int guestChilds, int duration)
-  +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+  +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+  +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
   +getTotalGuests() int
   +addQuote(Quote quote) void
   +getQuotes() List~Quote~
@@ -241,6 +243,8 @@ erDiagram
   EVENT_ITEM {
     INTEGER Id PK
     TEXT Name
+    TEXT ClientName
+    TEXT Date
     INTEGER GuestAdults
     INTEGER GuestChilds
     INTEGER Duration
@@ -314,6 +318,8 @@ MenuDto o-- "0..*" MenuTagDto
 class EventItemDto {
   +int Id
   +string Name
+  +string ClientName
+  +DateTime Date
   +int GuestAdults
   +int GuestChilds
   +int Duration
@@ -407,6 +413,7 @@ class EventItemService {
   +getEventItemById(int id) EventItemDto
   +updateEventItem(int id, EventItemDto dto) void
   +removeEventItem(int id) void
+  +countQuotes(int id) int
   +toModel(EventItemDto dto) EventItem
   +toDto(EventItem model) EventItemDto
   +addQuote(int eventItemId, QuoteDto dto) void
@@ -460,6 +467,7 @@ class EventItemController {
   +getEventItems() List~EventItemDto~
   +updateEventItem(int id, EventItemDto dto) void
   +removeEventItem(int id) void
+  +countQuotes(int id) int
 }
 class QuoteController {
   -EventItemService service
@@ -716,6 +724,7 @@ namespace Controller {
     +getEventItems() List~EventItemDto~
     +updateEventItem(int id, EventItemDto dto) void
     +removeEventItem(int id) void
+    +countQuotes(int id) int
   }
   class QuoteController {
     -EventItemService service
@@ -787,6 +796,7 @@ namespace Service {
     +getEventItemById(int id) EventItemDto
     +updateEventItem(int id, EventItemDto dto) void
     +removeEventItem(int id) void
+    +countQuotes(int id) int
     +toModel(EventItemDto dto) EventItem
     +toDto(EventItem model) EventItemDto
     +addQuote(int eventItemId, QuoteDto dto) void
@@ -829,6 +839,8 @@ namespace Dto {
   class EventItemDto {
     +int Id
     +string Name
+    +string ClientName
+    +DateTime Date
     +int GuestAdults
     +int GuestChilds
     +int Duration
@@ -869,13 +881,15 @@ namespace Model {
   class EventItem {
     -int _id
     -string _name
+    -string _clientName
+    -DateTime _date
     -int _guestAdults
     -int _guestChilds
     -int _duration
     -List~Quote~ _quotes
     -int _quoteIdCounter
-    +EventItem(string name, int guestAdults, int guestChilds, int duration)
-    +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+    +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+    +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
     +getTotalGuests() int
     +addQuote(Quote quote) void
     +getQuotes() List~Quote~

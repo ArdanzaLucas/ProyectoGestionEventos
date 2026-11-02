@@ -9,7 +9,7 @@ Este documento define **qué calcula y qué valida** el sistema. El diagrama de 
 
 | Entidad (código) | Qué representa | Datos |
 |---|---|---|
-| `EventItem` | Un evento a presupuestar (ej. "Casamiento Pérez"). Es el **contenedor** de sus presupuestos | nombre, invitados adultos, invitados niños, duración (horas), lista de presupuestos |
+| `EventItem` | Un evento a presupuestar (ej. "Casamiento Pérez"). Es el **contenedor** de sus presupuestos | nombre, cliente (nombre), fecha y hora de inicio, invitados adultos, invitados niños, duración (horas enteras), lista de presupuestos |
 | `Ubication` | Un salón o lugar | nombre, precio **por hora**, activo |
 | `Menu` | Un menú de catering | descripción, precio por adulto, precio por niño, etiquetas, activo |
 | `MenuTag` | Etiqueta que se le puede asignar a un menú (ej. "Estándar", "Vegana", "Sin TACC"). Las crea el usuario. Funciona como **variante del plato** | descripción |
@@ -50,10 +50,11 @@ El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres va
 ## 3. Validaciones
 
 ### Datos básicos (las hace el Model en sus setters y lanza `ArgumentException`)
-- V1. Nombre o descripción: obligatorio, no vacío.
+- V1. Nombre o descripción: obligatorio, no vacío. En un evento, el nombre del cliente también es obligatorio.
 - V2. Precios: `>= 0`.
 - V3. Invitados adultos y niños: `>= 0`, y al menos 1 invitado en total.
-- V4. Duración: `> 0` horas.
+- V4. Duración: horas enteras, `> 0`.
+- V16. Fecha del evento: al **crear** un evento, el día no puede ser anterior a hoy (hoy a cualquier hora se acepta). Al **editarlo** se acepta cualquier fecha, para no trabar eventos que ya pasaron.
 - V5. En `DetailMenu`, cada cantidad es `>= 0` y la suma es `> 0`.
 
 ### Etiquetas y menús (las hacen `MenuTagService` y `MenuService`)
@@ -102,14 +103,14 @@ Cancelado
   - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`), y primero hay que asignarles otra.
   - Si está asignada a otros menús que tienen más etiquetas, la View pide confirmación indicando a cuántos afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús.
   - Los presupuestos **no cambian**: cada línea de catering guardó una copia del texto de la etiqueta, así que sigue diciendo, por ejemplo, "Vegana", aunque la etiqueta ya no exista o se haya renombrado.
-- I2. Eliminar un `EventItem` elimina también todos sus presupuestos. Ocurre solo, por la composición: los presupuestos viven dentro del evento.
+- I2. Eliminar un `EventItem` elimina también todos sus presupuestos. La View pide confirmación avisando cuántos tiene (`countQuotes`). Ocurre solo, por la composición: los presupuestos viven dentro del evento.
 - I3. Los IDs los asigna el repositorio (`idCounter`), nunca la View. Los IDs de los presupuestos los asigna su `EventItem` (`_quoteIdCounter`), así que un presupuesto se identifica por el par (id de evento, id de presupuesto).
 
 ## 6. Dónde va cada cosa (capas)
 
 | Capa | Responsabilidad | Ejemplo |
 |---|---|---|
-| **View** | Leer y validar el formato de los campos, mostrar mensajes, refrescar listas | V10, V11 |
+| **View** | Leer y validar el formato de los campos, mostrar mensajes, refrescar listas | V10, V11, V16 |
 | **Controller** | Puente fino entre View y Service. No tiene lógica | `ubicationController.addToRepository(dto)` |
 | **Service** | Reglas que involucran varias entidades o repositorios, conversión entre DTO y Model | V6–V9, V12–V15, I1, I5 |
 | **Model** | Reglas de una entidad y de lo que contiene, cálculos | V1–V5, E1–E6, I2, `calculateTotals()` |

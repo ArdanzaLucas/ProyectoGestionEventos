@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoPresupuestoEvento.Model
 {
-    internal class Quote
+    public class Quote
     {
     }
 }

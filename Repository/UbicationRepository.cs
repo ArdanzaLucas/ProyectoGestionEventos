@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
-
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Repository
 {
-    public class UbicationRepository
+    public class UbicationRepository : Irepository<Ubication>
     {
 
         private List<Ubication> ubications;
@@ -38,12 +38,12 @@ namespace ProyectoPresupuestoEvento.Repository
             ubications.Add(ubication);
         }
 
-        public List<Ubication> getUbications()
+        public List<Ubication> getAll()
         {
             return ubications;
         }
 
-        public Ubication getUbicationById(int id)
+        public Ubication getById(int id)
         {
             foreach (Ubication ubication in ubications)
             {
@@ -55,14 +55,14 @@ namespace ProyectoPresupuestoEvento.Repository
             return null;
         }
 
-        public void updateUbication()
+        public void update(int id, Ubication ubication)
         {
 
         }
 
-        public void removeUbication(int id)
+        public void removeById(int id)
         {
-            Ubication ubicationToRemove = getUbicationById(id);
+            Ubication ubicationToRemove = getById(id);
             if (ubicationToRemove == null)
             {
                 return;

@@ -24,7 +24,7 @@ namespace ProyectoPresupuestoEvento.Service
         
         public List<UbicationDto> getUbications()
         {
-            List<Ubication> ubications = UbicationRepository.getInstance().getUbications();
+            List<Ubication> ubications = UbicationRepository.getInstance().getAll();
             List<UbicationDto> dtos = new List<UbicationDto>();
 
             foreach (Ubication ubication in ubications)
@@ -43,7 +43,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void removeUbication(int id)
         {
-            UbicationRepository.getInstance().removeUbication(id);
+            UbicationRepository.getInstance().removeById(id);
 
         }
         

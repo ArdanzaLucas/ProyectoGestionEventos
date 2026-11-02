@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UML Presupuesto Eventos</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;margin:0;padding:24px;background:#fafafa;color:#222}
+h1{font-size:22px}h2{font-size:18px;margin-top:40px;border-bottom:1px solid #ccc;padding-bottom:4px}
+.mermaid{background:#fff;border:1px solid #ddd;padding:16px;overflow:auto}
+</style></head><body>
+<h1>Diagrama de clases — Presupuesto de Eventos</h1>
+<p>Generado desde <code>UML.md</code>. Si cambiás el .md, regenerá este archivo.</p>
+<h2>1. Modelo de dominio (Model)</h2>
+<pre class="mermaid">
+classDiagram
+direction LR
+
+class EventItem {
+  -int _id
+  -string _name
+  -int _guestAdults
+  -int _guestChilds
+  -int _duration
+  -List~Quote~ _quotes
+  -int _quoteIdCounter
+  +EventItem(string name, int guestAdults, int guestChilds, int duration)
+  +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+  +getTotalGuests() int
+  +addQuote(Quote quote) void
+  +getQuotes() List~Quote~
+  +getQuoteById(int quoteId) Quote
+  +updateQuote(int quoteId, Quote quote) void
+  +removeQuote(int quoteId) void
+  +acceptQuote(int quoteId) void
+  +cancelQuote(int quoteId) void
+  +cloneQuote(int quoteId) void
+  +hasAcceptedQuote() bool
+}
+
+class Quote {
+  -int _id
+  -Ubication _ubication
+  -decimal _ubicationPrice
+  -List~DetailMenu~ _menusList
+  -List~DetailOptionItem~ _optionItemList
+  -EstadoPresupuesto _state
+  -decimal _totalUbication
+  -decimal _totalMenus
+  -decimal _totalOptionItems
+  -decimal _total
+  +Quote(Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+  +calculateTotals(int duration) void
+  -refreshPrices() void
+  +accept() void
+  +cancel() void
+  +isEditable() bool
+  +clone() Quote
+}
+
+class DetailMenu {
+  -Menu _menu
+  -int _adultQuantity
+  -int _childQuantity
+  -decimal _unitPriceAdult
+  -decimal _unitPriceChild
+  +DetailMenu(Menu menu, int adultQuantity, int childQuantity)
+  +refreshPrices() void
+  +calculateSubtotal() decimal
+}
+
+class DetailOptionItem {
+  -OptionItem _optionItem
+  -decimal _unitPrice
+  +DetailOptionItem(OptionItem optionItem)
+  +refreshPrice() void
+}
+
+class Menu {
+  -int? _id
+  -string _description
+  -decimal _priceAdult
+  -decimal _priceChild
+  -List~MenuTag~ _tagList
+  -bool _isActive
+  +Menu(string description, decimal priceAdult, decimal priceChild, List~MenuTag~ tagList)
+  +Menu(int id, string description, decimal priceAdult, decimal priceChild, List~MenuTag~ tagList)
+  +deactivate() void
+  +hasTag(int tagId) bool
+  +removeTag(int tagId) void
+}
+
+class Ubication {
+  -int _id
+  -string _name
+  -decimal _price
+  -bool _isActive
+  +Ubication(string name, decimal price)
+  +Ubication(int id, string name, decimal price)
+  +deactivate() void
+}
+
+class OptionItem {
+  -int _id
+  -string _name
+  -decimal _price
+  -bool _isActive
+  +OptionItem(string name, decimal price)
+  +OptionItem(int id, string name, decimal price)
+  +deactivate() void
+}
+
+class MenuTag {
+  -int _id
+  -string _description
+  +MenuTag(string description)
+  +MenuTag(int id, string description)
+}
+
+class EstadoPresupuesto {
+  &lt;&lt;enumeration&gt;&gt;
+  Pendiente
+  Aceptado
+  Cancelado
+}
+
+EventItem "1" *-- "0..*" Quote : presupuestos
+Quote "0..*" --&gt; "1" Ubication : lugar
+Quote "1" *-- "0..*" DetailMenu : catering
+Quote "1" *-- "0..*" DetailOptionItem : servicios
+Quote --&gt; EstadoPresupuesto : estado
+DetailMenu "0..*" --&gt; "1" Menu
+DetailOptionItem "0..*" --&gt; "1" OptionItem
+Menu "0..*" o-- "0..*" MenuTag : etiquetas
+</pre>
+<h2>2. Persistencia (Interface + Repository + SQLite)</h2>
+<h3>2a. Clases de persistencia</h3>
+<pre class="mermaid">
+classDiagram
+direction TB
+
+class Irepository~T~ {
+  &lt;&lt;interface&gt;&gt;
+  +addToRepository(T obj) void
+  +getAll() List~T~
+  +getById(int id) T
+  +update(int id, T obj) void
+  +removeById(int id) void
+}
+
+class SqliteDatabase {
+  -SqliteDatabase instance$
+  -string connectionString
+  -SqliteDatabase()
+  +getInstance()$ SqliteDatabase
+  +getConnection() SqliteConnection
+  -createTables() void
+}
+
+class UbicationRepository {
+  -SqliteDatabase database
+  +UbicationRepository()
+  -readUbication(SqliteDataReader reader) Ubication
+}
+class MenuTagRepository {
+  -SqliteDatabase database
+  +MenuTagRepository()
+  -readMenuTag(SqliteDataReader reader) MenuTag
+}
+class MenuRepository {
+  -SqliteDatabase database
+  +MenuRepository()
+  -readMenu(SqliteDataReader reader) Menu
+  -loadTags(Menu menu) void
+  -saveTags(Menu menu, SqliteTransaction tx) void
+}
+class OptionItemRepository {
+  -SqliteDatabase database
+  +OptionItemRepository()
+  -readOptionItem(SqliteDataReader reader) OptionItem
+}
+class EventItemRepository {
+  -SqliteDatabase database
+  -Irepository~Ubication~ ubicationRepository
+  -Irepository~Menu~ menuRepository
+  -Irepository~OptionItem~ optionItemRepository
+  +EventItemRepository()
+  -readEventItem(SqliteDataReader reader) EventItem
+  -loadQuotes(EventItem eventItem) void
+  -saveQuotes(EventItem eventItem, SqliteTransaction tx) void
+}
+
+Irepository &lt;|.. UbicationRepository : T = Ubication
+Irepository &lt;|.. MenuTagRepository : T = MenuTag
+Irepository &lt;|.. MenuRepository : T = Menu
+Irepository &lt;|.. OptionItemRepository : T = OptionItem
+Irepository &lt;|.. EventItemRepository : T = EventItem
+
+UbicationRepository --&gt; SqliteDatabase
+MenuTagRepository --&gt; SqliteDatabase
+MenuRepository --&gt; SqliteDatabase
+OptionItemRepository --&gt; SqliteDatabase
+EventItemRepository --&gt; SqliteDatabase
+EventItemRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
+
+UbicationRepository ..&gt; Ubication
+MenuTagRepository ..&gt; MenuTag
+MenuRepository ..&gt; Menu
+OptionItemRepository ..&gt; OptionItem
+EventItemRepository ..&gt; EventItem
+</pre>
+<h3>2b. Esquema de la base de datos</h3>
+<pre class="mermaid">
+erDiagram
+  UBICATION {
+    INTEGER Id PK
+    TEXT Name
+    TEXT Price
+    INTEGER IsActive
+  }
+  MENU {
+    INTEGER Id PK
+    TEXT Description
+    TEXT PriceAdult
+    TEXT PriceChild
+    INTEGER IsActive
+  }
+  MENU_TAG {
+    INTEGER Id PK
+    TEXT Description
+  }
+  MENU_MENU_TAG {
+    INTEGER MenuId PK, FK
+    INTEGER MenuTagId PK, FK
+  }
+  OPTION_ITEM {
+    INTEGER Id PK
+    TEXT Name
+    TEXT Price
+    INTEGER IsActive
+  }
+  EVENT_ITEM {
+    INTEGER Id PK
+    TEXT Name
+    INTEGER GuestAdults
+    INTEGER GuestChilds
+    INTEGER Duration
+    INTEGER QuoteIdCounter
+  }
+  QUOTE {
+    INTEGER EventItemId PK, FK
+    INTEGER Id PK
+    INTEGER UbicationId FK
+    TEXT UbicationPrice
+    INTEGER State
+    TEXT TotalUbication
+    TEXT TotalMenus
+    TEXT TotalOptionItems
+    TEXT Total
+  }
+  DETAIL_MENU {
+    INTEGER EventItemId PK, FK
+    INTEGER QuoteId PK, FK
+    INTEGER MenuId PK, FK
+    INTEGER AdultQuantity
+    INTEGER ChildQuantity
+    TEXT UnitPriceAdult
+    TEXT UnitPriceChild
+  }
+  DETAIL_OPTION_ITEM {
+    INTEGER EventItemId PK, FK
+    INTEGER QuoteId PK, FK
+    INTEGER OptionItemId PK, FK
+    TEXT UnitPrice
+  }
+
+  EVENT_ITEM ||--o{ QUOTE : "tiene"
+  UBICATION ||--o{ QUOTE : "se usa en"
+  QUOTE ||--o{ DETAIL_MENU : "catering"
+  MENU ||--o{ DETAIL_MENU : "se usa en"
+  QUOTE ||--o{ DETAIL_OPTION_ITEM : "servicios"
+  OPTION_ITEM ||--o{ DETAIL_OPTION_ITEM : "se usa en"
+  MENU ||--o{ MENU_MENU_TAG : "tiene"
+  MENU_TAG ||--o{ MENU_MENU_TAG : "se asigna en"
+</pre>
+<h2>3. Lógica (Service + Controller + Dto)</h2>
+<pre class="mermaid">
+classDiagram
+direction LR
+
+%% ---------- DTOs ----------
+class UbicationDto {
+  +int Id
+  +string Name
+  +decimal Price
+}
+class OptionItemDto {
+  +int Id
+  +string Name
+  +decimal Price
+}
+class MenuDto {
+  +int Id
+  +string Description
+  +decimal PriceAdult
+  +decimal PriceChild
+  +List~MenuTagDto~ TagList
+}
+class MenuTagDto {
+  +int Id
+  +string Description
+}
+MenuDto o-- "0..*" MenuTagDto
+class EventItemDto {
+  +int Id
+  +string Name
+  +int GuestAdults
+  +int GuestChilds
+  +int Duration
+}
+class DetailMenuDto {
+  +int MenuId
+  +string MenuDescription
+  +int AdultQuantity
+  +int ChildQuantity
+  +decimal UnitPriceAdult
+  +decimal UnitPriceChild
+  +decimal Subtotal
+}
+class DetailOptionItemDto {
+  +int OptionItemId
+  +string OptionItemName
+  +decimal UnitPrice
+}
+class QuoteDto {
+  +int Id
+  +int EventItemId
+  +string EventItemName
+  +int UbicationId
+  +string UbicationName
+  +decimal UbicationPrice
+  +List~DetailMenuDto~ MenusList
+  +List~DetailOptionItemDto~ OptionItemsList
+  +EstadoPresupuesto State
+  +decimal TotalUbication
+  +decimal TotalMenus
+  +decimal TotalOptionItems
+  +decimal Total
+}
+QuoteDto *-- "0..*" DetailMenuDto
+QuoteDto *-- "0..*" DetailOptionItemDto
+
+%% ---------- Services ----------
+class UbicationService {
+  -Irepository~Ubication~ repository
+  +addToRepository(UbicationDto dto) void
+  +getUbications() List~UbicationDto~
+  +getUbicationById(int id) UbicationDto
+  +updateUbication(int id, UbicationDto dto) void
+  +removeUbication(int id) void
+  +toModel(UbicationDto dto) Ubication
+  +toDto(Ubication model) UbicationDto
+}
+class MenuTagService {
+  -Irepository~MenuTag~ repository
+  -Irepository~Menu~ menuRepository
+  +addToRepository(MenuTagDto dto) void
+  +getMenuTags() List~MenuTagDto~
+  +getMenuTagById(int id) MenuTagDto
+  +updateMenuTag(int id, MenuTagDto dto) void
+  +removeMenuTag(int id) void
+  +countMenusUsing(int id) int
+  -validate(MenuTag tag) void
+  +toModel(MenuTagDto dto) MenuTag
+  +toDto(MenuTag model) MenuTagDto
+}
+class MenuService {
+  -Irepository~Menu~ repository
+  -Irepository~MenuTag~ menuTagRepository
+  +addToRepository(MenuDto dto) void
+  +getMenus() List~MenuDto~
+  +getMenuById(int id) MenuDto
+  +updateMenu(int id, MenuDto dto) void
+  +removeMenu(int id) void
+  +toModel(MenuDto dto) Menu
+  +toDto(Menu model) MenuDto
+}
+class OptionItemService {
+  -Irepository~OptionItem~ repository
+  +addToRepository(OptionItemDto dto) void
+  +getOptionItems() List~OptionItemDto~
+  +getOptionItemById(int id) OptionItemDto
+  +updateOptionItem(int id, OptionItemDto dto) void
+  +removeOptionItem(int id) void
+  +toModel(OptionItemDto dto) OptionItem
+  +toDto(OptionItem model) OptionItemDto
+}
+class EventItemService {
+  -Irepository~EventItem~ repository
+  -Irepository~Ubication~ ubicationRepository
+  -Irepository~Menu~ menuRepository
+  -Irepository~OptionItem~ optionItemRepository
+  +addToRepository(EventItemDto dto) void
+  +getEventItems() List~EventItemDto~
+  +getEventItemById(int id) EventItemDto
+  +updateEventItem(int id, EventItemDto dto) void
+  +removeEventItem(int id) void
+  +toModel(EventItemDto dto) EventItem
+  +toDto(EventItem model) EventItemDto
+  +addQuote(int eventItemId, QuoteDto dto) void
+  +getQuotes() List~QuoteDto~
+  +getQuotesByEventItem(int eventItemId) List~QuoteDto~
+  +getQuoteById(int eventItemId, int quoteId) QuoteDto
+  +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
+  +removeQuote(int eventItemId, int quoteId) void
+  +acceptQuote(int eventItemId, int quoteId) void
+  +cancelQuote(int eventItemId, int quoteId) void
+  +cloneQuote(int eventItemId, int quoteId) void
+  -validateQuote(EventItem eventItem, Quote quote) void
+  +quoteToModel(QuoteDto dto) Quote
+  +quoteToDto(EventItem eventItem, Quote quote) QuoteDto
+}
+
+%% ---------- Controllers ----------
+class UbicationController {
+  -UbicationService service
+  +addToRepository(UbicationDto dto) void
+  +getUbications() List~UbicationDto~
+  +updateUbication(int id, UbicationDto dto) void
+  +removeUbication(int id) void
+}
+class MenuController {
+  -MenuService service
+  +addToRepository(MenuDto dto) void
+  +getMenus() List~MenuDto~
+  +updateMenu(int id, MenuDto dto) void
+  +removeMenu(int id) void
+}
+class MenuTagController {
+  -MenuTagService service
+  +addToRepository(MenuTagDto dto) void
+  +getMenuTags() List~MenuTagDto~
+  +updateMenuTag(int id, MenuTagDto dto) void
+  +removeMenuTag(int id) void
+  +countMenusUsing(int id) int
+}
+class OptionItemController {
+  -OptionItemService service
+  +addToRepository(OptionItemDto dto) void
+  +getOptionItems() List~OptionItemDto~
+  +updateOptionItem(int id, OptionItemDto dto) void
+  +removeOptionItem(int id) void
+}
+class EventItemController {
+  -EventItemService service
+  +addToRepository(EventItemDto dto) void
+  +getEventItems() List~EventItemDto~
+  +updateEventItem(int id, EventItemDto dto) void
+  +removeEventItem(int id) void
+}
+class QuoteController {
+  -EventItemService service
+  +addQuote(int eventItemId, QuoteDto dto) void
+  +getQuotes() List~QuoteDto~
+  +getQuotesByEventItem(int eventItemId) List~QuoteDto~
+  +getQuoteById(int eventItemId, int quoteId) QuoteDto
+  +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
+  +removeQuote(int eventItemId, int quoteId) void
+  +acceptQuote(int eventItemId, int quoteId) void
+  +cancelQuote(int eventItemId, int quoteId) void
+  +cloneQuote(int eventItemId, int quoteId) void
+}
+
+UbicationController --&gt; UbicationService
+MenuController --&gt; MenuService
+MenuTagController --&gt; MenuTagService
+OptionItemController --&gt; OptionItemService
+EventItemController --&gt; EventItemService
+QuoteController --&gt; EventItemService
+
+UbicationService ..&gt; UbicationDto
+MenuService ..&gt; MenuDto
+MenuTagService ..&gt; MenuTagDto
+OptionItemService ..&gt; OptionItemDto
+EventItemService ..&gt; EventItemDto
+EventItemService ..&gt; QuoteDto
+</pre>
+<h2>4. Vistas (View)</h2>
+<pre class="mermaid">
+classDiagram
+direction TB
+
+class FormMain {
+  -MaterialTabControl TabCtrl
+  -EventItemController eventsController
+  -MenuController menuController
+  -MenuTagController menuTagController
+  -OptionItemController optionItemsController
+  -QuoteController quoteController
+  -UbicationController ubicationController
+  +FormMain()
+  -FormMain_Load(sender, e) void
+}
+class FormIndex {
+  -QuoteController quoteController
+  -MaterialListView mtLvIndex
+  -reloadMtlv() void
+  -btnIndexReport_Click(sender, e) void
+  -btnIndexRemove_Click(sender, e) void
+}
+class FormEvents {
+  -EventItemController eventController
+  -QuoteController quoteController
+  -MaterialListView mtLvEvents
+  -reloadMtlv() void
+  -btnEventCreate_Click(sender, e) void
+  -btnEventEdit_Click(sender, e) void
+  -btnEventRemove_Click(sender, e) void
+}
+class FormUbications {
+  -UbicationController ubicationController
+  -MaterialListView mtLvUbications
+  -reloadMtlv() void
+  -btnUbicationCreate_Click(sender, e) void
+  -btnUbicationEdit_Click(sender, e) void
+  -btnUbicationRemove_Click(sender, e) void
+  -btnGuardarUbicacion_Click(sender, e) void
+}
+class FormOptionItem {
+  -OptionItemController optionItemController
+  -MaterialListView mtLvOptionItems
+  -reloadMtlv() void
+  -btnOICreate_Click(sender, e) void
+  -btnOIEdit_Click(sender, e) void
+  -btnOIRemove_Click(sender, e) void
+}
+class FormMenus {
+  -MenuController menuController
+  -MenuTagController menuTagController
+  -MaterialListView mtLvMenus
+  -CheckedListBox clbMenuTags
+  +FormMenus(MenuController menuController, MenuTagController menuTagController)
+  -reloadMtlv() void
+  -reloadTags() void
+  -btnMenuCreate_Click(sender, e) void
+  -btnMenuEdit_Click(sender, e) void
+  -btnMenuRemove_Click(sender, e) void
+  -btnMenuTags_Click(sender, e) void
+}
+class FormMenuTags {
+  -MenuTagController menuTagController
+  -MaterialListView mtLvMenuTags
+  +FormMenuTags(MenuTagController controller)
+  -reloadMtlv() void
+  -btnMenuTagCreate_Click(sender, e) void
+  -btnMenuTagEdit_Click(sender, e) void
+  -btnMenuTagRemove_Click(sender, e) void
+}
+class FormReport {
+  -QuoteController quoteController
+  -QuoteDto quote
+  -PrintDocument printDocument
+  +FormReport(QuoteController controller, int eventItemId, int quoteId)
+  -btnPrint_Click(sender, e) void
+  -printDocument_PrintPage(sender, PrintPageEventArgs e) void
+}
+class VisualHelper {
+  &lt;&lt;static&gt;&gt;
+  +setMaterialTheme(MaterialForm form)$ void
+  +EnlazarIconosSidebar(MaterialTabControl tab, ImageList img, string[] iconos)$ void
+}
+
+FormMain *-- FormIndex
+FormMain *-- FormEvents
+FormMain *-- FormUbications
+FormMain *-- FormOptionItem
+FormMain *-- FormMenus
+FormMain ..&gt; VisualHelper
+FormIndex ..&gt; FormReport : Detalle
+
+FormIndex --&gt; QuoteController
+FormEvents --&gt; EventItemController
+FormEvents --&gt; QuoteController
+FormUbications --&gt; UbicationController
+FormOptionItem --&gt; OptionItemController
+FormMenus --&gt; MenuController
+FormMenus --&gt; MenuTagController
+FormMenus ..&gt; FormMenuTags : botón Etiquetas (ShowDialog)
+FormMenuTags --&gt; MenuTagController
+FormReport --&gt; QuoteController
+</pre>
+<h2>5. Diagrama completo (todas las capas)</h2>
+<pre class="mermaid">
+classDiagram
+direction LR
+
+namespace View {
+  class FormMain {
+    -MaterialTabControl TabCtrl
+    -EventItemController eventsController
+    -MenuController menuController
+    -MenuTagController menuTagController
+    -OptionItemController optionItemsController
+    -QuoteController quoteController
+    -UbicationController ubicationController
+    +FormMain()
+    -FormMain_Load(sender, e) void
+  }
+  class FormIndex {
+    -QuoteController quoteController
+    -MaterialListView mtLvIndex
+    -reloadMtlv() void
+    -btnIndexReport_Click(sender, e) void
+    -btnIndexRemove_Click(sender, e) void
+  }
+  class FormEvents {
+    -EventItemController eventController
+    -QuoteController quoteController
+    -MaterialListView mtLvEvents
+    -reloadMtlv() void
+    -btnEventCreate_Click(sender, e) void
+    -btnEventEdit_Click(sender, e) void
+    -btnEventRemove_Click(sender, e) void
+  }
+  class FormUbications {
+    -UbicationController ubicationController
+    -MaterialListView mtLvUbications
+    -reloadMtlv() void
+    -btnUbicationCreate_Click(sender, e) void
+    -btnUbicationEdit_Click(sender, e) void
+    -btnUbicationRemove_Click(sender, e) void
+    -btnGuardarUbicacion_Click(sender, e) void
+  }
+  class FormOptionItem {
+    -OptionItemController optionItemController
+    -MaterialListView mtLvOptionItems
+    -reloadMtlv() void
+    -btnOICreate_Click(sender, e) void
+    -btnOIEdit_Click(sender, e) void
+    -btnOIRemove_Click(sender, e) void
+  }
+  class FormMenus {
+    -MenuController menuController
+    -MenuTagController menuTagController
+    -MaterialListView mtLvMenus
+    -CheckedListBox clbMenuTags
+    +FormMenus(MenuController menuController, MenuTagController menuTagController)
+    -reloadMtlv() void
+    -reloadTags() void
+    -btnMenuCreate_Click(sender, e) void
+    -btnMenuEdit_Click(sender, e) void
+    -btnMenuRemove_Click(sender, e) void
+    -btnMenuTags_Click(sender, e) void
+  }
+  class FormMenuTags {
+    -MenuTagController menuTagController
+    -MaterialListView mtLvMenuTags
+    +FormMenuTags(MenuTagController controller)
+    -reloadMtlv() void
+    -btnMenuTagCreate_Click(sender, e) void
+    -btnMenuTagEdit_Click(sender, e) void
+    -btnMenuTagRemove_Click(sender, e) void
+  }
+  class FormReport {
+    -QuoteController quoteController
+    -QuoteDto quote
+    -PrintDocument printDocument
+    +FormReport(QuoteController controller, int eventItemId, int quoteId)
+    -btnPrint_Click(sender, e) void
+    -printDocument_PrintPage(sender, PrintPageEventArgs e) void
+  }
+  class VisualHelper {
+    &lt;&lt;static&gt;&gt;
+    +setMaterialTheme(MaterialForm form)$ void
+    +EnlazarIconosSidebar(MaterialTabControl tab, ImageList img, string[] iconos)$ void
+  }
+}
+
+namespace Controller {
+  class UbicationController {
+    -UbicationService service
+    +addToRepository(UbicationDto dto) void
+    +getUbications() List~UbicationDto~
+    +updateUbication(int id, UbicationDto dto) void
+    +removeUbication(int id) void
+  }
+  class MenuController {
+    -MenuService service
+    +addToRepository(MenuDto dto) void
+    +getMenus() List~MenuDto~
+    +updateMenu(int id, MenuDto dto) void
+    +removeMenu(int id) void
+  }
+  class MenuTagController {
+    -MenuTagService service
+    +addToRepository(MenuTagDto dto) void
+    +getMenuTags() List~MenuTagDto~
+    +updateMenuTag(int id, MenuTagDto dto) void
+    +removeMenuTag(int id) void
+    +countMenusUsing(int id) int
+  }
+  class OptionItemController {
+    -OptionItemService service
+    +addToRepository(OptionItemDto dto) void
+    +getOptionItems() List~OptionItemDto~
+    +updateOptionItem(int id, OptionItemDto dto) void
+    +removeOptionItem(int id) void
+  }
+  class EventItemController {
+    -EventItemService service
+    +addToRepository(EventItemDto dto) void
+    +getEventItems() List~EventItemDto~
+    +updateEventItem(int id, EventItemDto dto) void
+    +removeEventItem(int id) void
+  }
+  class QuoteController {
+    -EventItemService service
+    +addQuote(int eventItemId, QuoteDto dto) void
+    +getQuotes() List~QuoteDto~
+    +getQuotesByEventItem(int eventItemId) List~QuoteDto~
+    +getQuoteById(int eventItemId, int quoteId) QuoteDto
+    +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
+    +removeQuote(int eventItemId, int quoteId) void
+    +acceptQuote(int eventItemId, int quoteId) void
+    +cancelQuote(int eventItemId, int quoteId) void
+    +cloneQuote(int eventItemId, int quoteId) void
+  }
+}
+
+namespace Service {
+  class UbicationService {
+    -Irepository~Ubication~ repository
+    +addToRepository(UbicationDto dto) void
+    +getUbications() List~UbicationDto~
+    +getUbicationById(int id) UbicationDto
+    +updateUbication(int id, UbicationDto dto) void
+    +removeUbication(int id) void
+    +toModel(UbicationDto dto) Ubication
+    +toDto(Ubication model) UbicationDto
+  }
+  class MenuTagService {
+    -Irepository~MenuTag~ repository
+    -Irepository~Menu~ menuRepository
+    +addToRepository(MenuTagDto dto) void
+    +getMenuTags() List~MenuTagDto~
+    +getMenuTagById(int id) MenuTagDto
+    +updateMenuTag(int id, MenuTagDto dto) void
+    +removeMenuTag(int id) void
+    +countMenusUsing(int id) int
+    -validate(MenuTag tag) void
+    +toModel(MenuTagDto dto) MenuTag
+    +toDto(MenuTag model) MenuTagDto
+  }
+  class MenuService {
+    -Irepository~Menu~ repository
+    -Irepository~MenuTag~ menuTagRepository
+    +addToRepository(MenuDto dto) void
+    +getMenus() List~MenuDto~
+    +getMenuById(int id) MenuDto
+    +updateMenu(int id, MenuDto dto) void
+    +removeMenu(int id) void
+    +toModel(MenuDto dto) Menu
+    +toDto(Menu model) MenuDto
+  }
+  class OptionItemService {
+    -Irepository~OptionItem~ repository
+    +addToRepository(OptionItemDto dto) void
+    +getOptionItems() List~OptionItemDto~
+    +getOptionItemById(int id) OptionItemDto
+    +updateOptionItem(int id, OptionItemDto dto) void
+    +removeOptionItem(int id) void
+    +toModel(OptionItemDto dto) OptionItem
+    +toDto(OptionItem model) OptionItemDto
+  }
+  class EventItemService {
+    -Irepository~EventItem~ repository
+    -Irepository~Ubication~ ubicationRepository
+    -Irepository~Menu~ menuRepository
+    -Irepository~OptionItem~ optionItemRepository
+    +addToRepository(EventItemDto dto) void
+    +getEventItems() List~EventItemDto~
+    +getEventItemById(int id) EventItemDto
+    +updateEventItem(int id, EventItemDto dto) void
+    +removeEventItem(int id) void
+    +toModel(EventItemDto dto) EventItem
+    +toDto(EventItem model) EventItemDto
+    +addQuote(int eventItemId, QuoteDto dto) void
+    +getQuotes() List~QuoteDto~
+    +getQuotesByEventItem(int eventItemId) List~QuoteDto~
+    +getQuoteById(int eventItemId, int quoteId) QuoteDto
+    +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
+    +removeQuote(int eventItemId, int quoteId) void
+    +acceptQuote(int eventItemId, int quoteId) void
+    +cancelQuote(int eventItemId, int quoteId) void
+    +cloneQuote(int eventItemId, int quoteId) void
+    -validateQuote(EventItem eventItem, Quote quote) void
+    +quoteToModel(QuoteDto dto) Quote
+    +quoteToDto(EventItem eventItem, Quote quote) QuoteDto
+  }
+}
+
+namespace Dto {
+  class UbicationDto {
+    +int Id
+    +string Name
+    +decimal Price
+  }
+  class OptionItemDto {
+    +int Id
+    +string Name
+    +decimal Price
+  }
+  class MenuDto {
+    +int Id
+    +string Description
+    +decimal PriceAdult
+    +decimal PriceChild
+    +List~MenuTagDto~ TagList
+  }
+  class MenuTagDto {
+    +int Id
+    +string Description
+  }
+  class EventItemDto {
+    +int Id
+    +string Name
+    +int GuestAdults
+    +int GuestChilds
+    +int Duration
+  }
+  class DetailMenuDto {
+    +int MenuId
+    +string MenuDescription
+    +int AdultQuantity
+    +int ChildQuantity
+    +decimal UnitPriceAdult
+    +decimal UnitPriceChild
+    +decimal Subtotal
+  }
+  class DetailOptionItemDto {
+    +int OptionItemId
+    +string OptionItemName
+    +decimal UnitPrice
+  }
+  class QuoteDto {
+    +int Id
+    +int EventItemId
+    +string EventItemName
+    +int UbicationId
+    +string UbicationName
+    +decimal UbicationPrice
+    +List~DetailMenuDto~ MenusList
+    +List~DetailOptionItemDto~ OptionItemsList
+    +EstadoPresupuesto State
+    +decimal TotalUbication
+    +decimal TotalMenus
+    +decimal TotalOptionItems
+    +decimal Total
+  }
+}
+
+namespace Model {
+  class EventItem {
+    -int _id
+    -string _name
+    -int _guestAdults
+    -int _guestChilds
+    -int _duration
+    -List~Quote~ _quotes
+    -int _quoteIdCounter
+    +EventItem(string name, int guestAdults, int guestChilds, int duration)
+    +EventItem(int id, string name, int guestAdults, int guestChilds, int duration)
+    +getTotalGuests() int
+    +addQuote(Quote quote) void
+    +getQuotes() List~Quote~
+    +getQuoteById(int quoteId) Quote
+    +updateQuote(int quoteId, Quote quote) void
+    +removeQuote(int quoteId) void
+    +acceptQuote(int quoteId) void
+    +cancelQuote(int quoteId) void
+    +cloneQuote(int quoteId) void
+    +hasAcceptedQuote() bool
+  }
+  class Quote {
+    -int _id
+    -Ubication _ubication
+    -decimal _ubicationPrice
+    -List~DetailMenu~ _menusList
+    -List~DetailOptionItem~ _optionItemList
+    -EstadoPresupuesto _state
+    -decimal _totalUbication
+    -decimal _totalMenus
+    -decimal _totalOptionItems
+    -decimal _total
+    +Quote(Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+    +calculateTotals(int duration) void
+    -refreshPrices() void
+    +accept() void
+    +cancel() void
+    +isEditable() bool
+    +clone() Quote
+  }
+  class DetailMenu {
+    -Menu _menu
+    -int _adultQuantity
+    -int _childQuantity
+    -decimal _unitPriceAdult
+    -decimal _unitPriceChild
+    +DetailMenu(Menu menu, int adultQuantity, int childQuantity)
+    +refreshPrices() void
+    +calculateSubtotal() decimal
+  }
+  class DetailOptionItem {
+    -OptionItem _optionItem
+    -decimal _unitPrice
+    +DetailOptionItem(OptionItem optionItem)
+    +refreshPrice() void
+  }
+  class Menu {
+    -int? _id
+    -string _description
+    -decimal _priceAdult
+    -decimal _priceChild
+    -List~MenuTag~ _tagList
+    -bool _isActive
+    +Menu(string description, decimal priceAdult, decimal priceChild, List~MenuTag~ tagList)
+    +Menu(int id, string description, decimal priceAdult, decimal priceChild, List~MenuTag~ tagList)
+    +deactivate() void
+    +hasTag(int tagId) bool
+    +removeTag(int tagId) void
+  }
+  class Ubication {
+    -int _id
+    -string _name
+    -decimal _price
+    -bool _isActive
+    +Ubication(string name, decimal price)
+    +Ubication(int id, string name, decimal price)
+    +deactivate() void
+  }
+  class OptionItem {
+    -int _id
+    -string _name
+    -decimal _price
+    -bool _isActive
+    +OptionItem(string name, decimal price)
+    +OptionItem(int id, string name, decimal price)
+    +deactivate() void
+  }
+  class MenuTag {
+    -int _id
+    -string _description
+    +MenuTag(string description)
+    +MenuTag(int id, string description)
+  }
+  class EstadoPresupuesto {
+    &lt;&lt;enumeration&gt;&gt;
+    Pendiente
+    Aceptado
+    Cancelado
+  }
+}
+
+namespace Persistencia {
+  class Irepository~T~ {
+    &lt;&lt;interface&gt;&gt;
+    +addToRepository(T obj) void
+    +getAll() List~T~
+    +getById(int id) T
+    +update(int id, T obj) void
+    +removeById(int id) void
+  }
+  class SqliteDatabase {
+    -SqliteDatabase instance$
+    -string connectionString
+    -SqliteDatabase()
+    +getInstance()$ SqliteDatabase
+    +getConnection() SqliteConnection
+    -createTables() void
+  }
+  class UbicationRepository {
+    -SqliteDatabase database
+    +UbicationRepository()
+    -readUbication(SqliteDataReader reader) Ubication
+  }
+  class MenuTagRepository {
+    -SqliteDatabase database
+    +MenuTagRepository()
+    -readMenuTag(SqliteDataReader reader) MenuTag
+  }
+  class MenuRepository {
+    -SqliteDatabase database
+    +MenuRepository()
+    -readMenu(SqliteDataReader reader) Menu
+    -loadTags(Menu menu) void
+    -saveTags(Menu menu, SqliteTransaction tx) void
+  }
+  class OptionItemRepository {
+    -SqliteDatabase database
+    +OptionItemRepository()
+    -readOptionItem(SqliteDataReader reader) OptionItem
+  }
+  class EventItemRepository {
+    -SqliteDatabase database
+    -Irepository~Ubication~ ubicationRepository
+    -Irepository~Menu~ menuRepository
+    -Irepository~OptionItem~ optionItemRepository
+    +EventItemRepository()
+    -readEventItem(SqliteDataReader reader) EventItem
+    -loadQuotes(EventItem eventItem) void
+    -saveQuotes(EventItem eventItem, SqliteTransaction tx) void
+  }
+}
+
+%% ---------- View → Controller ----------
+FormMain *-- FormIndex
+FormMain *-- FormEvents
+FormMain *-- FormUbications
+FormMain *-- FormOptionItem
+FormMain *-- FormMenus
+FormMain ..&gt; VisualHelper
+FormIndex ..&gt; FormReport : Detalle
+
+FormIndex --&gt; QuoteController
+FormEvents --&gt; EventItemController
+FormEvents --&gt; QuoteController
+FormUbications --&gt; UbicationController
+FormOptionItem --&gt; OptionItemController
+FormMenus --&gt; MenuController
+FormMenus --&gt; MenuTagController
+FormMenus ..&gt; FormMenuTags : botón Etiquetas (ShowDialog)
+FormMenuTags --&gt; MenuTagController
+FormReport --&gt; QuoteController
+
+%% ---------- Controller → Service ----------
+UbicationController --&gt; UbicationService
+MenuController --&gt; MenuService
+MenuTagController --&gt; MenuTagService
+OptionItemController --&gt; OptionItemService
+EventItemController --&gt; EventItemService
+QuoteController --&gt; EventItemService
+
+%% ---------- Service → Repository ----------
+UbicationService --&gt; Irepository : Ubication
+MenuTagService --&gt; Irepository : MenuTag, Menu
+MenuService --&gt; Irepository : Menu, MenuTag
+OptionItemService --&gt; Irepository : OptionItem
+EventItemService --&gt; Irepository : EventItem, Ubication, Menu, OptionItem
+
+%% ---------- Service → Dto y Model ----------
+UbicationService ..&gt; UbicationDto
+MenuService ..&gt; MenuDto
+MenuTagService ..&gt; MenuTagDto
+OptionItemService ..&gt; OptionItemDto
+EventItemService ..&gt; EventItemDto
+EventItemService ..&gt; QuoteDto
+UbicationService ..&gt; Ubication
+MenuTagService ..&gt; MenuTag
+MenuService ..&gt; Menu
+OptionItemService ..&gt; OptionItem
+EventItemService ..&gt; EventItem
+FormReport --&gt; QuoteDto
+QuoteDto --&gt; EstadoPresupuesto
+MenuDto o-- "0..*" MenuTagDto
+QuoteDto *-- "0..*" DetailMenuDto
+QuoteDto *-- "0..*" DetailOptionItemDto
+
+%% ---------- Model ----------
+EventItem "1" *-- "0..*" Quote : presupuestos
+Quote "0..*" --&gt; "1" Ubication : lugar
+Quote "1" *-- "0..*" DetailMenu : catering
+Quote "1" *-- "0..*" DetailOptionItem : servicios
+Quote --&gt; EstadoPresupuesto : estado
+DetailMenu "0..*" --&gt; "1" Menu
+DetailOptionItem "0..*" --&gt; "1" OptionItem
+Menu "0..*" o-- "0..*" MenuTag : etiquetas
+
+%% ---------- Persistencia ----------
+Irepository &lt;|.. UbicationRepository : T = Ubication
+Irepository &lt;|.. MenuTagRepository : T = MenuTag
+Irepository &lt;|.. MenuRepository : T = Menu
+Irepository &lt;|.. OptionItemRepository : T = OptionItem
+Irepository &lt;|.. EventItemRepository : T = EventItem
+
+UbicationRepository --&gt; SqliteDatabase
+MenuTagRepository --&gt; SqliteDatabase
+MenuRepository --&gt; SqliteDatabase
+OptionItemRepository --&gt; SqliteDatabase
+EventItemRepository --&gt; SqliteDatabase
+EventItemRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
+
+UbicationRepository ..&gt; Ubication
+MenuTagRepository ..&gt; MenuTag
+MenuRepository ..&gt; Menu
+OptionItemRepository ..&gt; OptionItem
+EventItemRepository ..&gt; EventItem
+</pre>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, theme:'default', maxTextSize:200000, classDiagram:{useMaxWidth:false}, er:{useMaxWidth:false}});</script>
+</body></html>

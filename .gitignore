@@ -1,0 +1,14 @@
+# Compilación
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# CLI local de dotnet
+.dotnet-cli/
+
+# Base de datos local
+*.db

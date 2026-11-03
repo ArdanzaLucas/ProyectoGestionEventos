@@ -16,9 +16,6 @@ namespace ProyectoPresupuestoEvento.Model
         private int _guestChilds;
         private int _duration;
 
-        // presupuestos del evento: se completan en la etapa de Presupuestos
-        private List<Quote> _quotes = new List<Quote>();
-
 
         //constructor
 
@@ -94,11 +91,6 @@ namespace ProyectoPresupuestoEvento.Model
         public int getTotalGuests()
         {
             return _guestAdults + _guestChilds;
-        }
-
-        public List<Quote> getQuotes()
-        {
-            return _quotes;
         }
 
 

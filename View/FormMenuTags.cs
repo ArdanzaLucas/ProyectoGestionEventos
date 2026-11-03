@@ -39,6 +39,14 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
+        // la llama FormMain cada vez que se entra a la pestaña:
+        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
+        public void resetView()
+        {
+            btnVolverAtras_Click(null, EventArgs.Empty);
+            reloadMtlv();
+        }
+
         private void reloadMtlv()
         {
             List<MenuTagDto> etiquetas = menuTagController.getMenuTags();

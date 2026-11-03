@@ -49,6 +49,14 @@ namespace ProyectoPresupuestoEvento.View
         }
 
         // es publico porque tambien lo llama FormMenuTags al volver
+        // la llama FormMain cada vez que se entra a la pestaña:
+        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
+        public void resetView()
+        {
+            btnVolverMenu_Click(null, EventArgs.Empty);
+            reloadMtlv();
+        }
+
         public void reloadMtlv()
         {
             List<MenuDto> menus = menuController.getMenus();

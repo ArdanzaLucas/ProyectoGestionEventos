@@ -9,19 +9,19 @@ Este documento define **qué calcula y qué valida** el sistema. El diagrama de 
 
 | Entidad (código) | Qué representa | Datos |
 |---|---|---|
-| `EventItem` | Un evento a presupuestar (ej. "Casamiento Pérez"). Es el **contenedor** de sus presupuestos | nombre, cliente (nombre), fecha y hora de inicio, invitados adultos, invitados niños, duración (horas enteras), lista de presupuestos |
+| `EventItem` | Un evento a presupuestar (ej. "Casamiento Pérez"). Puede tener varios presupuestos | nombre, cliente (nombre), fecha y hora de inicio, invitados adultos, invitados niños, duración (horas enteras) |
 | `Ubication` | Un salón o lugar | nombre, precio **por hora**, activo |
 | `Menu` | Un menú de catering | descripción, precio por adulto, precio por niño, etiquetas, activo |
 | `MenuTag` | Etiqueta que se le puede asignar a un menú (ej. "Estándar", "Vegana", "Sin TACC"). Las crea el usuario. Funciona como **variante del plato** | descripción |
 | `OptionItem` | Un servicio adicional (DJ, fotógrafo, decoración…) | nombre, precio fijo por evento, activo |
-| `Quote` | Un presupuesto. Vive dentro de su `EventItem` | ubicación, menús, servicios, estado, totales |
+| `Quote` | Un presupuesto. Pertenece a un evento: guarda su id | evento (id), ubicación, menús, servicios, estado, totales |
 | `DetailMenu` | Una línea de catering dentro del presupuesto: un menú en **una** de sus variantes | menú, etiqueta (copia del texto), cantidad de adultos, cantidad de niños, precio unitario por adulto y por niño (copia) |
 | `DetailOptionItem` | Una línea de servicio dentro del presupuesto | servicio, precio unitario (copia) |
 | `EstadoPresupuesto` | Estado del presupuesto (enum) | Pendiente, Aceptado, Cancelado |
 
 ## 2. Cálculos
 
-Todos los importes son `decimal`. Los calcula `Quote.calculateTotals(duration)`. La llama el `EventItem` dueño del presupuesto, que le pasa su duración, cada vez que agrega, edita o clona un presupuesto.
+Todos los importes son `decimal`. Los calcula `Quote.calculateTotals(duration)`. La llama `QuoteService`, con la duración del evento del presupuesto, al crear, editar, clonar o aceptar un presupuesto, y antes de mostrar un Pendiente (así un cambio de duración del evento se ve enseguida).
 
 | Concepto | Fórmula |
 |---|---|
@@ -29,9 +29,9 @@ Todos los importes son `decimal`. Los calcula `Quote.calculateTotals(duration)`.
 | `TotalMenus` | suma de los subtotales de todos los `DetailMenu` |
 | `TotalUbication` | `UbicationPrice × eventItem.Duration` (el precio de la ubicación es por hora) |
 | `TotalOptionItems` | suma de `UnitPrice` de todos los `DetailOptionItem` |
-
-Los cálculos usan siempre los **precios copiados en el presupuesto**, nunca los del menú, servicio o ubicación directamente. Mientras el presupuesto está Pendiente, esas copias se actualizan con los precios actuales antes de calcular (ver E2 y E3).
 | `Total` | `TotalUbication + TotalMenus + TotalOptionItems` |
+
+Los cálculos usan siempre los **precios copiados en el presupuesto**, nunca los del menú, servicio o ubicación directamente. Esas copias se toman al crear o clonar, y en un Pendiente se actualizan con los precios actuales **solo al editarlo y guardarlo** (ver E2 y E3).
 
 **Ejemplo:** evento de 5 h, 80 adultos y 20 niños, en un salón de $50.000/h.
 El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres variantes. DJ $200.000.
@@ -62,12 +62,13 @@ El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres va
 - V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, no se guarda (por ejemplo, se usa "Estándar" para el plato común).
 - La etiqueta **no cambia el precio**: todas las variantes de un menú cuestan lo mismo, según su precio por adulto y por niño.
 
-### Presupuesto (las hace `EventItemService.validateQuote` antes de guardar)
+### Presupuesto (las hace `QuoteService.validateQuote` antes de guardar)
+Si una regla no se cumple, `QuoteService` lanza `InvalidOperationException` con el mensaje, y la View lo muestra.
 - V6. Un presupuesto debe tener ubicación.
-- V7. Un mismo menú **con la misma etiqueta** no puede aparecer dos veces en el mismo presupuesto. El mismo menú con etiquetas distintas sí: por ejemplo, Milanesa estándar y Milanesa vegana son dos líneas.
+- V7. Un mismo menú **con la misma etiqueta** no puede aparecer dos veces en el mismo presupuesto. El mismo menú con etiquetas distintas sí: por ejemplo, Milanesa estándar y Milanesa vegana son dos líneas. En la pantalla, si se agrega una variante que ya está en la lista, **se suman las cantidades** a esa línea.
 - V15. La etiqueta de una línea de catering tiene que ser una de las que **ese menú tiene asignadas**. Si la Milanesa no tiene "Sin TACC", no se puede pedir Milanesa sin TACC.
 - V8. Un mismo servicio no puede aparecer dos veces en el mismo presupuesto.
-- V9. La suma de adultos de todos los `DetailMenu` no puede superar `GuestAdults` del evento. Lo mismo vale para niños. Se permite que sea menor, por ejemplo para invitados sin catering.
+- V9. **No hay límite** de platos según los invitados. Un presupuesto puede pedir más platos que invitados, por ejemplo si el evento tiene varios bloques de menú (entrada, principal, postre, bebida) o si se encarga comida de más. También puede pedir menos, por ejemplo para invitados sin catering. Como referencia, el panel de carga muestra los invitados del evento al lado del catering.
 - V12. Un presupuesto nuevo o clonado solo puede usar ubicación, menús y servicios **activos**. Al editar un presupuesto Pendiente se pueden conservar los elementos que ya tenía aunque se hayan dado de baja, pero no se pueden agregar elementos inactivos.
 
 ### Formularios (las hace la View antes de llamar al Controller)
@@ -86,10 +87,10 @@ Cancelado
 ```
 
 - E1. Todo presupuesto nuevo (o clonado) nace **Pendiente**.
-- E2. Solo un presupuesto **Pendiente** se puede editar. Al editarlo, `refreshPrices()` copia los precios actuales de la ubicación, los menús y los servicios, y se recalculan los totales.
-- E3. Al **aceptar** un presupuesto quedan **congelados** sus precios línea por línea (ubicación, cada menú y cada servicio) y sus totales. Si después cambia el precio de un menú, de un salón o de un servicio, o la duración del evento, ese presupuesto no cambia. El detalle impreso siempre coincide con el total. Lo mismo vale para un presupuesto Cancelado.
-- E4. Un evento puede tener un solo presupuesto Aceptado. Lo controla el propio `EventItem.acceptQuote()` revisando su lista (`hasAcceptedQuote()`). Si ya tiene uno, lanza `InvalidOperationException` y la View muestra el mensaje. Los demás presupuestos Pendientes **no cambian**: se pueden seguir editando o cancelar a mano.
-- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los precios actuales. Sirve para armar variantes o para rehacer uno cancelado.
+- E2. Solo un presupuesto **Pendiente** se puede editar. Al guardarlo, toma los precios actuales de la ubicación, los menús y los servicios, y se recalculan los totales. Mientras no se edite, conserva los precios que tenía. Si cambia la **duración** del evento, el total de ubicación sí se recalcula enseguida (precio por hora guardado × horas nuevas).
+- E3. Al **aceptar** un presupuesto quedan **congelados** sus precios línea por línea (ubicación, cada menú y cada servicio) y sus totales, **con los precios que tiene en ese momento**: aceptar no los actualiza. Si después cambia el precio de un menú, de un salón o de un servicio, o la duración del evento, ese presupuesto no cambia. El detalle impreso siempre coincide con el total. Lo mismo vale para un presupuesto Cancelado.
+- E4. Un evento puede tener un solo presupuesto Aceptado. Lo controla `QuoteService.acceptQuote`, buscando otro Aceptado con el mismo evento. Si ya hay uno, lanza `InvalidOperationException` y la View muestra el mensaje. Los demás presupuestos Pendientes **no cambian**: se pueden seguir editando o cancelar a mano.
+- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los precios actuales. Se puede clonar un presupuesto en cualquier estado. Sirve para armar variantes o para rehacer uno cancelado. Si usa algún elemento dado de baja, no se puede clonar (V12).
 - E6. Aceptado y Cancelado son estados finales: no vuelven a Pendiente. Para cambiarlos se clona.
 
 ## 5. Integridad entre entidades
@@ -98,13 +99,13 @@ Cancelado
   - Las listas de los formularios de Ubicaciones, Catering y Servicios muestran solo los activos.
   - Los presupuestos que ya la usan no cambian y siguen mostrando su nombre y su precio.
   - No se puede ofrecer para presupuestos nuevos (V12).
-- I4. `EventItem` y `Quote` sí se borran físicamente, con `removeById`.
+- I4. `EventItem` y `Quote` sí se borran físicamente, con `removeById`. Un presupuesto se puede eliminar en **cualquier estado**, con confirmación. Si es el Aceptado, el mensaje lo avisa.
 - I5. **Etiquetas:** se borran físicamente.
   - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`), y primero hay que asignarles otra.
   - Si está asignada a otros menús que tienen más etiquetas, la View pide confirmación indicando a cuántos afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús.
   - Los presupuestos **no cambian**: cada línea de catering guardó una copia del texto de la etiqueta, así que sigue diciendo, por ejemplo, "Vegana", aunque la etiqueta ya no exista o se haya renombrado.
-- I2. Eliminar un `EventItem` elimina también todos sus presupuestos. La View pide confirmación avisando cuántos tiene (`countQuotes`). Ocurre solo, por la composición: los presupuestos viven dentro del evento.
-- I3. Los IDs los asigna el repositorio (`idCounter`), nunca la View. Los IDs de los presupuestos los asigna su `EventItem` (`_quoteIdCounter`), así que un presupuesto se identifica por el par (id de evento, id de presupuesto).
+- I2. Eliminar un `EventItem` elimina también todos sus presupuestos: `EventItemService.removeEventItem` llama a `QuoteService.removeQuotesByEventItem`. La View pide confirmación avisando cuántos tiene (`countQuotes`).
+- I3. Los IDs los asigna el repositorio (`idCounter`), nunca la View. Cada presupuesto tiene su propio id y guarda el id de su evento.
 
 ## 6. Dónde va cada cosa (capas)
 

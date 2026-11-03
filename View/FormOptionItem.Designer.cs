@@ -46,6 +46,8 @@
             btnGuardarOI = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panelOIList = new Panel();
+            panelOITitle = new Panel();
+            lblOITitle = new Label();
             mtLvOptionItems = new MaterialSkin.Controls.MaterialListView();
             IdColumn = new ColumnHeader();
             NameColumn = new ColumnHeader();
@@ -57,16 +59,16 @@
             panelOICU.SuspendLayout();
             panelOIUpload.SuspendLayout();
             panelOIList.SuspendLayout();
+            panelOITitle.SuspendLayout();
             panelCrudCtrlOI.SuspendLayout();
             SuspendLayout();
             // 
             // panelOICU
             // 
             panelOICU.Controls.Add(panelOIUpload);
-            panelOICU.Location = new Point(918, 0);
-            panelOICU.Margin = new Padding(3, 4, 3, 4);
+            panelOICU.Location = new Point(803, 0);
             panelOICU.Name = "panelOICU";
-            panelOICU.Size = new Size(763, 960);
+            panelOICU.Size = new Size(668, 720);
             panelOICU.TabIndex = 4;
             // 
             // panelOIUpload
@@ -79,17 +81,18 @@
             panelOIUpload.Controls.Add(btnGuardarOI);
             panelOIUpload.Controls.Add(btnVolverAtras);
             panelOIUpload.Location = new Point(0, 0);
+            panelOIUpload.Margin = new Padding(3, 2, 3, 2);
             panelOIUpload.Name = "panelOIUpload";
-            panelOIUpload.Size = new Size(1681, 788);
+            panelOIUpload.Size = new Size(1471, 591);
             panelOIUpload.TabIndex = 10;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Georgia", 19.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(282, 75);
+            label1.Location = new Point(247, 56);
             label1.Name = "label1";
-            label1.Size = new Size(378, 38);
+            label1.Size = new Size(286, 30);
             label1.TabIndex = 7;
             label1.Text = "Carga de nuevo servicio";
             // 
@@ -97,9 +100,9 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(82, 367);
+            label3.Location = new Point(72, 275);
             label3.Name = "label3";
-            label3.Size = new Size(487, 27);
+            label3.Size = new Size(348, 21);
             label3.TabIndex = 9;
             label3.Text = "Ingrese un valor para el precio del servicio.";
             // 
@@ -110,12 +113,13 @@
             mtbOIPrice.Depth = 0;
             mtbOIPrice.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbOIPrice.LeadingIcon = null;
-            mtbOIPrice.Location = new Point(88, 435);
+            mtbOIPrice.Location = new Point(77, 326);
+            mtbOIPrice.Margin = new Padding(3, 2, 3, 2);
             mtbOIPrice.MaxLength = 50;
             mtbOIPrice.MouseState = MaterialSkin.MouseState.OUT;
             mtbOIPrice.Multiline = false;
             mtbOIPrice.Name = "mtbOIPrice";
-            mtbOIPrice.Size = new Size(200, 50);
+            mtbOIPrice.Size = new Size(175, 50);
             mtbOIPrice.TabIndex = 0;
             mtbOIPrice.Text = "";
             mtbOIPrice.TrailingIcon = null;
@@ -124,9 +128,9 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(82, 171);
+            label2.Location = new Point(72, 128);
             label2.Name = "label2";
-            label2.Size = new Size(578, 27);
+            label2.Size = new Size(424, 21);
             label2.TabIndex = 8;
             label2.Text = "Ingrese un nombre o descripcion del nuevo servicio.";
             // 
@@ -137,12 +141,13 @@
             mtbOIName.Depth = 0;
             mtbOIName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbOIName.LeadingIcon = null;
-            mtbOIName.Location = new Point(89, 237);
+            mtbOIName.Location = new Point(78, 178);
+            mtbOIName.Margin = new Padding(3, 2, 3, 2);
             mtbOIName.MaxLength = 50;
             mtbOIName.MouseState = MaterialSkin.MouseState.OUT;
             mtbOIName.Multiline = false;
             mtbOIName.Name = "mtbOIName";
-            mtbOIName.Size = new Size(271, 50);
+            mtbOIName.Size = new Size(237, 50);
             mtbOIName.TabIndex = 1;
             mtbOIName.Text = "";
             mtbOIName.TrailingIcon = null;
@@ -156,8 +161,8 @@
             btnGuardarOI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGuardarOI.HighEmphasis = true;
             btnGuardarOI.Icon = null;
-            btnGuardarOI.Location = new Point(432, 589);
-            btnGuardarOI.Margin = new Padding(5);
+            btnGuardarOI.Location = new Point(378, 442);
+            btnGuardarOI.Margin = new Padding(4);
             btnGuardarOI.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarOI.Name = "btnGuardarOI";
             btnGuardarOI.NoAccentTextColor = Color.Empty;
@@ -176,13 +181,13 @@
             btnVolverAtras.Depth = 0;
             btnVolverAtras.HighEmphasis = true;
             btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(432, 719);
-            btnVolverAtras.Margin = new Padding(5);
-            btnVolverAtras.MinimumSize = new Size(88, 0);
+            btnVolverAtras.Location = new Point(378, 539);
+            btnVolverAtras.Margin = new Padding(4);
+            btnVolverAtras.MinimumSize = new Size(77, 0);
             btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverAtras.Name = "btnVolverAtras";
             btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(88, 36);
+            btnVolverAtras.Size = new Size(77, 36);
             btnVolverAtras.TabIndex = 6;
             btnVolverAtras.Text = "Volver";
             btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -193,13 +198,32 @@
             // panelOIList
             // 
             panelOIList.Controls.Add(mtLvOptionItems);
+            panelOIList.Controls.Add(panelOITitle);
             panelOIList.Controls.Add(panelCrudCtrlOI);
             panelOIList.Dock = DockStyle.Fill;
             panelOIList.Location = new Point(0, 0);
-            panelOIList.Margin = new Padding(3, 4, 3, 4);
             panelOIList.Name = "panelOIList";
-            panelOIList.Size = new Size(1681, 960);
+            panelOIList.Size = new Size(1471, 720);
             panelOIList.TabIndex = 3;
+            // 
+            // panelOITitle
+            // 
+            panelOITitle.BackColor = Color.White;
+            panelOITitle.Controls.Add(lblOITitle);
+            panelOITitle.Dock = DockStyle.Top;
+            panelOITitle.Name = "panelOITitle";
+            panelOITitle.Size = new Size(500, 60);
+            panelOITitle.TabIndex = 6;
+            // 
+            // lblOITitle
+            // 
+            lblOITitle.AutoSize = true;
+            lblOITitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOITitle.Location = new Point(15, 10);
+            lblOITitle.Name = "lblOITitle";
+            lblOITitle.Size = new Size(100, 24);
+            lblOITitle.TabIndex = 0;
+            lblOITitle.Text = "Servicios adicionales";
             // 
             // mtLvOptionItems
             // 
@@ -211,14 +235,13 @@
             mtLvOptionItems.Dock = DockStyle.Fill;
             mtLvOptionItems.FullRowSelect = true;
             mtLvOptionItems.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            mtLvOptionItems.Location = new Point(166, 0);
-            mtLvOptionItems.Margin = new Padding(3, 4, 3, 4);
-            mtLvOptionItems.MinimumSize = new Size(229, 133);
+            mtLvOptionItems.Location = new Point(145, 0);
+            mtLvOptionItems.MinimumSize = new Size(200, 100);
             mtLvOptionItems.MouseLocation = new Point(-1, -1);
             mtLvOptionItems.MouseState = MaterialSkin.MouseState.OUT;
             mtLvOptionItems.Name = "mtLvOptionItems";
             mtLvOptionItems.OwnerDraw = true;
-            mtLvOptionItems.Size = new Size(1515, 960);
+            mtLvOptionItems.Size = new Size(1326, 720);
             mtLvOptionItems.TabIndex = 1;
             mtLvOptionItems.UseCompatibleStateImageBehavior = false;
             mtLvOptionItems.View = System.Windows.Forms.View.Details;
@@ -248,9 +271,8 @@
             panelCrudCtrlOI.Controls.Add(btnOICreate);
             panelCrudCtrlOI.Dock = DockStyle.Left;
             panelCrudCtrlOI.Location = new Point(0, 0);
-            panelCrudCtrlOI.Margin = new Padding(3, 4, 3, 4);
             panelCrudCtrlOI.Name = "panelCrudCtrlOI";
-            panelCrudCtrlOI.Size = new Size(166, 960);
+            panelCrudCtrlOI.Size = new Size(145, 720);
             panelCrudCtrlOI.TabIndex = 5;
             // 
             // btnOIRemove
@@ -261,12 +283,12 @@
             btnOIRemove.Depth = 0;
             btnOIRemove.HighEmphasis = true;
             btnOIRemove.Icon = null;
-            btnOIRemove.Location = new Point(41, 461);
-            btnOIRemove.Margin = new Padding(5, 8, 5, 8);
+            btnOIRemove.Location = new Point(36, 346);
+            btnOIRemove.Margin = new Padding(4, 6, 4, 6);
             btnOIRemove.MouseState = MaterialSkin.MouseState.HOVER;
             btnOIRemove.Name = "btnOIRemove";
             btnOIRemove.NoAccentTextColor = Color.Empty;
-            btnOIRemove.Size = new Size(103, 48);
+            btnOIRemove.Size = new Size(90, 36);
             btnOIRemove.TabIndex = 2;
             btnOIRemove.Text = "Eliminar";
             btnOIRemove.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -282,12 +304,12 @@
             btnOIEdit.Depth = 0;
             btnOIEdit.HighEmphasis = true;
             btnOIEdit.Icon = null;
-            btnOIEdit.Location = new Point(41, 317);
-            btnOIEdit.Margin = new Padding(5, 8, 5, 8);
+            btnOIEdit.Location = new Point(36, 238);
+            btnOIEdit.Margin = new Padding(4, 6, 4, 6);
             btnOIEdit.MouseState = MaterialSkin.MouseState.HOVER;
             btnOIEdit.Name = "btnOIEdit";
             btnOIEdit.NoAccentTextColor = Color.Empty;
-            btnOIEdit.Size = new Size(103, 48);
+            btnOIEdit.Size = new Size(90, 36);
             btnOIEdit.TabIndex = 1;
             btnOIEdit.Text = "Editar";
             btnOIEdit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -303,12 +325,12 @@
             btnOICreate.Depth = 0;
             btnOICreate.HighEmphasis = true;
             btnOICreate.Icon = null;
-            btnOICreate.Location = new Point(41, 153);
-            btnOICreate.Margin = new Padding(5, 8, 5, 8);
+            btnOICreate.Location = new Point(36, 115);
+            btnOICreate.Margin = new Padding(4, 6, 4, 6);
             btnOICreate.MouseState = MaterialSkin.MouseState.HOVER;
             btnOICreate.Name = "btnOICreate";
             btnOICreate.NoAccentTextColor = Color.Empty;
-            btnOICreate.Size = new Size(103, 48);
+            btnOICreate.Size = new Size(90, 36);
             btnOICreate.TabIndex = 0;
             btnOICreate.Text = "Crear";
             btnOICreate.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -318,13 +340,12 @@
             // 
             // FormOptionItem
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1681, 960);
+            ClientSize = new Size(1471, 720);
             Controls.Add(panelOICU);
             Controls.Add(panelOIList);
             FormBorderStyle = FormBorderStyle.None;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "FormOptionItem";
             Text = "FormOptionItem";
             Load += FormOptionItem_Load;
@@ -332,6 +353,8 @@
             panelOIUpload.ResumeLayout(false);
             panelOIUpload.PerformLayout();
             panelOIList.ResumeLayout(false);
+            panelOITitle.ResumeLayout(false);
+            panelOITitle.PerformLayout();
             panelCrudCtrlOI.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -340,6 +363,8 @@
 
         private Panel panelOICU;
         private Panel panelOIList;
+        private Panel panelOITitle;
+        private Label lblOITitle;
         private MaterialSkin.Controls.MaterialListView mtLvOptionItems;
         private ColumnHeader IdColumn;
         private ColumnHeader NameColumn;

@@ -46,6 +46,8 @@
             btnGuardarUbicacion = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panel2 = new Panel();
+            panelUbicationsTitle = new Panel();
+            lblUbicationsTitle = new Label();
             mtLvUbications = new MaterialSkin.Controls.MaterialListView();
             IdColumn = new ColumnHeader();
             NameColumn = new ColumnHeader();
@@ -57,6 +59,7 @@
             panel3.SuspendLayout();
             panelUpload.SuspendLayout();
             panel2.SuspendLayout();
+            panelUbicationsTitle.SuspendLayout();
             panelCrudCtrlUb.SuspendLayout();
             SuspendLayout();
             // 
@@ -195,12 +198,32 @@
             // panel2
             // 
             panel2.Controls.Add(mtLvUbications);
+            panel2.Controls.Add(panelUbicationsTitle);
             panel2.Controls.Add(panelCrudCtrlUb);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(1471, 720);
             panel2.TabIndex = 3;
+            // 
+            // panelUbicationsTitle
+            // 
+            panelUbicationsTitle.BackColor = Color.White;
+            panelUbicationsTitle.Controls.Add(lblUbicationsTitle);
+            panelUbicationsTitle.Dock = DockStyle.Top;
+            panelUbicationsTitle.Name = "panelUbicationsTitle";
+            panelUbicationsTitle.Size = new Size(500, 60);
+            panelUbicationsTitle.TabIndex = 6;
+            // 
+            // lblUbicationsTitle
+            // 
+            lblUbicationsTitle.AutoSize = true;
+            lblUbicationsTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUbicationsTitle.Location = new Point(15, 10);
+            lblUbicationsTitle.Name = "lblUbicationsTitle";
+            lblUbicationsTitle.Size = new Size(100, 24);
+            lblUbicationsTitle.TabIndex = 0;
+            lblUbicationsTitle.Text = "Ubicaciones";
             // 
             // mtLvUbications
             // 
@@ -330,6 +353,8 @@
             panelUpload.ResumeLayout(false);
             panelUpload.PerformLayout();
             panel2.ResumeLayout(false);
+            panelUbicationsTitle.ResumeLayout(false);
+            panelUbicationsTitle.PerformLayout();
             panelCrudCtrlUb.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -338,6 +363,8 @@
 
         private Panel panel3;
         private Panel panel2;
+        private Panel panelUbicationsTitle;
+        private Label lblUbicationsTitle;
         private MaterialSkin.Controls.MaterialListView mtLvUbications;
         private ColumnHeader IdColumn;
         private ColumnHeader NameColumn;

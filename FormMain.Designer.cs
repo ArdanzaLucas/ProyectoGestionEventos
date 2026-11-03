@@ -61,6 +61,7 @@
             TabCtrl.Controls.Add(tabOptionItem);
             TabCtrl.Controls.Add(tabCatering);
             TabCtrl.Depth = 0;
+            TabCtrl.SelectedIndexChanged += TabCtrl_SelectedIndexChanged;
             TabCtrl.Dock = DockStyle.Fill;
             TabCtrl.Location = new Point(3, 64);
             TabCtrl.MouseState = MaterialSkin.MouseState.HOVER;

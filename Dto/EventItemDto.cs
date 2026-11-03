@@ -85,6 +85,20 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _duration = value; }
         }
 
+        // solo lectura: el texto que se muestra en los combos, ej. "Cumpleaños - Juan Perez"
+        public string DisplayName
+        {
+            get
+            {
+                // "Todos" (el primer item del filtro) no tiene cliente
+                if (_clientName == null || _clientName == "")
+                {
+                    return _name;
+                }
+                return _name + " - " + _clientName;
+            }
+        }
+
 
     }
 }

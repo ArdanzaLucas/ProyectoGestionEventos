@@ -21,24 +21,14 @@ class EventItem {
   -int _guestAdults
   -int _guestChilds
   -int _duration
-  -List~Quote~ _quotes
-  -int _quoteIdCounter
   +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
   +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
   +getTotalGuests() int
-  +addQuote(Quote quote) void
-  +getQuotes() List~Quote~
-  +getQuoteById(int quoteId) Quote
-  +updateQuote(int quoteId, Quote quote) void
-  +removeQuote(int quoteId) void
-  +acceptQuote(int quoteId) void
-  +cancelQuote(int quoteId) void
-  +cloneQuote(int quoteId) void
-  +hasAcceptedQuote() bool
 }
 
 class Quote {
   -int _id
+  -int _eventItemId
   -Ubication _ubication
   -decimal _ubicationPrice
   -List~DetailMenu~ _menusList
@@ -48,9 +38,9 @@ class Quote {
   -decimal _totalMenus
   -decimal _totalOptionItems
   -decimal _total
-  +Quote(Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+  +Quote(int eventItemId, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
   +calculateTotals(int duration) void
-  -refreshPrices() void
+  +refreshPrices() void
   +accept() void
   +cancel() void
   +isEditable() bool
@@ -124,7 +114,7 @@ class EstadoPresupuesto {
   Cancelado
 }
 
-EventItem "1" *-- "0..*" Quote : presupuestos
+Quote "0..*" ..&gt; "1" EventItem : pertenece (por id)
 Quote "0..*" --&gt; "1" Ubication : lugar
 Quote "1" *-- "0..*" DetailMenu : catering
 Quote "1" *-- "0..*" DetailOptionItem : servicios
@@ -182,13 +172,18 @@ class OptionItemRepository {
 }
 class EventItemRepository {
   -SqliteDatabase database
+  +EventItemRepository()
+  -readEventItem(SqliteDataReader reader) EventItem
+}
+class QuoteRepository {
+  -SqliteDatabase database
   -Irepository~Ubication~ ubicationRepository
   -Irepository~Menu~ menuRepository
   -Irepository~OptionItem~ optionItemRepository
-  +EventItemRepository()
-  -readEventItem(SqliteDataReader reader) EventItem
-  -loadQuotes(EventItem eventItem) void
-  -saveQuotes(EventItem eventItem, SqliteTransaction tx) void
+  +QuoteRepository()
+  -readQuote(SqliteDataReader reader) Quote
+  -loadDetails(Quote quote) void
+  -saveDetails(Quote quote, SqliteTransaction tx) void
 }
 
 Irepository &lt;|.. UbicationRepository : T = Ubication
@@ -196,19 +191,22 @@ Irepository &lt;|.. MenuTagRepository : T = MenuTag
 Irepository &lt;|.. MenuRepository : T = Menu
 Irepository &lt;|.. OptionItemRepository : T = OptionItem
 Irepository &lt;|.. EventItemRepository : T = EventItem
+Irepository &lt;|.. QuoteRepository : T = Quote
 
 UbicationRepository --&gt; SqliteDatabase
 MenuTagRepository --&gt; SqliteDatabase
 MenuRepository --&gt; SqliteDatabase
 OptionItemRepository --&gt; SqliteDatabase
 EventItemRepository --&gt; SqliteDatabase
-EventItemRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
+QuoteRepository --&gt; SqliteDatabase
+QuoteRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
 
 UbicationRepository ..&gt; Ubication
 MenuTagRepository ..&gt; MenuTag
 MenuRepository ..&gt; Menu
 OptionItemRepository ..&gt; OptionItem
 EventItemRepository ..&gt; EventItem
+QuoteRepository ..&gt; Quote
 </pre>
 <h3>2b. Esquema de la base de datos</h3>
 <pre class="mermaid">
@@ -248,11 +246,10 @@ erDiagram
     INTEGER GuestAdults
     INTEGER GuestChilds
     INTEGER Duration
-    INTEGER QuoteIdCounter
   }
   QUOTE {
-    INTEGER EventItemId PK, FK
     INTEGER Id PK
+    INTEGER EventItemId FK
     INTEGER UbicationId FK
     TEXT UbicationPrice
     INTEGER State
@@ -262,7 +259,6 @@ erDiagram
     TEXT Total
   }
   DETAIL_MENU {
-    INTEGER EventItemId PK, FK
     INTEGER QuoteId PK, FK
     INTEGER MenuId PK, FK
     TEXT TagDescription PK
@@ -272,7 +268,6 @@ erDiagram
     TEXT UnitPriceChild
   }
   DETAIL_OPTION_ITEM {
-    INTEGER EventItemId PK, FK
     INTEGER QuoteId PK, FK
     INTEGER OptionItemId PK, FK
     TEXT UnitPrice
@@ -323,6 +318,7 @@ class EventItemDto {
   +int GuestAdults
   +int GuestChilds
   +int Duration
+  +string DisplayName
 }
 class DetailMenuDto {
   +int MenuId
@@ -343,6 +339,8 @@ class QuoteDto {
   +int Id
   +int EventItemId
   +string EventItemName
+  +DateTime EventDate
+  +int TotalGuests
   +int UbicationId
   +string UbicationName
   +decimal UbicationPrice
@@ -405,9 +403,6 @@ class OptionItemService {
 }
 class EventItemService {
   -Irepository~EventItem~ repository
-  -Irepository~Ubication~ ubicationRepository
-  -Irepository~Menu~ menuRepository
-  -Irepository~OptionItem~ optionItemRepository
   +addToRepository(EventItemDto dto) void
   +getEventItems() List~EventItemDto~
   +getEventItemById(int id) EventItemDto
@@ -416,18 +411,27 @@ class EventItemService {
   +countQuotes(int id) int
   +toModel(EventItemDto dto) EventItem
   +toDto(EventItem model) EventItemDto
-  +addQuote(int eventItemId, QuoteDto dto) void
+}
+class QuoteService {
+  -Irepository~Quote~ repository
+  -Irepository~EventItem~ eventItemRepository
+  -Irepository~Ubication~ ubicationRepository
+  -Irepository~Menu~ menuRepository
+  -Irepository~OptionItem~ optionItemRepository
+  +addQuote(QuoteDto dto) void
   +getQuotes() List~QuoteDto~
   +getQuotesByEventItem(int eventItemId) List~QuoteDto~
-  +getQuoteById(int eventItemId, int quoteId) QuoteDto
-  +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
-  +removeQuote(int eventItemId, int quoteId) void
-  +acceptQuote(int eventItemId, int quoteId) void
-  +cancelQuote(int eventItemId, int quoteId) void
-  +cloneQuote(int eventItemId, int quoteId) void
-  -validateQuote(EventItem eventItem, Quote quote) void
-  +quoteToModel(QuoteDto dto) Quote
-  +quoteToDto(EventItem eventItem, Quote quote) QuoteDto
+  +getQuoteById(int id) QuoteDto
+  +updateQuote(int id, QuoteDto dto) void
+  +removeQuote(int id) void
+  +removeQuotesByEventItem(int eventItemId) void
+  +acceptQuote(int id) void
+  +cancelQuote(int id) void
+  +cloneQuote(int id) void
+  +calculatePreview(QuoteDto dto) QuoteDto
+  -validateQuote(Quote quote, Quote original) void
+  +toModel(QuoteDto dto) Quote
+  +toDto(Quote quote) QuoteDto
 }
 
 %% ---------- Controllers ----------
@@ -470,16 +474,17 @@ class EventItemController {
   +countQuotes(int id) int
 }
 class QuoteController {
-  -EventItemService service
-  +addQuote(int eventItemId, QuoteDto dto) void
+  -QuoteService service
+  +addQuote(QuoteDto dto) void
   +getQuotes() List~QuoteDto~
   +getQuotesByEventItem(int eventItemId) List~QuoteDto~
-  +getQuoteById(int eventItemId, int quoteId) QuoteDto
-  +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
-  +removeQuote(int eventItemId, int quoteId) void
-  +acceptQuote(int eventItemId, int quoteId) void
-  +cancelQuote(int eventItemId, int quoteId) void
-  +cloneQuote(int eventItemId, int quoteId) void
+  +getQuoteById(int id) QuoteDto
+  +updateQuote(int id, QuoteDto dto) void
+  +removeQuote(int id) void
+  +acceptQuote(int id) void
+  +cancelQuote(int id) void
+  +cloneQuote(int id) void
+  +calculatePreview(QuoteDto dto) QuoteDto
 }
 
 UbicationController --&gt; UbicationService
@@ -487,14 +492,15 @@ MenuController --&gt; MenuService
 MenuTagController --&gt; MenuTagService
 OptionItemController --&gt; OptionItemService
 EventItemController --&gt; EventItemService
-QuoteController --&gt; EventItemService
+QuoteController --&gt; QuoteService
+EventItemService ..&gt; QuoteService : borra y cuenta los presupuestos del evento
 
 UbicationService ..&gt; UbicationDto
 MenuService ..&gt; MenuDto
 MenuTagService ..&gt; MenuTagDto
 OptionItemService ..&gt; OptionItemDto
 EventItemService ..&gt; EventItemDto
-EventItemService ..&gt; QuoteDto
+QuoteService ..&gt; QuoteDto
 </pre>
 <h2>4. Vistas (View)</h2>
 <pre class="mermaid">
@@ -511,18 +517,34 @@ class FormMain {
   -UbicationController ubicationController
   +FormMain()
   -FormMain_Load(sender, e) void
+  -TabCtrl_SelectedIndexChanged(sender, e) void
 }
 class FormIndex {
   -QuoteController quoteController
+  -EventItemController eventController
+  -UbicationController ubicationController
+  -MenuController menuController
+  -OptionItemController optionItemController
   -MaterialListView mtLvIndex
+  -int idEditando
+  +resetView() void
   -reloadMtlv() void
+  -refreshTotals() void
+  -btnQuoteCreate_Click(sender, e) void
+  -btnQuoteEdit_Click(sender, e) void
+  -btnQuoteAccept_Click(sender, e) void
+  -btnQuoteCancel_Click(sender, e) void
+  -btnQuoteClone_Click(sender, e) void
+  -btnQuoteRemove_Click(sender, e) void
+  -btnAddLine_Click(sender, e) void
+  -btnRemoveLine_Click(sender, e) void
+  -btnGuardarQuote_Click(sender, e) void
   -btnIndexReport_Click(sender, e) void
-  -btnIndexRemove_Click(sender, e) void
 }
 class FormEvents {
   -EventItemController eventController
-  -QuoteController quoteController
   -MaterialListView mtLvEvents
+  +resetView() void
   -reloadMtlv() void
   -btnEventCreate_Click(sender, e) void
   -btnEventEdit_Click(sender, e) void
@@ -531,6 +553,7 @@ class FormEvents {
 class FormUbications {
   -UbicationController ubicationController
   -MaterialListView mtLvUbications
+  +resetView() void
   -reloadMtlv() void
   -btnUbicationCreate_Click(sender, e) void
   -btnUbicationEdit_Click(sender, e) void
@@ -540,6 +563,7 @@ class FormUbications {
 class FormOptionItem {
   -OptionItemController optionItemController
   -MaterialListView mtLvOptionItems
+  +resetView() void
   -reloadMtlv() void
   -btnOICreate_Click(sender, e) void
   -btnOIEdit_Click(sender, e) void
@@ -551,6 +575,7 @@ class FormMenus {
   -MaterialListView mtLvMenus
   -CheckedListBox clbMenuTags
   +FormMenus(MenuController menuController, MenuTagController menuTagController)
+  +resetView() void
   -reloadMtlv() void
   -reloadTags() void
   -btnMenuCreate_Click(sender, e) void
@@ -561,7 +586,8 @@ class FormMenus {
 class FormMenuTags {
   -MenuTagController menuTagController
   -MaterialListView mtLvMenuTags
-  +FormMenuTags(MenuTagController controller)
+  +FormMenuTags(MenuTagController controller, FormMenus formMenus)
+  +resetView() void
   -reloadMtlv() void
   -btnMenuTagCreate_Click(sender, e) void
   -btnMenuTagEdit_Click(sender, e) void
@@ -571,7 +597,7 @@ class FormReport {
   -QuoteController quoteController
   -QuoteDto quote
   -PrintDocument printDocument
-  +FormReport(QuoteController controller, int eventItemId, int quoteId)
+  +FormReport(QuoteController controller, int quoteId)
   -btnPrint_Click(sender, e) void
   -printDocument_PrintPage(sender, PrintPageEventArgs e) void
 }
@@ -590,13 +616,16 @@ FormMain ..&gt; VisualHelper
 FormIndex ..&gt; FormReport : Detalle
 
 FormIndex --&gt; QuoteController
+FormIndex --&gt; EventItemController
+FormIndex --&gt; UbicationController
+FormIndex --&gt; MenuController
+FormIndex --&gt; OptionItemController
 FormEvents --&gt; EventItemController
-FormEvents --&gt; QuoteController
 FormUbications --&gt; UbicationController
 FormOptionItem --&gt; OptionItemController
 FormMenus --&gt; MenuController
 FormMenus --&gt; MenuTagController
-FormMenus ..&gt; FormMenuTags : botón Etiquetas (ShowDialog)
+FormMenus ..&gt; FormMenuTags : botón Etiquetas (mismo panel)
 FormMenuTags --&gt; MenuTagController
 FormReport --&gt; QuoteController
 </pre>
@@ -616,18 +645,34 @@ namespace View {
     -UbicationController ubicationController
     +FormMain()
     -FormMain_Load(sender, e) void
+    -TabCtrl_SelectedIndexChanged(sender, e) void
   }
   class FormIndex {
     -QuoteController quoteController
+    -EventItemController eventController
+    -UbicationController ubicationController
+    -MenuController menuController
+    -OptionItemController optionItemController
     -MaterialListView mtLvIndex
+    -int idEditando
+    +resetView() void
     -reloadMtlv() void
+    -refreshTotals() void
+    -btnQuoteCreate_Click(sender, e) void
+    -btnQuoteEdit_Click(sender, e) void
+    -btnQuoteAccept_Click(sender, e) void
+    -btnQuoteCancel_Click(sender, e) void
+    -btnQuoteClone_Click(sender, e) void
+    -btnQuoteRemove_Click(sender, e) void
+    -btnAddLine_Click(sender, e) void
+    -btnRemoveLine_Click(sender, e) void
+    -btnGuardarQuote_Click(sender, e) void
     -btnIndexReport_Click(sender, e) void
-    -btnIndexRemove_Click(sender, e) void
   }
   class FormEvents {
     -EventItemController eventController
-    -QuoteController quoteController
     -MaterialListView mtLvEvents
+    +resetView() void
     -reloadMtlv() void
     -btnEventCreate_Click(sender, e) void
     -btnEventEdit_Click(sender, e) void
@@ -636,6 +681,7 @@ namespace View {
   class FormUbications {
     -UbicationController ubicationController
     -MaterialListView mtLvUbications
+    +resetView() void
     -reloadMtlv() void
     -btnUbicationCreate_Click(sender, e) void
     -btnUbicationEdit_Click(sender, e) void
@@ -645,6 +691,7 @@ namespace View {
   class FormOptionItem {
     -OptionItemController optionItemController
     -MaterialListView mtLvOptionItems
+    +resetView() void
     -reloadMtlv() void
     -btnOICreate_Click(sender, e) void
     -btnOIEdit_Click(sender, e) void
@@ -656,6 +703,7 @@ namespace View {
     -MaterialListView mtLvMenus
     -CheckedListBox clbMenuTags
     +FormMenus(MenuController menuController, MenuTagController menuTagController)
+    +resetView() void
     -reloadMtlv() void
     -reloadTags() void
     -btnMenuCreate_Click(sender, e) void
@@ -666,7 +714,8 @@ namespace View {
   class FormMenuTags {
     -MenuTagController menuTagController
     -MaterialListView mtLvMenuTags
-    +FormMenuTags(MenuTagController controller)
+    +FormMenuTags(MenuTagController controller, FormMenus formMenus)
+    +resetView() void
     -reloadMtlv() void
     -btnMenuTagCreate_Click(sender, e) void
     -btnMenuTagEdit_Click(sender, e) void
@@ -676,7 +725,7 @@ namespace View {
     -QuoteController quoteController
     -QuoteDto quote
     -PrintDocument printDocument
-    +FormReport(QuoteController controller, int eventItemId, int quoteId)
+    +FormReport(QuoteController controller, int quoteId)
     -btnPrint_Click(sender, e) void
     -printDocument_PrintPage(sender, PrintPageEventArgs e) void
   }
@@ -727,16 +776,17 @@ namespace Controller {
     +countQuotes(int id) int
   }
   class QuoteController {
-    -EventItemService service
-    +addQuote(int eventItemId, QuoteDto dto) void
+    -QuoteService service
+    +addQuote(QuoteDto dto) void
     +getQuotes() List~QuoteDto~
     +getQuotesByEventItem(int eventItemId) List~QuoteDto~
-    +getQuoteById(int eventItemId, int quoteId) QuoteDto
-    +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
-    +removeQuote(int eventItemId, int quoteId) void
-    +acceptQuote(int eventItemId, int quoteId) void
-    +cancelQuote(int eventItemId, int quoteId) void
-    +cloneQuote(int eventItemId, int quoteId) void
+    +getQuoteById(int id) QuoteDto
+    +updateQuote(int id, QuoteDto dto) void
+    +removeQuote(int id) void
+    +acceptQuote(int id) void
+    +cancelQuote(int id) void
+    +cloneQuote(int id) void
+    +calculatePreview(QuoteDto dto) QuoteDto
   }
 }
 
@@ -788,9 +838,6 @@ namespace Service {
   }
   class EventItemService {
     -Irepository~EventItem~ repository
-    -Irepository~Ubication~ ubicationRepository
-    -Irepository~Menu~ menuRepository
-    -Irepository~OptionItem~ optionItemRepository
     +addToRepository(EventItemDto dto) void
     +getEventItems() List~EventItemDto~
     +getEventItemById(int id) EventItemDto
@@ -799,18 +846,27 @@ namespace Service {
     +countQuotes(int id) int
     +toModel(EventItemDto dto) EventItem
     +toDto(EventItem model) EventItemDto
-    +addQuote(int eventItemId, QuoteDto dto) void
+  }
+  class QuoteService {
+    -Irepository~Quote~ repository
+    -Irepository~EventItem~ eventItemRepository
+    -Irepository~Ubication~ ubicationRepository
+    -Irepository~Menu~ menuRepository
+    -Irepository~OptionItem~ optionItemRepository
+    +addQuote(QuoteDto dto) void
     +getQuotes() List~QuoteDto~
     +getQuotesByEventItem(int eventItemId) List~QuoteDto~
-    +getQuoteById(int eventItemId, int quoteId) QuoteDto
-    +updateQuote(int eventItemId, int quoteId, QuoteDto dto) void
-    +removeQuote(int eventItemId, int quoteId) void
-    +acceptQuote(int eventItemId, int quoteId) void
-    +cancelQuote(int eventItemId, int quoteId) void
-    +cloneQuote(int eventItemId, int quoteId) void
-    -validateQuote(EventItem eventItem, Quote quote) void
-    +quoteToModel(QuoteDto dto) Quote
-    +quoteToDto(EventItem eventItem, Quote quote) QuoteDto
+    +getQuoteById(int id) QuoteDto
+    +updateQuote(int id, QuoteDto dto) void
+    +removeQuote(int id) void
+    +removeQuotesByEventItem(int eventItemId) void
+    +acceptQuote(int id) void
+    +cancelQuote(int id) void
+    +cloneQuote(int id) void
+    +calculatePreview(QuoteDto dto) QuoteDto
+    -validateQuote(Quote quote, Quote original) void
+    +toModel(QuoteDto dto) Quote
+    +toDto(Quote quote) QuoteDto
   }
 }
 
@@ -844,6 +900,7 @@ namespace Dto {
     +int GuestAdults
     +int GuestChilds
     +int Duration
+    +string DisplayName
   }
   class DetailMenuDto {
     +int MenuId
@@ -864,6 +921,8 @@ namespace Dto {
     +int Id
     +int EventItemId
     +string EventItemName
+    +DateTime EventDate
+    +int TotalGuests
     +int UbicationId
     +string UbicationName
     +decimal UbicationPrice
@@ -886,23 +945,13 @@ namespace Model {
     -int _guestAdults
     -int _guestChilds
     -int _duration
-    -List~Quote~ _quotes
-    -int _quoteIdCounter
     +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
     +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
     +getTotalGuests() int
-    +addQuote(Quote quote) void
-    +getQuotes() List~Quote~
-    +getQuoteById(int quoteId) Quote
-    +updateQuote(int quoteId, Quote quote) void
-    +removeQuote(int quoteId) void
-    +acceptQuote(int quoteId) void
-    +cancelQuote(int quoteId) void
-    +cloneQuote(int quoteId) void
-    +hasAcceptedQuote() bool
   }
   class Quote {
     -int _id
+    -int _eventItemId
     -Ubication _ubication
     -decimal _ubicationPrice
     -List~DetailMenu~ _menusList
@@ -912,9 +961,9 @@ namespace Model {
     -decimal _totalMenus
     -decimal _totalOptionItems
     -decimal _total
-    +Quote(Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+    +Quote(int eventItemId, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
     +calculateTotals(int duration) void
-    -refreshPrices() void
+    +refreshPrices() void
     +accept() void
     +cancel() void
     +isEditable() bool
@@ -1023,13 +1072,18 @@ namespace Persistencia {
   }
   class EventItemRepository {
     -SqliteDatabase database
+    +EventItemRepository()
+    -readEventItem(SqliteDataReader reader) EventItem
+  }
+  class QuoteRepository {
+    -SqliteDatabase database
     -Irepository~Ubication~ ubicationRepository
     -Irepository~Menu~ menuRepository
     -Irepository~OptionItem~ optionItemRepository
-    +EventItemRepository()
-    -readEventItem(SqliteDataReader reader) EventItem
-    -loadQuotes(EventItem eventItem) void
-    -saveQuotes(EventItem eventItem, SqliteTransaction tx) void
+    +QuoteRepository()
+    -readQuote(SqliteDataReader reader) Quote
+    -loadDetails(Quote quote) void
+    -saveDetails(Quote quote, SqliteTransaction tx) void
   }
 }
 
@@ -1043,13 +1097,16 @@ FormMain ..&gt; VisualHelper
 FormIndex ..&gt; FormReport : Detalle
 
 FormIndex --&gt; QuoteController
+FormIndex --&gt; EventItemController
+FormIndex --&gt; UbicationController
+FormIndex --&gt; MenuController
+FormIndex --&gt; OptionItemController
 FormEvents --&gt; EventItemController
-FormEvents --&gt; QuoteController
 FormUbications --&gt; UbicationController
 FormOptionItem --&gt; OptionItemController
 FormMenus --&gt; MenuController
 FormMenus --&gt; MenuTagController
-FormMenus ..&gt; FormMenuTags : botón Etiquetas (ShowDialog)
+FormMenus ..&gt; FormMenuTags : botón Etiquetas (mismo panel)
 FormMenuTags --&gt; MenuTagController
 FormReport --&gt; QuoteController
 
@@ -1059,14 +1116,18 @@ MenuController --&gt; MenuService
 MenuTagController --&gt; MenuTagService
 OptionItemController --&gt; OptionItemService
 EventItemController --&gt; EventItemService
-QuoteController --&gt; EventItemService
+QuoteController --&gt; QuoteService
+
+%% ---------- Service → Service ----------
+EventItemService ..&gt; QuoteService : borra y cuenta los presupuestos del evento
 
 %% ---------- Service → Repository ----------
 UbicationService --&gt; Irepository : Ubication
 MenuTagService --&gt; Irepository : MenuTag, Menu
 MenuService --&gt; Irepository : Menu, MenuTag
 OptionItemService --&gt; Irepository : OptionItem
-EventItemService --&gt; Irepository : EventItem, Ubication, Menu, OptionItem
+EventItemService --&gt; Irepository : EventItem
+QuoteService --&gt; Irepository : Quote, EventItem, Ubication, Menu, OptionItem
 
 %% ---------- Service → Dto y Model ----------
 UbicationService ..&gt; UbicationDto
@@ -1074,12 +1135,13 @@ MenuService ..&gt; MenuDto
 MenuTagService ..&gt; MenuTagDto
 OptionItemService ..&gt; OptionItemDto
 EventItemService ..&gt; EventItemDto
-EventItemService ..&gt; QuoteDto
+QuoteService ..&gt; QuoteDto
 UbicationService ..&gt; Ubication
 MenuTagService ..&gt; MenuTag
 MenuService ..&gt; Menu
 OptionItemService ..&gt; OptionItem
 EventItemService ..&gt; EventItem
+QuoteService ..&gt; Quote
 FormReport --&gt; QuoteDto
 QuoteDto --&gt; EstadoPresupuesto
 MenuDto o-- "0..*" MenuTagDto
@@ -1087,7 +1149,7 @@ QuoteDto *-- "0..*" DetailMenuDto
 QuoteDto *-- "0..*" DetailOptionItemDto
 
 %% ---------- Model ----------
-EventItem "1" *-- "0..*" Quote : presupuestos
+Quote "0..*" ..&gt; "1" EventItem : pertenece (por id)
 Quote "0..*" --&gt; "1" Ubication : lugar
 Quote "1" *-- "0..*" DetailMenu : catering
 Quote "1" *-- "0..*" DetailOptionItem : servicios
@@ -1103,19 +1165,22 @@ Irepository &lt;|.. MenuTagRepository : T = MenuTag
 Irepository &lt;|.. MenuRepository : T = Menu
 Irepository &lt;|.. OptionItemRepository : T = OptionItem
 Irepository &lt;|.. EventItemRepository : T = EventItem
+Irepository &lt;|.. QuoteRepository : T = Quote
 
 UbicationRepository --&gt; SqliteDatabase
 MenuTagRepository --&gt; SqliteDatabase
 MenuRepository --&gt; SqliteDatabase
 OptionItemRepository --&gt; SqliteDatabase
 EventItemRepository --&gt; SqliteDatabase
-EventItemRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
+QuoteRepository --&gt; SqliteDatabase
+QuoteRepository ..&gt; Irepository : arma Quote con Ubication, Menu y OptionItem
 
 UbicationRepository ..&gt; Ubication
 MenuTagRepository ..&gt; MenuTag
 MenuRepository ..&gt; Menu
 OptionItemRepository ..&gt; OptionItem
 EventItemRepository ..&gt; EventItem
+QuoteRepository ..&gt; Quote
 </pre>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:true, theme:'default', maxTextSize:200000, classDiagram:{useMaxWidth:false}, er:{useMaxWidth:false}});</script>

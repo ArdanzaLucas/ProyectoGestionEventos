@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panelMenusList = new Panel();
+            panelMenusTitle = new Panel();
+            lblMenusTitle = new Label();
             mtLvMenus = new MaterialSkin.Controls.MaterialListView();
             Description = new ColumnHeader();
             AdultPrice = new ColumnHeader();
@@ -52,6 +54,7 @@
             label2 = new Label();
             label1 = new Label();
             panelMenusList.SuspendLayout();
+            panelMenusTitle.SuspendLayout();
             panelCrudCtrlMenus.SuspendLayout();
             panelMenuUpload.SuspendLayout();
             SuspendLayout();
@@ -59,11 +62,31 @@
             // panelMenusList
             // 
             panelMenusList.Controls.Add(mtLvMenus);
+            panelMenusList.Controls.Add(panelMenusTitle);
             panelMenusList.Controls.Add(panelCrudCtrlMenus);
             panelMenusList.Location = new Point(0, 0);
             panelMenusList.Name = "panelMenusList";
             panelMenusList.Size = new Size(607, 720);
             panelMenusList.TabIndex = 3;
+            // 
+            // panelMenusTitle
+            // 
+            panelMenusTitle.BackColor = Color.White;
+            panelMenusTitle.Controls.Add(lblMenusTitle);
+            panelMenusTitle.Dock = DockStyle.Top;
+            panelMenusTitle.Name = "panelMenusTitle";
+            panelMenusTitle.Size = new Size(500, 45);
+            panelMenusTitle.TabIndex = 6;
+            // 
+            // lblMenusTitle
+            // 
+            lblMenusTitle.AutoSize = true;
+            lblMenusTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMenusTitle.Location = new Point(15, 10);
+            lblMenusTitle.Name = "lblMenusTitle";
+            lblMenusTitle.Size = new Size(100, 24);
+            lblMenusTitle.TabIndex = 0;
+            lblMenusTitle.Text = "Menús";
             // 
             // mtLvMenus
             // 
@@ -379,6 +402,8 @@
             Text = "FormMenus";
             Load += FormMenus_Load;
             panelMenusList.ResumeLayout(false);
+            panelMenusTitle.ResumeLayout(false);
+            panelMenusTitle.PerformLayout();
             panelCrudCtrlMenus.ResumeLayout(false);
             panelMenuUpload.ResumeLayout(false);
             panelMenuUpload.PerformLayout();
@@ -387,6 +412,8 @@
 
         #endregion
         private Panel panelMenusList;
+        private Panel panelMenusTitle;
+        private Label lblMenusTitle;
         private MaterialSkin.Controls.MaterialListView mtLvMenus;
         private ColumnHeader Description;
         private ColumnHeader AdultPrice;

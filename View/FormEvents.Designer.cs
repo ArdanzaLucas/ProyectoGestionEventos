@@ -33,6 +33,8 @@
             btnEventEdit = new MaterialSkin.Controls.MaterialButton();
             btnEventCreate = new MaterialSkin.Controls.MaterialButton();
             panelEventsList = new Panel();
+            panelEventsTitle = new Panel();
+            lblEventsTitle = new Label();
             mtLvEvents = new MaterialSkin.Controls.MaterialListView();
             NameColumn = new ColumnHeader();
             ClientColumn = new ColumnHeader();
@@ -58,6 +60,7 @@
             btnVolverEvento = new MaterialSkin.Controls.MaterialButton();
             panelCrudCtrlEv.SuspendLayout();
             panelEventsList.SuspendLayout();
+            panelEventsTitle.SuspendLayout();
             panelEventsCU.SuspendLayout();
             SuspendLayout();
             //
@@ -139,12 +142,32 @@
             // panelEventsList
             //
             panelEventsList.Controls.Add(mtLvEvents);
+            panelEventsList.Controls.Add(panelEventsTitle);
             panelEventsList.Controls.Add(panelCrudCtrlEv);
             panelEventsList.Dock = DockStyle.Fill;
             panelEventsList.Location = new Point(0, 0);
             panelEventsList.Name = "panelEventsList";
             panelEventsList.Size = new Size(1280, 720);
             panelEventsList.TabIndex = 1;
+            // 
+            // panelEventsTitle
+            // 
+            panelEventsTitle.BackColor = Color.White;
+            panelEventsTitle.Controls.Add(lblEventsTitle);
+            panelEventsTitle.Dock = DockStyle.Top;
+            panelEventsTitle.Name = "panelEventsTitle";
+            panelEventsTitle.Size = new Size(500, 45);
+            panelEventsTitle.TabIndex = 6;
+            // 
+            // lblEventsTitle
+            // 
+            lblEventsTitle.AutoSize = true;
+            lblEventsTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblEventsTitle.Location = new Point(15, 10);
+            lblEventsTitle.Name = "lblEventsTitle";
+            lblEventsTitle.Size = new Size(100, 24);
+            lblEventsTitle.TabIndex = 0;
+            lblEventsTitle.Text = "Eventos";
             //
             // mtLvEvents
             //
@@ -432,6 +455,8 @@
             Load += FormEvents_Load;
             panelCrudCtrlEv.ResumeLayout(false);
             panelEventsList.ResumeLayout(false);
+            panelEventsTitle.ResumeLayout(false);
+            panelEventsTitle.PerformLayout();
             panelEventsCU.ResumeLayout(false);
             panelEventsCU.PerformLayout();
             ResumeLayout(false);
@@ -440,6 +465,8 @@
         #endregion
 
         private Panel panelEventsList;
+        private Panel panelEventsTitle;
+        private Label lblEventsTitle;
         private Panel panelEventsCU;
         private MaterialSkin.Controls.MaterialListView mtLvEvents;
         private ColumnHeader NameColumn;

@@ -16,8 +16,8 @@ El UML muestra el diseño **final**, que guarda todo en SQLite. Mientras se desa
 | 2 | **Servicios adicionales** | `OptionItem`, copiando el patrón de Ubicaciones | CRUD completo |
 | 3 | **Catering** | Primero el CRUD de `MenuTag` (`FormMenuTags`, que se abre con el botón Etiquetas). Después `Menu` con precio por adulto y por niño, y la asignación de etiquetas con una lista de casillas | Se crean etiquetas, se asignan a menús y al borrar una desaparece de los menús |
 | 4 | **Eventos** | CRUD de `EventItem` (V3, V4) | CRUD completo |
-| 5 | **Presupuestos** | `Quote`, `DetailMenu`, cálculos, estados y clonado dentro de `EventItem`. Pantalla para armar un presupuesto. Borrar `QuoteRepository.cs` y `QuoteService.cs` | Se arma, edita, acepta, cancela y clona un presupuesto, con totales correctos |
-| 6 | **Inicio** | `FormIndex` lista todos los presupuestos (evento, ubicación, servicios, invitados, catering, total) | La lista refleja los cambios de las otras pestañas |
+| 5 | **Presupuestos (lógica)** | `Quote`, `DetailMenu`, `DetailOptionItem`, `EstadoPresupuesto`, sus DTO, `QuoteRepository`, `QuoteService` y `QuoteController`: cálculos, estados, clonado y validaciones. Borrado en cascada desde Eventos | La lógica funciona probada con un script, sin pantalla |
+| 6 | **Inicio** | `FormIndex` lista todos los presupuestos (evento, fecha, ubicación, invitados, estado, total) con filtro por evento, y tiene el panel para armarlos | Se arma, edita, acepta, cancela, clona y elimina un presupuesto desde la pantalla, con totales correctos |
 | 7 | **Impresión** | `FormReport` con detalle, vista previa e impresión | Se imprime o se guarda como PDF un presupuesto |
 | 8 | **Base de datos** | Paquete `Microsoft.Data.Sqlite`, `SqliteDatabase` con creación de tablas | Al abrir la app se crea `presupuestos.db` con todas las tablas |
 | 9 | **Repositorios SQLite** | Reemplazar la lista interna de cada repositorio por SQL y quitarles el singleton | Los datos persisten al cerrar y abrir la app, sin cambios en Services ni Views |

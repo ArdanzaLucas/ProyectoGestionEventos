@@ -39,6 +39,8 @@
             mtLvMenuTags = new MaterialSkin.Controls.MaterialListView();
             IdColumn = new ColumnHeader();
             DescriptionColumn = new ColumnHeader();
+            panelMenuTagTitle = new Panel();
+            lblMenuTagTitle = new Label();
             panelCrudCtrlMenuTag = new Panel();
             btnVolverMenus = new MaterialSkin.Controls.MaterialButton();
             btnMenuTagRemove = new MaterialSkin.Controls.MaterialButton();
@@ -47,6 +49,7 @@
             panelMenuTagCU.SuspendLayout();
             panelMenuTagUpload.SuspendLayout();
             panelMenuTagList.SuspendLayout();
+            panelMenuTagTitle.SuspendLayout();
             panelCrudCtrlMenuTag.SuspendLayout();
             SuspendLayout();
             // 
@@ -155,6 +158,7 @@
             // panelMenuTagList
             // 
             panelMenuTagList.Controls.Add(mtLvMenuTags);
+            panelMenuTagList.Controls.Add(panelMenuTagTitle);
             panelMenuTagList.Controls.Add(panelCrudCtrlMenuTag);
             panelMenuTagList.Dock = DockStyle.Fill;
             panelMenuTagList.Location = new Point(0, 0);
@@ -171,13 +175,13 @@
             mtLvMenuTags.Depth = 0;
             mtLvMenuTags.Dock = DockStyle.Fill;
             mtLvMenuTags.FullRowSelect = true;
-            mtLvMenuTags.Location = new Point(145, 0);
+            mtLvMenuTags.Location = new Point(145, 60);
             mtLvMenuTags.MinimumSize = new Size(200, 100);
             mtLvMenuTags.MouseLocation = new Point(-1, -1);
             mtLvMenuTags.MouseState = MaterialSkin.MouseState.OUT;
             mtLvMenuTags.Name = "mtLvMenuTags";
             mtLvMenuTags.OwnerDraw = true;
-            mtLvMenuTags.Size = new Size(1326, 720);
+            mtLvMenuTags.Size = new Size(1326, 660);
             mtLvMenuTags.TabIndex = 1;
             mtLvMenuTags.UseCompatibleStateImageBehavior = false;
             mtLvMenuTags.View = System.Windows.Forms.View.Details;
@@ -192,6 +196,26 @@
             DescriptionColumn.Text = "Descripcion";
             DescriptionColumn.TextAlign = HorizontalAlignment.Center;
             DescriptionColumn.Width = 300;
+            // 
+            // panelMenuTagTitle
+            // 
+            panelMenuTagTitle.BackColor = Color.White;
+            panelMenuTagTitle.Controls.Add(lblMenuTagTitle);
+            panelMenuTagTitle.Dock = DockStyle.Top;
+            panelMenuTagTitle.Location = new Point(145, 0);
+            panelMenuTagTitle.Name = "panelMenuTagTitle";
+            panelMenuTagTitle.Size = new Size(1326, 60);
+            panelMenuTagTitle.TabIndex = 6;
+            // 
+            // lblMenuTagTitle
+            // 
+            lblMenuTagTitle.AutoSize = true;
+            lblMenuTagTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMenuTagTitle.Location = new Point(15, 10);
+            lblMenuTagTitle.Name = "lblMenuTagTitle";
+            lblMenuTagTitle.Size = new Size(95, 24);
+            lblMenuTagTitle.TabIndex = 0;
+            lblMenuTagTitle.Text = "Etiquetas";
             // 
             // panelCrudCtrlMenuTag
             // 
@@ -305,6 +329,8 @@
             panelMenuTagUpload.ResumeLayout(false);
             panelMenuTagUpload.PerformLayout();
             panelMenuTagList.ResumeLayout(false);
+            panelMenuTagTitle.ResumeLayout(false);
+            panelMenuTagTitle.PerformLayout();
             panelCrudCtrlMenuTag.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -313,6 +339,8 @@
 
         private Panel panelMenuTagCU;
         private Panel panelMenuTagList;
+        private Panel panelMenuTagTitle;
+        private Label lblMenuTagTitle;
         private MaterialSkin.Controls.MaterialListView mtLvMenuTags;
         private ColumnHeader IdColumn;
         private ColumnHeader DescriptionColumn;

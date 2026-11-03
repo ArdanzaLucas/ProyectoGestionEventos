@@ -44,18 +44,17 @@ namespace ProyectoPresupuestoEvento.Service
         // el evento se borra de verdad, junto con sus presupuestos
         public void removeEventItem(int id)
         {
+            QuoteService quoteService = new QuoteService();
+            quoteService.removeQuotesByEventItem(id);
+
             EventItemRepository.getInstance().removeById(id);
         }
 
         // cuantos presupuestos tiene el evento (se usa para avisar antes de borrar)
         public int countQuotes(int id)
         {
-            EventItem eventItem = EventItemRepository.getInstance().getById(id);
-            if (eventItem == null)
-            {
-                return 0;
-            }
-            return eventItem.getQuotes().Count;
+            QuoteService quoteService = new QuoteService();
+            return quoteService.getQuotesByEventItem(id).Count;
         }
 
         public EventItem toModel(EventItemDto dto)

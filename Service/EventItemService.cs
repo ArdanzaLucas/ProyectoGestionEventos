@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
@@ -19,6 +20,11 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void addToRepository(EventItemDto dto)
         {
+            if (dto.Date.Date < DateTime.Today)
+            {
+                throw new BusinessRuleException("la fecha del evento no puede ser anterior a hoy");
+            }
+
             EventItemRepository.getInstance().addToRepository(toModel(dto));
         }
 
@@ -41,7 +47,6 @@ namespace ProyectoPresupuestoEvento.Service
             EventItemRepository.getInstance().update(id, toModel(dto));
         }
 
-        // el evento se borra de verdad, junto con sus presupuestos
         public void removeEventItem(int id)
         {
             QuoteService quoteService = new QuoteService();
@@ -50,11 +55,15 @@ namespace ProyectoPresupuestoEvento.Service
             EventItemRepository.getInstance().removeById(id);
         }
 
-        // cuantos presupuestos tiene el evento (se usa para avisar antes de borrar)
         public int countQuotes(int id)
         {
             QuoteService quoteService = new QuoteService();
             return quoteService.getQuotesByEventItem(id).Count;
+        }
+
+        public EventItem getModelById(int id)
+        {
+            return EventItemRepository.getInstance().getById(id);
         }
 
         public EventItem toModel(EventItemDto dto)

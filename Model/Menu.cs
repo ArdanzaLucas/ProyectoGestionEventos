@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -47,7 +48,14 @@ namespace ProyectoPresupuestoEvento.Model
         public string Description
         {
             get { return _description; }
-            set { _description = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BusinessRuleException("ingrese una descripcion para el menu");
+                }
+                _description = value.Trim();
+            }
         }
 
         public decimal PriceAdult
@@ -57,7 +65,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("no puede ser menor a 0 el valor");
+                    throw new BusinessRuleException("el precio por adulto no puede ser negativo");
                 }
                 _priceAdult = value;
             }
@@ -70,7 +78,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("no puede ser menor a 0 el valor");
+                    throw new BusinessRuleException("el precio por niño no puede ser negativo");
                 }
                 _priceChild = value;
             }
@@ -79,10 +87,16 @@ namespace ProyectoPresupuestoEvento.Model
         public List<MenuTag> TagList
         {
             get { return _tagList; }
-            set { _tagList = value; }
+            set
+            {
+                if (value == null || value.Count == 0)
+                {
+                    throw new BusinessRuleException("seleccione al menos una etiqueta");
+                }
+                _tagList = value;
+            }
         }
 
-        // solo lectura: para desactivarlo se usa deactivate()
         public bool IsActive
         {
             get { return _isActive; }
@@ -91,13 +105,11 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        // baja logica: el menu no se borra, queda inactivo
         public void deactivate()
         {
             _isActive = false;
         }
 
-        // devuelve true si el menu tiene la etiqueta con ese id
         public bool hasTag(int tagId)
         {
             foreach (MenuTag tag in _tagList)
@@ -110,7 +122,6 @@ namespace ProyectoPresupuestoEvento.Model
             return false;
         }
 
-        // saca la etiqueta con ese id de la lista del menu
         public void removeTag(int tagId)
         {
             MenuTag tagToRemove = null;

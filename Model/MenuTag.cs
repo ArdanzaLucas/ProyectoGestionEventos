@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -39,7 +40,14 @@ namespace ProyectoPresupuestoEvento.Model
         public string Description
         {
             get { return _description; }
-            set { _description = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BusinessRuleException("ingrese una descripcion para la etiqueta");
+                }
+                _description = value.Trim();
+            }
         }
 
     }

@@ -46,12 +46,12 @@
             btnGuardarOI = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panelOIList = new Panel();
-            panelOITitle = new Panel();
-            lblOITitle = new Label();
             mtLvOptionItems = new MaterialSkin.Controls.MaterialListView();
             IdColumn = new ColumnHeader();
             NameColumn = new ColumnHeader();
             PriceColumn = new ColumnHeader();
+            panelOITitle = new Panel();
+            lblOITitle = new Label();
             panelCrudCtrlOI = new Panel();
             btnOIRemove = new MaterialSkin.Controls.MaterialButton();
             btnOIEdit = new MaterialSkin.Controls.MaterialButton();
@@ -206,25 +206,6 @@
             panelOIList.Size = new Size(1471, 720);
             panelOIList.TabIndex = 3;
             // 
-            // panelOITitle
-            // 
-            panelOITitle.BackColor = Color.White;
-            panelOITitle.Controls.Add(lblOITitle);
-            panelOITitle.Dock = DockStyle.Top;
-            panelOITitle.Name = "panelOITitle";
-            panelOITitle.Size = new Size(500, 60);
-            panelOITitle.TabIndex = 6;
-            // 
-            // lblOITitle
-            // 
-            lblOITitle.AutoSize = true;
-            lblOITitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblOITitle.Location = new Point(15, 10);
-            lblOITitle.Name = "lblOITitle";
-            lblOITitle.Size = new Size(100, 24);
-            lblOITitle.TabIndex = 0;
-            lblOITitle.Text = "Servicios adicionales";
-            // 
             // mtLvOptionItems
             // 
             mtLvOptionItems.AutoSizeTable = false;
@@ -235,13 +216,13 @@
             mtLvOptionItems.Dock = DockStyle.Fill;
             mtLvOptionItems.FullRowSelect = true;
             mtLvOptionItems.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            mtLvOptionItems.Location = new Point(145, 0);
+            mtLvOptionItems.Location = new Point(145, 60);
             mtLvOptionItems.MinimumSize = new Size(200, 100);
             mtLvOptionItems.MouseLocation = new Point(-1, -1);
             mtLvOptionItems.MouseState = MaterialSkin.MouseState.OUT;
             mtLvOptionItems.Name = "mtLvOptionItems";
             mtLvOptionItems.OwnerDraw = true;
-            mtLvOptionItems.Size = new Size(1326, 720);
+            mtLvOptionItems.Size = new Size(1326, 660);
             mtLvOptionItems.TabIndex = 1;
             mtLvOptionItems.UseCompatibleStateImageBehavior = false;
             mtLvOptionItems.View = System.Windows.Forms.View.Details;
@@ -262,6 +243,26 @@
             PriceColumn.Text = "Precio";
             PriceColumn.TextAlign = HorizontalAlignment.Center;
             PriceColumn.Width = 300;
+            // 
+            // panelOITitle
+            // 
+            panelOITitle.BackColor = Color.White;
+            panelOITitle.Controls.Add(lblOITitle);
+            panelOITitle.Dock = DockStyle.Top;
+            panelOITitle.Location = new Point(145, 0);
+            panelOITitle.Name = "panelOITitle";
+            panelOITitle.Size = new Size(1326, 60);
+            panelOITitle.TabIndex = 6;
+            // 
+            // lblOITitle
+            // 
+            lblOITitle.AutoSize = true;
+            lblOITitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOITitle.Location = new Point(15, 10);
+            lblOITitle.Name = "lblOITitle";
+            lblOITitle.Size = new Size(195, 24);
+            lblOITitle.TabIndex = 0;
+            lblOITitle.Text = "Servicios adicionales";
             // 
             // panelCrudCtrlOI
             // 

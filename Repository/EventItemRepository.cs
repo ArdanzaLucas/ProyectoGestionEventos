@@ -54,7 +54,6 @@ namespace ProyectoPresupuestoEvento.Repository
             return null;
         }
 
-        // copia los datos del evento; sus presupuestos no se tocan
         public void update(int id, EventItem eventItem)
         {
             EventItem existente = getById(id);
@@ -70,7 +69,6 @@ namespace ProyectoPresupuestoEvento.Repository
             existente.Duration = eventItem.Duration;
         }
 
-        // borra el evento, y con el sus presupuestos
         public void removeById(int id)
         {
             EventItem eventItemToRemove = getById(id);

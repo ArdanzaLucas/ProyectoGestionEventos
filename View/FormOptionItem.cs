@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.View
 {
@@ -16,7 +17,6 @@ namespace ProyectoPresupuestoEvento.View
     {
         private OptionItemController optionItemController;
 
-        // id del servicio que se esta editando. Vale 0 cuando se crea uno nuevo.
         private int idEditando = 0;
 
 
@@ -35,8 +35,6 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-        // la llama FormMain cada vez que se entra a la pestaña:
-        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
         public void resetView()
         {
             btnVolverAtras_Click(null, EventArgs.Empty);
@@ -45,28 +43,21 @@ namespace ProyectoPresupuestoEvento.View
 
         private void reloadMtlv()
         {
-            // 1. Pedís los DTOs al controller.
             List<OptionItemDto> servicios = optionItemController.getOptionItems();
 
-            // 2. Quitás las filas anteriores para no duplicar datos.
             mtLvOptionItems.Items.Clear();
 
-            // 3. Convertís cada DTO en una fila del MaterialListView.
             foreach (OptionItemDto servicio in servicios)
             {
                 ListViewItem fila = new ListViewItem();
 
-                // Primera columna.
                 fila.Text = servicio.Id.ToString();
 
-                // Segunda y tercera columna.
                 fila.SubItems.Add(servicio.Name);
                 fila.SubItems.Add(servicio.Price.ToString("C"));
 
-                // Conserva el DTO completo asociado a la fila.
                 fila.Tag = servicio;
 
-                // 4. Agregás la fila visual a la lista.
                 mtLvOptionItems.Items.Add(fila);
             }
         }
@@ -93,7 +84,7 @@ namespace ProyectoPresupuestoEvento.View
                     mtLvOptionItems.SelectedItems.Count == 0
                 )
             {
-                MessageBox.Show("seleccione un servicio para editar");
+                MessageHelper.showWarning("seleccione un servicio para editar");
                 return;
             }
 
@@ -119,18 +110,15 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvOptionItems.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione un servicio para eliminar");
+                MessageHelper.showWarning("seleccione un servicio para eliminar");
                 return;
             }
 
             ListViewItem selectedOptionItem = mtLvOptionItems.SelectedItems[0];
             OptionItemDto selected = (OptionItemDto)selectedOptionItem.Tag;
 
-            DialogResult respuesta = MessageBox.Show(
-                "¿Eliminar el servicio " + selected.Name + "?",
-                "Confirmar", MessageBoxButtons.YesNo);
-
-            if (respuesta == DialogResult.No)
+            if (!MessageHelper.confirm(
+                "¿Eliminar el servicio " + selected.Name + "?"))
             {
                 return;
             }
@@ -160,36 +148,34 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnGuardarOI_Click(object sender, EventArgs e)
         {
-            // Trim saca los espacios del principio y del final
-            string name = mtbOIName.Text.Trim();
-            if (name == "")
-            {
-                MessageBox.Show("ingrese un nombre");
-                return;
-            }
-
             decimal price;
-            if (!decimal.TryParse(mtbOIPrice.Text, out price) || price < 0)
+            if (!decimal.TryParse(mtbOIPrice.Text, out price))
             {
-                MessageBox.Show("ingrese un precio valido");
+                MessageHelper.showWarning("ingrese un precio valido");
                 return;
             }
 
-            OptionItemDto optionItemDto = new OptionItemDto(name, price);
+            OptionItemDto optionItemDto = new OptionItemDto(mtbOIName.Text, price);
 
-
-            if (idEditando == 0)
+            try
             {
-                optionItemController.addToRepository(optionItemDto);
+                if (idEditando == 0)
+                {
+                    optionItemController.addToRepository(optionItemDto);
+                }
+                else
+                {
+                    optionItemController.updateOptionItem(idEditando, optionItemDto);
+                }
             }
-            else
+            catch (BusinessRuleException ex)
             {
-                optionItemController.updateOptionItem(idEditando, optionItemDto);
+                MessageHelper.showWarning(ex.Message);
+                return;
             }
 
             reloadMtlv();
 
-            // vuelve a la lista y limpia los campos, igual que el boton Volver
             btnVolverAtras_Click(sender, e);
         }
 

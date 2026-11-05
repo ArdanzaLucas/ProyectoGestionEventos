@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -35,13 +36,27 @@ namespace ProyectoPresupuestoEvento.Model
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BusinessRuleException("ingrese un nombre para la ubicacion");
+                }
+                _name = value.Trim();
+            }
         }
 
         public decimal Price
         {
             get { return _price; }
-            set { _price = value; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new BusinessRuleException("el precio de la ubicacion no puede ser negativo");
+                }
+                _price = value;
+            }
         }
 
         public int Id
@@ -50,16 +65,15 @@ namespace ProyectoPresupuestoEvento.Model
             set { _id = value; }
         }
 
-        // solo lectura: para desactivarla se usa deactivate()
+        
         public bool IsActive
         {
             get { return _isActive; }
         }
 
 
-        //metodos
+        
 
-        // baja logica: la ubicacion no se borra, queda inactiva
         public void deactivate()
         {
             _isActive = false;

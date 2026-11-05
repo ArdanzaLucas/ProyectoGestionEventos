@@ -20,7 +20,6 @@ namespace ProyectoPresupuestoEvento.Dto
 
         //constructor
 
-        // lo que carga la View; el resto lo completa el Service
         public DetailMenuDto(int menuId, string tagDescription, int adultQuantity, int childQuantity)
         {
             MenuId = menuId;

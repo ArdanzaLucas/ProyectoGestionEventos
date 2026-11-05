@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.View
 {
@@ -17,7 +18,6 @@ namespace ProyectoPresupuestoEvento.View
 
         EventItemController eventController;
 
-        // id del evento que se esta editando. Vale 0 cuando se crea uno nuevo.
         private int idEditando = 0;
 
         public FormEvents(EventItemController controller)
@@ -35,8 +35,6 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-        // la llama FormMain cada vez que se entra a la pestaña:
-        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
         public void resetView()
         {
             btnVolverEvento_Click(null, EventArgs.Empty);
@@ -60,7 +58,6 @@ namespace ProyectoPresupuestoEvento.View
                 fila.SubItems.Add(evento.GuestChilds.ToString());
                 fila.SubItems.Add(evento.Duration.ToString());
 
-                // guarda el DTO completo en la fila
                 fila.Tag = evento;
 
                 mtLvEvents.Items.Add(fila);
@@ -85,7 +82,7 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvEvents.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione un evento para editar");
+                MessageHelper.showWarning("seleccione un evento para editar");
                 return;
             }
 
@@ -111,14 +108,13 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvEvents.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione un evento para eliminar");
+                MessageHelper.showWarning("seleccione un evento para eliminar");
                 return;
             }
 
             ListViewItem selectedEvent = mtLvEvents.SelectedItems[0];
             EventItemDto selected = (EventItemDto)selectedEvent.Tag;
 
-            // si tiene presupuestos, se avisa que tambien se borran
             string mensaje = "¿Eliminar el evento " + selected.Name + "?";
             int cantidadPresupuestos = eventController.countQuotes(selected.Id);
             if (cantidadPresupuestos > 0)
@@ -126,9 +122,7 @@ namespace ProyectoPresupuestoEvento.View
                 mensaje = mensaje + " tiene " + cantidadPresupuestos + " presupuestos que tambien se borran";
             }
 
-            DialogResult respuesta = MessageBox.Show(mensaje, "Confirmar", MessageBoxButtons.YesNo);
-
-            if (respuesta == DialogResult.No)
+            if (!MessageHelper.confirm(mensaje))
             {
                 return;
             }
@@ -158,72 +152,48 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnGuardarEvento_Click(object sender, EventArgs e)
         {
-            // Trim saca los espacios del principio y del final
-            string name = mtbEventName.Text.Trim();
-            if (name == "")
-            {
-                MessageBox.Show("ingrese un nombre para el evento");
-                return;
-            }
-
-            string clientName = mtbEventClient.Text.Trim();
-            if (clientName == "")
-            {
-                MessageBox.Show("ingrese el nombre del cliente");
-                return;
-            }
-
-            DateTime fecha = dtpEventDate.Value;
-
-            // al crear no se aceptan dias pasados; al editar si.
-            // .Date se queda solo con el dia (sin la hora), asi hoy a cualquier hora vale.
-            if (idEditando == 0 && fecha.Date < DateTime.Today)
-            {
-                MessageBox.Show("la fecha del evento no puede ser anterior a hoy");
-                return;
-            }
-
             int guestAdults;
-            if (!int.TryParse(mtbEventAdults.Text, out guestAdults) || guestAdults < 0)
+            if (!int.TryParse(mtbEventAdults.Text, out guestAdults))
             {
-                MessageBox.Show("ingrese una cantidad de adultos valida");
+                MessageHelper.showWarning("ingrese una cantidad de adultos valida");
                 return;
             }
 
             int guestChilds;
-            if (!int.TryParse(mtbEventChilds.Text, out guestChilds) || guestChilds < 0)
+            if (!int.TryParse(mtbEventChilds.Text, out guestChilds))
             {
-                MessageBox.Show("ingrese una cantidad de niños valida");
-                return;
-            }
-
-            if (guestAdults + guestChilds == 0)
-            {
-                MessageBox.Show("el evento tiene que tener al menos un invitado");
+                MessageHelper.showWarning("ingrese una cantidad de niños valida");
                 return;
             }
 
             int duration;
-            if (!int.TryParse(mtbEventDuration.Text, out duration) || duration <= 0)
+            if (!int.TryParse(mtbEventDuration.Text, out duration))
             {
-                MessageBox.Show("ingrese una duracion valida (horas enteras, mayor a 0)");
+                MessageHelper.showWarning("ingrese una duracion valida (horas enteras)");
                 return;
             }
 
-            EventItemDto eventItemDto = new EventItemDto(name, clientName, fecha, guestAdults, guestChilds, duration);
+            EventItemDto eventItemDto = new EventItemDto(mtbEventName.Text, mtbEventClient.Text, dtpEventDate.Value, guestAdults, guestChilds, duration);
 
-            if (idEditando == 0)
+            try
             {
-                eventController.addToRepository(eventItemDto);
+                if (idEditando == 0)
+                {
+                    eventController.addToRepository(eventItemDto);
+                }
+                else
+                {
+                    eventController.updateEventItem(idEditando, eventItemDto);
+                }
             }
-            else
+            catch (BusinessRuleException ex)
             {
-                eventController.updateEventItem(idEditando, eventItemDto);
+                MessageHelper.showWarning(ex.Message);
+                return;
             }
 
             reloadMtlv();
 
-            // vuelve a la lista y limpia los campos, igual que el boton Volver
             btnVolverEvento_Click(sender, e);
         }
     }

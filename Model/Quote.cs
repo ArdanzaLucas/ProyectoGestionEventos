@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -10,7 +11,14 @@ namespace ProyectoPresupuestoEvento.Model
     {
         private int _id;
         private int _eventItemId;
+        private string _eventName;
+        private string _eventClientName;
+        private DateTime _eventDate;
+        private int _eventGuestAdults;
+        private int _eventGuestChilds;
+        private int _eventDuration;
         private Ubication _ubication;
+        private string _ubicationName;
         private decimal _ubicationPrice;
         private List<DetailMenu> _menusList;
         private List<DetailOptionItem> _optionItemList;
@@ -23,15 +31,21 @@ namespace ProyectoPresupuestoEvento.Model
 
         //constructor
 
-        // todo presupuesto nuevo nace Pendiente y copia el precio actual de la ubicacion
-        public Quote(int eventItemId, Ubication ubication, List<DetailMenu> menusList, List<DetailOptionItem> optionItemList)
+        public Quote(EventItem eventItem, Ubication ubication, List<DetailMenu> menusList, List<DetailOptionItem> optionItemList)
         {
-            EventItemId = eventItemId;
+            EventItemId = eventItem.Id;
+            EventName = eventItem.Name;
+            EventClientName = eventItem.ClientName;
+            EventDate = eventItem.Date;
+            EventGuestAdults = eventItem.GuestAdults;
+            EventGuestChilds = eventItem.GuestChilds;
+            EventDuration = eventItem.Duration;
             Ubication = ubication;
+            UbicationName = ubication.Name;
             UbicationPrice = ubication.Price;
             MenusList = menusList;
             OptionItemList = optionItemList;
-            State = EstadoPresupuesto.Pendiente;
+            _state = EstadoPresupuesto.Pendiente;
         }
 
 
@@ -43,11 +57,51 @@ namespace ProyectoPresupuestoEvento.Model
             set { _id = value; }
         }
 
-        // id del evento al que pertenece el presupuesto
         public int EventItemId
         {
             get { return _eventItemId; }
             set { _eventItemId = value; }
+        }
+
+        public string EventName
+        {
+            get { return _eventName; }
+            set { _eventName = value; }
+        }
+
+        public string EventClientName
+        {
+            get { return _eventClientName; }
+            set { _eventClientName = value; }
+        }
+
+        public DateTime EventDate
+        {
+            get { return _eventDate; }
+            set { _eventDate = value; }
+        }
+
+        public int EventGuestAdults
+        {
+            get { return _eventGuestAdults; }
+            set { _eventGuestAdults = value; }
+        }
+
+        public int EventGuestChilds
+        {
+            get { return _eventGuestChilds; }
+            set { _eventGuestChilds = value; }
+        }
+
+        public int EventDuration
+        {
+            get { return _eventDuration; }
+            set { _eventDuration = value; }
+        }
+
+        public int TotalGuests
+        {
+            get { return _eventGuestAdults + _eventGuestChilds; }
         }
 
         public Ubication Ubication
@@ -56,7 +110,12 @@ namespace ProyectoPresupuestoEvento.Model
             set { _ubication = value; }
         }
 
-        // precio por hora copiado de la ubicacion
+        public string UbicationName
+        {
+            get { return _ubicationName; }
+            set { _ubicationName = value; }
+        }
+
         public decimal UbicationPrice
         {
             get { return _ubicationPrice; }
@@ -78,7 +137,6 @@ namespace ProyectoPresupuestoEvento.Model
         public EstadoPresupuesto State
         {
             get { return _state; }
-            set { _state = value; }
         }
 
         public decimal TotalUbication
@@ -108,21 +166,19 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        // calcula los totales con los precios copiados y la duracion del evento.
-        // si el presupuesto ya esta Aceptado o Cancelado, no cambia nada (queda congelado).
-        public void calculateTotals(int duration)
+        public void calculateTotals()
         {
             if (_state != EstadoPresupuesto.Pendiente)
             {
                 return;
             }
 
-            _totalUbication = _ubicationPrice * duration;
+            _totalUbication = _ubicationPrice * _eventDuration;
 
             _totalMenus = 0;
             foreach (DetailMenu detailMenu in _menusList)
             {
-                _totalMenus = _totalMenus + detailMenu.calculateSubtotal();
+                _totalMenus = _totalMenus + detailMenu.Subtotal;
             }
 
             _totalOptionItems = 0;
@@ -134,28 +190,11 @@ namespace ProyectoPresupuestoEvento.Model
             _total = _totalUbication + _totalMenus + _totalOptionItems;
         }
 
-        // vuelve a copiar los precios actuales de la ubicacion, los menus y los servicios
-        public void refreshPrices()
-        {
-            _ubicationPrice = _ubication.Price;
-
-            foreach (DetailMenu detailMenu in _menusList)
-            {
-                detailMenu.refreshPrices();
-            }
-
-            foreach (DetailOptionItem detailOptionItem in _optionItemList)
-            {
-                detailOptionItem.refreshPrice();
-            }
-        }
-
-
         public void accept()
         {
             if (_state != EstadoPresupuesto.Pendiente)
             {
-                throw new InvalidOperationException("solo se puede aceptar un presupuesto pendiente");
+                throw new BusinessRuleException("solo se puede aceptar un presupuesto pendiente");
             }
             _state = EstadoPresupuesto.Aceptado;
         }
@@ -164,19 +203,17 @@ namespace ProyectoPresupuestoEvento.Model
         {
             if (_state != EstadoPresupuesto.Pendiente)
             {
-                throw new InvalidOperationException("solo se puede cancelar un presupuesto pendiente");
+                throw new BusinessRuleException("solo se puede cancelar un presupuesto pendiente");
             }
             _state = EstadoPresupuesto.Cancelado;
         }
 
-        // solo un presupuesto Pendiente se puede editar
         public bool isEditable()
         {
             return _state == EstadoPresupuesto.Pendiente;
         }
 
-        // crea un presupuesto nuevo, Pendiente, con lo mismo pero con los precios actuales
-        public Quote clone()
+        public Quote clone(EventItem eventItem)
         {
             List<DetailMenu> menus = new List<DetailMenu>();
             foreach (DetailMenu detailMenu in _menusList)
@@ -193,7 +230,7 @@ namespace ProyectoPresupuestoEvento.Model
                 optionItems.Add(copia);
             }
 
-            Quote nuevo = new Quote(_eventItemId, _ubication, menus, optionItems);
+            Quote nuevo = new Quote(eventItem, _ubication, menus, optionItems);
             return nuevo;
         }
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.View
 {
@@ -16,10 +17,8 @@ namespace ProyectoPresupuestoEvento.View
     {
         private MenuTagController menuTagController;
 
-        // formulario de menus: se vuelve a mostrar con el boton "Volver a menus"
         private FormMenus formMenus;
 
-        // id de la etiqueta que se esta editando. Vale 0 cuando se crea una nueva.
         private int idEditando = 0;
 
 
@@ -39,8 +38,6 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-        // la llama FormMain cada vez que se entra a la pestaña:
-        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
         public void resetView()
         {
             btnVolverAtras_Click(null, EventArgs.Empty);
@@ -60,7 +57,6 @@ namespace ProyectoPresupuestoEvento.View
                 fila.Text = etiqueta.Id.ToString();
                 fila.SubItems.Add(etiqueta.Description);
 
-                // guarda el DTO completo en la fila
                 fila.Tag = etiqueta;
 
                 mtLvMenuTags.Items.Add(fila);
@@ -84,7 +80,7 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenuTags.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione una etiqueta para editar");
+                MessageHelper.showWarning("seleccione una etiqueta para editar");
                 return;
             }
 
@@ -105,18 +101,17 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenuTags.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione una etiqueta para eliminar");
+                MessageHelper.showWarning("seleccione una etiqueta para eliminar");
                 return;
             }
 
             ListViewItem selectedMenuTag = mtLvMenuTags.SelectedItems[0];
             MenuTagDto selected = (MenuTagDto)selectedMenuTag.Tag;
 
-            // no se puede borrar si algun menu se quedaria sin etiquetas
             List<string> menusConSoloEsta = menuTagController.getMenusWithOnlyThisTag(selected.Id);
             if (menusConSoloEsta.Count > 0)
             {
-                MessageBox.Show("no se puede eliminar: es la unica etiqueta de estos menus: "
+                MessageHelper.showWarning("no se puede eliminar: es la unica etiqueta de estos menus: "
                     + string.Join(", ", menusConSoloEsta)
                     + ". primero asigneles otra etiqueta");
                 return;
@@ -124,11 +119,8 @@ namespace ProyectoPresupuestoEvento.View
 
             int cantidadMenus = menuTagController.countMenusUsing(selected.Id);
 
-            DialogResult respuesta = MessageBox.Show(
-                "¿Eliminar la etiqueta " + selected.Description + "? la usan " + cantidadMenus + " menus",
-                "Confirmar", MessageBoxButtons.YesNo);
-
-            if (respuesta == DialogResult.No)
+            if (!MessageHelper.confirm(
+                "¿Eliminar la etiqueta " + selected.Description + "? la usan " + cantidadMenus + " menus"))
             {
                 return;
             }
@@ -137,11 +129,9 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-        // oculta las etiquetas y vuelve a mostrar los menus
         private void btnVolverMenus_Click(object sender, EventArgs e)
         {
             this.Hide();
-            // recarga la lista de menus por si se renombro o borro alguna etiqueta
             formMenus.reloadMtlv();
             formMenus.Show();
         }
@@ -163,35 +153,27 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnGuardarMenuTag_Click(object sender, EventArgs e)
         {
-            // Trim saca los espacios del principio y del final
-            string description = mtbMenuTagDescription.Text.Trim();
-            if (description == "")
+            MenuTagDto menuTagDto = new MenuTagDto(mtbMenuTagDescription.Text);
+
+            try
             {
-                MessageBox.Show("ingrese una descripcion");
+                if (idEditando == 0)
+                {
+                    menuTagController.addToRepository(menuTagDto);
+                }
+                else
+                {
+                    menuTagController.updateMenuTag(idEditando, menuTagDto);
+                }
+            }
+            catch (BusinessRuleException ex)
+            {
+                MessageHelper.showWarning(ex.Message);
                 return;
-            }
-
-            // no puede haber dos etiquetas con el mismo nombre
-            if (menuTagController.existsDescription(description, idEditando))
-            {
-                MessageBox.Show("ya existe una etiqueta con ese nombre");
-                return;
-            }
-
-            MenuTagDto menuTagDto = new MenuTagDto(description);
-
-            if (idEditando == 0)
-            {
-                menuTagController.addToRepository(menuTagDto);
-            }
-            else
-            {
-                menuTagController.updateMenuTag(idEditando, menuTagDto);
             }
 
             reloadMtlv();
 
-            // vuelve a la lista y limpia los campos, igual que el boton Volver
             btnVolverAtras_Click(sender, e);
         }
 

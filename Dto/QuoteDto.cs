@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Dto
 {
@@ -12,7 +12,11 @@ namespace ProyectoPresupuestoEvento.Dto
         private int _id;
         private int _eventItemId;
         private string _eventItemName;
+        private string _eventClientName;
         private DateTime _eventDate;
+        private int _eventGuestAdults;
+        private int _eventGuestChilds;
+        private int _eventDuration;
         private int _totalGuests;
         private int _ubicationId;
         private string _ubicationName;
@@ -28,7 +32,6 @@ namespace ProyectoPresupuestoEvento.Dto
 
         //constructor
 
-        // lo que carga la View; el resto lo completa el Service
         public QuoteDto(int eventItemId, int ubicationId, List<DetailMenuDto> menusList, List<DetailOptionItemDto> optionItemsList)
         {
             EventItemId = eventItemId;
@@ -58,13 +61,36 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _eventItemName = value; }
         }
 
+        public string EventClientName
+        {
+            get { return _eventClientName; }
+            set { _eventClientName = value; }
+        }
+
         public DateTime EventDate
         {
             get { return _eventDate; }
             set { _eventDate = value; }
         }
 
-        // invitados del evento (adultos + niños)
+        public int EventGuestAdults
+        {
+            get { return _eventGuestAdults; }
+            set { _eventGuestAdults = value; }
+        }
+
+        public int EventGuestChilds
+        {
+            get { return _eventGuestChilds; }
+            set { _eventGuestChilds = value; }
+        }
+
+        public int EventDuration
+        {
+            get { return _eventDuration; }
+            set { _eventDuration = value; }
+        }
+
         public int TotalGuests
         {
             get { return _totalGuests; }

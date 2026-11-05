@@ -18,12 +18,10 @@ namespace ProyectoPresupuestoEvento.View
 
         public static void setMaterialTheme(MaterialForm form)
         {
-            // 2. Inicializas el gestor de temas de MaterialSkin
             MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
 
 
-            // 3. Configuras el esquema de colores (puedes cambiarlos a tu gusto)
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT; // O THEMES.DARK
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(
                 Primary.BlueGrey800,
                 Primary.BlueGrey900,

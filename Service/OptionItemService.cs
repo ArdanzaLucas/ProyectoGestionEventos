@@ -27,7 +27,6 @@ namespace ProyectoPresupuestoEvento.Service
             List<OptionItem> optionItems = OptionItemRepository.getInstance().getAll();
             List<OptionItemDto> dtos = new List<OptionItemDto>();
 
-            // solo se devuelven los servicios activos
             foreach (OptionItem optionItem in optionItems)
             {
                 if (optionItem.IsActive)
@@ -45,7 +44,6 @@ namespace ProyectoPresupuestoEvento.Service
             OptionItemRepository.getInstance().update(id, toModel(dto));
         }
 
-        // baja logica: no se borra del repositorio, se marca como inactivo
         public void removeOptionItem(int id)
         {
             OptionItem optionItem = OptionItemRepository.getInstance().getById(id);
@@ -58,6 +56,11 @@ namespace ProyectoPresupuestoEvento.Service
             OptionItemRepository.getInstance().update(id, optionItem);
         }
         
+        public OptionItem getModelById(int id)
+        {
+            return OptionItemRepository.getInstance().getById(id);
+        }
+
         public OptionItem toModel(OptionItemDto dto)
         {
             OptionItem model = new OptionItem(dto.Name, dto.Price);

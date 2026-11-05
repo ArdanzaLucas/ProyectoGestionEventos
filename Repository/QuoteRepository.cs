@@ -54,7 +54,6 @@ namespace ProyectoPresupuestoEvento.Repository
             return null;
         }
 
-        // copia todo menos el id y el evento, que no cambian
         public void update(int id, Quote quote)
         {
             Quote existente = getById(id);
@@ -62,11 +61,17 @@ namespace ProyectoPresupuestoEvento.Repository
             {
                 return;
             }
+            existente.EventName = quote.EventName;
+            existente.EventClientName = quote.EventClientName;
+            existente.EventDate = quote.EventDate;
+            existente.EventGuestAdults = quote.EventGuestAdults;
+            existente.EventGuestChilds = quote.EventGuestChilds;
+            existente.EventDuration = quote.EventDuration;
             existente.Ubication = quote.Ubication;
+            existente.UbicationName = quote.UbicationName;
             existente.UbicationPrice = quote.UbicationPrice;
             existente.MenusList = quote.MenusList;
             existente.OptionItemList = quote.OptionItemList;
-            existente.State = quote.State;
             existente.TotalUbication = quote.TotalUbication;
             existente.TotalMenus = quote.TotalMenus;
             existente.TotalOptionItems = quote.TotalOptionItems;

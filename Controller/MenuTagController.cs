@@ -53,12 +53,6 @@ namespace ProyectoPresupuestoEvento.Controller
             return service.countMenusUsing(id);
         }
 
-        public bool existsDescription(string description, int idEditando)
-        {
-            MenuTagService service = new MenuTagService();
-            return service.existsDescription(description, idEditando);
-        }
-
 
     }
 }

@@ -27,7 +27,6 @@ namespace ProyectoPresupuestoEvento.Service
             List<Ubication> ubications = UbicationRepository.getInstance().getAll();
             List<UbicationDto> dtos = new List<UbicationDto>();
 
-            // solo se devuelven las ubicaciones activas
             foreach (Ubication ubication in ubications)
             {
                 if (ubication.IsActive)
@@ -45,19 +44,11 @@ namespace ProyectoPresupuestoEvento.Service
             UbicationRepository.getInstance().update(id, toModel(dto));
         }
 
-        // baja logica: no se borra del repositorio, se marca como inactiva
-        public void removeUbication(int id)
+        public Ubication getModelById(int id)
         {
-            Ubication ubication = UbicationRepository.getInstance().getById(id);
-            if (ubication == null)
-            {
-                return;
-            }
-
-            ubication.deactivate();
-            UbicationRepository.getInstance().update(id, ubication);
+            return UbicationRepository.getInstance().getById(id);
         }
-        
+
         public Ubication toModel(UbicationDto dto)
         {
             Ubication model = new Ubication(dto.Name, dto.Price);
@@ -68,6 +59,19 @@ namespace ProyectoPresupuestoEvento.Service
         {
             UbicationDto dto = new UbicationDto(ubication.Id, ubication.Name, ubication.Price);
             return dto;
+        }
+
+
+        public void removeUbication(int id)
+        {
+            Ubication ubication = UbicationRepository.getInstance().getById(id);
+            if (ubication == null)
+            {
+                return;
+            }
+
+            ubication.deactivate();
+            UbicationRepository.getInstance().update(id, ubication);
         }
     }
 }

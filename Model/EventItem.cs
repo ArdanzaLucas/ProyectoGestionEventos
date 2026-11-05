@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -28,6 +29,7 @@ namespace ProyectoPresupuestoEvento.Model
             GuestAdults = guestAdults;
             GuestChilds = guestChilds;
             Duration = duration;
+            validateGuests();
         }
 
         public EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
@@ -38,6 +40,7 @@ namespace ProyectoPresupuestoEvento.Model
             GuestAdults = guestAdults;
             GuestChilds = guestChilds;
             Duration = duration;
+            validateGuests();
         }
 
 
@@ -52,13 +55,27 @@ namespace ProyectoPresupuestoEvento.Model
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BusinessRuleException("ingrese un nombre para el evento");
+                }
+                _name = value.Trim();
+            }
         }
 
         public string ClientName
         {
             get { return _clientName; }
-            set { _clientName = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new BusinessRuleException("ingrese el nombre del cliente");
+                }
+                _clientName = value.Trim();
+            }
         }
 
         public DateTime Date
@@ -70,27 +87,57 @@ namespace ProyectoPresupuestoEvento.Model
         public int GuestAdults
         {
             get { return _guestAdults; }
-            set { _guestAdults = value; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new BusinessRuleException("la cantidad de adultos no puede ser negativa");
+                }
+                _guestAdults = value;
+            }
         }
 
         public int GuestChilds
         {
             get { return _guestChilds; }
-            set { _guestChilds = value; }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new BusinessRuleException("la cantidad de niños no puede ser negativa");
+                }
+                _guestChilds = value;
+            }
         }
 
         public int Duration
         {
             get { return _duration; }
-            set { _duration = value; }
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new BusinessRuleException("la duracion tiene que ser mayor a 0 horas");
+                }
+                _duration = value;
+            }
+        }
+
+
+        public int TotalGuests
+        {
+            get { return _guestAdults + _guestChilds; }
         }
 
 
         //metodos
 
-        public int getTotalGuests()
+        private void validateGuests()
         {
-            return _guestAdults + _guestChilds;
+            if (TotalGuests == 0)
+            {
+                throw new BusinessRuleException("el evento tiene que tener al menos un invitado");
+            }
         }
 
 

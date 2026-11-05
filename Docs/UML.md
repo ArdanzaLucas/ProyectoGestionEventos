@@ -20,7 +20,10 @@ en el navegador.
 - Los DTO referencian otras entidades por **id** (`UbicationId`, `MenuId`), no por objeto del Model.
 - `FormIndex` usa `QuoteController`: lista presupuestos, no eventos.
 - **Persistencia en SQLite:** los repositorios guardan en la base a través de `SqliteDatabase`, que es el único singleton, en lugar de listas en memoria. Se agrega el esquema de la base (2b).
-- **Impresión:** se eliminan `ReportService` y `ReportController`. `FormReport` obtiene el `QuoteDto` de `QuoteController.getQuoteById` e imprime con `PrintDocument` y `PrintPreviewDialog`. Para PDF se usa la impresora "Microsoft Print to PDF".
+- **Carpeta `Common`:** tiene lo que usan todas las capas: `EstadoPresupuesto` y `BusinessRuleException`. El Model y el Service lanzan esa excepción, y la View la atrapa y la muestra con `MessageHelper`, por donde pasan todos los avisos.
+- **Reglas fuera de la View:** los formularios solo convierten el texto a número y atrapan la excepción. Las reglas están en los `set` del Model y en el Service.
+- **Un repositorio por service:** cada service usa solo su repositorio. Si necesita datos de otro, los pide a ese service con `getModelById`.
+- **Vista previa y PDF:** se eliminan `ReportService` y `ReportController`. El botón **Detalle** de Inicio abre `FormReport`, en el mismo panel que `FormIndex`, que muestra la hoja del presupuesto. Su botón **Imprimir** la guarda como PDF, eligiendo el archivo con un diálogo "Guardar como", y se queda en la vista previa. La clase `QuotePdf` (View) dibuja la hoja con `PrintDocument`, la misma para la vista previa y el PDF, y la guarda con la impresora "Microsoft Print to PDF" de Windows. Se puede ver y guardar un presupuesto en cualquier estado, y la hoja muestra el estado.
 
 ---
 
@@ -40,13 +43,20 @@ class EventItem {
   -int _duration
   +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
   +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
-  +getTotalGuests() int
+  +int TotalGuests
 }
 
 class Quote {
   -int _id
   -int _eventItemId
+  -string _eventName
+  -string _eventClientName
+  -DateTime _eventDate
+  -int _eventGuestAdults
+  -int _eventGuestChilds
+  -int _eventDuration
   -Ubication _ubication
+  -string _ubicationName
   -decimal _ubicationPrice
   -List~DetailMenu~ _menusList
   -List~DetailOptionItem~ _optionItemList
@@ -55,32 +65,31 @@ class Quote {
   -decimal _totalMenus
   -decimal _totalOptionItems
   -decimal _total
-  +Quote(int eventItemId, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
-  +calculateTotals(int duration) void
-  +refreshPrices() void
+  +Quote(EventItem eventItem, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+  +calculateTotals() void
   +accept() void
   +cancel() void
   +isEditable() bool
-  +clone() Quote
+  +clone(EventItem eventItem) Quote
 }
 
 class DetailMenu {
   -Menu _menu
+  -string _menuDescription
   -string _tagDescription
   -int _adultQuantity
   -int _childQuantity
   -decimal _unitPriceAdult
   -decimal _unitPriceChild
   +DetailMenu(Menu menu, string tagDescription, int adultQuantity, int childQuantity)
-  +refreshPrices() void
-  +calculateSubtotal() decimal
+  +decimal Subtotal
 }
 
 class DetailOptionItem {
   -OptionItem _optionItem
+  -string _optionItemName
   -decimal _unitPrice
   +DetailOptionItem(OptionItem optionItem)
-  +refreshPrice() void
 }
 
 class Menu {
@@ -130,6 +139,9 @@ class EstadoPresupuesto {
   Aceptado
   Cancelado
 }
+class BusinessRuleException {
+  +BusinessRuleException(string message)
+}
 
 Quote "0..*" ..> "1" EventItem : pertenece (por id)
 Quote "0..*" --> "1" Ubication : lugar
@@ -144,11 +156,10 @@ Menu "0..*" o-- "0..*" MenuTag : etiquetas
 
 **Presupuestos y eventos:** un `Quote` no está guardado adentro de su evento. Guarda el **id** del evento (`_eventItemId`), igual que un DTO, y vive en su propio repositorio. Por eso la relación es punteada.
 
-**Precios congelados:**
-- Cada presupuesto guarda **su propia copia** de los precios: `_ubicationPrice` en `Quote`, `_unitPriceAdult` y `_unitPriceChild` en `DetailMenu`, `_unitPrice` en `DetailOptionItem`.
-- Las copias se toman al crear o clonar el presupuesto, y se actualizan con `refreshPrices()` **solo cuando se edita y se guarda** un presupuesto Pendiente.
-- Mientras está Pendiente, `calculateTotals(duration)` recalcula los totales con los precios copiados y la duración **actual** del evento. Si cambia la duración, el total de ubicación cambia enseguida, aunque los precios sigan siendo los copiados.
-- Si está Aceptado o Cancelado, `calculateTotals` no hace nada. Así, el detalle y el total siempre coinciden con lo que se acordó.
+**Datos congelados:**
+- Cada presupuesto guarda **su propia copia** de los datos: los del evento, `_ubicationName` y `_ubicationPrice` en `Quote`; `_menuDescription`, `_unitPriceAdult` y `_unitPriceChild` en `DetailMenu`; `_optionItemName` y `_unitPrice` en `DetailOptionItem`.
+- Las copias se toman al crear o clonar el presupuesto, y se actualizan **solo cuando se edita y se guarda** un presupuesto Pendiente, porque `toModel` arma todo de nuevo.
+- `calculateTotals()` usa los precios y la duración copiados. Si está Aceptado o Cancelado, no hace nada. Así, el detalle y el total siempre coinciden con lo que se acordó.
 
 **Etiquetas como variantes del plato:**
 - Un `Menu` tiene una o más etiquetas: las variantes que ofrece (por ejemplo, la Milanesa se ofrece estándar, vegana y sin TACC).
@@ -298,7 +309,14 @@ erDiagram
   QUOTE {
     INTEGER Id PK
     INTEGER EventItemId FK
+    TEXT EventName
+    TEXT EventClientName
+    TEXT EventDate
+    INTEGER EventGuestAdults
+    INTEGER EventGuestChilds
+    INTEGER EventDuration
     INTEGER UbicationId FK
+    TEXT UbicationName
     TEXT UbicationPrice
     INTEGER State
     TEXT TotalUbication
@@ -310,6 +328,7 @@ erDiagram
     INTEGER QuoteId PK, FK
     INTEGER MenuId PK, FK
     TEXT TagDescription PK
+    TEXT MenuDescription
     INTEGER AdultQuantity
     INTEGER ChildQuantity
     TEXT UnitPriceAdult
@@ -318,6 +337,7 @@ erDiagram
   DETAIL_OPTION_ITEM {
     INTEGER QuoteId PK, FK
     INTEGER OptionItemId PK, FK
+    TEXT OptionItemName
     TEXT UnitPrice
   }
 
@@ -340,9 +360,9 @@ Decisiones del esquema:
 - **Clave del presupuesto:** `QUOTE` tiene su propio `Id` y guarda `EventItemId` como clave foránea hacia su evento.
 - **Borrado en cascada:** las claves foráneas que salen de `EVENT_ITEM` y `QUOTE` llevan `ON DELETE CASCADE`. Así, borrar un evento borra sus presupuestos y sus detalles (regla I2). Hay que activar `PRAGMA foreign_keys = ON` al abrir la conexión.
 - **Baja lógica:** como `UBICATION`, `MENU` y `OPTION_ITEM` nunca se borran físicamente, las claves foráneas desde los presupuestos nunca quedan colgadas.
-- **Precios congelados:** `QUOTE.UbicationPrice`, `DETAIL_MENU.UnitPriceAdult` y `UnitPriceChild`, y `DETAIL_OPTION_ITEM.UnitPrice` guardan el precio de cada línea al momento del presupuesto (regla E3).
+- **Datos congelados:** `QUOTE` guarda una copia de los datos del evento y de la ubicación, y `DETAIL_MENU` y `DETAIL_OPTION_ITEM` guardan el nombre y el precio de cada línea, al momento del presupuesto (regla E3).
 - **Etiqueta de cada línea:** `DETAIL_MENU.TagDescription` guarda el **texto** de la etiqueta, no su id. Así se puede borrar o renombrar una etiqueta sin tocar los presupuestos. Forma parte de la clave: el mismo menú puede estar varias veces en un presupuesto, una por etiqueta (V7).
-- **Totales:** también se guardan, porque `TotalUbication` depende de la duración del evento. Si después se cambia la duración, un presupuesto Aceptado tiene que conservar su total.
+- **Totales:** también se guardan, igual que el resto de los datos congelados.
 
 ---
 
@@ -408,7 +428,11 @@ class QuoteDto {
   +int Id
   +int EventItemId
   +string EventItemName
+  +string EventClientName
   +DateTime EventDate
+  +int EventGuestAdults
+  +int EventGuestChilds
+  +int EventDuration
   +int TotalGuests
   +int UbicationId
   +string UbicationName
@@ -432,6 +456,7 @@ class UbicationService {
   +getUbicationById(int id) UbicationDto
   +updateUbication(int id, UbicationDto dto) void
   +removeUbication(int id) void
+  +getModelById(int id) Ubication
   +toModel(UbicationDto dto) Ubication
   +toDto(Ubication model) UbicationDto
 }
@@ -446,6 +471,7 @@ class MenuTagService {
   +countMenusUsing(int id) int
   +getMenusWithOnlyThisTag(int id) List~string~
   -validate(MenuTag tag) void
+  +getModelById(int id) MenuTag
   +toModel(MenuTagDto dto) MenuTag
   +toDto(MenuTag model) MenuTagDto
 }
@@ -457,6 +483,9 @@ class MenuService {
   +getMenuById(int id) MenuDto
   +updateMenu(int id, MenuDto dto) void
   +removeMenu(int id) void
+  +getAllModels() List~Menu~
+  +removeTagFromMenus(int tagId) void
+  +getModelById(int id) Menu
   +toModel(MenuDto dto) Menu
   +toDto(Menu model) MenuDto
 }
@@ -467,6 +496,7 @@ class OptionItemService {
   +getOptionItemById(int id) OptionItemDto
   +updateOptionItem(int id, OptionItemDto dto) void
   +removeOptionItem(int id) void
+  +getModelById(int id) OptionItem
   +toModel(OptionItemDto dto) OptionItem
   +toDto(OptionItem model) OptionItemDto
 }
@@ -474,10 +504,10 @@ class EventItemService {
   -Irepository~EventItem~ repository
   +addToRepository(EventItemDto dto) void
   +getEventItems() List~EventItemDto~
-  +getEventItemById(int id) EventItemDto
   +updateEventItem(int id, EventItemDto dto) void
   +removeEventItem(int id) void
   +countQuotes(int id) int
+  +getModelById(int id) EventItem
   +toModel(EventItemDto dto) EventItem
   +toDto(EventItem model) EventItemDto
 }
@@ -563,6 +593,12 @@ OptionItemController --> OptionItemService
 EventItemController --> EventItemService
 QuoteController --> QuoteService
 EventItemService ..> QuoteService : borra y cuenta los presupuestos del evento
+QuoteService ..> EventItemService : getModelById
+QuoteService ..> UbicationService : getModelById
+QuoteService ..> MenuService : getModelById
+QuoteService ..> OptionItemService : getModelById
+MenuService ..> MenuTagService : getModelById
+MenuTagService ..> MenuService : getAllModels, removeTagFromMenus
 
 UbicationService ..> UbicationDto
 MenuService ..> MenuDto
@@ -570,12 +606,14 @@ MenuTagService ..> MenuTagDto
 OptionItemService ..> OptionItemDto
 EventItemService ..> EventItemDto
 QuoteService ..> QuoteDto
+QuoteService ..> BusinessRuleException : reglas
+Quote ..> BusinessRuleException : estados
 ```
 
 Cada Service crea sus repositorios en el constructor (por ejemplo, `Irepository<Ubication> repository = new UbicationRepository()`) y los usa **solo a través de `Irepository<T>`**.
 En `MenuTagService`:
 - `getMenusWithOnlyThisTag(id)` devuelve los nombres de los menús cuya **única** etiqueta es esa. Si la lista no está vacía, la etiqueta no se puede borrar, porque esos menús quedarían sin etiquetas (V14). La View muestra el mensaje ("No se puede eliminar: es la única etiqueta de Milanesa, Ravioles").
-- `removeMenuTag(id)` primero revisa `getMenusWithOnlyThisTag(id)` y, si hay alguno, lanza `InvalidOperationException`. Si no, borra la etiqueta **físicamente** y la quita de todos los menús que la tengan: para cada menú con `hasTag(id)`, llama a `removeTag(id)` y lo guarda con `update`. Así funciona igual con listas en memoria y con SQLite, donde además la cascada lo garantiza.
+- La View revisa antes `getMenusWithOnlyThisTag(id)` y, si hay alguno, avisa y no borra. `removeMenuTag(id)` borra la etiqueta **físicamente** y le pide a `MenuService.removeTagFromMenus(id)` que la quite de todos los menús que la tengan.
 - `countMenusUsing(id)` le sirve a la View para el mensaje de confirmación ("Esta etiqueta está asignada a 3 menús. ¿Eliminarla igualmente?").
 - Borrar una etiqueta **no afecta a los presupuestos**: cada línea de catering guarda una copia del texto de la etiqueta (`_tagDescription`), igual que guarda los precios.
 - En `MenuService.toModel`, los ids de `MenuDto.TagList` se convierten en objetos `MenuTag` buscándolos en `menuTagRepository`.
@@ -585,14 +623,14 @@ En `UbicationService`, `MenuService` y `OptionItemService`:
 - `getX()` devuelve **solo los activos**.
 
 En `QuoteService`:
-- `toModel` busca la `Ubication`, los `Menu` y los `OptionItem` por id en sus repositorios. Las líneas nuevas copian los precios actuales.
-- Antes de devolver presupuestos (`getQuotes`, `getQuoteById`…), recalcula los Pendientes con `calculateTotals(duración del evento)`. Así un cambio de duración se ve enseguida.
+- `toModel` pide el `EventItem`, la `Ubication`, los `Menu` y los `OptionItem` por id a sus services. El presupuesto y sus líneas copian los datos actuales.
+- `toDto` usa solo las copias: mostrar un presupuesto no consulta otras entidades ni recalcula nada.
 - `calculatePreview(dto)` arma el presupuesto con `toModel` y calcula sus totales **sin guardarlo**. La View lo usa para mostrar los totales mientras se carga.
-- `updateQuote` solo acepta Pendientes. Reemplaza ubicación y líneas con precios actuales: ahí es donde un Pendiente toma los precios nuevos.
+- `updateQuote` solo acepta Pendientes. Reemplaza todo con los datos actuales: ahí es donde un Pendiente toma los datos nuevos.
 - `acceptQuote` revisa que no haya otro Aceptado en el mismo evento (E4). Congela con los precios que tiene.
 - `cloneQuote` no deja clonar si el presupuesto usa algún elemento dado de baja (V12).
 - `removeQuotesByEventItem` borra todos los presupuestos de un evento. La llama `EventItemService.removeEventItem` (I2).
-- Cuando una regla no se cumple, lanza `InvalidOperationException` con el mensaje, y la View lo muestra con `try/catch`.
+- Cuando una regla no se cumple, lanza `BusinessRuleException` con el mensaje, y la View lo atrapa con `try/catch` y lo muestra con `MessageHelper`.
 
 ---
 
@@ -622,6 +660,8 @@ class FormIndex {
   -OptionItemController optionItemController
   -MaterialListView mtLvIndex
   -int idEditando
+  -FormReport formReport
+  +setFormReport(FormReport formReport) void
   +resetView() void
   -reloadMtlv() void
   -refreshTotals() void
@@ -689,17 +729,34 @@ class FormMenuTags {
   -btnMenuTagRemove_Click(sender, e) void
 }
 class FormReport {
-  -QuoteController quoteController
+  -FormIndex formIndex
+  -QuoteDto quote
+  -QuotePdf pdf
+  +FormReport(FormIndex formIndex)
+  +showQuote(QuoteDto quote) void
+  -ajustarZoom() void
+  -btnImprimir_Click(sender, e) void
+  -btnVolverReport_Click(sender, e) void
+}
+class QuotePdf {
   -QuoteDto quote
   -PrintDocument printDocument
-  +FormReport(QuoteController controller, int quoteId)
-  -btnPrint_Click(sender, e) void
+  +QuotePdf(QuoteDto quote)
+  +getDocument() PrintDocument
+  +save(string ruta) void
   -printDocument_PrintPage(sender, PrintPageEventArgs e) void
 }
 class VisualHelper {
   <<static>>
   +setMaterialTheme(MaterialForm form)$ void
   +EnlazarIconosSidebar(MaterialTabControl tab, ImageList img, string[] iconos)$ void
+}
+class MessageHelper {
+  <<static>>
+  +showWarning(string mensaje)$ void
+  +showError(string mensaje)$ void
+  +showInfo(string mensaje)$ void
+  +confirm(string mensaje)$ bool
 }
 
 FormMain *-- FormIndex
@@ -708,7 +765,11 @@ FormMain *-- FormUbications
 FormMain *-- FormOptionItem
 FormMain *-- FormMenus
 FormMain ..> VisualHelper
-FormIndex ..> FormReport : Detalle
+FormMain *-- FormReport
+FormIndex ..> FormReport : boton Detalle (mismo panel)
+FormIndex ..> MessageHelper : avisos
+FormReport ..> FormIndex : boton Volver
+FormReport --> QuotePdf : vista previa e Imprimir
 
 FormIndex --> QuoteController
 FormIndex --> EventItemController
@@ -722,7 +783,6 @@ FormMenus --> MenuController
 FormMenus --> MenuTagController
 FormMenus ..> FormMenuTags : botón Etiquetas (mismo panel)
 FormMenuTags --> MenuTagController
-FormReport --> QuoteController
 ```
 
 ---
@@ -756,6 +816,8 @@ namespace View {
     -OptionItemController optionItemController
     -MaterialListView mtLvIndex
     -int idEditando
+    -FormReport formReport
+    +setFormReport(FormReport formReport) void
     +resetView() void
     -reloadMtlv() void
     -refreshTotals() void
@@ -823,17 +885,34 @@ namespace View {
     -btnMenuTagRemove_Click(sender, e) void
   }
   class FormReport {
-    -QuoteController quoteController
+    -FormIndex formIndex
+    -QuoteDto quote
+    -QuotePdf pdf
+    +FormReport(FormIndex formIndex)
+    +showQuote(QuoteDto quote) void
+    -ajustarZoom() void
+    -btnImprimir_Click(sender, e) void
+    -btnVolverReport_Click(sender, e) void
+  }
+  class QuotePdf {
     -QuoteDto quote
     -PrintDocument printDocument
-    +FormReport(QuoteController controller, int quoteId)
-    -btnPrint_Click(sender, e) void
+    +QuotePdf(QuoteDto quote)
+    +getDocument() PrintDocument
+    +save(string ruta) void
     -printDocument_PrintPage(sender, PrintPageEventArgs e) void
   }
   class VisualHelper {
     <<static>>
     +setMaterialTheme(MaterialForm form)$ void
     +EnlazarIconosSidebar(MaterialTabControl tab, ImageList img, string[] iconos)$ void
+  }
+  class MessageHelper {
+    <<static>>
+    +showWarning(string mensaje)$ void
+    +showError(string mensaje)$ void
+    +showInfo(string mensaje)$ void
+    +confirm(string mensaje)$ bool
   }
 }
 
@@ -899,6 +978,7 @@ namespace Service {
     +getUbicationById(int id) UbicationDto
     +updateUbication(int id, UbicationDto dto) void
     +removeUbication(int id) void
+    +getModelById(int id) Ubication
     +toModel(UbicationDto dto) Ubication
     +toDto(Ubication model) UbicationDto
   }
@@ -913,6 +993,7 @@ namespace Service {
     +countMenusUsing(int id) int
     +getMenusWithOnlyThisTag(int id) List~string~
     -validate(MenuTag tag) void
+    +getModelById(int id) MenuTag
     +toModel(MenuTagDto dto) MenuTag
     +toDto(MenuTag model) MenuTagDto
   }
@@ -924,6 +1005,9 @@ namespace Service {
     +getMenuById(int id) MenuDto
     +updateMenu(int id, MenuDto dto) void
     +removeMenu(int id) void
+    +getAllModels() List~Menu~
+    +removeTagFromMenus(int tagId) void
+    +getModelById(int id) Menu
     +toModel(MenuDto dto) Menu
     +toDto(Menu model) MenuDto
   }
@@ -934,6 +1018,7 @@ namespace Service {
     +getOptionItemById(int id) OptionItemDto
     +updateOptionItem(int id, OptionItemDto dto) void
     +removeOptionItem(int id) void
+    +getModelById(int id) OptionItem
     +toModel(OptionItemDto dto) OptionItem
     +toDto(OptionItem model) OptionItemDto
   }
@@ -941,10 +1026,10 @@ namespace Service {
     -Irepository~EventItem~ repository
     +addToRepository(EventItemDto dto) void
     +getEventItems() List~EventItemDto~
-    +getEventItemById(int id) EventItemDto
     +updateEventItem(int id, EventItemDto dto) void
     +removeEventItem(int id) void
     +countQuotes(int id) int
+    +getModelById(int id) EventItem
     +toModel(EventItemDto dto) EventItem
     +toDto(EventItem model) EventItemDto
   }
@@ -1022,7 +1107,11 @@ namespace Dto {
     +int Id
     +int EventItemId
     +string EventItemName
+    +string EventClientName
     +DateTime EventDate
+    +int EventGuestAdults
+    +int EventGuestChilds
+    +int EventDuration
     +int TotalGuests
     +int UbicationId
     +string UbicationName
@@ -1048,12 +1137,19 @@ namespace Model {
     -int _duration
     +EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
     +EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
-    +getTotalGuests() int
+    +int TotalGuests
   }
   class Quote {
     -int _id
     -int _eventItemId
+    -string _eventName
+    -string _eventClientName
+    -DateTime _eventDate
+    -int _eventGuestAdults
+    -int _eventGuestChilds
+    -int _eventDuration
     -Ubication _ubication
+    -string _ubicationName
     -decimal _ubicationPrice
     -List~DetailMenu~ _menusList
     -List~DetailOptionItem~ _optionItemList
@@ -1062,30 +1158,29 @@ namespace Model {
     -decimal _totalMenus
     -decimal _totalOptionItems
     -decimal _total
-    +Quote(int eventItemId, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
-    +calculateTotals(int duration) void
-    +refreshPrices() void
+    +Quote(EventItem eventItem, Ubication ubication, List~DetailMenu~ menusList, List~DetailOptionItem~ optionItemList)
+    +calculateTotals() void
     +accept() void
     +cancel() void
     +isEditable() bool
-    +clone() Quote
+    +clone(EventItem eventItem) Quote
   }
   class DetailMenu {
     -Menu _menu
+    -string _menuDescription
     -string _tagDescription
     -int _adultQuantity
     -int _childQuantity
     -decimal _unitPriceAdult
     -decimal _unitPriceChild
     +DetailMenu(Menu menu, string tagDescription, int adultQuantity, int childQuantity)
-    +refreshPrices() void
-    +calculateSubtotal() decimal
+    +decimal Subtotal
   }
   class DetailOptionItem {
     -OptionItem _optionItem
+    -string _optionItemName
     -decimal _unitPrice
     +DetailOptionItem(OptionItem optionItem)
-    +refreshPrice() void
   }
   class Menu {
     -int? _id
@@ -1124,11 +1219,17 @@ namespace Model {
     +MenuTag(string description)
     +MenuTag(int id, string description)
   }
+}
+
+namespace Common {
   class EstadoPresupuesto {
     <<enumeration>>
     Pendiente
     Aceptado
     Cancelado
+  }
+  class BusinessRuleException {
+    +BusinessRuleException(string message)
   }
 }
 
@@ -1195,7 +1296,11 @@ FormMain *-- FormUbications
 FormMain *-- FormOptionItem
 FormMain *-- FormMenus
 FormMain ..> VisualHelper
-FormIndex ..> FormReport : Detalle
+FormMain *-- FormReport
+FormIndex ..> FormReport : boton Detalle (mismo panel)
+FormIndex ..> MessageHelper : avisos
+FormReport ..> FormIndex : boton Volver
+FormReport --> QuotePdf : vista previa e Imprimir
 
 FormIndex --> QuoteController
 FormIndex --> EventItemController
@@ -1209,7 +1314,6 @@ FormMenus --> MenuController
 FormMenus --> MenuTagController
 FormMenus ..> FormMenuTags : botón Etiquetas (mismo panel)
 FormMenuTags --> MenuTagController
-FormReport --> QuoteController
 
 %% ---------- Controller → Service ----------
 UbicationController --> UbicationService
@@ -1221,14 +1325,20 @@ QuoteController --> QuoteService
 
 %% ---------- Service → Service ----------
 EventItemService ..> QuoteService : borra y cuenta los presupuestos del evento
+QuoteService ..> EventItemService : getModelById
+QuoteService ..> UbicationService : getModelById
+QuoteService ..> MenuService : getModelById
+QuoteService ..> OptionItemService : getModelById
+MenuService ..> MenuTagService : getModelById
+MenuTagService ..> MenuService : getAllModels, removeTagFromMenus
 
 %% ---------- Service → Repository ----------
 UbicationService --> Irepository : Ubication
-MenuTagService --> Irepository : MenuTag, Menu
-MenuService --> Irepository : Menu, MenuTag
+MenuTagService --> Irepository : MenuTag
+MenuService --> Irepository : Menu
 OptionItemService --> Irepository : OptionItem
 EventItemService --> Irepository : EventItem
-QuoteService --> Irepository : Quote, EventItem, Ubication, Menu, OptionItem
+QuoteService --> Irepository : Quote
 
 %% ---------- Service → Dto y Model ----------
 UbicationService ..> UbicationDto
@@ -1237,13 +1347,15 @@ MenuTagService ..> MenuTagDto
 OptionItemService ..> OptionItemDto
 EventItemService ..> EventItemDto
 QuoteService ..> QuoteDto
+QuoteService ..> BusinessRuleException : reglas
+Quote ..> BusinessRuleException : estados
 UbicationService ..> Ubication
 MenuTagService ..> MenuTag
 MenuService ..> Menu
 OptionItemService ..> OptionItem
 EventItemService ..> EventItem
 QuoteService ..> Quote
-FormReport --> QuoteDto
+QuotePdf --> QuoteDto
 QuoteDto --> EstadoPresupuesto
 MenuDto o-- "0..*" MenuTagDto
 QuoteDto *-- "0..*" DetailMenuDto

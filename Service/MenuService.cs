@@ -27,7 +27,6 @@ namespace ProyectoPresupuestoEvento.Service
             List<Menu> menus = MenuRepository.getInstance().getAll();
             List<MenuDto> dtos = new List<MenuDto>();
 
-            // solo se devuelven los menus activos
             foreach (Menu menu in menus)
             {
                 if (menu.IsActive)
@@ -45,7 +44,6 @@ namespace ProyectoPresupuestoEvento.Service
             MenuRepository.getInstance().update(id, toModel(dto));
         }
 
-        // baja logica: no se borra del repositorio, se marca como inactivo
         public void removeMenu(int id)
         {
             Menu menu = MenuRepository.getInstance().getById(id);
@@ -58,14 +56,31 @@ namespace ProyectoPresupuestoEvento.Service
             MenuRepository.getInstance().update(id, menu);
         }
 
+        public Menu getModelById(int id)
+        {
+            return MenuRepository.getInstance().getById(id);
+        }
+
+        public List<Menu> getAllModels()
+        {
+            return MenuRepository.getInstance().getAll();
+        }
+
+        public void removeTagFromMenus(int tagId)
+        {
+            foreach (Menu menu in getAllModels())
+            {
+                menu.removeTag(tagId);
+            }
+        }
+
         public Menu toModel(MenuDto dto)
         {
-            // las etiquetas se buscan en su repositorio por id,
-            // asi el menu usa las mismas etiquetas que se ven en la lista de etiquetas
+            MenuTagService menuTagService = new MenuTagService();
             List<MenuTag> tags = new List<MenuTag>();
             foreach (MenuTagDto tagDto in dto.TagList)
             {
-                MenuTag tag = MenuTagRepository.getInstance().getById(tagDto.Id);
+                MenuTag tag = menuTagService.getModelById(tagDto.Id);
                 if (tag != null)
                 {
                     tags.Add(tag);

@@ -355,7 +355,6 @@
             btnIndexReport.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnIndexReport.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnIndexReport.Depth = 0;
-            btnIndexReport.Enabled = false;
             btnIndexReport.HighEmphasis = true;
             btnIndexReport.Icon = null;
             btnIndexReport.Location = new Point(25, 420);
@@ -369,6 +368,7 @@
             btnIndexReport.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnIndexReport.UseAccentColor = false;
             btnIndexReport.UseVisualStyleBackColor = true;
+            btnIndexReport.Click += btnIndexReport_Click;
             //
             // panelQuoteCU
             //

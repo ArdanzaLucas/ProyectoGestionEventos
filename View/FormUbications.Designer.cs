@@ -46,12 +46,12 @@
             btnGuardarUbicacion = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panel2 = new Panel();
-            panelUbicationsTitle = new Panel();
-            lblUbicationsTitle = new Label();
             mtLvUbications = new MaterialSkin.Controls.MaterialListView();
             IdColumn = new ColumnHeader();
             NameColumn = new ColumnHeader();
             PriceColumn = new ColumnHeader();
+            panelUbicationsTitle = new Panel();
+            lblUbicationsTitle = new Label();
             panelCrudCtrlUb = new Panel();
             btnUbicationRemove = new MaterialSkin.Controls.MaterialButton();
             btnUbicationEdit = new MaterialSkin.Controls.MaterialButton();
@@ -206,25 +206,6 @@
             panel2.Size = new Size(1471, 720);
             panel2.TabIndex = 3;
             // 
-            // panelUbicationsTitle
-            // 
-            panelUbicationsTitle.BackColor = Color.White;
-            panelUbicationsTitle.Controls.Add(lblUbicationsTitle);
-            panelUbicationsTitle.Dock = DockStyle.Top;
-            panelUbicationsTitle.Name = "panelUbicationsTitle";
-            panelUbicationsTitle.Size = new Size(500, 60);
-            panelUbicationsTitle.TabIndex = 6;
-            // 
-            // lblUbicationsTitle
-            // 
-            lblUbicationsTitle.AutoSize = true;
-            lblUbicationsTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblUbicationsTitle.Location = new Point(15, 10);
-            lblUbicationsTitle.Name = "lblUbicationsTitle";
-            lblUbicationsTitle.Size = new Size(100, 24);
-            lblUbicationsTitle.TabIndex = 0;
-            lblUbicationsTitle.Text = "Ubicaciones";
-            // 
             // mtLvUbications
             // 
             mtLvUbications.AutoSizeTable = false;
@@ -235,13 +216,13 @@
             mtLvUbications.Dock = DockStyle.Fill;
             mtLvUbications.FullRowSelect = true;
             mtLvUbications.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            mtLvUbications.Location = new Point(145, 0);
+            mtLvUbications.Location = new Point(145, 60);
             mtLvUbications.MinimumSize = new Size(200, 100);
             mtLvUbications.MouseLocation = new Point(-1, -1);
             mtLvUbications.MouseState = MaterialSkin.MouseState.OUT;
             mtLvUbications.Name = "mtLvUbications";
             mtLvUbications.OwnerDraw = true;
-            mtLvUbications.Size = new Size(1326, 720);
+            mtLvUbications.Size = new Size(1326, 660);
             mtLvUbications.TabIndex = 1;
             mtLvUbications.UseCompatibleStateImageBehavior = false;
             mtLvUbications.View = System.Windows.Forms.View.Details;
@@ -262,6 +243,26 @@
             PriceColumn.Text = "Precio";
             PriceColumn.TextAlign = HorizontalAlignment.Center;
             PriceColumn.Width = 300;
+            // 
+            // panelUbicationsTitle
+            // 
+            panelUbicationsTitle.BackColor = Color.White;
+            panelUbicationsTitle.Controls.Add(lblUbicationsTitle);
+            panelUbicationsTitle.Dock = DockStyle.Top;
+            panelUbicationsTitle.Location = new Point(145, 0);
+            panelUbicationsTitle.Name = "panelUbicationsTitle";
+            panelUbicationsTitle.Size = new Size(1326, 60);
+            panelUbicationsTitle.TabIndex = 6;
+            // 
+            // lblUbicationsTitle
+            // 
+            lblUbicationsTitle.AutoSize = true;
+            lblUbicationsTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblUbicationsTitle.Location = new Point(15, 10);
+            lblUbicationsTitle.Name = "lblUbicationsTitle";
+            lblUbicationsTitle.Size = new Size(118, 24);
+            lblUbicationsTitle.TabIndex = 0;
+            lblUbicationsTitle.Text = "Ubicaciones";
             // 
             // panelCrudCtrlUb
             // 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.View
 {
@@ -16,7 +17,6 @@ namespace ProyectoPresupuestoEvento.View
     {
         private UbicationController ubicationController;
 
-        // id de la ubicacion que se esta editando. Vale 0 cuando se crea una nueva.
         private int idEditando = 0;
 
 
@@ -39,8 +39,6 @@ namespace ProyectoPresupuestoEvento.View
             reloadMtlv();
         }
 
-        // la llama FormMain cada vez que se entra a la pestaña:
-        // vuelve a la lista (descarta lo que se estaba cargando) y recarga los datos
         public void resetView()
         {
             btnVolverAtras_Click(null, EventArgs.Empty);
@@ -49,28 +47,21 @@ namespace ProyectoPresupuestoEvento.View
 
         private void reloadMtlv()
         {
-            // 1. Pedís los DTOs al controller.
             List<UbicationDto> ubicaciones = ubicationController.getUbications();
 
-            // 2. Quitás las filas anteriores para no duplicar datos.
             mtLvUbications.Items.Clear();
 
-            // 3. Convertís cada DTO en una fila del MaterialListView.
             foreach (UbicationDto ubicacion in ubicaciones)
             {
                 ListViewItem fila = new ListViewItem();
 
-                // Primera columna.
                 fila.Text = ubicacion.Id.ToString();
 
-                // Segunda y tercera columna.
                 fila.SubItems.Add(ubicacion.Name);
                 fila.SubItems.Add(ubicacion.Price.ToString("C"));
 
-                // Conserva el DTO completo asociado a la fila.
                 fila.Tag = ubicacion;
 
-                // 4. Agregás la fila visual a la lista.
                 mtLvUbications.Items.Add(fila);
             }
         }
@@ -97,7 +88,7 @@ namespace ProyectoPresupuestoEvento.View
                     mtLvUbications.SelectedItems.Count == 0
                 )
             {
-                MessageBox.Show("seleccione una ubicacion para editar");
+                MessageHelper.showWarning("seleccione una ubicacion para editar");
                 return;
             }
 
@@ -123,18 +114,15 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvUbications.SelectedItems.Count == 0)
             {
-                MessageBox.Show("seleccione una ubicacion para eliminar");
+                MessageHelper.showWarning("seleccione una ubicacion para eliminar");
                 return;
             }
 
             ListViewItem selectedUbication = mtLvUbications.SelectedItems[0];
             UbicationDto selected = (UbicationDto)selectedUbication.Tag;
 
-            DialogResult respuesta = MessageBox.Show(
-                "¿Eliminar la ubicacion " + selected.Name + "?",
-                "Confirmar", MessageBoxButtons.YesNo);
-
-            if (respuesta == DialogResult.No)
+            if (!MessageHelper.confirm(
+                "¿Eliminar la ubicacion " + selected.Name + "?"))
             {
                 return;
             }
@@ -164,36 +152,34 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnGuardarUbicacion_Click(object sender, EventArgs e)
         {
-            // Trim saca los espacios del principio y del final
-            string name = mtbUbicationName.Text.Trim();
-            if (name == "")
-            {
-                MessageBox.Show("ingrese un nombre");
-                return;
-            }
-
             decimal price;
-            if (!decimal.TryParse(mtbUbicationPrice.Text, out price) || price < 0)
+            if (!decimal.TryParse(mtbUbicationPrice.Text, out price))
             {
-                MessageBox.Show("ingrese un precio valido");
+                MessageHelper.showWarning("ingrese un precio valido");
                 return;
             }
 
-            UbicationDto ubicationDto = new UbicationDto(name, price);
+            UbicationDto ubicationDto = new UbicationDto(mtbUbicationName.Text, price);
 
-
-            if (idEditando == 0)
+            try
             {
-                ubicationController.addToRepository(ubicationDto);
+                if (idEditando == 0)
+                {
+                    ubicationController.addToRepository(ubicationDto);
+                }
+                else
+                {
+                    ubicationController.updateUbication(idEditando, ubicationDto);
+                }
             }
-            else
+            catch (BusinessRuleException ex)
             {
-                ubicationController.updateUbication(idEditando, ubicationDto);
+                MessageHelper.showWarning(ex.Message);
+                return;
             }
 
             reloadMtlv();
 
-            // vuelve a la lista y limpia los campos, igual que el boton Volver
             btnVolverAtras_Click(sender, e);
         }
 

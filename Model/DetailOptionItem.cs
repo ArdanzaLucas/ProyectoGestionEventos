@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace ProyectoPresupuestoEvento.Model
 {
-    // una linea de servicio del presupuesto
     public class DetailOptionItem
     {
         private OptionItem _optionItem;
+        private string _optionItemName;
         private decimal _unitPrice;
 
 
         //constructor
 
-        // copia el precio actual del servicio
         public DetailOptionItem(OptionItem optionItem)
         {
             OptionItem = optionItem;
+            OptionItemName = optionItem.Name;
             UnitPrice = optionItem.Price;
         }
 
@@ -31,19 +31,16 @@ namespace ProyectoPresupuestoEvento.Model
             set { _optionItem = value; }
         }
 
+        public string OptionItemName
+        {
+            get { return _optionItemName; }
+            set { _optionItemName = value; }
+        }
+
         public decimal UnitPrice
         {
             get { return _unitPrice; }
             set { _unitPrice = value; }
-        }
-
-
-        //metodos
-
-        // vuelve a copiar el precio actual del servicio
-        public void refreshPrice()
-        {
-            _unitPrice = _optionItem.Price;
         }
 
 

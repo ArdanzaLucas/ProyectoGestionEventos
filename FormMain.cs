@@ -15,8 +15,8 @@ namespace ProyectoPresupuestoEvento
         private QuoteController quoteController;
         private UbicationController ubicationController;
 
-        //formularios de cada pestaña (se guardan para poder reiniciarlos al cambiar de pestaña)
         private FormIndex frmIndex;
+        private FormReport frmReport;
         private FormEvents frmEvents;
         private FormUbications frmUbications;
         private FormOptionItem frmOI;
@@ -35,7 +35,6 @@ namespace ProyectoPresupuestoEvento
             string[] iconos = { "IconQuote.png", "iconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
             VisualHelper.EnlazarIconosSidebar(TabCtrl, imageList1, iconos);
 
-            //controllers
             eventsController = new EventItemController();
             menuController= new MenuController();
             menuTagController = new MenuTagController();
@@ -47,38 +46,36 @@ namespace ProyectoPresupuestoEvento
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //formularios
-            //index
             frmIndex = new FormIndex(quoteController, eventsController, ubicationController, menuController, optionItemsController);
             frmIndex.TopLevel = false;
             frmIndex.Dock = DockStyle.Fill;
             this.pnlIndex.Controls.Add(frmIndex);
             frmIndex.Show();
-            //Eventos
+            frmReport = new FormReport(frmIndex);
+            frmReport.TopLevel = false;
+            frmReport.Dock = DockStyle.Fill;
+            this.pnlIndex.Controls.Add(frmReport);
+            frmIndex.setFormReport(frmReport);
             frmEvents = new FormEvents(eventsController);
             frmEvents.TopLevel = false;
             frmEvents.Dock = DockStyle.Fill;
             this.pnlCntEvents.Controls.Add(frmEvents);
             frmEvents.Show();
-            //Ubicaciones
             frmUbications = new FormUbications(ubicationController);
             frmUbications.TopLevel = false;
             frmUbications.Dock = DockStyle.Fill;
             this.pnlCntUbications.Controls.Add(frmUbications);
             frmUbications.Show();
-            //Servicios adicionales
             frmOI = new FormOptionItem(optionItemsController);
             frmOI.TopLevel = false;
             frmOI.Dock = DockStyle.Fill;
             this.pnlCntOpIts.Controls.Add(frmOI);
             frmOI.Show();
-            //menus de comida
             frmMenus = new FormMenus(menuController, menuTagController);
             frmMenus.TopLevel = false;
             frmMenus.Dock = DockStyle.Fill;
             this.pnlCntCatering.Controls.Add(frmMenus);
             frmMenus.Show();
-            //etiquetas de los menus: van en el mismo panel que los menus y empiezan ocultas
             frmMenuTags = new FormMenuTags(menuTagController, frmMenus);
             frmMenuTags.TopLevel = false;
             frmMenuTags.Dock = DockStyle.Fill;
@@ -88,12 +85,12 @@ namespace ProyectoPresupuestoEvento
 
         }
 
-        // cada vez que se entra a una pestaña, su formulario vuelve a la lista
-        // y recarga los datos, por si se cambio algo en otra pestaña
         private void TabCtrl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (TabCtrl.SelectedTab == tabIndex)
             {
+                frmReport.Hide();
+                frmIndex.Show();
                 frmIndex.resetView();
             }
             else if (TabCtrl.SelectedTab == tabEvents)
@@ -110,7 +107,6 @@ namespace ProyectoPresupuestoEvento
             }
             else if (TabCtrl.SelectedTab == tabCatering)
             {
-                // si se habia quedado en etiquetas, vuelve a menus
                 frmMenuTags.Hide();
                 frmMenuTags.resetView();
                 frmMenus.Show();

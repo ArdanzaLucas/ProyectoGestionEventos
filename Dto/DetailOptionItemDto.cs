@@ -15,7 +15,6 @@ namespace ProyectoPresupuestoEvento.Dto
 
         //constructor
 
-        // lo que carga la View; el resto lo completa el Service
         public DetailOptionItemDto(int optionItemId)
         {
             OptionItemId = optionItemId;

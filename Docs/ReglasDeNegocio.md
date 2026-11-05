@@ -14,14 +14,14 @@ Este documento define **qué calcula y qué valida** el sistema. El diagrama de 
 | `Menu` | Un menú de catering | descripción, precio por adulto, precio por niño, etiquetas, activo |
 | `MenuTag` | Etiqueta que se le puede asignar a un menú (ej. "Estándar", "Vegana", "Sin TACC"). Las crea el usuario. Funciona como **variante del plato** | descripción |
 | `OptionItem` | Un servicio adicional (DJ, fotógrafo, decoración…) | nombre, precio fijo por evento, activo |
-| `Quote` | Un presupuesto. Pertenece a un evento: guarda su id | evento (id), ubicación, menús, servicios, estado, totales |
-| `DetailMenu` | Una línea de catering dentro del presupuesto: un menú en **una** de sus variantes | menú, etiqueta (copia del texto), cantidad de adultos, cantidad de niños, precio unitario por adulto y por niño (copia) |
-| `DetailOptionItem` | Una línea de servicio dentro del presupuesto | servicio, precio unitario (copia) |
+| `Quote` | Un presupuesto. Pertenece a un evento: guarda su id y una copia de sus datos | evento (id y copia de nombre, cliente, fecha, invitados y duración), ubicación (copia de nombre y precio), menús, servicios, estado, totales |
+| `DetailMenu` | Una línea de catering dentro del presupuesto: un menú en **una** de sus variantes | menú (copia de la descripción), etiqueta (copia del texto), cantidad de adultos, cantidad de niños, precio unitario por adulto y por niño (copia) |
+| `DetailOptionItem` | Una línea de servicio dentro del presupuesto | servicio (copia del nombre), precio unitario (copia) |
 | `EstadoPresupuesto` | Estado del presupuesto (enum) | Pendiente, Aceptado, Cancelado |
 
 ## 2. Cálculos
 
-Todos los importes son `decimal`. Los calcula `Quote.calculateTotals(duration)`. La llama `QuoteService`, con la duración del evento del presupuesto, al crear, editar, clonar o aceptar un presupuesto, y antes de mostrar un Pendiente (así un cambio de duración del evento se ve enseguida).
+Todos los importes son `decimal`. Los calcula `Quote.calculateTotals()`, con la duración copiada en el presupuesto. La llama `QuoteService` al crear, editar y clonar un presupuesto, y al calcular la vista mientras se carga.
 
 | Concepto | Fórmula |
 |---|---|
@@ -31,7 +31,7 @@ Todos los importes son `decimal`. Los calcula `Quote.calculateTotals(duration)`.
 | `TotalOptionItems` | suma de `UnitPrice` de todos los `DetailOptionItem` |
 | `Total` | `TotalUbication + TotalMenus + TotalOptionItems` |
 
-Los cálculos usan siempre los **precios copiados en el presupuesto**, nunca los del menú, servicio o ubicación directamente. Esas copias se toman al crear o clonar, y en un Pendiente se actualizan con los precios actuales **solo al editarlo y guardarlo** (ver E2 y E3).
+Los cálculos y lo que se muestra usan siempre **los datos copiados en el presupuesto**, nunca los del evento, menú, servicio o ubicación directamente. Esas copias se toman al crear o clonar, y en un Pendiente se actualizan con los datos actuales **solo al editarlo y guardarlo** (ver E2 y E3).
 
 **Ejemplo:** evento de 5 h, 80 adultos y 20 niños, en un salón de $50.000/h.
 El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres variantes. DJ $200.000.
@@ -49,21 +49,21 @@ El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres va
 
 ## 3. Validaciones
 
-### Datos básicos (las hace el Model en sus setters y lanza `ArgumentException`)
+### Datos básicos (las hace el Model en sus `set` y lanza `BusinessRuleException`)
 - V1. Nombre o descripción: obligatorio, no vacío. En un evento, el nombre del cliente también es obligatorio.
 - V2. Precios: `>= 0`.
-- V3. Invitados adultos y niños: `>= 0`, y al menos 1 invitado en total.
+- V3. Invitados adultos y niños: `>= 0`, y al menos 1 invitado en total. El total se revisa en el constructor de `EventItem`, porque necesita los dos datos.
 - V4. Duración: horas enteras, `> 0`.
-- V16. Fecha del evento: al **crear** un evento, el día no puede ser anterior a hoy (hoy a cualquier hora se acepta). Al **editarlo** se acepta cualquier fecha, para no trabar eventos que ya pasaron.
-- V5. En `DetailMenu`, cada cantidad es `>= 0` y la suma es `> 0`.
+- V16. Fecha del evento: al **crear** un evento, el día no puede ser anterior a hoy (hoy a cualquier hora se acepta). Al **editarlo** se acepta cualquier fecha, para no trabar eventos que ya pasaron. La revisa `EventItemService` al crear, porque depende de la operación y no vale siempre.
+- V5. En `DetailMenu`, cada cantidad es `>= 0` y la suma es `> 0`. La suma se revisa en el constructor.
 
 ### Etiquetas y menús (las hacen `MenuTagService` y `MenuService`)
-- V13. La descripción de una etiqueta es obligatoria y **única**, sin distinguir mayúsculas: "vegano" y "Vegano" son la misma.
-- V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, no se guarda (por ejemplo, se usa "Estándar" para el plato común).
+- V13. La descripción de una etiqueta es obligatoria (la revisa `MenuTag`) y **única** (la revisa `MenuTagService`), sin distinguir mayúsculas: "vegano" y "Vegano" son la misma.
+- V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, `Menu` lo rechaza en el `set` de `TagList` y no se guarda (por ejemplo, se usa "Estándar" para el plato común).
 - La etiqueta **no cambia el precio**: todas las variantes de un menú cuestan lo mismo, según su precio por adulto y por niño.
 
 ### Presupuesto (las hace `QuoteService.validateQuote` antes de guardar)
-Si una regla no se cumple, `QuoteService` lanza `InvalidOperationException` con el mensaje, y la View lo muestra.
+Si una regla no se cumple, `QuoteService` lanza `BusinessRuleException` con el mensaje, y la View lo muestra con `MessageHelper`.
 - V6. Un presupuesto debe tener ubicación.
 - V7. Un mismo menú **con la misma etiqueta** no puede aparecer dos veces en el mismo presupuesto. El mismo menú con etiquetas distintas sí: por ejemplo, Milanesa estándar y Milanesa vegana son dos líneas. En la pantalla, si se agrega una variante que ya está en la lista, **se suman las cantidades** a esa línea.
 - V15. La etiqueta de una línea de catering tiene que ser una de las que **ese menú tiene asignadas**. Si la Milanesa no tiene "Sin TACC", no se puede pedir Milanesa sin TACC.
@@ -87,10 +87,10 @@ Cancelado
 ```
 
 - E1. Todo presupuesto nuevo (o clonado) nace **Pendiente**.
-- E2. Solo un presupuesto **Pendiente** se puede editar. Al guardarlo, toma los precios actuales de la ubicación, los menús y los servicios, y se recalculan los totales. Mientras no se edite, conserva los precios que tenía. Si cambia la **duración** del evento, el total de ubicación sí se recalcula enseguida (precio por hora guardado × horas nuevas).
-- E3. Al **aceptar** un presupuesto quedan **congelados** sus precios línea por línea (ubicación, cada menú y cada servicio) y sus totales, **con los precios que tiene en ese momento**: aceptar no los actualiza. Si después cambia el precio de un menú, de un salón o de un servicio, o la duración del evento, ese presupuesto no cambia. El detalle impreso siempre coincide con el total. Lo mismo vale para un presupuesto Cancelado.
-- E4. Un evento puede tener un solo presupuesto Aceptado. Lo controla `QuoteService.acceptQuote`, buscando otro Aceptado con el mismo evento. Si ya hay uno, lanza `InvalidOperationException` y la View muestra el mensaje. Los demás presupuestos Pendientes **no cambian**: se pueden seguir editando o cancelar a mano.
-- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los precios actuales. Se puede clonar un presupuesto en cualquier estado. Sirve para armar variantes o para rehacer uno cancelado. Si usa algún elemento dado de baja, no se puede clonar (V12).
+- E2. Solo un presupuesto **Pendiente** se puede editar. Al guardarlo, toma los datos actuales del evento, la ubicación, los menús y los servicios (nombres, precios, invitados y duración), y se recalculan los totales. Mientras no se edite y se guarde, conserva los datos que tenía, también si cambia la **duración** del evento. Si se acepta sin guardarlo de nuevo, queda con los datos que tenía.
+- E3. Al **aceptar** un presupuesto queda **congelado** por completo: datos del evento, nombres, precios línea por línea y totales, **con lo que tiene en ese momento**: aceptar no los actualiza. Si después cambia algo del evento, un menú, un salón o un servicio, ese presupuesto no cambia. El detalle impreso siempre coincide con el total. Lo mismo vale para un presupuesto Cancelado.
+- E4. Un evento puede tener un solo presupuesto Aceptado. Lo controla `QuoteService.acceptQuote`, buscando otro Aceptado con el mismo evento. Si ya hay uno, lanza `BusinessRuleException` y la View muestra el mensaje. Los demás presupuestos Pendientes **no cambian**: se pueden seguir editando o cancelar a mano.
+- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los datos y precios actuales. Se puede clonar un presupuesto en cualquier estado. Sirve para armar variantes o para rehacer uno cancelado. Si usa algún elemento dado de baja, no se puede clonar (V12).
 - E6. Aceptado y Cancelado son estados finales: no vuelven a Pendiente. Para cambiarlos se clona.
 
 ## 5. Integridad entre entidades
@@ -111,9 +111,9 @@ Cancelado
 
 | Capa | Responsabilidad | Ejemplo |
 |---|---|---|
-| **View** | Leer y validar el formato de los campos, mostrar mensajes, refrescar listas | V10, V11, V16 |
+| **View** | Leer los campos, convertir el texto a número, mostrar mensajes con `MessageHelper` y refrescar listas. Las reglas no van acá | V10, V11 |
 | **Controller** | Puente fino entre View y Service. No tiene lógica | `ubicationController.addToRepository(dto)` |
-| **Service** | Reglas que involucran varias entidades o repositorios, conversión entre DTO y Model | V6–V9, V12–V15, I1, I5 |
+| **Service** | Reglas que involucran varias entidades u operaciones, conversión entre DTO y Model. Cada service usa solo su repositorio y le pide lo demás a otro service | V6–V9, V12–V16, I1, I5 |
 | **Model** | Reglas de una entidad y de lo que contiene, cálculos | V1–V5, E1–E6, I2, `calculateTotals()` |
 | **Repository** | Guardar y buscar en la base SQLite. Implementa `Irepository<T>` | `getById`, `removeById` |
 | **Dto** | Transportar datos entre View y Service. No tiene lógica. Referencia otras entidades por **id**, no por objeto | `QuoteDto.UbicationId` |

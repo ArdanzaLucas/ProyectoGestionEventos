@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
@@ -19,7 +20,9 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void addToRepository(MenuTagDto dto)
         {
-            MenuTagRepository.getInstance().addToRepository(toModel(dto));
+            MenuTag model = toModel(dto);
+            validateUniqueDescription(model.Description, 0);
+            MenuTagRepository.getInstance().addToRepository(model);
         }
 
         public List<MenuTagDto> getMenuTags()
@@ -38,28 +41,23 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void updateMenuTag(int id, MenuTagDto dto)
         {
-            MenuTagRepository.getInstance().update(id, toModel(dto));
+            MenuTag model = toModel(dto);
+            validateUniqueDescription(model.Description, id);
+            MenuTagRepository.getInstance().update(id, model);
         }
 
-        // las etiquetas se borran de verdad (no hay baja logica).
-        // antes se sacan de todos los menus que la tienen.
-        // la View tiene que revisar antes getMenusWithOnlyThisTag.
         public void removeMenuTag(int id)
         {
-            List<Menu> menus = MenuRepository.getInstance().getAll();
-            foreach (Menu menu in menus)
-            {
-                menu.removeTag(id);
-            }
+            MenuService menuService = new MenuService();
+            menuService.removeTagFromMenus(id);
 
             MenuTagRepository.getInstance().removeById(id);
         }
 
-        // devuelve los nombres de los menus activos que tienen solo esta etiqueta.
-        // si la lista no esta vacia, no se puede borrar la etiqueta.
         public List<string> getMenusWithOnlyThisTag(int id)
         {
-            List<Menu> menus = MenuRepository.getInstance().getAll();
+            MenuService menuService = new MenuService();
+            List<Menu> menus = menuService.getAllModels();
             List<string> nombres = new List<string>();
 
             foreach (Menu menu in menus)
@@ -73,10 +71,10 @@ namespace ProyectoPresupuestoEvento.Service
             return nombres;
         }
 
-        // cuenta cuantos menus activos tienen esta etiqueta
         public int countMenusUsing(int id)
         {
-            List<Menu> menus = MenuRepository.getInstance().getAll();
+            MenuService menuService = new MenuService();
+            List<Menu> menus = menuService.getAllModels();
             int cantidad = 0;
 
             foreach (Menu menu in menus)
@@ -90,10 +88,7 @@ namespace ProyectoPresupuestoEvento.Service
             return cantidad;
         }
 
-        // devuelve true si ya hay otra etiqueta con esa descripcion.
-        // ToLower hace que "Vegana" y "vegana" cuenten como iguales.
-        // idEditando es la etiqueta que se esta editando, para no compararla consigo misma.
-        public bool existsDescription(string description, int idEditando)
+        private void validateUniqueDescription(string description, int idEditando)
         {
             List<MenuTag> menuTags = MenuTagRepository.getInstance().getAll();
 
@@ -101,11 +96,14 @@ namespace ProyectoPresupuestoEvento.Service
             {
                 if (menuTag.Id != idEditando && menuTag.Description.ToLower() == description.ToLower())
                 {
-                    return true;
+                    throw new BusinessRuleException("ya existe una etiqueta con ese nombre");
                 }
             }
+        }
 
-            return false;
+        public MenuTag getModelById(int id)
+        {
+            return MenuTagRepository.getInstance().getById(id);
         }
 
         public MenuTag toModel(MenuTagDto dto)

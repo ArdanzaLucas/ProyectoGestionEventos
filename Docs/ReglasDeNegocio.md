@@ -49,17 +49,21 @@ El menú Milanesa ($15.000 por adulto y $8.000 por niño) para todos, en tres va
 
 ## 3. Validaciones
 
-### Datos básicos (las hace el Model en sus `set` y lanza `BusinessRuleException`)
-- V1. Nombre o descripción: obligatorio, no vacío. En un evento, el nombre del cliente también es obligatorio.
-- V2. Precios: `>= 0`.
-- V3. Invitados adultos y niños: `>= 0`, y al menos 1 invitado en total. El total se revisa en el constructor de `EventItem`, porque necesita los dos datos.
-- V4. Duración: horas enteras, `> 0`.
+### Datos básicos (las hace el Model en sus `set`, con ayuda de `Common/Validator` en las más comunes, y lanza `BusinessRuleException`)
+- V1. Nombre o descripción: obligatorio, no vacío. Nombres y descripciones tienen 50 caracteres como máximo. En un evento, el nombre del cliente también es obligatorio.
+- V2. Precios: `>= 0`, hasta 1000000000 y con 2 decimales como máximo.
+- V3. Invitados adultos y niños: `>= 0`, y al menos 1 invitado en total, con un máximo de 10000 sumando adultos y niños. El máximo lo revisan los `set` de adultos y de niños, sumando el otro dato. El mínimo de 1 invitado lo revisa `EventItemService` al crear y al editar, porque en el `set` de uno el otro todavía puede valer 0.
+- V4. Duración: horas enteras, `> 0` y hasta 24.
 - V16. Fecha del evento: al **crear** un evento, el día no puede ser anterior a hoy (hoy a cualquier hora se acepta). Al **editarlo** se acepta cualquier fecha, para no trabar eventos que ya pasaron. La revisa `EventItemService` al crear, porque depende de la operación y no vale siempre.
-- V5. En `DetailMenu`, cada cantidad es `>= 0` y la suma es `> 0`. La suma se revisa en el constructor.
+- V5. En `DetailMenu`, cada cantidad es `>= 0` y hasta 10000 y la suma es `> 0`. La suma la revisa `QuoteService.validateQuote`, y el formulario también la pide antes de agregar la línea.
+
+### Nombres repetidos (las hacen los Services antes de guardar)
+- V17. Una ubicación, un menú o un servicio no puede tener el mismo nombre que otro **activo** del mismo tipo, sin distinguir mayúsculas. Un nombre dado de baja se puede volver a usar. Al editar, no se compara consigo mismo.
+- V18. Dos eventos no pueden tener el mismo nombre, cliente y día, sin distinguir mayúsculas. Sí puede repetirse el nombre con otro cliente o en otro día.
 
 ### Etiquetas y menús (las hacen `MenuTagService` y `MenuService`)
 - V13. La descripción de una etiqueta es obligatoria (la revisa `MenuTag`) y **única** (la revisa `MenuTagService`), sin distinguir mayúsculas: "vegano" y "Vegano" son la misma.
-- V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, `Menu` lo rechaza en el `set` de `TagList` y no se guarda (por ejemplo, se usa "Estándar" para el plato común).
+- V14. Un menú tiene **1 o más** etiquetas, sin repetir. Solo se pueden asignar etiquetas existentes, elegidas de la lista con casillas al crear o editar el menú. Si no se marca ninguna, lo rechaza `MenuService` al crear o editar y no se guarda (por ejemplo, se usa "Estándar" para el plato común).
 - La etiqueta **no cambia el precio**: todas las variantes de un menú cuestan lo mismo, según su precio por adulto y por niño.
 
 ### Presupuesto (las hace `QuoteService.validateQuote` antes de guardar)
@@ -70,9 +74,10 @@ Si una regla no se cumple, `QuoteService` lanza `BusinessRuleException` con el m
 - V8. Un mismo servicio no puede aparecer dos veces en el mismo presupuesto.
 - V9. **No hay límite** de platos según los invitados. Un presupuesto puede pedir más platos que invitados, por ejemplo si el evento tiene varios bloques de menú (entrada, principal, postre, bebida) o si se encarga comida de más. También puede pedir menos, por ejemplo para invitados sin catering. Como referencia, el panel de carga muestra los invitados del evento al lado del catering.
 - V12. Un presupuesto nuevo o clonado solo puede usar ubicación, menús y servicios **activos**. Al editar un presupuesto Pendiente se pueden conservar los elementos que ya tenía aunque se hayan dado de baja, pero no se pueden agregar elementos inactivos.
+- V19. No se puede crear, clonar ni aceptar un presupuesto si el día del evento ya pasó. Un evento de hoy se acepta a cualquier hora. Editar un Pendiente sigue permitido, para no trabarlo. Al aceptar se usa la fecha copiada en el presupuesto.
 
 ### Formularios (las hace la View antes de llamar al Controller)
-- V10. Los campos numéricos se leen con `decimal.TryParse` o `int.TryParse`. Si fallan, se muestra un mensaje y no se llama al controller.
+- V10. Los campos numéricos son `NumericUpDown`: no aceptan letras y aplican los topes de V2, V3 y V4 al salir del campo, corrigiendo el valor sin avisar. Al crear, los precios e invitados empiezan en 0 y la duración en 1. El modelo vuelve a validar al guardar.
 - V11. Editar o eliminar sin una fila seleccionada muestra un mensaje en lugar de romper la app.
 
 ## 4. Ciclo de vida del presupuesto
@@ -90,22 +95,25 @@ Cancelado
 - E2. Solo un presupuesto **Pendiente** se puede editar. Al guardarlo, toma los datos actuales del evento, la ubicación, los menús y los servicios (nombres, precios, invitados y duración), y se recalculan los totales. Mientras no se edite y se guarde, conserva los datos que tenía, también si cambia la **duración** del evento. Si se acepta sin guardarlo de nuevo, queda con los datos que tenía.
 - E3. Al **aceptar** un presupuesto queda **congelado** por completo: datos del evento, nombres, precios línea por línea y totales, **con lo que tiene en ese momento**: aceptar no los actualiza. Si después cambia algo del evento, un menú, un salón o un servicio, ese presupuesto no cambia. El detalle impreso siempre coincide con el total. Lo mismo vale para un presupuesto Cancelado.
 - E4. Un evento puede tener un solo presupuesto Aceptado. Lo controla `QuoteService.acceptQuote`, buscando otro Aceptado con el mismo evento. Si ya hay uno, lanza `BusinessRuleException` y la View muestra el mensaje. Los demás presupuestos Pendientes **no cambian**: se pueden seguir editando o cancelar a mano.
-- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los datos y precios actuales. Se puede clonar un presupuesto en cualquier estado. Sirve para armar variantes o para rehacer uno cancelado. Si usa algún elemento dado de baja, no se puede clonar (V12).
+- E7. Una ubicación no puede estar en dos presupuestos Aceptados en horarios que se pisan. Lo controla `QuoteService.acceptQuote` con la fecha y la duración copiadas en cada presupuesto. Si uno empieza justo cuando termina el otro, se acepta.
+- E8. Si un evento tiene un presupuesto Aceptado, no se puede cambiar su fecha, su hora ni su duración. Lo controla `EventItemService.updateEventItem`, comparando hasta el minuto. Nombre, cliente e invitados sí se pueden cambiar, y el presupuesto sigue con sus datos congelados.
+- E9. No se puede aceptar un presupuesto si los datos del evento cambiaron desde que se guardó: nombre, cliente, fecha, hora, invitados o duración. Hay que editarlo y guardarlo antes, y así toma los datos actuales. Lo controla `QuoteService.acceptQuote`. Los cambios de precios o nombres de la ubicación, los menús y los servicios no lo bloquean.
+- E5. `clone()` crea un presupuesto nuevo, Pendiente, con la misma ubicación, menús y servicios, recalculado con los datos y precios actuales. Se puede clonar un presupuesto en cualquier estado. Sirve para armar variantes o para rehacer uno cancelado. Si usa algún elemento dado de baja, no se puede clonar (V12). Antes de guardarlo se revisan sus líneas igual que al armarlo a mano: si un menú ya no tiene la etiqueta de una línea, no se puede clonar.
 - E6. Aceptado y Cancelado son estados finales: no vuelven a Pendiente. Para cambiarlos se clona.
 
 ## 5. Integridad entre entidades
 
 - I1. **Baja lógica:** eliminar una `Ubication`, `Menu` u `OptionItem` no la borra del repositorio. La marca como inactiva (`deactivate()`, que pone `IsActive = false`).
-  - Las listas de los formularios de Ubicaciones, Catering y Servicios muestran solo los activos.
+  - Las listas de los formularios de Ubicaciones, Catering y Servicios muestran solo los activos. El filtro lo hace el `getAll()` de cada Repository con `WHERE IsActive = 1`; `getById` trae también los inactivos.
   - Los presupuestos que ya la usan no cambian y siguen mostrando su nombre y su precio.
   - No se puede ofrecer para presupuestos nuevos (V12).
 - I4. `EventItem` y `Quote` sí se borran físicamente, con `removeById`. Un presupuesto se puede eliminar en **cualquier estado**, con confirmación. Si es el Aceptado, el mensaje lo avisa.
 - I5. **Etiquetas:** se borran físicamente.
-  - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`), y primero hay que asignarles otra.
+  - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`). Lo controla `MenuTagService.removeMenuTag`, y el formulario lo revisa también antes de pedir la confirmación, y primero hay que asignarles otra.
   - Si está asignada a otros menús que tienen más etiquetas, la View pide confirmación indicando a cuántos afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús.
   - Los presupuestos **no cambian**: cada línea de catering guardó una copia del texto de la etiqueta, así que sigue diciendo, por ejemplo, "Vegana", aunque la etiqueta ya no exista o se haya renombrado.
 - I2. Eliminar un `EventItem` elimina también todos sus presupuestos: `EventItemService.removeEventItem` llama a `QuoteService.removeQuotesByEventItem`. La View pide confirmación avisando cuántos tiene (`countQuotes`).
-- I3. Los IDs los asigna el repositorio (`idCounter`), nunca la View. Cada presupuesto tiene su propio id y guarda el id de su evento.
+- I3. Los IDs los asigna la base (`AUTOINCREMENT`), nunca la View. Cada presupuesto tiene su propio id y guarda el id de su evento.
 
 ## 6. Dónde va cada cosa (capas)
 
@@ -115,5 +123,5 @@ Cancelado
 | **Controller** | Puente fino entre View y Service. No tiene lógica | `ubicationController.addToRepository(dto)` |
 | **Service** | Reglas que involucran varias entidades u operaciones, conversión entre DTO y Model. Cada service usa solo su repositorio y le pide lo demás a otro service | V6–V9, V12–V16, I1, I5 |
 | **Model** | Reglas de una entidad y de lo que contiene, cálculos | V1–V5, E1–E6, I2, `calculateTotals()` |
-| **Repository** | Guardar y buscar en la base SQLite. Implementa `Irepository<T>` | `getById`, `removeById` |
+| **Repository** | Guardar y buscar en la base SQLite. Implementa `IRepository<T>` | `getById`, `removeById` |
 | **Dto** | Transportar datos entre View y Service. No tiene lógica. Referencia otras entidades por **id**, no por objeto | `QuoteDto.UbicationId` |

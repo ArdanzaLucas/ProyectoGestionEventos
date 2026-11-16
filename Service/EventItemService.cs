@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
 using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de los eventos y sus reglas
     internal class EventItemService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<EventItem> repository;
 
         public EventItemService()
         {
-
+            repository = EventItemRepository.getInstance();
         }
 
+        // crea un evento: la fecha no puede ser anterior a hoy
         public void addToRepository(EventItemDto dto)
         {
             if (dto.Date.Date < DateTime.Today)
@@ -25,12 +30,15 @@ namespace ProyectoPresupuestoEvento.Service
                 throw new BusinessRuleException("la fecha del evento no puede ser anterior a hoy");
             }
 
-            EventItemRepository.getInstance().addToRepository(toModel(dto));
+            EventItem eventItem = toModel(dto);
+            validateHasGuests(eventItem);
+            validateNotRepeated(eventItem, 0);
+            repository.addToRepository(eventItem);
         }
 
         public List<EventItemDto> getEventItems()
         {
-            List<EventItem> eventItems = EventItemRepository.getInstance().getAll();
+            List<EventItem> eventItems = repository.getAll();
             List<EventItemDto> dtos = new List<EventItemDto>();
 
             foreach (EventItem eventItem in eventItems)
@@ -44,15 +52,62 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void updateEventItem(int id, EventItemDto dto)
         {
-            EventItemRepository.getInstance().update(id, toModel(dto));
+            EventItem eventItem = toModel(dto);
+            validateHasGuests(eventItem);
+            validateNotRepeated(eventItem, id);
+            validateScheduleChange(id, eventItem);
+            repository.update(id, eventItem);
         }
 
+        // no deja cambiar fecha, hora ni duracion si el evento tiene un presupuesto aceptado
+        private void validateScheduleChange(int id, EventItem eventItem)
+        {
+            EventItem original = repository.getById(id);
+            // compara hasta el minuto, porque el formulario no muestra los segundos
+            bool cambioFecha = original.Date.ToString("yyyy-MM-dd HH:mm") != eventItem.Date.ToString("yyyy-MM-dd HH:mm");
+            bool cambioDuracion = original.Duration != eventItem.Duration;
+
+            if (cambioFecha || cambioDuracion)
+            {
+                QuoteService quoteService = new QuoteService();
+                if (quoteService.hasAcceptedQuote(id))
+                {
+                    throw new BusinessRuleException("no se puede cambiar la fecha, la hora ni la duracion de un evento con un presupuesto aceptado");
+                }
+            }
+        }
+
+        // va aca y no en un set, porque al cargar los adultos los niños todavia valen 0
+        private void validateHasGuests(EventItem eventItem)
+        {
+            if (eventItem.TotalGuests == 0)
+            {
+                throw new BusinessRuleException("el evento tiene que tener al menos un invitado");
+            }
+        }
+
+        // no puede haber dos eventos con el mismo nombre, cliente y dia
+        private void validateNotRepeated(EventItem eventItem, int idEditando)
+        {
+            foreach (EventItem otro in repository.getAll())
+            {
+                if (otro.Id != idEditando
+                    && otro.Name.ToLower() == eventItem.Name.ToLower()
+                    && otro.ClientName.ToLower() == eventItem.ClientName.ToLower()
+                    && otro.Date.Date == eventItem.Date.Date)
+                {
+                    throw new BusinessRuleException("ya existe un evento con ese nombre, cliente y fecha");
+                }
+            }
+        }
+
+        // borra primero los presupuestos del evento y despues el evento
         public void removeEventItem(int id)
         {
             QuoteService quoteService = new QuoteService();
             quoteService.removeQuotesByEventItem(id);
 
-            EventItemRepository.getInstance().removeById(id);
+            repository.removeById(id);
         }
 
         public int countQuotes(int id)
@@ -61,9 +116,10 @@ namespace ProyectoPresupuestoEvento.Service
             return quoteService.getQuotesByEventItem(id).Count;
         }
 
+        // lo usan otros services para obtener el evento real
         public EventItem getModelById(int id)
         {
-            return EventItemRepository.getInstance().getById(id);
+            return repository.getById(id);
         }
 
         public EventItem toModel(EventItemDto dto)

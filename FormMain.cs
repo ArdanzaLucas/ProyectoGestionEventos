@@ -27,13 +27,13 @@ namespace ProyectoPresupuestoEvento
         {
             InitializeComponent();
 
-            VisualHelper.setMaterialTheme(this);
+            VisualHelper.setMaterialTheme();
 
             this.DrawerIsOpen = false;
 
 
             string[] iconos = { "IconQuote.png", "iconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
-            VisualHelper.EnlazarIconosSidebar(TabCtrl, imageList1, iconos);
+            VisualHelper.linkSidebarIcons(TabCtrl, imageList1, iconos);
 
             eventsController = new EventItemController();
             menuController= new MenuController();
@@ -112,16 +112,6 @@ namespace ProyectoPresupuestoEvento
                 frmMenus.Show();
                 frmMenus.resetView();
             }
-        }
-
-        private void tabPage5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void materialButton1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

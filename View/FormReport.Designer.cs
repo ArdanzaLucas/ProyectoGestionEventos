@@ -30,7 +30,7 @@
         {
             printPreview = new PrintPreviewControl();
             panelReportTitle = new Panel();
-            lblReportTitle = new Label();
+            lblReportTitle = new MaterialSkin.Controls.MaterialLabel();
             panelCrudCtrlReport = new Panel();
             btnImprimir = new MaterialSkin.Controls.MaterialButton();
             btnVolverReport = new MaterialSkin.Controls.MaterialButton();
@@ -60,7 +60,9 @@
             // lblReportTitle
             //
             lblReportTitle.AutoSize = true;
-            lblReportTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblReportTitle.Depth = 0;
+            lblReportTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblReportTitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblReportTitle.Location = new Point(15, 10);
             lblReportTitle.Name = "lblReportTitle";
             lblReportTitle.Size = new Size(100, 24);
@@ -141,7 +143,7 @@
 
         private PrintPreviewControl printPreview;
         private Panel panelReportTitle;
-        private Label lblReportTitle;
+        private MaterialSkin.Controls.MaterialLabel lblReportTitle;
         private Panel panelCrudCtrlReport;
         private MaterialSkin.Controls.MaterialButton btnImprimir;
         private MaterialSkin.Controls.MaterialButton btnVolverReport;

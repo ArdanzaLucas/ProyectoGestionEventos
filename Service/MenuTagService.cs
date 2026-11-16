@@ -6,28 +6,32 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
 using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de las etiquetas que se asignan a los menus
     internal class MenuTagService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<MenuTag> repository;
 
         public MenuTagService()
         {
-
+            repository = MenuTagRepository.getInstance();
         }
 
         public void addToRepository(MenuTagDto dto)
         {
             MenuTag model = toModel(dto);
             validateUniqueDescription(model.Description, 0);
-            MenuTagRepository.getInstance().addToRepository(model);
+            repository.addToRepository(model);
         }
 
         public List<MenuTagDto> getMenuTags()
         {
-            List<MenuTag> menuTags = MenuTagRepository.getInstance().getAll();
+            List<MenuTag> menuTags = repository.getAll();
             List<MenuTagDto> dtos = new List<MenuTagDto>();
 
             foreach (MenuTag menuTag in menuTags)
@@ -43,17 +47,23 @@ namespace ProyectoPresupuestoEvento.Service
         {
             MenuTag model = toModel(dto);
             validateUniqueDescription(model.Description, id);
-            MenuTagRepository.getInstance().update(id, model);
+            repository.update(id, model);
         }
 
+        // borrado fisico: no se puede si es la unica etiqueta de algun menu activo
         public void removeMenuTag(int id)
         {
-            MenuService menuService = new MenuService();
-            menuService.removeTagFromMenus(id);
+            List<string> menusConSoloEsta = getMenusWithOnlyThisTag(id);
+            if (menusConSoloEsta.Count > 0)
+            {
+                throw new BusinessRuleException("no se puede eliminar: es la unica etiqueta de estos menus: "
+                    + string.Join(", ", menusConSoloEsta) + ". primero asigneles otra etiqueta");
+            }
 
-            MenuTagRepository.getInstance().removeById(id);
+            repository.removeById(id);
         }
 
+        // menus activos que se quedarian sin etiquetas si se borra esta
         public List<string> getMenusWithOnlyThisTag(int id)
         {
             MenuService menuService = new MenuService();
@@ -62,7 +72,7 @@ namespace ProyectoPresupuestoEvento.Service
 
             foreach (Menu menu in menus)
             {
-                if (menu.IsActive && menu.TagList.Count == 1 && menu.hasTag(id))
+                if (menu.TagList.Count == 1 && menu.hasTag(id))
                 {
                     nombres.Add(menu.Description);
                 }
@@ -71,6 +81,7 @@ namespace ProyectoPresupuestoEvento.Service
             return nombres;
         }
 
+        // cuantos menus activos la usan, para el mensaje de confirmacion
         public int countMenusUsing(int id)
         {
             MenuService menuService = new MenuService();
@@ -79,7 +90,7 @@ namespace ProyectoPresupuestoEvento.Service
 
             foreach (Menu menu in menus)
             {
-                if (menu.IsActive && menu.hasTag(id))
+                if (menu.hasTag(id))
                 {
                     cantidad++;
                 }
@@ -90,7 +101,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         private void validateUniqueDescription(string description, int idEditando)
         {
-            List<MenuTag> menuTags = MenuTagRepository.getInstance().getAll();
+            List<MenuTag> menuTags = repository.getAll();
 
             foreach (MenuTag menuTag in menuTags)
             {
@@ -103,7 +114,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         public MenuTag getModelById(int id)
         {
-            return MenuTagRepository.getInstance().getById(id);
+            return repository.getById(id);
         }
 
         public MenuTag toModel(MenuTagDto dto)

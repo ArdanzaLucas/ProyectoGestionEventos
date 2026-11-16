@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,21 +9,20 @@ namespace ProyectoPresupuestoEvento.Model
 {
     public class MenuTag
     {
-
         private int _id;
         private string _description;
 
 
         //constructor
 
-        public MenuTag(int id, string description)
+        public MenuTag(string description)
         {
-            Id = id;
             Description = description;
         }
 
-        public MenuTag(string description)
+        public MenuTag(int id, string description)
         {
+            Id = id;
             Description = description;
         }
 
@@ -34,21 +32,25 @@ namespace ProyectoPresupuestoEvento.Model
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            private set { _id = value; }
         }
 
         public string Description
         {
             get { return _description; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BusinessRuleException("ingrese una descripcion para la etiqueta");
-                }
-                _description = value.Trim();
-            }
+            private set { _description = Validator.requireText(value, "ingrese una descripcion para la etiqueta"); }
         }
 
+
+        //metodos
+
+        public void assignId(int id)
+        {
+            if (Id != 0)
+            {
+                throw new BusinessRuleException("el id ya fue asignado");
+            }
+            Id = id;
+        }
     }
 }

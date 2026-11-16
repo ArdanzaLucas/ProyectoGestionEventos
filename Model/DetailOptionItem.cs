@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -22,27 +23,39 @@ namespace ProyectoPresupuestoEvento.Model
             UnitPrice = optionItem.Price;
         }
 
+        public DetailOptionItem(OptionItem optionItem, string optionItemName, decimal unitPrice)
+        {
+            OptionItem = optionItem;
+            OptionItemName = optionItemName;
+            UnitPrice = unitPrice;
+        }
+
 
         //propiedades
 
         public OptionItem OptionItem
         {
             get { return _optionItem; }
-            set { _optionItem = value; }
+            private set
+            {
+                if (value == null)
+                {
+                    throw new BusinessRuleException("el servicio es obligatorio");
+                }
+                _optionItem = value;
+            }
         }
 
         public string OptionItemName
         {
             get { return _optionItemName; }
-            set { _optionItemName = value; }
+            private set { _optionItemName = value; }
         }
 
         public decimal UnitPrice
         {
             get { return _unitPrice; }
-            set { _unitPrice = value; }
+            private set { _unitPrice = value; }
         }
-
-
     }
 }

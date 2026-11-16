@@ -34,7 +34,7 @@
             btnEventCreate = new MaterialSkin.Controls.MaterialButton();
             panelEventsList = new Panel();
             panelEventsTitle = new Panel();
-            lblEventsTitle = new Label();
+            lblEventsTitle = new MaterialSkin.Controls.MaterialLabel();
             mtLvEvents = new MaterialSkin.Controls.MaterialListView();
             NameColumn = new ColumnHeader();
             ClientColumn = new ColumnHeader();
@@ -43,25 +43,28 @@
             ChildsColumn = new ColumnHeader();
             DurationColumn = new ColumnHeader();
             panelEventsCU = new Panel();
-            label1 = new Label();
-            label2 = new Label();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
             mtbEventName = new MaterialSkin.Controls.MaterialTextBox();
-            label3 = new Label();
+            label3 = new MaterialSkin.Controls.MaterialLabel();
             mtbEventClient = new MaterialSkin.Controls.MaterialTextBox();
-            label4 = new Label();
+            label4 = new MaterialSkin.Controls.MaterialLabel();
             dtpEventDate = new DateTimePicker();
-            label5 = new Label();
-            mtbEventAdults = new MaterialSkin.Controls.MaterialTextBox();
-            label6 = new Label();
-            mtbEventChilds = new MaterialSkin.Controls.MaterialTextBox();
-            label7 = new Label();
-            mtbEventDuration = new MaterialSkin.Controls.MaterialTextBox();
+            label5 = new MaterialSkin.Controls.MaterialLabel();
+            nudEventAdults = new NumericUpDown();
+            label6 = new MaterialSkin.Controls.MaterialLabel();
+            nudEventChilds = new NumericUpDown();
+            label7 = new MaterialSkin.Controls.MaterialLabel();
+            nudEventDuration = new NumericUpDown();
             btnGuardarEvento = new MaterialSkin.Controls.MaterialButton();
             btnVolverEvento = new MaterialSkin.Controls.MaterialButton();
             panelCrudCtrlEv.SuspendLayout();
             panelEventsList.SuspendLayout();
             panelEventsTitle.SuspendLayout();
             panelEventsCU.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudEventAdults).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventChilds).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventDuration).BeginInit();
             SuspendLayout();
             //
             // panelCrudCtrlEv
@@ -162,7 +165,9 @@
             // lblEventsTitle
             // 
             lblEventsTitle.AutoSize = true;
-            lblEventsTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblEventsTitle.Depth = 0;
+            lblEventsTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblEventsTitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblEventsTitle.Location = new Point(15, 10);
             lblEventsTitle.Name = "lblEventsTitle";
             lblEventsTitle.Size = new Size(100, 24);
@@ -188,6 +193,7 @@
             mtLvEvents.TabIndex = 1;
             mtLvEvents.UseCompatibleStateImageBehavior = false;
             mtLvEvents.View = System.Windows.Forms.View.Details;
+            mtLvEvents.DoubleClick += mtLvEvents_DoubleClick;
             //
             // NameColumn
             //
@@ -229,11 +235,11 @@
             panelEventsCU.Controls.Add(label4);
             panelEventsCU.Controls.Add(dtpEventDate);
             panelEventsCU.Controls.Add(label5);
-            panelEventsCU.Controls.Add(mtbEventAdults);
+            panelEventsCU.Controls.Add(nudEventAdults);
             panelEventsCU.Controls.Add(label6);
-            panelEventsCU.Controls.Add(mtbEventChilds);
+            panelEventsCU.Controls.Add(nudEventChilds);
             panelEventsCU.Controls.Add(label7);
-            panelEventsCU.Controls.Add(mtbEventDuration);
+            panelEventsCU.Controls.Add(nudEventDuration);
             panelEventsCU.Controls.Add(btnGuardarEvento);
             panelEventsCU.Controls.Add(btnVolverEvento);
             panelEventsCU.Location = new Point(640, 0);
@@ -244,8 +250,10 @@
             // label1
             //
             label1.AutoSize = true;
-            label1.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(78, 25);
+            label1.Depth = 0;
+            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
+            label1.Location = new Point(40, 30);
             label1.Name = "label1";
             label1.Size = new Size(160, 24);
             label1.TabIndex = 0;
@@ -254,7 +262,10 @@
             // label2
             //
             label2.AutoSize = true;
-            label2.Location = new Point(78, 80);
+            label2.Depth = 0;
+            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
+            label2.Location = new Point(40, 90);
             label2.Name = "label2";
             label2.Size = new Size(110, 15);
             label2.TabIndex = 1;
@@ -267,7 +278,7 @@
             mtbEventName.Depth = 0;
             mtbEventName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbEventName.LeadingIcon = null;
-            mtbEventName.Location = new Point(78, 100);
+            mtbEventName.Location = new Point(40, 112);
             mtbEventName.MaxLength = 50;
             mtbEventName.MouseState = MaterialSkin.MouseState.OUT;
             mtbEventName.Multiline = false;
@@ -280,7 +291,10 @@
             // label3
             //
             label3.AutoSize = true;
-            label3.Location = new Point(78, 170);
+            label3.Depth = 0;
+            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label3.MouseState = MaterialSkin.MouseState.HOVER;
+            label3.Location = new Point(40, 182);
             label3.Name = "label3";
             label3.Size = new Size(110, 15);
             label3.TabIndex = 3;
@@ -293,7 +307,7 @@
             mtbEventClient.Depth = 0;
             mtbEventClient.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbEventClient.LeadingIcon = null;
-            mtbEventClient.Location = new Point(78, 190);
+            mtbEventClient.Location = new Point(40, 204);
             mtbEventClient.MaxLength = 50;
             mtbEventClient.MouseState = MaterialSkin.MouseState.OUT;
             mtbEventClient.Multiline = false;
@@ -306,7 +320,10 @@
             // label4
             //
             label4.AutoSize = true;
-            label4.Location = new Point(78, 260);
+            label4.Depth = 0;
+            label4.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label4.MouseState = MaterialSkin.MouseState.HOVER;
+            label4.Location = new Point(40, 274);
             label4.Name = "label4";
             label4.Size = new Size(125, 15);
             label4.TabIndex = 5;
@@ -315,9 +332,9 @@
             // dtpEventDate
             //
             dtpEventDate.CustomFormat = "dd/MM/yyyy HH:mm";
-            dtpEventDate.Font = new Font("Roboto", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dtpEventDate.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dtpEventDate.Format = DateTimePickerFormat.Custom;
-            dtpEventDate.Location = new Point(78, 280);
+            dtpEventDate.Location = new Point(40, 296);
             dtpEventDate.Name = "dtpEventDate";
             dtpEventDate.Size = new Size(250, 27);
             dtpEventDate.TabIndex = 6;
@@ -325,80 +342,67 @@
             // label5
             //
             label5.AutoSize = true;
-            label5.Location = new Point(400, 80);
+            label5.Depth = 0;
+            label5.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label5.MouseState = MaterialSkin.MouseState.HOVER;
+            label5.Location = new Point(340, 90);
             label5.Name = "label5";
             label5.Size = new Size(100, 15);
             label5.TabIndex = 7;
             label5.Text = "Invitados adultos";
             //
-            // mtbEventAdults
+            // nudEventAdults
             //
-            mtbEventAdults.AnimateReadOnly = false;
-            mtbEventAdults.BorderStyle = BorderStyle.None;
-            mtbEventAdults.Depth = 0;
-            mtbEventAdults.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbEventAdults.LeadingIcon = null;
-            mtbEventAdults.Location = new Point(400, 100);
-            mtbEventAdults.MaxLength = 50;
-            mtbEventAdults.MouseState = MaterialSkin.MouseState.OUT;
-            mtbEventAdults.Multiline = false;
-            mtbEventAdults.Name = "mtbEventAdults";
-            mtbEventAdults.Size = new Size(150, 50);
-            mtbEventAdults.TabIndex = 8;
-            mtbEventAdults.Text = "";
-            mtbEventAdults.TrailingIcon = null;
+            nudEventAdults.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudEventAdults.Location = new Point(340, 112);
+            nudEventAdults.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudEventAdults.Name = "nudEventAdults";
+            nudEventAdults.Size = new Size(250, 27);
+            nudEventAdults.TabIndex = 8;
             //
             // label6
             //
             label6.AutoSize = true;
-            label6.Location = new Point(400, 170);
+            label6.Depth = 0;
+            label6.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label6.MouseState = MaterialSkin.MouseState.HOVER;
+            label6.Location = new Point(340, 182);
             label6.Name = "label6";
             label6.Size = new Size(90, 15);
             label6.TabIndex = 9;
             label6.Text = "Invitados niños";
             //
-            // mtbEventChilds
+            // nudEventChilds
             //
-            mtbEventChilds.AnimateReadOnly = false;
-            mtbEventChilds.BorderStyle = BorderStyle.None;
-            mtbEventChilds.Depth = 0;
-            mtbEventChilds.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbEventChilds.LeadingIcon = null;
-            mtbEventChilds.Location = new Point(400, 190);
-            mtbEventChilds.MaxLength = 50;
-            mtbEventChilds.MouseState = MaterialSkin.MouseState.OUT;
-            mtbEventChilds.Multiline = false;
-            mtbEventChilds.Name = "mtbEventChilds";
-            mtbEventChilds.Size = new Size(150, 50);
-            mtbEventChilds.TabIndex = 10;
-            mtbEventChilds.Text = "";
-            mtbEventChilds.TrailingIcon = null;
+            nudEventChilds.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudEventChilds.Location = new Point(340, 204);
+            nudEventChilds.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudEventChilds.Name = "nudEventChilds";
+            nudEventChilds.Size = new Size(250, 27);
+            nudEventChilds.TabIndex = 10;
             //
             // label7
             //
             label7.AutoSize = true;
-            label7.Location = new Point(400, 260);
+            label7.Depth = 0;
+            label7.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label7.MouseState = MaterialSkin.MouseState.HOVER;
+            label7.Location = new Point(340, 274);
             label7.Name = "label7";
             label7.Size = new Size(100, 15);
             label7.TabIndex = 11;
             label7.Text = "Duracion (horas)";
             //
-            // mtbEventDuration
+            // nudEventDuration
             //
-            mtbEventDuration.AnimateReadOnly = false;
-            mtbEventDuration.BorderStyle = BorderStyle.None;
-            mtbEventDuration.Depth = 0;
-            mtbEventDuration.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbEventDuration.LeadingIcon = null;
-            mtbEventDuration.Location = new Point(400, 280);
-            mtbEventDuration.MaxLength = 50;
-            mtbEventDuration.MouseState = MaterialSkin.MouseState.OUT;
-            mtbEventDuration.Multiline = false;
-            mtbEventDuration.Name = "mtbEventDuration";
-            mtbEventDuration.Size = new Size(150, 50);
-            mtbEventDuration.TabIndex = 12;
-            mtbEventDuration.Text = "";
-            mtbEventDuration.TrailingIcon = null;
+            nudEventDuration.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudEventDuration.Location = new Point(340, 296);
+            nudEventDuration.Maximum = new decimal(new int[] { 24, 0, 0, 0 });
+            nudEventDuration.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            nudEventDuration.Name = "nudEventDuration";
+            nudEventDuration.Size = new Size(250, 27);
+            nudEventDuration.TabIndex = 12;
+            nudEventDuration.Value = new decimal(new int[] { 1, 0, 0, 0 });
             //
             // btnGuardarEvento
             //
@@ -408,7 +412,7 @@
             btnGuardarEvento.Depth = 0;
             btnGuardarEvento.HighEmphasis = true;
             btnGuardarEvento.Icon = null;
-            btnGuardarEvento.Location = new Point(150, 400);
+            btnGuardarEvento.Location = new Point(40, 362);
             btnGuardarEvento.Margin = new Padding(4, 6, 4, 6);
             btnGuardarEvento.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarEvento.Name = "btnGuardarEvento";
@@ -429,7 +433,7 @@
             btnVolverEvento.Depth = 0;
             btnVolverEvento.HighEmphasis = true;
             btnVolverEvento.Icon = null;
-            btnVolverEvento.Location = new Point(350, 400);
+            btnVolverEvento.Location = new Point(500, 362);
             btnVolverEvento.Margin = new Padding(4, 6, 4, 6);
             btnVolverEvento.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverEvento.Name = "btnVolverEvento";
@@ -459,6 +463,9 @@
             panelEventsTitle.PerformLayout();
             panelEventsCU.ResumeLayout(false);
             panelEventsCU.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudEventAdults).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventChilds).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventDuration).EndInit();
             ResumeLayout(false);
         }
 
@@ -466,7 +473,7 @@
 
         private Panel panelEventsList;
         private Panel panelEventsTitle;
-        private Label lblEventsTitle;
+        private MaterialSkin.Controls.MaterialLabel lblEventsTitle;
         private Panel panelEventsCU;
         private MaterialSkin.Controls.MaterialListView mtLvEvents;
         private ColumnHeader NameColumn;
@@ -479,19 +486,19 @@
         private MaterialSkin.Controls.MaterialButton btnEventRemove;
         private MaterialSkin.Controls.MaterialButton btnEventEdit;
         private MaterialSkin.Controls.MaterialButton btnEventCreate;
-        private Label label1;
-        private Label label2;
+        private MaterialSkin.Controls.MaterialLabel label1;
+        private MaterialSkin.Controls.MaterialLabel label2;
         private MaterialSkin.Controls.MaterialTextBox mtbEventName;
-        private Label label3;
+        private MaterialSkin.Controls.MaterialLabel label3;
         private MaterialSkin.Controls.MaterialTextBox mtbEventClient;
-        private Label label4;
+        private MaterialSkin.Controls.MaterialLabel label4;
         private DateTimePicker dtpEventDate;
-        private Label label5;
-        private MaterialSkin.Controls.MaterialTextBox mtbEventAdults;
-        private Label label6;
-        private MaterialSkin.Controls.MaterialTextBox mtbEventChilds;
-        private Label label7;
-        private MaterialSkin.Controls.MaterialTextBox mtbEventDuration;
+        private MaterialSkin.Controls.MaterialLabel label5;
+        private NumericUpDown nudEventAdults;
+        private MaterialSkin.Controls.MaterialLabel label6;
+        private NumericUpDown nudEventChilds;
+        private MaterialSkin.Controls.MaterialLabel label7;
+        private NumericUpDown nudEventDuration;
         private MaterialSkin.Controls.MaterialButton btnGuardarEvento;
         private MaterialSkin.Controls.MaterialButton btnVolverEvento;
     }

@@ -29,6 +29,8 @@ namespace ProyectoPresupuestoEvento.View
             menuController = controller;
             this.menuTagController = menuTagController;
             InitializeComponent();
+            VisualHelper.fitColumns(mtLvMenus);
+            VisualHelper.centerContent(panelMenuUpload);
         }
 
         public void setFormMenuTags(FormMenuTags formMenuTags)
@@ -79,6 +81,8 @@ namespace ProyectoPresupuestoEvento.View
 
                 mtLvMenus.Items.Add(fila);
             }
+
+            VisualHelper.showEmptyMessage(mtLvMenus, "Todavia no hay menus. Toque Crear para agregar uno.");
         }
 
         private void loadTags()
@@ -108,6 +112,11 @@ namespace ProyectoPresupuestoEvento.View
             panelMenuUpload.Dock = DockStyle.Fill;
         }
 
+        private void mtLvMenus_DoubleClick(object sender, EventArgs e)
+        {
+            btnMenuEdit_Click(sender, e);
+        }
+
         private void btnMenuEdit_Click(object sender, EventArgs e)
         {
             if (mtLvMenus.SelectedItems.Count == 0)
@@ -122,8 +131,8 @@ namespace ProyectoPresupuestoEvento.View
             idEditando = selected.Id;
 
             mtbMenuDescription.Text = selected.Description;
-            mtbMenuPriceAdult.Text = selected.PriceAdult.ToString();
-            mtbMenuPriceChild.Text = selected.PriceChild.ToString();
+            nudMenuPriceAdult.Value = selected.PriceAdult;
+            nudMenuPriceChild.Value = selected.PriceChild;
 
             loadTags();
             for (int i = 0; i < clbMenuTags.Items.Count; i++)
@@ -182,8 +191,8 @@ namespace ProyectoPresupuestoEvento.View
             panelMenuUpload.Dock = DockStyle.None;
 
             mtbMenuDescription.Text = null;
-            mtbMenuPriceAdult.Text = null;
-            mtbMenuPriceChild.Text = null;
+            nudMenuPriceAdult.Value = 0;
+            nudMenuPriceChild.Value = 0;
             clbMenuTags.Items.Clear();
 
             idEditando = 0;
@@ -191,19 +200,8 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnGuardarMenu_Click(object sender, EventArgs e)
         {
-            decimal priceAdult;
-            if (!decimal.TryParse(mtbMenuPriceAdult.Text, out priceAdult))
-            {
-                MessageHelper.showWarning("ingrese un precio por adulto valido");
-                return;
-            }
-
-            decimal priceChild;
-            if (!decimal.TryParse(mtbMenuPriceChild.Text, out priceChild))
-            {
-                MessageHelper.showWarning("ingrese un precio por niño valido");
-                return;
-            }
+            decimal priceAdult = decimal.Round(nudMenuPriceAdult.Value, 2);
+            decimal priceChild = decimal.Round(nudMenuPriceChild.Value, 2);
 
             List<MenuTagDto> etiquetas = new List<MenuTagDto>();
             foreach (MenuTagDto etiqueta in clbMenuTags.CheckedItems)

@@ -6,31 +6,38 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
 using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de los presupuestos: armarlos, validarlos, calcularlos y cambiar su estado
     internal class QuoteService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<Quote> repository;
 
         public QuoteService()
         {
-
+            repository = QuoteRepository.getInstance();
         }
 
+        // crea un presupuesto nuevo con los datos actuales del evento, la ubicacion, los menus y los servicios
         public void addQuote(QuoteDto dto)
         {
             Quote quote = toModel(dto);
 
+            validateEventNotPast(quote.EventDate, "crear");
             validateQuote(quote, null);
 
             quote.calculateTotals();
-            QuoteRepository.getInstance().addToRepository(quote);
+            repository.addToRepository(quote);
         }
 
+        // devuelve todos los presupuestos como dto, usando solo sus datos congelados
         public List<QuoteDto> getQuotes()
         {
-            List<Quote> quotes = QuoteRepository.getInstance().getAll();
+            List<Quote> quotes = repository.getAll();
             List<QuoteDto> dtos = new List<QuoteDto>();
 
             foreach (Quote quote in quotes)
@@ -43,7 +50,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         public List<QuoteDto> getQuotesByEventItem(int eventItemId)
         {
-            List<Quote> quotes = QuoteRepository.getInstance().getAll();
+            List<Quote> quotes = repository.getAll();
             List<QuoteDto> dtos = new List<QuoteDto>();
 
             foreach (Quote quote in quotes)
@@ -59,45 +66,53 @@ namespace ProyectoPresupuestoEvento.Service
 
         public QuoteDto getQuoteById(int id)
         {
-            Quote quote = QuoteRepository.getInstance().getById(id);
-            if (quote == null)
-            {
-                return null;
-            }
+            Quote quote = repository.getById(id);
             return toDto(quote);
         }
 
+        // lo usa EventItemService para saber si puede cambiar la fecha del evento
+        public bool hasAcceptedQuote(int eventItemId)
+        {
+            foreach (Quote quote in repository.getAll())
+            {
+                if (quote.EventItemId == eventItemId && quote.State == EstadoPresupuesto.Aceptado)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // solo edita un pendiente: arma todo de nuevo con toModel, asi toma los datos y precios actuales
         public void updateQuote(int id, QuoteDto dto)
         {
-            Quote original = QuoteRepository.getInstance().getById(id);
-            if (original == null)
-            {
-                return;
-            }
-
+            Quote original = repository.getById(id);
             if (!original.isEditable())
             {
                 throw new BusinessRuleException("solo se puede editar un presupuesto pendiente");
             }
 
+            // el evento de un presupuesto no se puede cambiar
             dto.EventItemId = original.EventItemId;
             Quote quote = toModel(dto);
 
             validateQuote(quote, original);
 
             quote.calculateTotals();
-            QuoteRepository.getInstance().update(id, quote);
+            repository.update(id, quote);
         }
 
         public void removeQuote(int id)
         {
-            QuoteRepository.getInstance().removeById(id);
+            repository.removeById(id);
         }
 
+        // borra los presupuestos de un evento, lo llama EventItemService al borrar el evento
         public void removeQuotesByEventItem(int eventItemId)
         {
+            // primero junta los ids y despues borra, para no borrar mientras recorre la lista
             List<int> ids = new List<int>();
-            foreach (Quote quote in QuoteRepository.getInstance().getAll())
+            foreach (Quote quote in repository.getAll())
             {
                 if (quote.EventItemId == eventItemId)
                 {
@@ -107,19 +122,21 @@ namespace ProyectoPresupuestoEvento.Service
 
             foreach (int id in ids)
             {
-                QuoteRepository.getInstance().removeById(id);
+                repository.removeById(id);
             }
         }
 
+        // acepta un presupuesto: desde ahi queda congelado
         public void acceptQuote(int id)
         {
-            Quote quote = QuoteRepository.getInstance().getById(id);
-            if (quote == null)
-            {
-                return;
-            }
+            Quote quote = repository.getById(id);
+            // cambia el estado solo en memoria: si alguna validacion falla, no se guarda nada
+            quote.accept();
 
-            foreach (Quote otro in QuoteRepository.getInstance().getAll())
+            validateEventNotPast(quote.EventDate, "aceptar");
+            validateEventNotChanged(quote);
+
+            foreach (Quote otro in repository.getAll())
             {
                 if (otro.Id != quote.Id && otro.EventItemId == quote.EventItemId && otro.State == EstadoPresupuesto.Aceptado)
                 {
@@ -127,30 +144,24 @@ namespace ProyectoPresupuestoEvento.Service
                 }
             }
 
-            quote.accept();
-            QuoteRepository.getInstance().update(id, quote);
+            validateUbicationFree(quote);
+
+            // recien aca se guarda el nuevo estado
+            repository.update(id, quote);
         }
 
         public void cancelQuote(int id)
         {
-            Quote quote = QuoteRepository.getInstance().getById(id);
-            if (quote == null)
-            {
-                return;
-            }
-
+            Quote quote = repository.getById(id);
             quote.cancel();
-            QuoteRepository.getInstance().update(id, quote);
+            repository.update(id, quote);
         }
 
+        // crea un pendiente nuevo con la misma ubicacion, menus y servicios que el original
         public void cloneQuote(int id)
         {
-            Quote original = QuoteRepository.getInstance().getById(id);
-            if (original == null)
-            {
-                return;
-            }
-
+            Quote original = repository.getById(id);
+            // no se puede clonar si usa algo dado de baja
             List<string> inactivos = getInactiveItems(original);
             if (inactivos.Count > 0)
             {
@@ -159,11 +170,18 @@ namespace ProyectoPresupuestoEvento.Service
             }
 
             EventItem eventItem = getEventItem(original.EventItemId);
+            validateEventNotPast(eventItem.Date, "clonar");
+
+            // el clon toma los datos y precios actuales, no las copias del original
             Quote nuevo = original.clone(eventItem);
+            // las lineas se revisan como si se armara a mano: por ejemplo, el menu puede haber perdido la etiqueta
+            validateQuote(nuevo, null);
+
             nuevo.calculateTotals();
-            QuoteRepository.getInstance().addToRepository(nuevo);
+            repository.addToRepository(nuevo);
         }
 
+        // calcula los totales mientras se carga el presupuesto, sin guardarlo
         public QuoteDto calculatePreview(QuoteDto dto)
         {
             Quote quote = toModel(dto);
@@ -175,8 +193,17 @@ namespace ProyectoPresupuestoEvento.Service
 
         //validaciones
 
+        // reglas de las lineas: platos, variantes repetidas, etiquetas del menu, servicios repetidos y elementos de baja
         private void validateQuote(Quote quote, Quote original)
         {
+            foreach (DetailMenu detailMenu in quote.MenusList)
+            {
+                if (detailMenu.AdultQuantity + detailMenu.ChildQuantity == 0)
+                {
+                    throw new BusinessRuleException("cada linea de catering tiene que tener al menos un plato");
+                }
+            }
+
             for (int i = 0; i < quote.MenusList.Count; i++)
             {
                 for (int j = i + 1; j < quote.MenusList.Count; j++)
@@ -217,6 +244,7 @@ namespace ProyectoPresupuestoEvento.Service
                 }
             }
 
+            // al editar se pueden conservar los elementos de baja que ya tenia el original
             List<string> inactivos = getInactiveItems(quote);
             foreach (string nombre in inactivos)
             {
@@ -227,6 +255,45 @@ namespace ProyectoPresupuestoEvento.Service
             }
         }
 
+        private void validateEventNotPast(DateTime eventDate, string accion)
+        {
+            if (eventDate.Date < DateTime.Today)
+            {
+                throw new BusinessRuleException("no se puede " + accion + " un presupuesto de un evento que ya paso");
+            }
+        }
+
+        // compara las copias del presupuesto con el evento actual
+        private void validateEventNotChanged(Quote quote)
+        {
+            EventItem eventItem = getEventItem(quote.EventItemId);
+
+            bool igual = quote.EventName == eventItem.Name
+                && quote.EventClientName == eventItem.ClientName
+                && quote.EventDate.ToString("yyyy-MM-dd HH:mm") == eventItem.Date.ToString("yyyy-MM-dd HH:mm")
+                && quote.EventGuestAdults == eventItem.GuestAdults
+                && quote.EventGuestChilds == eventItem.GuestChilds
+                && quote.EventDuration == eventItem.Duration;
+
+            if (!igual)
+            {
+                throw new BusinessRuleException("los datos del evento cambiaron: edite y guarde el presupuesto antes de aceptarlo");
+            }
+        }
+
+        // busca otro aceptado en el mismo salon con un horario que se pise
+        private void validateUbicationFree(Quote quote)
+        {
+            foreach (Quote otro in repository.getAll())
+            {
+                if (otro.Id != quote.Id && otro.State == EstadoPresupuesto.Aceptado && otro.Ubication.Id == quote.Ubication.Id && quote.overlapsWith(otro))
+                {
+                    throw new BusinessRuleException("la ubicacion ya esta ocupada en ese horario por el evento " + otro.EventName);
+                }
+            }
+        }
+
+        // nombres de la ubicacion, los menus y los servicios dados de baja que usa el presupuesto
         private List<string> getInactiveItems(Quote quote)
         {
             List<string> nombres = new List<string>();
@@ -259,10 +326,6 @@ namespace ProyectoPresupuestoEvento.Service
         {
             EventItemService eventItemService = new EventItemService();
             EventItem eventItem = eventItemService.getModelById(eventItemId);
-            if (eventItem == null)
-            {
-                throw new BusinessRuleException("seleccione un evento");
-            }
             return eventItem;
         }
 
@@ -270,26 +333,18 @@ namespace ProyectoPresupuestoEvento.Service
 
         //conversiones
 
+        // pide los objetos reales por id a cada service, y el presupuesto y sus lineas copian sus datos
         public Quote toModel(QuoteDto dto)
         {
             EventItem eventItem = getEventItem(dto.EventItemId);
 
             UbicationService ubicationService = new UbicationService();
             Ubication ubication = ubicationService.getModelById(dto.UbicationId);
-            if (ubication == null)
-            {
-                throw new BusinessRuleException("seleccione una ubicacion");
-            }
-
             MenuService menuService = new MenuService();
             List<DetailMenu> menus = new List<DetailMenu>();
             foreach (DetailMenuDto lineDto in dto.MenusList)
             {
                 Menu menu = menuService.getModelById(lineDto.MenuId);
-                if (menu == null)
-                {
-                    throw new BusinessRuleException("no se encontro el menu elegido");
-                }
                 menus.Add(new DetailMenu(menu, lineDto.TagDescription, lineDto.AdultQuantity, lineDto.ChildQuantity));
             }
 
@@ -298,10 +353,6 @@ namespace ProyectoPresupuestoEvento.Service
             foreach (DetailOptionItemDto lineDto in dto.OptionItemsList)
             {
                 OptionItem optionItem = optionItemService.getModelById(lineDto.OptionItemId);
-                if (optionItem == null)
-                {
-                    throw new BusinessRuleException("no se encontro el servicio elegido");
-                }
                 optionItems.Add(new DetailOptionItem(optionItem));
             }
 
@@ -309,6 +360,7 @@ namespace ProyectoPresupuestoEvento.Service
             return quote;
         }
 
+        // pasa al dto solo las copias congeladas, sin consultar otras entidades
         public QuoteDto toDto(Quote quote)
         {
             List<DetailMenuDto> menusDto = new List<DetailMenuDto>();

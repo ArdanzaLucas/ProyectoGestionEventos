@@ -6,34 +6,39 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de las ubicaciones
     internal class UbicationService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<Ubication> repository;
 
         public UbicationService()
         {
-
+            repository = UbicationRepository.getInstance();
         }
 
         public void addToRepository(UbicationDto dto)
         {
-            UbicationRepository.getInstance().addToRepository(toModel(dto));
+            Ubication ubication = toModel(dto);
+            validateUniqueName(ubication.Name, 0);
+            repository.addToRepository(ubication);
         }
         
+        // devuelve solo los activos
         public List<UbicationDto> getUbications()
         {
-            List<Ubication> ubications = UbicationRepository.getInstance().getAll();
+            List<Ubication> ubications = repository.getAll();
             List<UbicationDto> dtos = new List<UbicationDto>();
 
             foreach (Ubication ubication in ubications)
             {
-                if (ubication.IsActive)
-                {
-                    UbicationDto dto = toDto(ubication);
-                    dtos.Add(dto);
-                }
+                UbicationDto dto = toDto(ubication);
+                dtos.Add(dto);
             }
 
             return dtos;
@@ -41,12 +46,26 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void updateUbication(int id, UbicationDto dto)
         {
-            UbicationRepository.getInstance().update(id, toModel(dto));
+            Ubication ubication = toModel(dto);
+            validateUniqueName(ubication.Name, id);
+            repository.update(id, ubication);
+        }
+
+        // compara solo con los activos y sin distinguir mayusculas
+        private void validateUniqueName(string name, int idEditando)
+        {
+            foreach (Ubication ubication in repository.getAll())
+            {
+                if (ubication.Id != idEditando && ubication.Name.ToLower() == name.ToLower())
+                {
+                    throw new BusinessRuleException("ya existe una ubicacion con ese nombre");
+                }
+            }
         }
 
         public Ubication getModelById(int id)
         {
-            return UbicationRepository.getInstance().getById(id);
+            return repository.getById(id);
         }
 
         public Ubication toModel(UbicationDto dto)
@@ -62,16 +81,12 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
 
+        // baja logica: queda guardado pero inactivo
         public void removeUbication(int id)
         {
-            Ubication ubication = UbicationRepository.getInstance().getById(id);
-            if (ubication == null)
-            {
-                return;
-            }
-
+            Ubication ubication = repository.getById(id);
             ubication.deactivate();
-            UbicationRepository.getInstance().update(id, ubication);
+            repository.update(id, ubication);
         }
     }
 }

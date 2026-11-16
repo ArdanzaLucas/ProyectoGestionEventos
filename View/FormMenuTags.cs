@@ -27,6 +27,8 @@ namespace ProyectoPresupuestoEvento.View
             this.menuTagController = controller;
             this.formMenus = formMenus;
             InitializeComponent();
+            VisualHelper.fitColumns(mtLvMenuTags);
+            VisualHelper.centerContent(panelMenuTagUpload);
         }
 
 
@@ -54,13 +56,14 @@ namespace ProyectoPresupuestoEvento.View
             {
                 ListViewItem fila = new ListViewItem();
 
-                fila.Text = etiqueta.Id.ToString();
-                fila.SubItems.Add(etiqueta.Description);
+                fila.Text = etiqueta.Description;
 
                 fila.Tag = etiqueta;
 
                 mtLvMenuTags.Items.Add(fila);
             }
+
+            VisualHelper.showEmptyMessage(mtLvMenuTags, "Todavia no hay etiquetas. Toque Crear para agregar una.");
         }
 
 
@@ -74,6 +77,11 @@ namespace ProyectoPresupuestoEvento.View
             panelMenuTagCU.Visible = true;
             panelMenuTagCU.Dock = DockStyle.Fill;
             panelMenuTagUpload.Dock = DockStyle.Fill;
+        }
+
+        private void mtLvMenuTags_DoubleClick(object sender, EventArgs e)
+        {
+            btnMenuTagEdit_Click(sender, e);
         }
 
         private void btnMenuTagEdit_Click(object sender, EventArgs e)
@@ -125,7 +133,16 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            menuTagController.removeMenuTag(selected.Id);
+            try
+            {
+                menuTagController.removeMenuTag(selected.Id);
+            }
+            catch (BusinessRuleException ex)
+            {
+                MessageHelper.showWarning(ex.Message);
+                return;
+            }
+
             reloadMtlv();
         }
 

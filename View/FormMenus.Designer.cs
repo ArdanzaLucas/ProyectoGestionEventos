@@ -30,7 +30,7 @@
         {
             panelMenusList = new Panel();
             panelMenusTitle = new Panel();
-            lblMenusTitle = new Label();
+            lblMenusTitle = new MaterialSkin.Controls.MaterialLabel();
             mtLvMenus = new MaterialSkin.Controls.MaterialListView();
             Description = new ColumnHeader();
             AdultPrice = new ColumnHeader();
@@ -44,19 +44,21 @@
             panelMenuUpload = new Panel();
             btnVolverMenu = new MaterialSkin.Controls.MaterialButton();
             btnGuardarMenu = new MaterialSkin.Controls.MaterialButton();
-            label5 = new Label();
+            label5 = new MaterialSkin.Controls.MaterialLabel();
             clbMenuTags = new CheckedListBox();
-            mtbMenuPriceChild = new MaterialSkin.Controls.MaterialTextBox();
-            mtbMenuPriceAdult = new MaterialSkin.Controls.MaterialTextBox();
-            label4 = new Label();
-            label3 = new Label();
+            nudMenuPriceChild = new NumericUpDown();
+            nudMenuPriceAdult = new NumericUpDown();
+            label4 = new MaterialSkin.Controls.MaterialLabel();
+            label3 = new MaterialSkin.Controls.MaterialLabel();
             mtbMenuDescription = new MaterialSkin.Controls.MaterialTextBox();
-            label2 = new Label();
-            label1 = new Label();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
             panelMenusList.SuspendLayout();
             panelMenusTitle.SuspendLayout();
             panelCrudCtrlMenus.SuspendLayout();
             panelMenuUpload.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudMenuPriceAdult).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudMenuPriceChild).BeginInit();
             SuspendLayout();
             // 
             // panelMenusList
@@ -81,7 +83,9 @@
             // lblMenusTitle
             // 
             lblMenusTitle.AutoSize = true;
-            lblMenusTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMenusTitle.Depth = 0;
+            lblMenusTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblMenusTitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblMenusTitle.Location = new Point(15, 10);
             lblMenusTitle.Name = "lblMenusTitle";
             lblMenusTitle.Size = new Size(100, 24);
@@ -107,6 +111,7 @@
             mtLvMenus.TabIndex = 1;
             mtLvMenus.UseCompatibleStateImageBehavior = false;
             mtLvMenus.View = System.Windows.Forms.View.Details;
+            mtLvMenus.DoubleClick += mtLvMenus_DoubleClick;
             // 
             // Description
             // 
@@ -231,8 +236,8 @@
             panelMenuUpload.Controls.Add(btnGuardarMenu);
             panelMenuUpload.Controls.Add(label5);
             panelMenuUpload.Controls.Add(clbMenuTags);
-            panelMenuUpload.Controls.Add(mtbMenuPriceChild);
-            panelMenuUpload.Controls.Add(mtbMenuPriceAdult);
+            panelMenuUpload.Controls.Add(nudMenuPriceChild);
+            panelMenuUpload.Controls.Add(nudMenuPriceAdult);
             panelMenuUpload.Controls.Add(label4);
             panelMenuUpload.Controls.Add(label3);
             panelMenuUpload.Controls.Add(mtbMenuDescription);
@@ -251,7 +256,7 @@
             btnVolverMenu.Depth = 0;
             btnVolverMenu.HighEmphasis = true;
             btnVolverMenu.Icon = null;
-            btnVolverMenu.Location = new Point(335, 476);
+            btnVolverMenu.Location = new Point(500, 338);
             btnVolverMenu.Margin = new Padding(4, 6, 4, 6);
             btnVolverMenu.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverMenu.Name = "btnVolverMenu";
@@ -272,7 +277,7 @@
             btnGuardarMenu.Depth = 0;
             btnGuardarMenu.HighEmphasis = true;
             btnGuardarMenu.Icon = null;
-            btnGuardarMenu.Location = new Point(144, 476);
+            btnGuardarMenu.Location = new Point(40, 338);
             btnGuardarMenu.Margin = new Padding(4, 6, 4, 6);
             btnGuardarMenu.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarMenu.Name = "btnGuardarMenu";
@@ -288,7 +293,10 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(370, 78);
+            label5.Depth = 0;
+            label5.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label5.MouseState = MaterialSkin.MouseState.HOVER;
+            label5.Location = new Point(340, 90);
             label5.Name = "label5";
             label5.Size = new Size(55, 15);
             label5.TabIndex = 8;
@@ -297,63 +305,56 @@
             // clbMenuTags
             // 
             clbMenuTags.FormattingEnabled = true;
-            clbMenuTags.Location = new Point(351, 115);
+            clbMenuTags.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            clbMenuTags.Location = new Point(340, 112);
             clbMenuTags.CheckOnClick = true;
             clbMenuTags.Name = "clbMenuTags";
-            clbMenuTags.Size = new Size(120, 94);
+            clbMenuTags.Size = new Size(250, 186);
             clbMenuTags.TabIndex = 7;
             // 
-            // mtbMenuPriceChild
+            // nudMenuPriceChild
             // 
-            mtbMenuPriceChild.AnimateReadOnly = false;
-            mtbMenuPriceChild.BorderStyle = BorderStyle.None;
-            mtbMenuPriceChild.Depth = 0;
-            mtbMenuPriceChild.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbMenuPriceChild.LeadingIcon = null;
-            mtbMenuPriceChild.Location = new Point(73, 324);
-            mtbMenuPriceChild.MaxLength = 50;
-            mtbMenuPriceChild.MouseState = MaterialSkin.MouseState.OUT;
-            mtbMenuPriceChild.Multiline = false;
-            mtbMenuPriceChild.Name = "mtbMenuPriceChild";
-            mtbMenuPriceChild.Size = new Size(100, 50);
-            mtbMenuPriceChild.TabIndex = 6;
-            mtbMenuPriceChild.Text = "";
-            mtbMenuPriceChild.TrailingIcon = null;
+            nudMenuPriceChild.DecimalPlaces = 2;
+            nudMenuPriceChild.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudMenuPriceChild.Location = new Point(40, 272);
+            nudMenuPriceChild.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
+            nudMenuPriceChild.Name = "nudMenuPriceChild";
+            nudMenuPriceChild.Size = new Size(250, 27);
+            nudMenuPriceChild.TabIndex = 6;
             // 
-            // mtbMenuPriceAdult
+            // nudMenuPriceAdult
             // 
-            mtbMenuPriceAdult.AnimateReadOnly = false;
-            mtbMenuPriceAdult.BorderStyle = BorderStyle.None;
-            mtbMenuPriceAdult.Depth = 0;
-            mtbMenuPriceAdult.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbMenuPriceAdult.LeadingIcon = null;
-            mtbMenuPriceAdult.Location = new Point(78, 204);
-            mtbMenuPriceAdult.MaxLength = 50;
-            mtbMenuPriceAdult.MouseState = MaterialSkin.MouseState.OUT;
-            mtbMenuPriceAdult.Multiline = false;
-            mtbMenuPriceAdult.Name = "mtbMenuPriceAdult";
-            mtbMenuPriceAdult.Size = new Size(100, 50);
-            mtbMenuPriceAdult.TabIndex = 5;
-            mtbMenuPriceAdult.Text = "";
-            mtbMenuPriceAdult.TrailingIcon = null;
+            nudMenuPriceAdult.DecimalPlaces = 2;
+            nudMenuPriceAdult.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudMenuPriceAdult.Location = new Point(40, 204);
+            nudMenuPriceAdult.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
+            nudMenuPriceAdult.Name = "nudMenuPriceAdult";
+            nudMenuPriceAdult.Size = new Size(250, 27);
+            nudMenuPriceAdult.TabIndex = 5;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(73, 294);
+            label4.Depth = 0;
+            label4.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label4.MouseState = MaterialSkin.MouseState.HOVER;
+            label4.Location = new Point(40, 250);
             label4.Name = "label4";
             label4.Size = new Size(146, 15);
             label4.TabIndex = 4;
-            label4.Text = "ingresa un precio por niño";
+            label4.Text = "Precio por niño";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(78, 176);
+            label3.Depth = 0;
+            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label3.MouseState = MaterialSkin.MouseState.HOVER;
+            label3.Location = new Point(40, 182);
             label3.Name = "label3";
             label3.Size = new Size(156, 15);
             label3.TabIndex = 3;
-            label3.Text = "ingresa un precio por adulto";
+            label3.Text = "Precio por adulto";
             // 
             // mtbMenuDescription
             // 
@@ -362,12 +363,12 @@
             mtbMenuDescription.Depth = 0;
             mtbMenuDescription.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbMenuDescription.LeadingIcon = null;
-            mtbMenuDescription.Location = new Point(78, 115);
+            mtbMenuDescription.Location = new Point(40, 112);
             mtbMenuDescription.MaxLength = 50;
             mtbMenuDescription.MouseState = MaterialSkin.MouseState.OUT;
             mtbMenuDescription.Multiline = false;
             mtbMenuDescription.Name = "mtbMenuDescription";
-            mtbMenuDescription.Size = new Size(100, 50);
+            mtbMenuDescription.Size = new Size(250, 50);
             mtbMenuDescription.TabIndex = 2;
             mtbMenuDescription.Text = "";
             mtbMenuDescription.TrailingIcon = null;
@@ -375,16 +376,22 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(78, 78);
+            label2.Depth = 0;
+            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
+            label2.Location = new Point(40, 90);
             label2.Name = "label2";
             label2.Size = new Size(185, 15);
             label2.TabIndex = 1;
-            label2.Text = "Ingresa una descripcion del menu";
+            label2.Text = "Descripcion";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(221, 34);
+            label1.Depth = 0;
+            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
+            label1.Location = new Point(40, 30);
             label1.Name = "label1";
             label1.Size = new Size(88, 15);
             label1.TabIndex = 0;
@@ -407,13 +414,15 @@
             panelCrudCtrlMenus.ResumeLayout(false);
             panelMenuUpload.ResumeLayout(false);
             panelMenuUpload.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudMenuPriceAdult).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudMenuPriceChild).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private Panel panelMenusList;
         private Panel panelMenusTitle;
-        private Label lblMenusTitle;
+        private MaterialSkin.Controls.MaterialLabel lblMenusTitle;
         private MaterialSkin.Controls.MaterialListView mtLvMenus;
         private ColumnHeader Description;
         private ColumnHeader AdultPrice;
@@ -425,16 +434,16 @@
         private MaterialSkin.Controls.MaterialButton btnMenuCreate;
         private Panel panelMenuUpload;
         private MaterialSkin.Controls.MaterialButton btnMenuTags;
-        private Label label2;
-        private Label label1;
-        private MaterialSkin.Controls.MaterialTextBox mtbMenuPriceChild;
-        private MaterialSkin.Controls.MaterialTextBox mtbMenuPriceAdult;
-        private Label label4;
-        private Label label3;
+        private MaterialSkin.Controls.MaterialLabel label2;
+        private MaterialSkin.Controls.MaterialLabel label1;
+        private NumericUpDown nudMenuPriceChild;
+        private NumericUpDown nudMenuPriceAdult;
+        private MaterialSkin.Controls.MaterialLabel label4;
+        private MaterialSkin.Controls.MaterialLabel label3;
         private MaterialSkin.Controls.MaterialTextBox mtbMenuDescription;
         private CheckedListBox clbMenuTags;
         private MaterialSkin.Controls.MaterialButton btnVolverMenu;
         private MaterialSkin.Controls.MaterialButton btnGuardarMenu;
-        private Label label5;
+        private MaterialSkin.Controls.MaterialLabel label5;
     }
 }

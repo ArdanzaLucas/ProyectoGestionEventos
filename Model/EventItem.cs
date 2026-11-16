@@ -29,7 +29,6 @@ namespace ProyectoPresupuestoEvento.Model
             GuestAdults = guestAdults;
             GuestChilds = guestChilds;
             Duration = duration;
-            validateGuests();
         }
 
         public EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
@@ -40,7 +39,6 @@ namespace ProyectoPresupuestoEvento.Model
             GuestAdults = guestAdults;
             GuestChilds = guestChilds;
             Duration = duration;
-            validateGuests();
         }
 
 
@@ -49,75 +47,67 @@ namespace ProyectoPresupuestoEvento.Model
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            private set { _id = value; }
         }
 
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BusinessRuleException("ingrese un nombre para el evento");
-                }
-                _name = value.Trim();
-            }
+            private set { _name = Validator.requireText(value, "ingrese un nombre para el evento"); }
         }
 
         public string ClientName
         {
             get { return _clientName; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BusinessRuleException("ingrese el nombre del cliente");
-                }
-                _clientName = value.Trim();
-            }
+            private set { _clientName = Validator.requireText(value, "ingrese el nombre del cliente"); }
         }
 
         public DateTime Date
         {
             get { return _date; }
-            set { _date = value; }
+            private set { _date = value; }
         }
 
         public int GuestAdults
         {
             get { return _guestAdults; }
-            set
+            private set
             {
-                if (value < 0)
+                int cantidad = Validator.requireQuantity(value, "la cantidad de adultos");
+                if (cantidad + _guestChilds > 10000)
                 {
-                    throw new BusinessRuleException("la cantidad de adultos no puede ser negativa");
+                    throw new BusinessRuleException("el evento no puede tener mas de 10000 invitados");
                 }
-                _guestAdults = value;
+                _guestAdults = cantidad;
             }
         }
 
         public int GuestChilds
         {
             get { return _guestChilds; }
-            set
+            private set
             {
-                if (value < 0)
+                int cantidad = Validator.requireQuantity(value, "la cantidad de niños");
+                if (_guestAdults + cantidad > 10000)
                 {
-                    throw new BusinessRuleException("la cantidad de niños no puede ser negativa");
+                    throw new BusinessRuleException("el evento no puede tener mas de 10000 invitados");
                 }
-                _guestChilds = value;
+                _guestChilds = cantidad;
             }
         }
 
         public int Duration
         {
             get { return _duration; }
-            set
+            private set
             {
                 if (value <= 0)
                 {
                     throw new BusinessRuleException("la duracion tiene que ser mayor a 0 horas");
+                }
+                if (value > 24)
+                {
+                    throw new BusinessRuleException("la duracion no puede ser mayor a 24 horas");
                 }
                 _duration = value;
             }
@@ -132,12 +122,13 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        private void validateGuests()
+        public void assignId(int id)
         {
-            if (TotalGuests == 0)
+            if (Id != 0)
             {
-                throw new BusinessRuleException("el evento tiene que tener al menos un invitado");
+                throw new BusinessRuleException("el id ya fue asignado");
             }
+            Id = id;
         }
 
 

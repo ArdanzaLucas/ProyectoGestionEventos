@@ -24,11 +24,8 @@ namespace ProyectoPresupuestoEvento.View
         {
             this.ubicationController = controller;
             InitializeComponent();
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            VisualHelper.fitColumns(mtLvUbications);
+            VisualHelper.centerContent(panelUpload);
         }
 
         private void FormUbications_Load(object sender, EventArgs e)
@@ -55,15 +52,15 @@ namespace ProyectoPresupuestoEvento.View
             {
                 ListViewItem fila = new ListViewItem();
 
-                fila.Text = ubicacion.Id.ToString();
-
-                fila.SubItems.Add(ubicacion.Name);
+                fila.Text = ubicacion.Name;
                 fila.SubItems.Add(ubicacion.Price.ToString("C"));
 
                 fila.Tag = ubicacion;
 
                 mtLvUbications.Items.Add(fila);
             }
+
+            VisualHelper.showEmptyMessage(mtLvUbications, "Todavia no hay ubicaciones. Toque Crear para agregar una.");
         }
 
 
@@ -80,6 +77,11 @@ namespace ProyectoPresupuestoEvento.View
 
         }
 
+
+        private void mtLvUbications_DoubleClick(object sender, EventArgs e)
+        {
+            btnUbicationEdit_Click(sender, e);
+        }
 
         private void btnUbicationEdit_Click(object sender, EventArgs e)
         {
@@ -99,7 +101,7 @@ namespace ProyectoPresupuestoEvento.View
             idEditando = selected.Id;
 
             mtbUbicationName.Text = selected.Name;
-            mtbUbicationPrice.Text = selected.Price.ToString();
+            nudUbicationPrice.Value = selected.Price;
 
 
 
@@ -145,19 +147,14 @@ namespace ProyectoPresupuestoEvento.View
             panelUpload.Dock = DockStyle.None;
 
             mtbUbicationName.Text = null;
-            mtbUbicationPrice.Text = null;
+            nudUbicationPrice.Value = 0;
 
             idEditando = 0;
         }
 
         private void btnGuardarUbicacion_Click(object sender, EventArgs e)
         {
-            decimal price;
-            if (!decimal.TryParse(mtbUbicationPrice.Text, out price))
-            {
-                MessageHelper.showWarning("ingrese un precio valido");
-                return;
-            }
+            decimal price = decimal.Round(nudUbicationPrice.Value, 2);
 
             UbicationDto ubicationDto = new UbicationDto(mtbUbicationName.Text, price);
 

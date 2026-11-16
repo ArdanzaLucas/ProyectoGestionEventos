@@ -38,20 +38,19 @@
             ListViewItem listViewItem8 = new ListViewItem("");
             panelOICU = new Panel();
             panelOIUpload = new Panel();
-            label1 = new Label();
-            label3 = new Label();
-            mtbOIPrice = new MaterialSkin.Controls.MaterialTextBox();
-            label2 = new Label();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
+            label3 = new MaterialSkin.Controls.MaterialLabel();
+            nudOIPrice = new NumericUpDown();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
             mtbOIName = new MaterialSkin.Controls.MaterialTextBox();
             btnGuardarOI = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panelOIList = new Panel();
             mtLvOptionItems = new MaterialSkin.Controls.MaterialListView();
-            IdColumn = new ColumnHeader();
             NameColumn = new ColumnHeader();
             PriceColumn = new ColumnHeader();
             panelOITitle = new Panel();
-            lblOITitle = new Label();
+            lblOITitle = new MaterialSkin.Controls.MaterialLabel();
             panelCrudCtrlOI = new Panel();
             btnOIRemove = new MaterialSkin.Controls.MaterialButton();
             btnOIEdit = new MaterialSkin.Controls.MaterialButton();
@@ -61,6 +60,7 @@
             panelOIList.SuspendLayout();
             panelOITitle.SuspendLayout();
             panelCrudCtrlOI.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudOIPrice).BeginInit();
             SuspendLayout();
             // 
             // panelOICU
@@ -75,7 +75,7 @@
             // 
             panelOIUpload.Controls.Add(label1);
             panelOIUpload.Controls.Add(label3);
-            panelOIUpload.Controls.Add(mtbOIPrice);
+            panelOIUpload.Controls.Add(nudOIPrice);
             panelOIUpload.Controls.Add(label2);
             panelOIUpload.Controls.Add(mtbOIName);
             panelOIUpload.Controls.Add(btnGuardarOI);
@@ -89,50 +89,48 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Georgia", 19.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(247, 56);
+            label1.Depth = 0;
+            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
+            label1.Location = new Point(40, 30);
             label1.Name = "label1";
             label1.Size = new Size(286, 30);
             label1.TabIndex = 7;
-            label1.Text = "Carga de nuevo servicio";
+            label1.Text = "Carga de servicio";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(72, 275);
+            label3.Depth = 0;
+            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label3.MouseState = MaterialSkin.MouseState.HOVER;
+            label3.Location = new Point(40, 182);
             label3.Name = "label3";
             label3.Size = new Size(348, 21);
             label3.TabIndex = 9;
-            label3.Text = "Ingrese un valor para el precio del servicio.";
+            label3.Text = "Precio";
             // 
-            // mtbOIPrice
+            // nudOIPrice
             // 
-            mtbOIPrice.AnimateReadOnly = false;
-            mtbOIPrice.BorderStyle = BorderStyle.None;
-            mtbOIPrice.Depth = 0;
-            mtbOIPrice.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbOIPrice.LeadingIcon = null;
-            mtbOIPrice.Location = new Point(77, 326);
-            mtbOIPrice.Margin = new Padding(3, 2, 3, 2);
-            mtbOIPrice.MaxLength = 50;
-            mtbOIPrice.MouseState = MaterialSkin.MouseState.OUT;
-            mtbOIPrice.Multiline = false;
-            mtbOIPrice.Name = "mtbOIPrice";
-            mtbOIPrice.Size = new Size(175, 50);
-            mtbOIPrice.TabIndex = 0;
-            mtbOIPrice.Text = "";
-            mtbOIPrice.TrailingIcon = null;
+            nudOIPrice.DecimalPlaces = 2;
+            nudOIPrice.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudOIPrice.Location = new Point(40, 204);
+            nudOIPrice.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
+            nudOIPrice.Name = "nudOIPrice";
+            nudOIPrice.Size = new Size(250, 27);
+            nudOIPrice.TabIndex = 0;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(72, 128);
+            label2.Depth = 0;
+            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
+            label2.Location = new Point(40, 90);
             label2.Name = "label2";
             label2.Size = new Size(424, 21);
             label2.TabIndex = 8;
-            label2.Text = "Ingrese un nombre o descripcion del nuevo servicio.";
+            label2.Text = "Nombre";
             // 
             // mtbOIName
             // 
@@ -141,19 +139,20 @@
             mtbOIName.Depth = 0;
             mtbOIName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbOIName.LeadingIcon = null;
-            mtbOIName.Location = new Point(78, 178);
+            mtbOIName.Location = new Point(40, 112);
             mtbOIName.Margin = new Padding(3, 2, 3, 2);
             mtbOIName.MaxLength = 50;
             mtbOIName.MouseState = MaterialSkin.MouseState.OUT;
             mtbOIName.Multiline = false;
             mtbOIName.Name = "mtbOIName";
-            mtbOIName.Size = new Size(237, 50);
+            mtbOIName.Size = new Size(250, 50);
             mtbOIName.TabIndex = 1;
             mtbOIName.Text = "";
             mtbOIName.TrailingIcon = null;
             // 
             // btnGuardarOI
             // 
+            btnGuardarOI.AutoSize = false;
             btnGuardarOI.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnGuardarOI.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGuardarOI.Depth = 0;
@@ -161,12 +160,12 @@
             btnGuardarOI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGuardarOI.HighEmphasis = true;
             btnGuardarOI.Icon = null;
-            btnGuardarOI.Location = new Point(378, 442);
+            btnGuardarOI.Location = new Point(40, 270);
             btnGuardarOI.Margin = new Padding(4);
             btnGuardarOI.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarOI.Name = "btnGuardarOI";
             btnGuardarOI.NoAccentTextColor = Color.Empty;
-            btnGuardarOI.Size = new Size(88, 36);
+            btnGuardarOI.Size = new Size(90, 36);
             btnGuardarOI.TabIndex = 5;
             btnGuardarOI.Text = "Guardar";
             btnGuardarOI.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -176,18 +175,19 @@
             // 
             // btnVolverAtras
             // 
+            btnVolverAtras.AutoSize = false;
             btnVolverAtras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnVolverAtras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnVolverAtras.Depth = 0;
             btnVolverAtras.HighEmphasis = true;
             btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(378, 539);
+            btnVolverAtras.Location = new Point(200, 270);
             btnVolverAtras.Margin = new Padding(4);
             btnVolverAtras.MinimumSize = new Size(77, 0);
             btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverAtras.Name = "btnVolverAtras";
             btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(77, 36);
+            btnVolverAtras.Size = new Size(90, 36);
             btnVolverAtras.TabIndex = 6;
             btnVolverAtras.Text = "Volver";
             btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -211,7 +211,7 @@
             mtLvOptionItems.AutoSizeTable = false;
             mtLvOptionItems.BackColor = Color.FromArgb(255, 255, 255);
             mtLvOptionItems.BorderStyle = BorderStyle.None;
-            mtLvOptionItems.Columns.AddRange(new ColumnHeader[] { IdColumn, NameColumn, PriceColumn });
+            mtLvOptionItems.Columns.AddRange(new ColumnHeader[] { NameColumn, PriceColumn });
             mtLvOptionItems.Depth = 0;
             mtLvOptionItems.Dock = DockStyle.Fill;
             mtLvOptionItems.FullRowSelect = true;
@@ -226,11 +226,7 @@
             mtLvOptionItems.TabIndex = 1;
             mtLvOptionItems.UseCompatibleStateImageBehavior = false;
             mtLvOptionItems.View = System.Windows.Forms.View.Details;
-            // 
-            // IdColumn
-            // 
-            IdColumn.Text = "Id";
-            IdColumn.Width = 150;
+            mtLvOptionItems.DoubleClick += mtLvOptionItems_DoubleClick;
             // 
             // NameColumn
             // 
@@ -257,7 +253,9 @@
             // lblOITitle
             // 
             lblOITitle.AutoSize = true;
-            lblOITitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOITitle.Depth = 0;
+            lblOITitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblOITitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblOITitle.Location = new Point(15, 10);
             lblOITitle.Name = "lblOITitle";
             lblOITitle.Size = new Size(195, 24);
@@ -357,6 +355,7 @@
             panelOITitle.ResumeLayout(false);
             panelOITitle.PerformLayout();
             panelCrudCtrlOI.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)nudOIPrice).EndInit();
             ResumeLayout(false);
         }
 
@@ -365,22 +364,21 @@
         private Panel panelOICU;
         private Panel panelOIList;
         private Panel panelOITitle;
-        private Label lblOITitle;
+        private MaterialSkin.Controls.MaterialLabel lblOITitle;
         private MaterialSkin.Controls.MaterialListView mtLvOptionItems;
-        private ColumnHeader IdColumn;
         private ColumnHeader NameColumn;
         private ColumnHeader PriceColumn;
         private Panel panelCrudCtrlOI;
         private MaterialSkin.Controls.MaterialButton btnOIRemove;
         private MaterialSkin.Controls.MaterialButton btnOIEdit;
         private MaterialSkin.Controls.MaterialButton btnOICreate;
-        private MaterialSkin.Controls.MaterialTextBox mtbOIPrice;
+        private NumericUpDown nudOIPrice;
         private MaterialSkin.Controls.MaterialTextBox mtbOIName;
         private MaterialSkin.Controls.MaterialButton btnVolverAtras;
         private MaterialSkin.Controls.MaterialButton btnGuardarOI;
-        private Label label3;
-        private Label label2;
-        private Label label1;
+        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialLabel label2;
+        private MaterialSkin.Controls.MaterialLabel label1;
         private Panel panelOIUpload;
     }
 }

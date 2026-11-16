@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
+using ProyectoPresupuestoEvento.Repository;
 
 namespace ProyectoPresupuestoEvento.Mock
 {
@@ -12,11 +13,25 @@ namespace ProyectoPresupuestoEvento.Mock
     {
         public static void load()
         {
+            if (!isDatabaseEmpty())
+            {
+                return;
+            }
+
             loadUbications();
             loadOptionItems();
             loadMenuTags();
             loadMenus();
             loadEventItems();
+        }
+
+        private static bool isDatabaseEmpty()
+        {
+            return UbicationRepository.getInstance().getAll().Count == 0
+                && OptionItemRepository.getInstance().getAll().Count == 0
+                && MenuTagRepository.getInstance().getAll().Count == 0
+                && MenuRepository.getInstance().getAll().Count == 0
+                && EventItemRepository.getInstance().getAll().Count == 0;
         }
 
         private static void loadUbications()

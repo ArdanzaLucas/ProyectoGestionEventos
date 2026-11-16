@@ -29,11 +29,18 @@ namespace ProyectoPresupuestoEvento.Model
             ChildQuantity = childQuantity;
             UnitPriceAdult = menu.PriceAdult;
             UnitPriceChild = menu.PriceChild;
+        }
 
-            if (AdultQuantity + ChildQuantity == 0)
-            {
-                throw new BusinessRuleException("cada linea de catering tiene que tener al menos un plato");
-            }
+        public DetailMenu(Menu menu, string menuDescription, string tagDescription, int adultQuantity, int childQuantity,
+            decimal unitPriceAdult, decimal unitPriceChild)
+        {
+            Menu = menu;
+            MenuDescription = menuDescription;
+            TagDescription = tagDescription;
+            AdultQuantity = adultQuantity;
+            ChildQuantity = childQuantity;
+            UnitPriceAdult = unitPriceAdult;
+            UnitPriceChild = unitPriceChild;
         }
 
 
@@ -42,65 +49,55 @@ namespace ProyectoPresupuestoEvento.Model
         public Menu Menu
         {
             get { return _menu; }
-            set { _menu = value; }
+            private set
+            {
+                if (value == null)
+                {
+                    throw new BusinessRuleException("el menu es obligatorio");
+                }
+                _menu = value;
+            }
         }
 
         public string MenuDescription
         {
             get { return _menuDescription; }
-            set { _menuDescription = value; }
+            private set { _menuDescription = value; }
         }
 
         public string TagDescription
         {
             get { return _tagDescription; }
-            set { _tagDescription = value; }
+            private set { _tagDescription = value; }
         }
 
         public int AdultQuantity
         {
             get { return _adultQuantity; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new BusinessRuleException("la cantidad de adultos no puede ser negativa");
-                }
-                _adultQuantity = value;
-            }
+            private set { _adultQuantity = Validator.requireQuantity(value, "la cantidad de adultos"); }
         }
 
         public int ChildQuantity
         {
             get { return _childQuantity; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new BusinessRuleException("la cantidad de niños no puede ser negativa");
-                }
-                _childQuantity = value;
-            }
+            private set { _childQuantity = Validator.requireQuantity(value, "la cantidad de niños"); }
         }
 
         public decimal UnitPriceAdult
         {
             get { return _unitPriceAdult; }
-            set { _unitPriceAdult = value; }
+            private set { _unitPriceAdult = value; }
         }
 
         public decimal UnitPriceChild
         {
             get { return _unitPriceChild; }
-            set { _unitPriceChild = value; }
+            private set { _unitPriceChild = value; }
         }
-
 
         public decimal Subtotal
         {
             get { return _unitPriceAdult * _adultQuantity + _unitPriceChild * _childQuantity; }
         }
-
-
     }
 }

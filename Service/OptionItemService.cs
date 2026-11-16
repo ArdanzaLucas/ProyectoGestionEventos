@@ -6,34 +6,39 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de los servicios adicionales
     internal class OptionItemService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<OptionItem> repository;
 
         public OptionItemService()
         {
-
+            repository = OptionItemRepository.getInstance();
         }
 
         public void addToRepository(OptionItemDto dto)
         {
-            OptionItemRepository.getInstance().addToRepository(toModel(dto));
+            OptionItem optionItem = toModel(dto);
+            validateUniqueName(optionItem.Name, 0);
+            repository.addToRepository(optionItem);
         }
         
+        // devuelve solo los activos
         public List<OptionItemDto> getOptionItems()
         {
-            List<OptionItem> optionItems = OptionItemRepository.getInstance().getAll();
+            List<OptionItem> optionItems = repository.getAll();
             List<OptionItemDto> dtos = new List<OptionItemDto>();
 
             foreach (OptionItem optionItem in optionItems)
             {
-                if (optionItem.IsActive)
-                {
-                    OptionItemDto dto = toDto(optionItem);
-                    dtos.Add(dto);
-                }
+                OptionItemDto dto = toDto(optionItem);
+                dtos.Add(dto);
             }
 
             return dtos;
@@ -41,24 +46,34 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void updateOptionItem(int id, OptionItemDto dto)
         {
-            OptionItemRepository.getInstance().update(id, toModel(dto));
+            OptionItem optionItem = toModel(dto);
+            validateUniqueName(optionItem.Name, id);
+            repository.update(id, optionItem);
         }
 
+        // compara solo con los activos y sin distinguir mayusculas
+        private void validateUniqueName(string name, int idEditando)
+        {
+            foreach (OptionItem optionItem in repository.getAll())
+            {
+                if (optionItem.Id != idEditando && optionItem.Name.ToLower() == name.ToLower())
+                {
+                    throw new BusinessRuleException("ya existe un servicio con ese nombre");
+                }
+            }
+        }
+
+        // baja logica: queda guardado pero inactivo
         public void removeOptionItem(int id)
         {
-            OptionItem optionItem = OptionItemRepository.getInstance().getById(id);
-            if (optionItem == null)
-            {
-                return;
-            }
-
+            OptionItem optionItem = repository.getById(id);
             optionItem.deactivate();
-            OptionItemRepository.getInstance().update(id, optionItem);
+            repository.update(id, optionItem);
         }
         
         public OptionItem getModelById(int id)
         {
-            return OptionItemRepository.getInstance().getById(id);
+            return repository.getById(id);
         }
 
         public OptionItem toModel(OptionItemDto dto)

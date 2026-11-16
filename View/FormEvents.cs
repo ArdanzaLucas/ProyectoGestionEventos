@@ -24,6 +24,8 @@ namespace ProyectoPresupuestoEvento.View
         {
             eventController = controller;
             InitializeComponent();
+            VisualHelper.fitColumns(mtLvEvents);
+            VisualHelper.centerContent(panelEventsCU);
         }
 
         private void FormEvents_Load(object sender, EventArgs e)
@@ -62,6 +64,8 @@ namespace ProyectoPresupuestoEvento.View
 
                 mtLvEvents.Items.Add(fila);
             }
+
+            VisualHelper.showEmptyMessage(mtLvEvents, "Todavia no hay eventos. Toque Crear para agregar uno.");
         }
 
 
@@ -76,6 +80,11 @@ namespace ProyectoPresupuestoEvento.View
             panelEventsList.Dock = DockStyle.None;
             panelEventsCU.Visible = true;
             panelEventsCU.Dock = DockStyle.Fill;
+        }
+
+        private void mtLvEvents_DoubleClick(object sender, EventArgs e)
+        {
+            btnEventEdit_Click(sender, e);
         }
 
         private void btnEventEdit_Click(object sender, EventArgs e)
@@ -94,9 +103,9 @@ namespace ProyectoPresupuestoEvento.View
             mtbEventName.Text = selected.Name;
             mtbEventClient.Text = selected.ClientName;
             dtpEventDate.Value = selected.Date;
-            mtbEventAdults.Text = selected.GuestAdults.ToString();
-            mtbEventChilds.Text = selected.GuestChilds.ToString();
-            mtbEventDuration.Text = selected.Duration.ToString();
+            nudEventAdults.Value = selected.GuestAdults;
+            nudEventChilds.Value = selected.GuestChilds;
+            nudEventDuration.Value = selected.Duration;
 
             panelEventsList.Visible = false;
             panelEventsList.Dock = DockStyle.None;
@@ -143,35 +152,18 @@ namespace ProyectoPresupuestoEvento.View
 
             mtbEventName.Text = null;
             mtbEventClient.Text = null;
-            mtbEventAdults.Text = null;
-            mtbEventChilds.Text = null;
-            mtbEventDuration.Text = null;
+            nudEventAdults.Value = 0;
+            nudEventChilds.Value = 0;
+            nudEventDuration.Value = 1;
 
             idEditando = 0;
         }
 
         private void btnGuardarEvento_Click(object sender, EventArgs e)
         {
-            int guestAdults;
-            if (!int.TryParse(mtbEventAdults.Text, out guestAdults))
-            {
-                MessageHelper.showWarning("ingrese una cantidad de adultos valida");
-                return;
-            }
-
-            int guestChilds;
-            if (!int.TryParse(mtbEventChilds.Text, out guestChilds))
-            {
-                MessageHelper.showWarning("ingrese una cantidad de niños valida");
-                return;
-            }
-
-            int duration;
-            if (!int.TryParse(mtbEventDuration.Text, out duration))
-            {
-                MessageHelper.showWarning("ingrese una duracion valida (horas enteras)");
-                return;
-            }
+            int guestAdults = (int)nudEventAdults.Value;
+            int guestChilds = (int)nudEventChilds.Value;
+            int duration = (int)nudEventDuration.Value;
 
             EventItemDto eventItemDto = new EventItemDto(mtbEventName.Text, mtbEventClient.Text, dtpEventDate.Value, guestAdults, guestChilds, duration);
 

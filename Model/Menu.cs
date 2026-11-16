@@ -19,15 +19,6 @@ namespace ProyectoPresupuestoEvento.Model
 
         //constructor
 
-        public Menu(int id, string description, decimal priceAdult, decimal priceChild, List<MenuTag> tagList)
-        {
-            Id = id;
-            Description = description;
-            PriceAdult = priceAdult;
-            PriceChild = priceChild;
-            TagList = tagList;
-        }
-
         public Menu(string description, decimal priceAdult, decimal priceChild, List<MenuTag> tagList)
         {
             Description = description;
@@ -36,62 +27,51 @@ namespace ProyectoPresupuestoEvento.Model
             TagList = tagList;
         }
 
+        public Menu(int id, string description, decimal priceAdult, decimal priceChild, List<MenuTag> tagList, bool isActive)
+        {
+            Id = id;
+            Description = description;
+            PriceAdult = priceAdult;
+            PriceChild = priceChild;
+            TagList = tagList;
+            IsActive = isActive;
+        }
+
 
         //propiedades
 
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            private set { _id = value; }
         }
 
         public string Description
         {
             get { return _description; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BusinessRuleException("ingrese una descripcion para el menu");
-                }
-                _description = value.Trim();
-            }
+            private set { _description = Validator.requireText(value, "ingrese una descripcion para el menu"); }
         }
 
         public decimal PriceAdult
         {
             get { return _priceAdult; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new BusinessRuleException("el precio por adulto no puede ser negativo");
-                }
-                _priceAdult = value;
-            }
+            private set { _priceAdult = Validator.requirePrice(value, "el precio por adulto"); }
         }
 
         public decimal PriceChild
         {
             get { return _priceChild; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new BusinessRuleException("el precio por niño no puede ser negativo");
-                }
-                _priceChild = value;
-            }
+            private set { _priceChild = Validator.requirePrice(value, "el precio por niño"); }
         }
 
         public List<MenuTag> TagList
         {
             get { return _tagList; }
-            set
+            private set
             {
-                if (value == null || value.Count == 0)
+                if (value == null)
                 {
-                    throw new BusinessRuleException("seleccione al menos una etiqueta");
+                    throw new BusinessRuleException("la lista de etiquetas es obligatoria");
                 }
                 _tagList = value;
             }
@@ -100,14 +80,24 @@ namespace ProyectoPresupuestoEvento.Model
         public bool IsActive
         {
             get { return _isActive; }
+            private set { _isActive = value; }
         }
 
 
         //metodos
 
+        public void assignId(int id)
+        {
+            if (Id != 0)
+            {
+                throw new BusinessRuleException("el id ya fue asignado");
+            }
+            Id = id;
+        }
+
         public void deactivate()
         {
-            _isActive = false;
+            IsActive = false;
         }
 
         public bool hasTag(int tagId)
@@ -121,24 +111,5 @@ namespace ProyectoPresupuestoEvento.Model
             }
             return false;
         }
-
-        public void removeTag(int tagId)
-        {
-            MenuTag tagToRemove = null;
-            foreach (MenuTag tag in _tagList)
-            {
-                if (tag.Id == tagId)
-                {
-                    tagToRemove = tag;
-                }
-            }
-
-            if (tagToRemove != null)
-            {
-                _tagList.Remove(tagToRemove);
-            }
-        }
-
-
     }
 }

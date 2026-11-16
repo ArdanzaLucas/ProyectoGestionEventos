@@ -45,7 +45,33 @@ namespace ProyectoPresupuestoEvento.Model
             UbicationPrice = ubication.Price;
             MenusList = menusList;
             OptionItemList = optionItemList;
-            _state = EstadoPresupuesto.Pendiente;
+            State = EstadoPresupuesto.Pendiente;
+        }
+
+        public Quote(int id, EstadoPresupuesto state, int eventItemId, string eventName, string eventClientName,
+            DateTime eventDate, int eventGuestAdults, int eventGuestChilds, int eventDuration,
+            Ubication ubication, string ubicationName, decimal ubicationPrice,
+            List<DetailMenu> menusList, List<DetailOptionItem> optionItemList,
+            decimal totalUbication, decimal totalMenus, decimal totalOptionItems, decimal total)
+        {
+            Id = id;
+            State = state;
+            EventItemId = eventItemId;
+            EventName = eventName;
+            EventClientName = eventClientName;
+            EventDate = eventDate;
+            EventGuestAdults = eventGuestAdults;
+            EventGuestChilds = eventGuestChilds;
+            EventDuration = eventDuration;
+            Ubication = ubication;
+            UbicationName = ubicationName;
+            UbicationPrice = ubicationPrice;
+            MenusList = menusList;
+            OptionItemList = optionItemList;
+            TotalUbication = totalUbication;
+            TotalMenus = totalMenus;
+            TotalOptionItems = totalOptionItems;
+            Total = total;
         }
 
 
@@ -54,49 +80,49 @@ namespace ProyectoPresupuestoEvento.Model
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
+            private set { _id = value; }
         }
 
         public int EventItemId
         {
             get { return _eventItemId; }
-            set { _eventItemId = value; }
+            private set { _eventItemId = value; }
         }
 
         public string EventName
         {
             get { return _eventName; }
-            set { _eventName = value; }
+            private set { _eventName = value; }
         }
 
         public string EventClientName
         {
             get { return _eventClientName; }
-            set { _eventClientName = value; }
+            private set { _eventClientName = value; }
         }
 
         public DateTime EventDate
         {
             get { return _eventDate; }
-            set { _eventDate = value; }
+            private set { _eventDate = value; }
         }
 
         public int EventGuestAdults
         {
             get { return _eventGuestAdults; }
-            set { _eventGuestAdults = value; }
+            private set { _eventGuestAdults = value; }
         }
 
         public int EventGuestChilds
         {
             get { return _eventGuestChilds; }
-            set { _eventGuestChilds = value; }
+            private set { _eventGuestChilds = value; }
         }
 
         public int EventDuration
         {
             get { return _eventDuration; }
-            set { _eventDuration = value; }
+            private set { _eventDuration = value; }
         }
 
         public int TotalGuests
@@ -107,64 +133,95 @@ namespace ProyectoPresupuestoEvento.Model
         public Ubication Ubication
         {
             get { return _ubication; }
-            set { _ubication = value; }
+            private set
+            {
+                if (value == null)
+                {
+                    throw new BusinessRuleException("la ubicacion es obligatoria");
+                }
+                _ubication = value;
+            }
         }
 
         public string UbicationName
         {
             get { return _ubicationName; }
-            set { _ubicationName = value; }
+            private set { _ubicationName = value; }
         }
 
         public decimal UbicationPrice
         {
             get { return _ubicationPrice; }
-            set { _ubicationPrice = value; }
+            private set { _ubicationPrice = value; }
         }
 
         public List<DetailMenu> MenusList
         {
             get { return _menusList; }
-            set { _menusList = value; }
+            private set
+            {
+                if (value == null)
+                {
+                    throw new BusinessRuleException("la lista de menus es obligatoria");
+                }
+                _menusList = value;
+            }
         }
 
         public List<DetailOptionItem> OptionItemList
         {
             get { return _optionItemList; }
-            set { _optionItemList = value; }
+            private set
+            {
+                if (value == null)
+                {
+                    throw new BusinessRuleException("la lista de servicios es obligatoria");
+                }
+                _optionItemList = value;
+            }
         }
 
         public EstadoPresupuesto State
         {
             get { return _state; }
+            private set { _state = value; }
         }
 
         public decimal TotalUbication
         {
             get { return _totalUbication; }
-            set { _totalUbication = value; }
+            private set { _totalUbication = value; }
         }
 
         public decimal TotalMenus
         {
             get { return _totalMenus; }
-            set { _totalMenus = value; }
+            private set { _totalMenus = value; }
         }
 
         public decimal TotalOptionItems
         {
             get { return _totalOptionItems; }
-            set { _totalOptionItems = value; }
+            private set { _totalOptionItems = value; }
         }
 
         public decimal Total
         {
             get { return _total; }
-            set { _total = value; }
+            private set { _total = value; }
         }
 
 
         //metodos
+
+        public void assignId(int id)
+        {
+            if (Id != 0)
+            {
+                throw new BusinessRuleException("el id ya fue asignado");
+            }
+            Id = id;
+        }
 
         public void calculateTotals()
         {
@@ -173,21 +230,23 @@ namespace ProyectoPresupuestoEvento.Model
                 return;
             }
 
-            _totalUbication = _ubicationPrice * _eventDuration;
+            TotalUbication = UbicationPrice * EventDuration;
 
-            _totalMenus = 0;
-            foreach (DetailMenu detailMenu in _menusList)
+            decimal totalMenus = 0;
+            foreach (DetailMenu detailMenu in MenusList)
             {
-                _totalMenus = _totalMenus + detailMenu.Subtotal;
+                totalMenus = totalMenus + detailMenu.Subtotal;
             }
+            TotalMenus = totalMenus;
 
-            _totalOptionItems = 0;
-            foreach (DetailOptionItem detailOptionItem in _optionItemList)
+            decimal totalOptionItems = 0;
+            foreach (DetailOptionItem detailOptionItem in OptionItemList)
             {
-                _totalOptionItems = _totalOptionItems + detailOptionItem.UnitPrice;
+                totalOptionItems = totalOptionItems + detailOptionItem.UnitPrice;
             }
+            TotalOptionItems = totalOptionItems;
 
-            _total = _totalUbication + _totalMenus + _totalOptionItems;
+            Total = TotalUbication + TotalMenus + TotalOptionItems;
         }
 
         public void accept()
@@ -196,7 +255,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 throw new BusinessRuleException("solo se puede aceptar un presupuesto pendiente");
             }
-            _state = EstadoPresupuesto.Aceptado;
+            State = EstadoPresupuesto.Aceptado;
         }
 
         public void cancel()
@@ -205,12 +264,22 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 throw new BusinessRuleException("solo se puede cancelar un presupuesto pendiente");
             }
-            _state = EstadoPresupuesto.Cancelado;
+            State = EstadoPresupuesto.Cancelado;
         }
 
         public bool isEditable()
         {
             return _state == EstadoPresupuesto.Pendiente;
+        }
+
+        public bool overlapsWith(Quote otro)
+        {
+            DateTime inicio = _eventDate;
+            DateTime fin = inicio.AddHours(_eventDuration);
+            DateTime inicioOtro = otro.EventDate;
+            DateTime finOtro = inicioOtro.AddHours(otro.EventDuration);
+
+            return inicio < finOtro && inicioOtro < fin;
         }
 
         public Quote clone(EventItem eventItem)

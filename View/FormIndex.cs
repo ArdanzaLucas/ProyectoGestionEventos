@@ -37,6 +37,8 @@ namespace ProyectoPresupuestoEvento.View
             this.menuController = menuController;
             this.optionItemController = optionItemController;
             InitializeComponent();
+            VisualHelper.fitColumns(mtLvIndex);
+            VisualHelper.centerContent(panelQuoteCU);
         }
 
         public void setFormReport(FormReport formReport)
@@ -131,6 +133,15 @@ namespace ProyectoPresupuestoEvento.View
 
                 mtLvIndex.Items.Add(fila);
             }
+
+            if (idEvento == 0)
+            {
+                VisualHelper.showEmptyMessage(mtLvIndex, "Todavia no hay presupuestos. Toque Nuevo para armar uno.");
+            }
+            else
+            {
+                VisualHelper.showEmptyMessage(mtLvIndex, "Este evento todavia no tiene presupuestos.");
+            }
         }
 
         private void cmbFilterEvent_SelectedIndexChanged(object sender, EventArgs e)
@@ -171,6 +182,11 @@ namespace ProyectoPresupuestoEvento.View
 
             showLoadPanel();
             refreshTotals();
+        }
+
+        private void mtLvIndex_DoubleClick(object sender, EventArgs e)
+        {
+            btnQuoteEdit_Click(sender, e);
         }
 
         private void btnQuoteEdit_Click(object sender, EventArgs e)
@@ -511,7 +527,7 @@ namespace ProyectoPresupuestoEvento.View
             refreshTotals();
         }
 
-        private QuoteDto armarQuoteDto()
+        private QuoteDto buildQuoteDto()
         {
             EventItemDto evento = (EventItemDto)cmbQuoteEvent.SelectedItem;
             UbicationDto ubicacion = (UbicationDto)cmbQuoteUbication.SelectedItem;
@@ -538,7 +554,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            QuoteDto preview = quoteController.calculatePreview(armarQuoteDto());
+            QuoteDto preview = quoteController.calculatePreview(buildQuoteDto());
 
             showLines(preview.MenusList, true);
             lblTotalUbication.Text = "Ubicacion: " + preview.TotalUbication.ToString("C");
@@ -599,7 +615,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            QuoteDto quoteDto = armarQuoteDto();
+            QuoteDto quoteDto = buildQuoteDto();
 
             try
             {

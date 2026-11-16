@@ -203,7 +203,6 @@
             DrawerIsOpen = true;
             DrawerShowIconsWhenHidden = true;
             DrawerTabControl = TabCtrl;
-            MaximumSize = new Size(840, 675);
             MinimumSize = new Size(840, 675);
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;

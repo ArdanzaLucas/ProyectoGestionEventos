@@ -24,6 +24,8 @@ namespace ProyectoPresupuestoEvento.View
         {
             this.optionItemController = controller;
             InitializeComponent();
+            VisualHelper.fitColumns(mtLvOptionItems);
+            VisualHelper.centerContent(panelOIUpload);
         }
 
 
@@ -51,15 +53,15 @@ namespace ProyectoPresupuestoEvento.View
             {
                 ListViewItem fila = new ListViewItem();
 
-                fila.Text = servicio.Id.ToString();
-
-                fila.SubItems.Add(servicio.Name);
+                fila.Text = servicio.Name;
                 fila.SubItems.Add(servicio.Price.ToString("C"));
 
                 fila.Tag = servicio;
 
                 mtLvOptionItems.Items.Add(fila);
             }
+
+            VisualHelper.showEmptyMessage(mtLvOptionItems, "Todavia no hay servicios. Toque Crear para agregar uno.");
         }
 
 
@@ -76,6 +78,11 @@ namespace ProyectoPresupuestoEvento.View
 
         }
 
+
+        private void mtLvOptionItems_DoubleClick(object sender, EventArgs e)
+        {
+            btnOIEdit_Click(sender, e);
+        }
 
         private void btnOIEdit_Click(object sender, EventArgs e)
         {
@@ -95,7 +102,7 @@ namespace ProyectoPresupuestoEvento.View
             idEditando = selected.Id;
 
             mtbOIName.Text = selected.Name;
-            mtbOIPrice.Text = selected.Price.ToString();
+            nudOIPrice.Value = selected.Price;
 
 
 
@@ -141,19 +148,14 @@ namespace ProyectoPresupuestoEvento.View
             panelOIUpload.Dock = DockStyle.None;
 
             mtbOIName.Text = null;
-            mtbOIPrice.Text = null;
+            nudOIPrice.Value = 0;
 
             idEditando = 0;
         }
 
         private void btnGuardarOI_Click(object sender, EventArgs e)
         {
-            decimal price;
-            if (!decimal.TryParse(mtbOIPrice.Text, out price))
-            {
-                MessageHelper.showWarning("ingrese un precio valido");
-                return;
-            }
+            decimal price = decimal.Round(nudOIPrice.Value, 2);
 
             OptionItemDto optionItemDto = new OptionItemDto(mtbOIName.Text, price);
 

@@ -30,17 +30,16 @@
         {
             panelMenuTagCU = new Panel();
             panelMenuTagUpload = new Panel();
-            label1 = new Label();
-            label2 = new Label();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
             mtbMenuTagDescription = new MaterialSkin.Controls.MaterialTextBox();
             btnGuardarMenuTag = new MaterialSkin.Controls.MaterialButton();
             btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
             panelMenuTagList = new Panel();
             mtLvMenuTags = new MaterialSkin.Controls.MaterialListView();
-            IdColumn = new ColumnHeader();
             DescriptionColumn = new ColumnHeader();
             panelMenuTagTitle = new Panel();
-            lblMenuTagTitle = new Label();
+            lblMenuTagTitle = new MaterialSkin.Controls.MaterialLabel();
             panelCrudCtrlMenuTag = new Panel();
             btnVolverMenus = new MaterialSkin.Controls.MaterialButton();
             btnMenuTagRemove = new MaterialSkin.Controls.MaterialButton();
@@ -77,8 +76,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Georgia", 19.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(247, 56);
+            label1.Depth = 0;
+            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
+            label1.Location = new Point(40, 30);
             label1.Name = "label1";
             label1.Size = new Size(215, 30);
             label1.TabIndex = 7;
@@ -87,12 +88,14 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Georgia", 13.2000008F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(72, 128);
+            label2.Depth = 0;
+            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
+            label2.Location = new Point(40, 90);
             label2.Name = "label2";
             label2.Size = new Size(432, 21);
             label2.TabIndex = 8;
-            label2.Text = "Ingrese una descripcion para la etiqueta (ej: Vegana).";
+            label2.Text = "Descripcion";
             // 
             // mtbMenuTagDescription
             // 
@@ -101,19 +104,20 @@
             mtbMenuTagDescription.Depth = 0;
             mtbMenuTagDescription.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             mtbMenuTagDescription.LeadingIcon = null;
-            mtbMenuTagDescription.Location = new Point(78, 178);
+            mtbMenuTagDescription.Location = new Point(40, 112);
             mtbMenuTagDescription.Margin = new Padding(3, 2, 3, 2);
             mtbMenuTagDescription.MaxLength = 50;
             mtbMenuTagDescription.MouseState = MaterialSkin.MouseState.OUT;
             mtbMenuTagDescription.Multiline = false;
             mtbMenuTagDescription.Name = "mtbMenuTagDescription";
-            mtbMenuTagDescription.Size = new Size(237, 50);
+            mtbMenuTagDescription.Size = new Size(250, 50);
             mtbMenuTagDescription.TabIndex = 0;
             mtbMenuTagDescription.Text = "";
             mtbMenuTagDescription.TrailingIcon = null;
             // 
             // btnGuardarMenuTag
             // 
+            btnGuardarMenuTag.AutoSize = false;
             btnGuardarMenuTag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnGuardarMenuTag.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnGuardarMenuTag.Depth = 0;
@@ -121,12 +125,12 @@
             btnGuardarMenuTag.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnGuardarMenuTag.HighEmphasis = true;
             btnGuardarMenuTag.Icon = null;
-            btnGuardarMenuTag.Location = new Point(378, 300);
+            btnGuardarMenuTag.Location = new Point(40, 202);
             btnGuardarMenuTag.Margin = new Padding(4);
             btnGuardarMenuTag.MouseState = MaterialSkin.MouseState.HOVER;
             btnGuardarMenuTag.Name = "btnGuardarMenuTag";
             btnGuardarMenuTag.NoAccentTextColor = Color.Empty;
-            btnGuardarMenuTag.Size = new Size(88, 36);
+            btnGuardarMenuTag.Size = new Size(90, 36);
             btnGuardarMenuTag.TabIndex = 5;
             btnGuardarMenuTag.Text = "Guardar";
             btnGuardarMenuTag.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -136,18 +140,19 @@
             // 
             // btnVolverAtras
             // 
+            btnVolverAtras.AutoSize = false;
             btnVolverAtras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnVolverAtras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnVolverAtras.Depth = 0;
             btnVolverAtras.HighEmphasis = true;
             btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(378, 398);
+            btnVolverAtras.Location = new Point(200, 202);
             btnVolverAtras.Margin = new Padding(4);
             btnVolverAtras.MinimumSize = new Size(77, 0);
             btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
             btnVolverAtras.Name = "btnVolverAtras";
             btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(77, 36);
+            btnVolverAtras.Size = new Size(90, 36);
             btnVolverAtras.TabIndex = 6;
             btnVolverAtras.Text = "Volver";
             btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -171,7 +176,7 @@
             mtLvMenuTags.AutoSizeTable = false;
             mtLvMenuTags.BackColor = Color.FromArgb(255, 255, 255);
             mtLvMenuTags.BorderStyle = BorderStyle.None;
-            mtLvMenuTags.Columns.AddRange(new ColumnHeader[] { IdColumn, DescriptionColumn });
+            mtLvMenuTags.Columns.AddRange(new ColumnHeader[] { DescriptionColumn });
             mtLvMenuTags.Depth = 0;
             mtLvMenuTags.Dock = DockStyle.Fill;
             mtLvMenuTags.FullRowSelect = true;
@@ -185,11 +190,7 @@
             mtLvMenuTags.TabIndex = 1;
             mtLvMenuTags.UseCompatibleStateImageBehavior = false;
             mtLvMenuTags.View = System.Windows.Forms.View.Details;
-            // 
-            // IdColumn
-            // 
-            IdColumn.Text = "Id";
-            IdColumn.Width = 150;
+            mtLvMenuTags.DoubleClick += mtLvMenuTags_DoubleClick;
             // 
             // DescriptionColumn
             // 
@@ -210,7 +211,9 @@
             // lblMenuTagTitle
             // 
             lblMenuTagTitle.AutoSize = true;
-            lblMenuTagTitle.Font = new Font("Georgia", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblMenuTagTitle.Depth = 0;
+            lblMenuTagTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblMenuTagTitle.MouseState = MaterialSkin.MouseState.HOVER;
             lblMenuTagTitle.Location = new Point(15, 10);
             lblMenuTagTitle.Name = "lblMenuTagTitle";
             lblMenuTagTitle.Size = new Size(95, 24);
@@ -340,9 +343,8 @@
         private Panel panelMenuTagCU;
         private Panel panelMenuTagList;
         private Panel panelMenuTagTitle;
-        private Label lblMenuTagTitle;
+        private MaterialSkin.Controls.MaterialLabel lblMenuTagTitle;
         private MaterialSkin.Controls.MaterialListView mtLvMenuTags;
-        private ColumnHeader IdColumn;
         private ColumnHeader DescriptionColumn;
         private Panel panelCrudCtrlMenuTag;
         private MaterialSkin.Controls.MaterialButton btnVolverMenus;
@@ -352,8 +354,8 @@
         private MaterialSkin.Controls.MaterialTextBox mtbMenuTagDescription;
         private MaterialSkin.Controls.MaterialButton btnVolverAtras;
         private MaterialSkin.Controls.MaterialButton btnGuardarMenuTag;
-        private Label label2;
-        private Label label1;
+        private MaterialSkin.Controls.MaterialLabel label2;
+        private MaterialSkin.Controls.MaterialLabel label1;
         private Panel panelMenuTagUpload;
     }
 }

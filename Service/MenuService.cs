@@ -6,34 +6,40 @@ using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
+using ProyectoPresupuestoEvento.Interface;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Service
 {
+    // logica de los menus y sus etiquetas
     internal class MenuService
     {
+        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        private IRepository<Menu> repository;
 
         public MenuService()
         {
-
+            repository = MenuRepository.getInstance();
         }
 
         public void addToRepository(MenuDto dto)
         {
-            MenuRepository.getInstance().addToRepository(toModel(dto));
+            Menu menu = toModel(dto);
+            validateHasTags(menu);
+            validateUniqueDescription(menu.Description, 0);
+            repository.addToRepository(menu);
         }
 
+        // devuelve solo los menus activos
         public List<MenuDto> getMenus()
         {
-            List<Menu> menus = MenuRepository.getInstance().getAll();
+            List<Menu> menus = repository.getAll();
             List<MenuDto> dtos = new List<MenuDto>();
 
             foreach (Menu menu in menus)
             {
-                if (menu.IsActive)
-                {
-                    MenuDto dto = toDto(menu);
-                    dtos.Add(dto);
-                }
+                MenuDto dto = toDto(menu);
+                dtos.Add(dto);
             }
 
             return dtos;
@@ -41,39 +47,51 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void updateMenu(int id, MenuDto dto)
         {
-            MenuRepository.getInstance().update(id, toModel(dto));
+            Menu menu = toModel(dto);
+            validateHasTags(menu);
+            validateUniqueDescription(menu.Description, id);
+            repository.update(id, menu);
         }
 
+        private void validateHasTags(Menu menu)
+        {
+            if (menu.TagList.Count == 0)
+            {
+                throw new BusinessRuleException("seleccione al menos una etiqueta");
+            }
+        }
+
+        // compara solo con los menus activos y sin distinguir mayusculas
+        private void validateUniqueDescription(string description, int idEditando)
+        {
+            foreach (Menu menu in repository.getAll())
+            {
+                if (menu.Id != idEditando && menu.Description.ToLower() == description.ToLower())
+                {
+                    throw new BusinessRuleException("ya existe un menu con ese nombre");
+                }
+            }
+        }
+
+        // baja logica: el menu queda guardado pero inactivo
         public void removeMenu(int id)
         {
-            Menu menu = MenuRepository.getInstance().getById(id);
-            if (menu == null)
-            {
-                return;
-            }
-
+            Menu menu = repository.getById(id);
             menu.deactivate();
-            MenuRepository.getInstance().update(id, menu);
+            repository.update(id, menu);
         }
 
         public Menu getModelById(int id)
         {
-            return MenuRepository.getInstance().getById(id);
+            return repository.getById(id);
         }
 
         public List<Menu> getAllModels()
         {
-            return MenuRepository.getInstance().getAll();
+            return repository.getAll();
         }
 
-        public void removeTagFromMenus(int tagId)
-        {
-            foreach (Menu menu in getAllModels())
-            {
-                menu.removeTag(tagId);
-            }
-        }
-
+        // busca cada etiqueta real por su id
         public Menu toModel(MenuDto dto)
         {
             MenuTagService menuTagService = new MenuTagService();
@@ -81,10 +99,7 @@ namespace ProyectoPresupuestoEvento.Service
             foreach (MenuTagDto tagDto in dto.TagList)
             {
                 MenuTag tag = menuTagService.getModelById(tagDto.Id);
-                if (tag != null)
-                {
-                    tags.Add(tag);
-                }
+                tags.Add(tag);
             }
 
             Menu model = new Menu(dto.Description, dto.PriceAdult, dto.PriceChild, tags);

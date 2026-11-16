@@ -16,13 +16,6 @@ namespace ProyectoPresupuestoEvento.Model
 
 
         //constructor
-        
-        public OptionItem(int id, string name, decimal price)
-        {
-            Id = id;
-            Name = name;
-            Price = price;
-        }
 
         public OptionItem(string name, decimal price)
         {
@@ -30,54 +23,56 @@ namespace ProyectoPresupuestoEvento.Model
             Price = price;
         }
 
+        public OptionItem(int id, string name, decimal price, bool isActive)
+        {
+            Id = id;
+            Name = name;
+            Price = price;
+            IsActive = isActive;
+        }
+
 
         //propiedades
+
+        public int Id
+        {
+            get { return _id; }
+            private set { _id = value; }
+        }
 
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new BusinessRuleException("ingrese un nombre para el servicio");
-                }
-                _name = value.Trim();
-            }
+            private set { _name = Validator.requireText(value, "ingrese un nombre para el servicio"); }
         }
 
         public decimal Price
         {
             get { return _price; }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new BusinessRuleException("el precio del servicio no puede ser negativo");
-                }
-                _price = value;
-            }
-        }
-
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
+            private set { _price = Validator.requirePrice(value, "el precio del servicio"); }
         }
 
         public bool IsActive
         {
             get { return _isActive; }
+            private set { _isActive = value; }
         }
 
 
         //metodos
 
-        public void deactivate()
+        public void assignId(int id)
         {
-            _isActive = false;
+            if (Id != 0)
+            {
+                throw new BusinessRuleException("el id ya fue asignado");
+            }
+            Id = id;
         }
 
-
+        public void deactivate()
+        {
+            IsActive = false;
+        }
     }
 }

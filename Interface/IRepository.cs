@@ -7,7 +7,7 @@ using ProyectoPresupuestoEvento.Repository;
 
 namespace ProyectoPresupuestoEvento.Interface
 {
-    internal interface Irepository<T> where T : class
+    internal interface IRepository<T> where T : class
     {
         public void addToRepository(T obj);
 

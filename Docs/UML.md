@@ -39,8 +39,8 @@ Las flechas gruesas punteadas entre franjas resumen dependencias que tienen casi
 
 | Flecha | Relación | Dónde aparece |
 |---|---|---|
-| Línea con flecha abierta | **Asociación**: guarda una referencia como atributo | Form → Controller, Service → `IRepository<T>`, Repository → `SqliteDatabase`, `Quote` → `Ubication`, línea → `Menu` / `OptionItem` |
-| Punteada con flecha abierta | **Dependencia**: la usa o la crea dentro de un método | Controller → Service, `Program` → `FormMain` |
+| Línea con flecha abierta | **Asociación**: guarda una referencia como atributo | Form → Controller, Controller → Service, Service → `IRepository<T>`, Repository → `SqliteDatabase`, `Quote` → `Ubication`, línea → `Menu` / `OptionItem` |
+| Punteada con flecha abierta | **Dependencia**: la usa o la crea dentro de un método | `Program` → `FormMain`, `FormMain` → `VisualHelper` |
 | Rombo lleno | **Composición**: la parte vive y muere con el todo | `FormMain` → formularios, `Quote` → sus líneas, `EventItem` → `Quote`, `QuoteDto` → sus líneas |
 | Rombo vacío | **Agregación**: partes compartidas que existen solas | `Menu` → `MenuTag`, `MenuDto` → `MenuTagDto` |
 | Punteada con triángulo vacío | **Realización**: implementa una interfaz | Los seis repositorios → `IRepository<T>`, `DetailMenu` y `DetailOptionItem` → `IQuoteItem` |
@@ -59,7 +59,7 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 - `QuoteService` ◆— `QuoteValidator` es **composición**: el service crea su validador en el constructor y le delega las reglas de los presupuestos.
 
 **Controller → Service**
-- Es **dependencia**: cada método del Controller hace `new XService()` y lo descarta. Los Controllers no guardan estado.
+- Es **asociación**: cada Controller guarda su Service en un atributo (`private QuoteService service`) creado una sola vez en el constructor, y le delega cada pedido. Los services no tienen estado propio, así que compartir una instancia durante toda la ejecución no trae problemas.
 
 **Sin Service → Service**
 - Los services no se crean entre sí. Cada uno recibe por constructor los repositorios que necesita: `QuoteService` los de eventos, ubicaciones, menús y servicios; `EventItemService` el de presupuestos; `MenuService` el de etiquetas y `MenuTagService` el de menús. Así no hay acoplamiento entre services ni ciclos.

@@ -11,33 +11,30 @@ namespace ProyectoPresupuestoEvento.Controller
 {
     public class UbicationController
     {
+        private UbicationService service;
 
         public UbicationController()
         {
-
+            service = new UbicationService();
         }
 
         public void addToRepository(UbicationDto dto)
         {
-            UbicationService service = new UbicationService();
             service.addToRepository(dto);
         }
         
         public List<UbicationDto> getUbications()
         {
-            UbicationService service = new UbicationService();
            return service.getUbications();
         }
 
         public void updateUbication(int id, UbicationDto dto)
         {
-            UbicationService service = new UbicationService();
             service.updateUbication(id, dto);
         }
 
         public void removeUbication(int id)
         {
-            UbicationService service = new UbicationService();
             service.removeUbication(id);
 
         }

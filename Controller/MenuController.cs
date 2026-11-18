@@ -11,36 +11,31 @@ namespace ProyectoPresupuestoEvento.Controller
 {
     public class MenuController
     {
+        private MenuService service;
 
         public MenuController()
         {
-
+            service = new MenuService();
         }
 
         public void addToRepository(MenuDto dto)
         {
-            MenuService service = new MenuService();
             service.addToRepository(dto);
         }
 
         public List<MenuDto> getMenus()
         {
-            MenuService service = new MenuService();
             return service.getMenus();
         }
 
         public void updateMenu(int id, MenuDto dto)
         {
-            MenuService service = new MenuService();
             service.updateMenu(id, dto);
         }
 
         public void removeMenu(int id)
         {
-            MenuService service = new MenuService();
             service.removeMenu(id);
         }
-
-
     }
 }

@@ -11,33 +11,30 @@ namespace ProyectoPresupuestoEvento.Controller
 {
     public class OptionItemController
     {
+        private OptionItemService service;
 
         public OptionItemController()
         {
-
+            service = new OptionItemService();
         }
 
         public void addToRepository(OptionItemDto dto)
         {
-            OptionItemService service = new OptionItemService();
             service.addToRepository(dto);
         }
         
         public List<OptionItemDto> getOptionItems()
         {
-            OptionItemService service = new OptionItemService();
            return service.getOptionItems();
         }
 
         public void updateOptionItem(int id, OptionItemDto dto)
         {
-            OptionItemService service = new OptionItemService();
             service.updateOptionItem(id, dto);
         }
 
         public void removeOptionItem(int id)
         {
-            OptionItemService service = new OptionItemService();
             service.removeOptionItem(id);
 
         }

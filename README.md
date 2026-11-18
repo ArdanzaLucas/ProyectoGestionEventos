@@ -65,7 +65,7 @@ View  ──DTO──▶  Controller  ──DTO──▶  Service  ──Model�
 | Carpeta | Capa | Responsabilidad | Qué no hace |
 |---|---|---|---|
 | `View/`, `FormMain` | Vista | Captura lo que escribe el usuario, arma un DTO, llama al Controller y muestra el resultado o el error | No calcula ni conoce el modelo ni la base |
-| `Controller/` | Controlador | Punto de entrada único desde la vista: delega cada pedido en su Service | No tiene lógica de negocio |
+| `Controller/` | Controlador | Punto de entrada único desde la vista: guarda su Service en un atributo y le delega cada pedido | No tiene lógica de negocio |
 | `Service/` | Servicio | Reglas de negocio, conversión DTO ↔ Model (`toModel`, `toDto`) y validaciones que miran varios objetos o la base | No sabe cómo se guardan los datos |
 | `Repository/`, `Interface/` | Persistencia | Guarda y lee objetos del modelo en SQLite con SQL parametrizado | No valida reglas |
 | `Model/` | Dominio | Clases del negocio con sus datos, validaciones y cálculos | No conoce DTOs, vista ni base |
@@ -123,6 +123,7 @@ Tiene tres formularios en el **mismo panel**: `FormIndex` (la lista), `FormQuote
 | `Quote` → `Ubication`, `DetailMenu` → `Menu`, `DetailOptionItem` → `OptionItem` | **Asociación** | Son elementos del catálogo que el presupuesto usa, con su propio ciclo de vida. Los precios no se leen por la referencia: se copian |
 | `DetailMenu`, `DetailOptionItem` ⇢ `IQuoteItem` | **Realización** | Implementan el contrato de ítem del presupuesto |
 | `QuoteService` ◆— `QuoteValidator` | **Composición** | El service crea su validador y le delega las reglas de los presupuestos |
+| Form → Controller → Service → `IRepository<T>` | **Asociación** | Cada capa guarda una referencia a la de abajo: el formulario recibe su Controller, el Controller crea su Service en el constructor y el Service recibe sus repositorios |
 
 Para distinguir agregación de composición: *si se borra el todo, ¿las partes siguen teniendo sentido?* Una etiqueta sí (agregación); una línea de catering no (composición).
 

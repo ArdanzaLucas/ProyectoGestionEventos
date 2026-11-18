@@ -180,32 +180,27 @@ public void addQuote(QuoteDto dto)
 }
 ```
 
-Cada service guarda su repositorio en un atributo del tipo de la **interfaz**, y lo pide una sola vez en el constructor:
+Cada service recibe por constructor los repositorios que necesita, como atributos del tipo de la **interfaz** (inyección de dependencias). Tiene dos constructores: el que recibe las interfaces, y uno sin parámetros que usa el Controller y le pasa los repositorios reales:
 
 ```csharp
-private IRepository<Quote> repository;
+private IRepository<EventItem> repository;
+private IRepository<Quote> quoteRepository;
 
-public QuoteService()
+public EventItemService()
+    : this(EventItemRepository.getInstance(), QuoteRepository.getInstance())
 {
-    repository = QuoteRepository.getInstance();
+}
+
+public EventItemService(IRepository<EventItem> repository, IRepository<Quote> quoteRepository)
+{
+    this.repository = repository;
+    this.quoteRepository = quoteRepository;
 }
 ```
 
-El resto del service solo conoce `IRepository<Quote>`: no sabe que los datos están en SQLite. Si mañana se quisiera guardar en memoria o en otra base, alcanzaría con cambiar esa línea del constructor.
+El resto del service solo conoce `IRepository<T>`: no sabe que los datos están en SQLite. Si mañana se quisiera guardar en memoria o en otra base, alcanzaría con pasarle otra clase que implemente la interfaz.
 
-Cada service usa solo su repositorio. Si necesita un objeto de otra entidad, se lo pide a ese service con un método que los controllers no llaman:
-
-```csharp
-// en UbicationService
-public Ubication getModelById(int id)
-{
-    return repository.getById(id);
-}
-
-// en QuoteService.toModel
-UbicationService ubicationService = new UbicationService();
-Ubication ubication = ubicationService.getModelById(dto.UbicationId);
-```
+**Los services no se crean entre sí.** Si uno necesita datos de otra entidad, recibe ese repositorio por constructor. Por ejemplo, `QuoteService` recibe los de eventos, ubicaciones, menús y servicios, y en `toModel` hace `ubicationRepository.getById(dto.UbicationId)`. Así no hay dependencias entre services ni ciclos (antes `EventItemService` y `QuoteService` se llamaban entre sí).
 
 Las reglas que necesitan mirar otros datos guardados van en métodos privados con nombre `validate...`, como `validateUniqueName`, `validateUbicationFree` o `validateScheduleChange`.
 
@@ -369,7 +364,8 @@ Hay seis constructores que existen solo para leer de la base:
 - `Quote(id, estado, datos del evento, ubicación, nombre y precio, líneas, servicios, totales)` recibe todas las copias guardadas y permite armar un presupuesto Aceptado o Cancelado, que de otra forma solo nacería Pendiente. No recalcula ni compara con los datos actuales.
 - `Ubication(id, name, price, isActive)` permite armar una ubicación dada de baja sin llamar después a `deactivate()`.
 - `OptionItem(id, name, price, isActive)` hace lo mismo con un servicio dado de baja.
-- `DetailMenu(menu, menuDescription, tagDescription, adultos, niños, precioAdulto, precioNiño)` recibe la descripción y los precios guardados de la línea, en lugar de copiar los actuales del menú.
+- `DetailMenu(menu, menuDescription, tagDescription, adultos, niños, precioAdulto, precioNiño)` recibe la descripción y los precios guardados de la línea, en lugar de copiar los actuales del menú.
+
 - `DetailOptionItem(optionItem, optionItemName, unitPrice)` hace lo mismo con el nombre y el precio guardados del servicio.
 - `Menu(..., isActive)` permite armar un menú dado de baja. Usa las propiedades como los demás. La regla "al menos una etiqueta" la revisa `MenuService` al crear y editar, no el `set` de `TagList`: un menú dado de baja puede quedar sin etiquetas si se borró la única que tenía, y así se puede leer igual.
 
@@ -402,13 +398,14 @@ Se usa solo donde la da el framework:
 - `FormMain : MaterialForm` hereda el estilo de MaterialSkin.
 - `BusinessRuleException : Exception` es la única herencia escrita por nosotros: "es una" excepción, así que se puede lanzar y atrapar como cualquier otra.
 
-Entre las clases del negocio **no hay herencia**, y está bien: un `Quote` no "es un" `Menu`, sino que "tiene" menús. Es el criterio conocido como *preferir composición sobre herencia*.
+Entre las clases del negocio **no hay herencia**, y está bien: un `Quote` no "es un" `Menu`, sino que "tiene" menús. Es el criterio conocido como *preferir composición sobre herencia*. El polimorfismo en el dominio se consigue con una **interfaz**, no con una clase padre (ver `IQuoteItem` abajo).
 
 ### Polimorfismo
 
 | Forma | Dónde aparece |
 |---|---|
-| **Implementación de una interfaz** | Los seis repositorios implementan `IRepository<T>`, y los services los usan a través de ella (`private IRepository<Ubication> repository`) |
+| **Interfaz en el dominio** | `DetailMenu` y `DetailOptionItem` implementan `IQuoteItem` (`Description` y `Subtotal`). `Quote.getItems()` devuelve todos los ítems como `List<IQuoteItem>` y `calculateTotals()` suma `item.Subtotal` sin saber de qué tipo es cada uno. Un ítem nuevo sería otra clase que implementa la interfaz, sin tocar el cálculo |
+| **Interfaz en la persistencia** | Los seis repositorios implementan `IRepository<T>`, y los services los reciben por constructor a través de ella |
 | **Genéricos** | `IRepository<Quote>`, `List<DetailMenu>`: el mismo código para distintos tipos |
 | **Sobrecarga** | `Ubication` tiene un constructor con id y otro sin id. `Quote` y `Menu` suman uno para leer de la base |
 | **Sobrescritura** | `protected override void Dispose(...)` en los Designer |
@@ -436,8 +433,6 @@ Esto no impide que el programa funcione, pero conviene conocerlo para explicar b
 | Los Controllers solo pasan el pedido | Hoy agregan poco. Dan un punto de entrada único, pero la capa es casi un trámite | Es una decisión de diseño |
 | `FormIndex` tiene más de 600 líneas | Maneja la lista y también la carga, así que tiene más de una responsabilidad | Mejora opcional |
 | `FormIndex` y `FormReport` se conocen entre sí, igual que `FormMenus` y `FormMenuTags` | Es simple, pero genera dependencia en los dos sentidos | Bajo impacto |
-| `EventItemService` y `QuoteService` se llaman entre sí, igual que `MenuService` y `MenuTagService` | Hoy no da problemas, porque cada service se crea dentro del método, pero hay dependencia en los dos sentidos | Bajo impacto |
-| `getModelById` es público, y los Services son `internal` | Lo decidimos así para no pasar repositorios ajenos. Los Controllers no deben llamarlo, pero el compilador no lo impide | Bajo impacto |
 | Quedan algunos controles en los formularios: elegir fila o combo, "al menos un plato" antes de agregar una línea, y "solo se puede editar un pendiente" | Evitan abrir un panel o armar una línea que igual se rechazaría. Las dos últimas repiten una regla del modelo | Se pueden revisar |
 | Los `NumericUpDown` corrigen sin avisar | Un valor fuera de rango pasa al tope al salir del campo, y un precio sin tocar se guarda en 0 | Es una decisión de diseño |
 

@@ -14,12 +14,21 @@ namespace ProyectoPresupuestoEvento.Service
     // logica de los eventos y sus reglas
     internal class EventItemService
     {
-        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<EventItem> repository;
+        private IRepository<Quote> quoteRepository;
 
+        // el controller usa este: le pasa los repositorios reales al otro constructor
         public EventItemService()
+            : this(EventItemRepository.getInstance(), QuoteRepository.getInstance())
         {
-            repository = EventItemRepository.getInstance();
+        }
+
+        // recibe los repositorios desde afuera (inyeccion de dependencias)
+        public EventItemService(IRepository<EventItem> repository, IRepository<Quote> quoteRepository)
+        {
+            this.repository = repository;
+            this.quoteRepository = quoteRepository;
         }
 
         // crea un evento: la fecha no puede ser anterior a hoy
@@ -69,10 +78,12 @@ namespace ProyectoPresupuestoEvento.Service
 
             if (cambioFecha || cambioDuracion)
             {
-                QuoteService quoteService = new QuoteService();
-                if (quoteService.hasAcceptedQuote(id))
+                foreach (Quote quote in getQuotes(id))
                 {
-                    throw new BusinessRuleException("no se puede cambiar la fecha, la hora ni la duracion de un evento con un presupuesto aceptado");
+                    if (quote.State == EstadoPresupuesto.Aceptado)
+                    {
+                        throw new BusinessRuleException("no se puede cambiar la fecha, la hora ni la duracion de un evento con un presupuesto aceptado");
+                    }
                 }
             }
         }
@@ -104,22 +115,31 @@ namespace ProyectoPresupuestoEvento.Service
         // borra primero los presupuestos del evento y despues el evento
         public void removeEventItem(int id)
         {
-            QuoteService quoteService = new QuoteService();
-            quoteService.removeQuotesByEventItem(id);
+            foreach (Quote quote in getQuotes(id))
+            {
+                quoteRepository.removeById(quote.Id);
+            }
 
             repository.removeById(id);
         }
 
         public int countQuotes(int id)
         {
-            QuoteService quoteService = new QuoteService();
-            return quoteService.getQuotesByEventItem(id).Count;
+            return getQuotes(id).Count;
         }
 
-        // lo usan otros services para obtener el evento real
-        public EventItem getModelById(int id)
+        // presupuestos de un evento
+        private List<Quote> getQuotes(int eventItemId)
         {
-            return repository.getById(id);
+            List<Quote> quotes = new List<Quote>();
+            foreach (Quote quote in quoteRepository.getAll())
+            {
+                if (quote.EventItemId == eventItemId)
+                {
+                    quotes.Add(quote);
+                }
+            }
+            return quotes;
         }
 
         public EventItem toModel(EventItemDto dto)

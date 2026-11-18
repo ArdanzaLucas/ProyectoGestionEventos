@@ -17,9 +17,16 @@ namespace ProyectoPresupuestoEvento.Service
         // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<OptionItem> repository;
 
+        // el controller usa este: le pasa el repositorio real al otro constructor
         public OptionItemService()
+            : this(OptionItemRepository.getInstance())
         {
-            repository = OptionItemRepository.getInstance();
+        }
+
+        // recibe el repositorio desde afuera (inyeccion de dependencias)
+        public OptionItemService(IRepository<OptionItem> repository)
+        {
+            this.repository = repository;
         }
 
         public void addToRepository(OptionItemDto dto)
@@ -69,11 +76,6 @@ namespace ProyectoPresupuestoEvento.Service
             OptionItem optionItem = repository.getById(id);
             optionItem.deactivate();
             repository.update(id, optionItem);
-        }
-        
-        public OptionItem getModelById(int id)
-        {
-            return repository.getById(id);
         }
 
         public OptionItem toModel(OptionItemDto dto)

@@ -112,7 +112,7 @@ Cancelado
   - **No se puede borrar** una etiqueta si es la **única** de algún menú, porque ese menú quedaría sin etiquetas (V14). Se muestra un mensaje con los menús afectados (`getMenusWithOnlyThisTag`). Lo controla `MenuTagService.removeMenuTag`, y el formulario lo revisa también antes de pedir la confirmación, y primero hay que asignarles otra.
   - Si está asignada a otros menús que tienen más etiquetas, la View pide confirmación indicando a cuántos afecta (`countMenusUsing`). Al confirmar, la etiqueta desaparece de esos menús.
   - Los presupuestos **no cambian**: cada línea de catering guardó una copia del texto de la etiqueta, así que sigue diciendo, por ejemplo, "Vegana", aunque la etiqueta ya no exista o se haya renombrado.
-- I2. Eliminar un `EventItem` elimina también todos sus presupuestos: `EventItemService.removeEventItem` llama a `QuoteService.removeQuotesByEventItem`. La View pide confirmación avisando cuántos tiene (`countQuotes`).
+- I2. Eliminar un `EventItem` elimina también todos sus presupuestos: `EventItemService.removeEventItem` borra primero los presupuestos del evento con el repositorio de presupuestos que recibe por constructor. La View pide confirmación avisando cuántos tiene (`countQuotes`).
 - I3. Los IDs los asigna la base (`AUTOINCREMENT`), nunca la View. Cada presupuesto tiene su propio id y guarda el id de su evento.
 
 ## 6. Dónde va cada cosa (capas)
@@ -121,7 +121,7 @@ Cancelado
 |---|---|---|
 | **View** | Leer los campos, convertir el texto a número, mostrar mensajes con `MessageHelper` y refrescar listas. Las reglas no van acá | V10, V11 |
 | **Controller** | Puente fino entre View y Service. No tiene lógica | `ubicationController.addToRepository(dto)` |
-| **Service** | Reglas que involucran varias entidades u operaciones, conversión entre DTO y Model. Cada service usa solo su repositorio y le pide lo demás a otro service | V6–V9, V12–V16, I1, I5 |
+| **Service** | Reglas que involucran varias entidades u operaciones, conversión entre DTO y Model. Cada service recibe por constructor los repositorios que necesita y no crea otros services | V6–V9, V12–V16, I1, I5 |
 | **Model** | Reglas de una entidad y de lo que contiene, cálculos | V1–V5, E1–E6, I2, `calculateTotals()` |
 | **Repository** | Guardar y buscar en la base SQLite. Implementa `IRepository<T>` | `getById`, `removeById` |
 | **Dto** | Transportar datos entre View y Service. No tiene lógica. Referencia otras entidades por **id**, no por objeto | `QuoteDto.UbicationId` |

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Common;
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Model
 {
-    public class DetailOptionItem
+    public class DetailOptionItem : IQuoteItem
     {
         private OptionItem _optionItem;
         private string _optionItemName;
@@ -56,6 +57,16 @@ namespace ProyectoPresupuestoEvento.Model
         {
             get { return _unitPrice; }
             private set { _unitPrice = value; }
+        }
+
+        public string Description
+        {
+            get { return _optionItemName; }
+        }
+
+        public decimal Subtotal
+        {
+            get { return _unitPrice; }
         }
     }
 }

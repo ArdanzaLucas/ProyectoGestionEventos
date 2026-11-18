@@ -14,12 +14,21 @@ namespace ProyectoPresupuestoEvento.Service
     // logica de los menus y sus etiquetas
     internal class MenuService
     {
-        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<Menu> repository;
+        private IRepository<MenuTag> menuTagRepository;
 
+        // el controller usa este: le pasa los repositorios reales al otro constructor
         public MenuService()
+            : this(MenuRepository.getInstance(), MenuTagRepository.getInstance())
         {
-            repository = MenuRepository.getInstance();
+        }
+
+        // recibe los repositorios desde afuera (inyeccion de dependencias)
+        public MenuService(IRepository<Menu> repository, IRepository<MenuTag> menuTagRepository)
+        {
+            this.repository = repository;
+            this.menuTagRepository = menuTagRepository;
         }
 
         public void addToRepository(MenuDto dto)
@@ -81,24 +90,13 @@ namespace ProyectoPresupuestoEvento.Service
             repository.update(id, menu);
         }
 
-        public Menu getModelById(int id)
-        {
-            return repository.getById(id);
-        }
-
-        public List<Menu> getAllModels()
-        {
-            return repository.getAll();
-        }
-
         // busca cada etiqueta real por su id
         public Menu toModel(MenuDto dto)
         {
-            MenuTagService menuTagService = new MenuTagService();
             List<MenuTag> tags = new List<MenuTag>();
             foreach (MenuTagDto tagDto in dto.TagList)
             {
-                MenuTag tag = menuTagService.getModelById(tagDto.Id);
+                MenuTag tag = menuTagRepository.getById(tagDto.Id);
                 tags.Add(tag);
             }
 

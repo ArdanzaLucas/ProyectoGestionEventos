@@ -14,12 +14,29 @@ namespace ProyectoPresupuestoEvento.Service
     // logica de los presupuestos: armarlos, validarlos, calcularlos y cambiar su estado
     internal class QuoteService
     {
-        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<Quote> repository;
+        private IRepository<EventItem> eventItemRepository;
+        private IRepository<Ubication> ubicationRepository;
+        private IRepository<Menu> menuRepository;
+        private IRepository<OptionItem> optionItemRepository;
 
+        // el controller usa este: le pasa los repositorios reales al otro constructor
         public QuoteService()
+            : this(QuoteRepository.getInstance(), EventItemRepository.getInstance(), UbicationRepository.getInstance(),
+                  MenuRepository.getInstance(), OptionItemRepository.getInstance())
         {
-            repository = QuoteRepository.getInstance();
+        }
+
+        // recibe los repositorios desde afuera (inyeccion de dependencias)
+        public QuoteService(IRepository<Quote> repository, IRepository<EventItem> eventItemRepository,
+            IRepository<Ubication> ubicationRepository, IRepository<Menu> menuRepository, IRepository<OptionItem> optionItemRepository)
+        {
+            this.repository = repository;
+            this.eventItemRepository = eventItemRepository;
+            this.ubicationRepository = ubicationRepository;
+            this.menuRepository = menuRepository;
+            this.optionItemRepository = optionItemRepository;
         }
 
         // crea un presupuesto nuevo con los datos actuales del evento, la ubicacion, los menus y los servicios
@@ -70,19 +87,6 @@ namespace ProyectoPresupuestoEvento.Service
             return toDto(quote);
         }
 
-        // lo usa EventItemService para saber si puede cambiar la fecha del evento
-        public bool hasAcceptedQuote(int eventItemId)
-        {
-            foreach (Quote quote in repository.getAll())
-            {
-                if (quote.EventItemId == eventItemId && quote.State == EstadoPresupuesto.Aceptado)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         // solo edita un pendiente: arma todo de nuevo con toModel, asi toma los datos y precios actuales
         public void updateQuote(int id, QuoteDto dto)
         {
@@ -105,25 +109,6 @@ namespace ProyectoPresupuestoEvento.Service
         public void removeQuote(int id)
         {
             repository.removeById(id);
-        }
-
-        // borra los presupuestos de un evento, lo llama EventItemService al borrar el evento
-        public void removeQuotesByEventItem(int eventItemId)
-        {
-            // primero junta los ids y despues borra, para no borrar mientras recorre la lista
-            List<int> ids = new List<int>();
-            foreach (Quote quote in repository.getAll())
-            {
-                if (quote.EventItemId == eventItemId)
-                {
-                    ids.Add(quote.Id);
-                }
-            }
-
-            foreach (int id in ids)
-            {
-                repository.removeById(id);
-            }
         }
 
         // acepta un presupuesto: desde ahi queda congelado
@@ -324,35 +309,30 @@ namespace ProyectoPresupuestoEvento.Service
 
         private EventItem getEventItem(int eventItemId)
         {
-            EventItemService eventItemService = new EventItemService();
-            EventItem eventItem = eventItemService.getModelById(eventItemId);
-            return eventItem;
+            return eventItemRepository.getById(eventItemId);
         }
 
 
 
         //conversiones
 
-        // pide los objetos reales por id a cada service, y el presupuesto y sus lineas copian sus datos
+        // busca los objetos reales por id en sus repositorios, y el presupuesto y sus lineas copian sus datos
         public Quote toModel(QuoteDto dto)
         {
             EventItem eventItem = getEventItem(dto.EventItemId);
+            Ubication ubication = ubicationRepository.getById(dto.UbicationId);
 
-            UbicationService ubicationService = new UbicationService();
-            Ubication ubication = ubicationService.getModelById(dto.UbicationId);
-            MenuService menuService = new MenuService();
             List<DetailMenu> menus = new List<DetailMenu>();
             foreach (DetailMenuDto lineDto in dto.MenusList)
             {
-                Menu menu = menuService.getModelById(lineDto.MenuId);
+                Menu menu = menuRepository.getById(lineDto.MenuId);
                 menus.Add(new DetailMenu(menu, lineDto.TagDescription, lineDto.AdultQuantity, lineDto.ChildQuantity));
             }
 
-            OptionItemService optionItemService = new OptionItemService();
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
             foreach (DetailOptionItemDto lineDto in dto.OptionItemsList)
             {
-                OptionItem optionItem = optionItemService.getModelById(lineDto.OptionItemId);
+                OptionItem optionItem = optionItemRepository.getById(lineDto.OptionItemId);
                 optionItems.Add(new DetailOptionItem(optionItem));
             }
 

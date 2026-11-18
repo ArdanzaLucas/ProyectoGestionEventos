@@ -17,9 +17,16 @@ namespace ProyectoPresupuestoEvento.Service
         // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<Ubication> repository;
 
+        // el controller usa este: le pasa el repositorio real al otro constructor
         public UbicationService()
+            : this(UbicationRepository.getInstance())
         {
-            repository = UbicationRepository.getInstance();
+        }
+
+        // recibe el repositorio desde afuera (inyeccion de dependencias)
+        public UbicationService(IRepository<Ubication> repository)
+        {
+            this.repository = repository;
         }
 
         public void addToRepository(UbicationDto dto)
@@ -61,11 +68,6 @@ namespace ProyectoPresupuestoEvento.Service
                     throw new BusinessRuleException("ya existe una ubicacion con ese nombre");
                 }
             }
-        }
-
-        public Ubication getModelById(int id)
-        {
-            return repository.getById(id);
         }
 
         public Ubication toModel(UbicationDto dto)

@@ -14,12 +14,21 @@ namespace ProyectoPresupuestoEvento.Service
     // logica de las etiquetas que se asignan a los menus
     internal class MenuTagService
     {
-        // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
+        // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<MenuTag> repository;
+        private IRepository<Menu> menuRepository;
 
+        // el controller usa este: le pasa los repositorios reales al otro constructor
         public MenuTagService()
+            : this(MenuTagRepository.getInstance(), MenuRepository.getInstance())
         {
-            repository = MenuTagRepository.getInstance();
+        }
+
+        // recibe los repositorios desde afuera (inyeccion de dependencias)
+        public MenuTagService(IRepository<MenuTag> repository, IRepository<Menu> menuRepository)
+        {
+            this.repository = repository;
+            this.menuRepository = menuRepository;
         }
 
         public void addToRepository(MenuTagDto dto)
@@ -66,8 +75,7 @@ namespace ProyectoPresupuestoEvento.Service
         // menus activos que se quedarian sin etiquetas si se borra esta
         public List<string> getMenusWithOnlyThisTag(int id)
         {
-            MenuService menuService = new MenuService();
-            List<Menu> menus = menuService.getAllModels();
+            List<Menu> menus = menuRepository.getAll();
             List<string> nombres = new List<string>();
 
             foreach (Menu menu in menus)
@@ -84,8 +92,7 @@ namespace ProyectoPresupuestoEvento.Service
         // cuantos menus activos la usan, para el mensaje de confirmacion
         public int countMenusUsing(int id)
         {
-            MenuService menuService = new MenuService();
-            List<Menu> menus = menuService.getAllModels();
+            List<Menu> menus = menuRepository.getAll();
             int cantidad = 0;
 
             foreach (Menu menu in menus)
@@ -110,11 +117,6 @@ namespace ProyectoPresupuestoEvento.Service
                     throw new BusinessRuleException("ya existe una etiqueta con ese nombre");
                 }
             }
-        }
-
-        public MenuTag getModelById(int id)
-        {
-            return repository.getById(id);
         }
 
         public MenuTag toModel(MenuTagDto dto)

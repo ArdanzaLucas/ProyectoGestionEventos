@@ -198,9 +198,9 @@ Campos: nombre, cliente, fecha y hora, adultos, niños y duración.
 |---|---|---|
 | **Crear** | `EventItemDto(...)` sin id | El Service rechaza una fecha anterior a hoy y un evento repetido (mismo nombre, cliente y día). El Service también revisa que haya al menos un invitado. El Model revisa los textos y los topes |
 | **Editar** | El mismo DTO y `idEditando` | Si el evento tiene un presupuesto Aceptado, `validateScheduleChange` no deja cambiar fecha, hora ni duración. El nombre, el cliente y los invitados sí |
-| **Eliminar** | Solo el id | Antes de confirmar, el formulario pide `countQuotes(id)` para avisar cuántos presupuestos se borran. El Service borra primero los presupuestos con `QuoteService.removeQuotesByEventItem` y después el evento. Es un **borrado físico** |
+| **Eliminar** | Solo el id | Antes de confirmar, el formulario pide `countQuotes(id)` para avisar cuántos presupuestos se borran. El Service borra primero los presupuestos del evento, con el `IRepository<Quote>` que recibe por constructor, y después el evento. Es un **borrado físico** |
 
-Acá dos services colaboran: `EventItemService` le pide a `QuoteService` lo que tiene que ver con presupuestos, en vez de tocar `QuoteRepository` directamente.
+`EventItemService` no crea un `QuoteService`: recibe el repositorio de presupuestos por constructor y lo usa para contarlos, revisar si hay uno aceptado y borrarlos.
 
 ### Catering: menús (`FormMenus`) y etiquetas (`FormMenuTags`)
 
@@ -214,7 +214,7 @@ FormMenus.btnGuardarMenu_Click
   |   new MenuDto(descripcion, precioAdulto, precioNino, etiquetas)
   v
 MenuService.toModel(dto)
-  |   por cada MenuTagDto le pide a MenuTagService.getModelById(id) el MenuTag real
+  |   por cada MenuTagDto busca el MenuTag real con menuTagRepository.getById(id)
   |   new Menu(..., tags)
   |   validateHasTags(menu)   exige al menos una etiqueta
   v
@@ -279,10 +279,10 @@ FormIndex.btnGuardarQuote_Click
   v
 QuoteService.addQuote(dto)
   |-- toModel(dto)
-  |     EventItemService.getModelById    el evento real
-  |     UbicationService.getModelById    la ubicacion real
-  |     MenuService.getModelById         por cada linea
-  |     OptionItemService.getModelById   por cada servicio
+  |     eventItemRepository.getById      el evento real
+  |     ubicationRepository.getById      la ubicacion real
+  |     menuRepository.getById           por cada linea
+  |     optionItemRepository.getById     por cada servicio
   |     new DetailMenu, new DetailOptionItem, new Quote: copian nombres y precios
   |-- validateEventNotPast(...)         el evento no puede haber pasado
   |-- validateQuote(...)                lineas repetidas, etiqueta del menu, elementos de baja

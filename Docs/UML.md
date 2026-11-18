@@ -40,10 +40,10 @@ Las flechas gruesas punteadas entre franjas resumen dependencias que tienen casi
 | Flecha | Relación | Dónde aparece |
 |---|---|---|
 | Línea con flecha abierta | **Asociación**: guarda una referencia como atributo | Form → Controller, Service → `IRepository<T>`, Repository → `SqliteDatabase`, `Quote` → `Ubication`, línea → `Menu` / `OptionItem` |
-| Punteada con flecha abierta | **Dependencia**: la usa o la crea dentro de un método | Controller → Service, Service → Service, `Program` → `FormMain` |
+| Punteada con flecha abierta | **Dependencia**: la usa o la crea dentro de un método | Controller → Service, `Program` → `FormMain` |
 | Rombo lleno | **Composición**: la parte vive y muere con el todo | `FormMain` → formularios, `Quote` → sus líneas, `EventItem` → `Quote`, `QuoteDto` → sus líneas |
 | Rombo vacío | **Agregación**: partes compartidas que existen solas | `Menu` → `MenuTag`, `MenuDto` → `MenuTagDto` |
-| Punteada con triángulo vacío | **Realización**: implementa una interfaz | Los seis repositorios → `IRepository<T>` |
+| Punteada con triángulo vacío | **Realización**: implementa una interfaz | Los seis repositorios → `IRepository<T>`, `DetailMenu` y `DetailOptionItem` → `IQuoteItem` |
 | Línea con triángulo vacío | **Herencia** | `NotFoundException` → `BusinessRuleException` |
 | Flecha en las dos puntas | Asociación en los dos sentidos | `FormIndex` ↔ `FormReport`, `FormMenus` ↔ `FormMenuTags` |
 
@@ -60,11 +60,11 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 **Controller → Service**
 - Es **dependencia**: cada método del Controller hace `new XService()` y lo descarta. Los Controllers no guardan estado.
 
-**Service → Service**
-- También es dependencia. `QuoteService` le pide el evento, la ubicación, los menús y los servicios a sus services con `getModelById`. `EventItemService` usa a `QuoteService` para borrar los presupuestos de un evento. `MenuService` y `MenuTagService` se consultan entre sí.
+**Sin Service → Service**
+- Los services no se crean entre sí. Cada uno recibe por constructor los repositorios que necesita: `QuoteService` los de eventos, ubicaciones, menús y servicios; `EventItemService` el de presupuestos; `MenuService` el de etiquetas y `MenuTagService` el de menús. Así no hay acoplamiento entre services ni ciclos.
 
 **Service → `IRepository<T>`**
-- Es **asociación con la interfaz**: cada Service guarda `private IRepository<X> repository` y lo pide una sola vez en el constructor con `XRepository.getInstance()`. El Service no sabe que los datos están en SQLite.
+- Es **asociación con la interfaz**: cada Service recibe por constructor los `IRepository<T>` que necesita (inyección de dependencias). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales con `XRepository.getInstance()`. El Service no sabe que los datos están en SQLite.
 
 **Repositorios**
 - Son **singleton**: constructor privado, atributo estático `instance` y `getInstance()`.
@@ -74,7 +74,8 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 **Modelo**
 - Cada atributo tiene su propiedad pública de **solo lectura** (get público, set privado que valida). Para no duplicar cada línea, el diagrama muestra solo los atributos.
 - Las clases que se leen de la base tienen un **constructor de lectura**, que recibe los datos guardados.
-- `EventItem` → `Quote` es **composición conceptual**: en el código `Quote` guarda `EventItemId` (no una referencia), y borrar el evento borra sus presupuestos (`removeQuotesByEventItem` y `ON DELETE CASCADE`).
+- **Polimorfismo en el dominio:** `DetailMenu` y `DetailOptionItem` implementan `IQuoteItem` (`Description` y `Subtotal`). `Quote.getItems()` devuelve todos los ítems como `List<IQuoteItem>` y `calculateTotals()` suma sus subtotales sin saber de qué tipo es cada uno. Para agregar un ítem nuevo alcanza con otra clase que implemente la interfaz.
+- `EventItem` → `Quote` es **composición conceptual**: en el código `Quote` guarda `EventItemId` (no una referencia), y borrar el evento borra sus presupuestos (`EventItemService.removeEventItem` y `ON DELETE CASCADE`).
 - `Quote`, `DetailMenu` y `DetailOptionItem` mantienen la **asociación** con la ubicación, el menú y el servicio reales, pero además guardan una **copia** de nombres y precios. Por eso un presupuesto no cambia si después se edita el catálogo.
 - `DetailMenu` guarda el **texto** de la etiqueta (`_tagDescription`), no un `MenuTag`: no hay flecha hacia `MenuTag`.
 

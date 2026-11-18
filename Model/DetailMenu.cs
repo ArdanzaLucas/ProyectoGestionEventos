@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Common;
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Model
 {
-    public class DetailMenu
+    public class DetailMenu : IQuoteItem
     {
         private Menu _menu;
         private string _menuDescription;
@@ -93,6 +94,11 @@ namespace ProyectoPresupuestoEvento.Model
         {
             get { return _unitPriceChild; }
             private set { _unitPriceChild = value; }
+        }
+
+        public string Description
+        {
+            get { return _menuDescription + " (" + _tagDescription + ")"; }
         }
 
         public decimal Subtotal

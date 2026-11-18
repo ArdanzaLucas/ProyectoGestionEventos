@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Common;
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -242,11 +243,30 @@ namespace ProyectoPresupuestoEvento.Model
             decimal totalOptionItems = 0;
             foreach (DetailOptionItem detailOptionItem in OptionItemList)
             {
-                totalOptionItems = totalOptionItems + detailOptionItem.UnitPrice;
+                totalOptionItems = totalOptionItems + detailOptionItem.Subtotal;
             }
             TotalOptionItems = totalOptionItems;
 
-            Total = TotalUbication + TotalMenus + TotalOptionItems;
+            decimal totalItems = 0;
+            foreach (IQuoteItem item in getItems())
+            {
+                totalItems = totalItems + item.Subtotal;
+            }
+            Total = TotalUbication + totalItems;
+        }
+
+        public List<IQuoteItem> getItems()
+        {
+            List<IQuoteItem> items = new List<IQuoteItem>();
+            foreach (DetailMenu detailMenu in _menusList)
+            {
+                items.Add(detailMenu);
+            }
+            foreach (DetailOptionItem detailOptionItem in _optionItemList)
+            {
+                items.Add(detailOptionItem);
+            }
+            return items;
         }
 
         public void accept()

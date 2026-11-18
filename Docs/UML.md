@@ -7,7 +7,7 @@ El diagrama está en **[UML.drawio](UML.drawio)**. Se abre con [draw.io](https:/
 
 Para verlo sin abrir draw.io están las imágenes [UML_Clases.svg](UML_Clases.svg) y [UML_BaseDeDatos.svg](UML_BaseDeDatos.svg). Si se modifica el `.drawio`, hay que volver a exportarlas desde draw.io (Archivo → Exportar como → SVG).
 
-Las reglas de cada método están en [ReglasDeNegocio.md](ReglasDeNegocio.md), el recorrido de los datos en [FlujoDeDatos.md](FlujoDeDatos.md) y la explicación del código en [GuiaDelCodigo.md](GuiaDelCodigo.md).
+Las reglas de negocio, el recorrido de los datos y los conceptos de POO aplicados están en el [README](../README.md).
 
 ![Diagrama de clases](UML_Clases.svg)
 
@@ -20,9 +20,9 @@ Las capas van **de arriba hacia abajo**, en el mismo orden en que viaja un pedid
 | Franja | Qué tiene |
 |---|---|
 | **Arranque** | `Program`, que abre `FormMain`, y `MockData`, que carga los datos de prueba si la base está vacía |
-| **Vista (View)** | `FormMain` arriba y, debajo, un formulario por pestaña. Al costado, `FormReport` y `QuotePdf`. Arriba a la derecha, `VisualHelper` y `MessageHelper` |
+| **Vista (View)** | `FormMain` arriba y, debajo, un formulario por pestaña. Al costado, `FormReport`, `QuotePdf` y `FormQuoteEdit`. Arriba a la derecha, `VisualHelper` y `MessageHelper` |
 | **Controladores (Controller)** | Un controller por módulo |
-| **Servicios (Service)** | Un service por módulo |
+| **Servicios (Service)** | Un service por módulo, y `QuoteValidator` al costado de `QuoteService` |
 | **Repositorios (Repository + Interface)** | `IRepository<T>` arriba, los seis repositorios en el medio y `SqliteDatabase` abajo |
 
 Cada módulo ocupa **una columna**: el formulario, su controller, su service y su repositorio quedan uno debajo del otro. De izquierda a derecha: Presupuestos (`Quote`), Eventos, Ubicaciones, Servicios adicionales (`OptionItem`), Menús y Etiquetas (`MenuTag`).
@@ -55,7 +55,8 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 
 **Vista**
 - `FormMain` crea los siete formularios y los seis Controllers, y le pasa a cada formulario los Controllers que necesita. Las flechas hacia los Controllers salen de cada formulario, que los guarda como atributo.
-- `FormIndex` y `FormReport` comparten el panel de la pestaña Inicio y se conocen entre sí, igual que `FormMenus` y `FormMenuTags` en Catering.
+- `FormIndex` (la lista), `FormQuoteEdit` (la carga) y `FormReport` (la vista previa) comparten el panel de la pestaña Inicio: se crean con `TopLevel = false` y `Dock = Fill`, y se alternan mostrando uno y escondiendo los otros. `FormIndex` se conoce con los otros dos, igual que `FormMenus` y `FormMenuTags` en Catering.
+- `QuoteService` ◆— `QuoteValidator` es **composición**: el service crea su validador en el constructor y le delega las reglas de los presupuestos.
 
 **Controller → Service**
 - Es **dependencia**: cada método del Controller hace `new XService()` y lo descarta. Los Controllers no guardan estado.

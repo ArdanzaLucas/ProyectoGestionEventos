@@ -20,6 +20,7 @@ namespace ProyectoPresupuestoEvento.Service
         private IRepository<Ubication> ubicationRepository;
         private IRepository<Menu> menuRepository;
         private IRepository<OptionItem> optionItemRepository;
+        private QuoteValidator validator;
 
         // el controller usa este: le pasa los repositorios reales al otro constructor
         public QuoteService()
@@ -37,6 +38,7 @@ namespace ProyectoPresupuestoEvento.Service
             this.ubicationRepository = ubicationRepository;
             this.menuRepository = menuRepository;
             this.optionItemRepository = optionItemRepository;
+            validator = new QuoteValidator(repository, eventItemRepository);
         }
 
         // crea un presupuesto nuevo con los datos actuales del evento, la ubicacion, los menus y los servicios
@@ -44,8 +46,8 @@ namespace ProyectoPresupuestoEvento.Service
         {
             Quote quote = toModel(dto);
 
-            validateEventNotPast(quote.EventDate, "crear");
-            validateQuote(quote, null);
+            validator.validateEventNotPast(quote.EventDate, "crear");
+            validator.validateQuote(quote, null);
 
             quote.calculateTotals();
             repository.addToRepository(quote);
@@ -100,7 +102,7 @@ namespace ProyectoPresupuestoEvento.Service
             dto.EventItemId = original.EventItemId;
             Quote quote = toModel(dto);
 
-            validateQuote(quote, original);
+            validator.validateQuote(quote, original);
 
             quote.calculateTotals();
             repository.update(id, quote);
@@ -118,18 +120,10 @@ namespace ProyectoPresupuestoEvento.Service
             // cambia el estado solo en memoria: si alguna validacion falla, no se guarda nada
             quote.accept();
 
-            validateEventNotPast(quote.EventDate, "aceptar");
-            validateEventNotChanged(quote);
-
-            foreach (Quote otro in repository.getAll())
-            {
-                if (otro.Id != quote.Id && otro.EventItemId == quote.EventItemId && otro.State == EstadoPresupuesto.Aceptado)
-                {
-                    throw new BusinessRuleException("el evento ya tiene un presupuesto aceptado");
-                }
-            }
-
-            validateUbicationFree(quote);
+            validator.validateEventNotPast(quote.EventDate, "aceptar");
+            validator.validateEventNotChanged(quote);
+            validator.validateNoOtherAccepted(quote);
+            validator.validateUbicationFree(quote);
 
             // recien aca se guarda el nuevo estado
             repository.update(id, quote);
@@ -146,21 +140,15 @@ namespace ProyectoPresupuestoEvento.Service
         public void cloneQuote(int id)
         {
             Quote original = repository.getById(id);
-            // no se puede clonar si usa algo dado de baja
-            List<string> inactivos = getInactiveItems(original);
-            if (inactivos.Count > 0)
-            {
-                throw new BusinessRuleException("no se puede clonar: usa elementos dados de baja ("
-                    + string.Join(", ", inactivos) + ")");
-            }
+            validator.validateCanClone(original);
 
             EventItem eventItem = getEventItem(original.EventItemId);
-            validateEventNotPast(eventItem.Date, "clonar");
+            validator.validateEventNotPast(eventItem.Date, "clonar");
 
             // el clon toma los datos y precios actuales, no las copias del original
             Quote nuevo = original.clone(eventItem);
             // las lineas se revisan como si se armara a mano: por ejemplo, el menu puede haber perdido la etiqueta
-            validateQuote(nuevo, null);
+            validator.validateQuote(nuevo, null);
 
             nuevo.calculateTotals();
             repository.addToRepository(nuevo);
@@ -176,136 +164,7 @@ namespace ProyectoPresupuestoEvento.Service
 
 
 
-        //validaciones
-
-        // reglas de las lineas: platos, variantes repetidas, etiquetas del menu, servicios repetidos y elementos de baja
-        private void validateQuote(Quote quote, Quote original)
-        {
-            foreach (DetailMenu detailMenu in quote.MenusList)
-            {
-                if (detailMenu.AdultQuantity + detailMenu.ChildQuantity == 0)
-                {
-                    throw new BusinessRuleException("cada linea de catering tiene que tener al menos un plato");
-                }
-            }
-
-            for (int i = 0; i < quote.MenusList.Count; i++)
-            {
-                for (int j = i + 1; j < quote.MenusList.Count; j++)
-                {
-                    DetailMenu a = quote.MenusList[i];
-                    DetailMenu b = quote.MenusList[j];
-                    if (a.Menu.Id == b.Menu.Id && a.TagDescription == b.TagDescription)
-                    {
-                        throw new BusinessRuleException("la variante " + a.Menu.Description + " " + a.TagDescription + " esta repetida");
-                    }
-                }
-            }
-
-            foreach (DetailMenu detailMenu in quote.MenusList)
-            {
-                bool tieneLaEtiqueta = false;
-                foreach (MenuTag tag in detailMenu.Menu.TagList)
-                {
-                    if (tag.Description == detailMenu.TagDescription)
-                    {
-                        tieneLaEtiqueta = true;
-                    }
-                }
-                if (!tieneLaEtiqueta)
-                {
-                    throw new BusinessRuleException("el menu " + detailMenu.Menu.Description + " no tiene la etiqueta " + detailMenu.TagDescription);
-                }
-            }
-
-            for (int i = 0; i < quote.OptionItemList.Count; i++)
-            {
-                for (int j = i + 1; j < quote.OptionItemList.Count; j++)
-                {
-                    if (quote.OptionItemList[i].OptionItem.Id == quote.OptionItemList[j].OptionItem.Id)
-                    {
-                        throw new BusinessRuleException("el servicio " + quote.OptionItemList[i].OptionItem.Name + " esta repetido");
-                    }
-                }
-            }
-
-            // al editar se pueden conservar los elementos de baja que ya tenia el original
-            List<string> inactivos = getInactiveItems(quote);
-            foreach (string nombre in inactivos)
-            {
-                if (original == null || !getInactiveItems(original).Contains(nombre))
-                {
-                    throw new BusinessRuleException("no se puede usar " + nombre + " porque esta dado de baja");
-                }
-            }
-        }
-
-        private void validateEventNotPast(DateTime eventDate, string accion)
-        {
-            if (eventDate.Date < DateTime.Today)
-            {
-                throw new BusinessRuleException("no se puede " + accion + " un presupuesto de un evento que ya paso");
-            }
-        }
-
-        // compara las copias del presupuesto con el evento actual
-        private void validateEventNotChanged(Quote quote)
-        {
-            EventItem eventItem = getEventItem(quote.EventItemId);
-
-            bool igual = quote.EventName == eventItem.Name
-                && quote.EventClientName == eventItem.ClientName
-                && quote.EventDate.ToString("yyyy-MM-dd HH:mm") == eventItem.Date.ToString("yyyy-MM-dd HH:mm")
-                && quote.EventGuestAdults == eventItem.GuestAdults
-                && quote.EventGuestChilds == eventItem.GuestChilds
-                && quote.EventDuration == eventItem.Duration;
-
-            if (!igual)
-            {
-                throw new BusinessRuleException("los datos del evento cambiaron: edite y guarde el presupuesto antes de aceptarlo");
-            }
-        }
-
-        // busca otro aceptado en el mismo salon con un horario que se pise
-        private void validateUbicationFree(Quote quote)
-        {
-            foreach (Quote otro in repository.getAll())
-            {
-                if (otro.Id != quote.Id && otro.State == EstadoPresupuesto.Aceptado && otro.Ubication.Id == quote.Ubication.Id && quote.overlapsWith(otro))
-                {
-                    throw new BusinessRuleException("la ubicacion ya esta ocupada en ese horario por el evento " + otro.EventName);
-                }
-            }
-        }
-
-        // nombres de la ubicacion, los menus y los servicios dados de baja que usa el presupuesto
-        private List<string> getInactiveItems(Quote quote)
-        {
-            List<string> nombres = new List<string>();
-
-            if (!quote.Ubication.IsActive)
-            {
-                nombres.Add(quote.Ubication.Name);
-            }
-
-            foreach (DetailMenu detailMenu in quote.MenusList)
-            {
-                if (!detailMenu.Menu.IsActive && !nombres.Contains(detailMenu.Menu.Description))
-                {
-                    nombres.Add(detailMenu.Menu.Description);
-                }
-            }
-
-            foreach (DetailOptionItem detailOptionItem in quote.OptionItemList)
-            {
-                if (!detailOptionItem.OptionItem.IsActive)
-                {
-                    nombres.Add(detailOptionItem.OptionItem.Name);
-                }
-            }
-
-            return nombres;
-        }
+        //auxiliares
 
         private EventItem getEventItem(int eventItemId)
         {

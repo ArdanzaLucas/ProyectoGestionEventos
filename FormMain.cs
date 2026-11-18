@@ -17,6 +17,7 @@ namespace ProyectoPresupuestoEvento
 
         private FormIndex frmIndex;
         private FormReport frmReport;
+        private FormQuoteEdit frmQuoteEdit;
         private FormEvents frmEvents;
         private FormUbications frmUbications;
         private FormOptionItem frmOI;
@@ -46,7 +47,7 @@ namespace ProyectoPresupuestoEvento
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            frmIndex = new FormIndex(quoteController, eventsController, ubicationController, menuController, optionItemsController);
+            frmIndex = new FormIndex(quoteController, eventsController);
             frmIndex.TopLevel = false;
             frmIndex.Dock = DockStyle.Fill;
             this.pnlIndex.Controls.Add(frmIndex);
@@ -56,6 +57,12 @@ namespace ProyectoPresupuestoEvento
             frmReport.Dock = DockStyle.Fill;
             this.pnlIndex.Controls.Add(frmReport);
             frmIndex.setFormReport(frmReport);
+            frmQuoteEdit = new FormQuoteEdit(quoteController, eventsController, ubicationController, menuController, optionItemsController);
+            frmQuoteEdit.TopLevel = false;
+            frmQuoteEdit.Dock = DockStyle.Fill;
+            this.pnlIndex.Controls.Add(frmQuoteEdit);
+            frmQuoteEdit.setFormIndex(frmIndex);
+            frmIndex.setFormQuoteEdit(frmQuoteEdit);
             frmEvents = new FormEvents(eventsController);
             frmEvents.TopLevel = false;
             frmEvents.Dock = DockStyle.Fill;
@@ -90,6 +97,8 @@ namespace ProyectoPresupuestoEvento
             if (TabCtrl.SelectedTab == tabIndex)
             {
                 frmReport.Hide();
+                frmQuoteEdit.Hide();
+                frmQuoteEdit.resetView();
                 frmIndex.Show();
                 frmIndex.resetView();
             }

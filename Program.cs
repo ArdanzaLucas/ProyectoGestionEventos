@@ -19,7 +19,8 @@ namespace ProyectoPresupuestoEvento
 
         private static void ShowUnexpectedError(object sender, ThreadExceptionEventArgs e)
         {
-            View.MessageHelper.ShowError("ocurrio un error inesperado: " + e.Exception.Message);
+            Common.ErrorLog.Write(e.Exception);
+            View.MessageHelper.ShowError("ocurrio un error inesperado. El detalle se guardo en " + Common.ErrorLog.FilePath);
         }
     }
 }

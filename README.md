@@ -70,7 +70,7 @@ View  ──DTO──▶  Controller  ──DTO──▶  Service  ──Model�
 | `Repository/`, `Interface/` | Persistencia | Guarda y lee objetos del modelo en SQLite con SQL parametrizado | No valida reglas |
 | `Model/` | Dominio | Clases del negocio con sus datos, validaciones y cálculos | No conoce DTOs, vista ni base |
 | `Dto/` | Transporte | Objetos simples entre la vista y el Service | No tienen lógica |
-| `Common/` | Compartido | `Validator`, `Limits`, `BusinessRuleException`, `NotFoundException`, enum `QuoteState` y `QuoteStateText` | — |
+| `Common/` | Compartido | `Validator`, `Limits`, `BusinessRuleException`, `NotFoundException`, enum `QuoteState`, `QuoteStateText`, `IClock` / `SystemClock`, `AppFolders` y `ErrorLog` | — |
 | `Mock/` | Arranque | Datos de ejemplo si la base está vacía | — |
 
 Cada entidad tiene su "columna" con el mismo patrón: formulario → controller → service → repositorio. Por ejemplo, `FormLocations` → `LocationController` → `LocationService` → `LocationRepository`.
@@ -102,6 +102,8 @@ Tiene dos formularios en el **mismo panel**: `FormIndex` (la lista) y `FormQuote
 ### El PDF
 
 La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteController.ExportPdf(id, path)`. `QuoteService.ExportPdf` busca el presupuesto y se lo pasa a un `IQuoteDocumentGenerator`. La implementación es `QuotePdfGenerator` (capa Service), que arma la hoja con la librería **PDFsharp** usando los datos congelados del presupuesto. `QuoteService` solo conoce la interfaz y la recibe por constructor: se podría cambiar la librería o el formato sin tocar el service. Así la lógica del documento queda fuera de la vista y no depende de una impresora virtual del sistema.
+
+El botón **Detalle** genera el PDF en una carpeta propia dentro de la carpeta temporal de Windows (`AppFolders.TempPdf`) y lo abre con el visor del sistema. Esa carpeta se vacía cada vez que se abre la aplicación; si algún PDF sigue abierto en el visor, se saltea sin error.
 
 ## 4. Modelo de dominio
 
@@ -194,7 +196,7 @@ La integridad se protege en capas sucesivas, y cada regla vive donde está la in
 2. **Reglas que miran varios objetos o la base (Service):** nombres únicos, eventos repetidos, horarios ocupados, elementos dados de baja, etc. (ver la sección 7). Las de los presupuestos están en `QuoteValidator`.
 3. **La base de datos:** claves primarias y foráneas, `UNIQUE` en las etiquetas, borrado en cascada y transacciones.
 
-Cuando una regla no se cumple se lanza `BusinessRuleException`, y la vista la atrapa y muestra el mensaje con `MessageHelper`. Los demás errores tienen su propia excepción: `NotFoundException` si un registro no existe y `ArgumentNullException` para los nulos; si alguno llega a la vista, lo muestra el manejador general de errores de `Program`.
+Cuando una regla no se cumple se lanza `BusinessRuleException`, y la vista la atrapa y muestra el mensaje con `MessageHelper`. Los demás errores tienen su propia excepción: `NotFoundException` si un registro no existe y `ArgumentNullException` para los nulos; si alguno llega a la vista, lo atrapa el manejador general de errores de `Program`, que guarda el detalle técnico en `Data/errores.log` (`ErrorLog`) y le muestra al usuario un mensaje en castellano.
 
 **Editar no modifica: reemplaza.** Como los `set` son privados, editar siempre es armar un objeto **nuevo** desde el DTO (que se valida entero al nacer) y hacer `UPDATE ... WHERE Id = @id` con sus datos.
 

@@ -82,7 +82,7 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 - `DetailMenu` guarda el **texto** de la etiqueta (`_tagDescription`), no un `MenuTag`: no hay flecha hacia `MenuTag`.
 
 **Común**
-- `Validator`, `Limits` (las constantes de los límites), `BusinessRuleException`, `NotFoundException`, el enum `QuoteState` y `QuoteStateText`, que da el nombre en castellano de cada estado. El Model valida con `Validator` y lanza `BusinessRuleException`; la Vista la atrapa y la muestra con `MessageHelper`.
+- `Validator`, `Limits` (las constantes de los límites), `BusinessRuleException`, `NotFoundException`, el enum `QuoteState`, `QuoteStateText`, que da el nombre en castellano de cada estado, `IClock` con `SystemClock`, `AppFolders` (las carpetas de la base y de los PDF temporales) y `ErrorLog` (el registro de errores inesperados). El Model valida con `Validator` y lanza `BusinessRuleException`; la Vista la atrapa y la muestra con `MessageHelper`.
 
 ---
 

@@ -12,3 +12,5 @@ obj/
 
 # Base de datos local
 *.db
+
+errores.log

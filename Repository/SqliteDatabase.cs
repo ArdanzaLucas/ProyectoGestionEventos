@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Repository
 {
@@ -19,8 +20,8 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private SqliteDatabase()
         {
-            // la carpeta Data queda en la raiz del proyecto: tres carpetas arriba del ejecutable
-            string folder = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data"));
+            // la carpeta Data queda en la raiz del proyecto: tres carpetas arriba del ejecutable (ver AppFolders)
+            string folder = AppFolders.Data;
             Directory.CreateDirectory(folder);
 
             SqliteConnectionStringBuilder builder = new SqliteConnectionStringBuilder();

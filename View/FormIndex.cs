@@ -28,6 +28,7 @@ namespace ProyectoPresupuestoEvento.View
             this.eventController = eventController;
             InitializeComponent();
             VisualHelper.FitColumns(mtLvIndex);
+            ClearTempPdfFolder();
         }
 
         public void SetFormQuoteEdit(FormQuoteEdit formQuoteEdit)
@@ -286,7 +287,8 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            string path = Path.Combine(Path.GetTempPath(), BuildPdfName(selected) + "_" + DateTime.Now.ToString("HHmmss") + ".pdf");
+            Directory.CreateDirectory(AppFolders.TempPdf);
+            string path = Path.Combine(AppFolders.TempPdf, BuildPdfName(selected) + "_" + DateTime.Now.ToString("HHmmss") + ".pdf");
             if (!ExportPdf(selected, path))
             {
                 return;
@@ -318,6 +320,28 @@ namespace ProyectoPresupuestoEvento.View
             if (ExportPdf(selected, dialog.FileName))
             {
                 MessageHelper.ShowInfo("el PDF se guardo en " + dialog.FileName);
+            }
+        }
+
+        private void ClearTempPdfFolder()
+        {
+            if (!Directory.Exists(AppFolders.TempPdf))
+            {
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(AppFolders.TempPdf))
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (IOException)
+                {
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
             }
         }
 

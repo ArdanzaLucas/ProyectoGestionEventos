@@ -38,10 +38,10 @@
             ListViewItem listViewItem8 = new ListViewItem("");
             panelLocationsCU = new Panel();
             panelUpload = new Panel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
+            lblLocationFormTitle = new MaterialSkin.Controls.MaterialLabel();
+            lblLocationPrice = new MaterialSkin.Controls.MaterialLabel();
             nudLocationPrice = new NumericUpDown();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
+            lblLocationName = new MaterialSkin.Controls.MaterialLabel();
             mtbLocationName = new MaterialSkin.Controls.MaterialTextBox();
             btnSaveLocation = new MaterialSkin.Controls.MaterialButton();
             btnBack = new MaterialSkin.Controls.MaterialButton();
@@ -51,7 +51,7 @@
             PriceColumn = new ColumnHeader();
             panelLocationsTitle = new Panel();
             lblLocationsTitle = new MaterialSkin.Controls.MaterialLabel();
-            panelCrudCtrlUb = new Panel();
+            panelCrudCtrlLocations = new Panel();
             btnLocationRemove = new MaterialSkin.Controls.MaterialButton();
             btnLocationEdit = new MaterialSkin.Controls.MaterialButton();
             btnLocationCreate = new MaterialSkin.Controls.MaterialButton();
@@ -59,11 +59,11 @@
             panelUpload.SuspendLayout();
             panelLocationsList.SuspendLayout();
             panelLocationsTitle.SuspendLayout();
-            panelCrudCtrlUb.SuspendLayout();
+            panelCrudCtrlLocations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudLocationPrice).BeginInit();
             SuspendLayout();
             // 
-            // panel3
+            // panelLocationsCU
             // 
             panelLocationsCU.Controls.Add(panelUpload);
             panelLocationsCU.Location = new Point(803, 0);
@@ -73,10 +73,10 @@
             // 
             // panelUpload
             // 
-            panelUpload.Controls.Add(label1);
-            panelUpload.Controls.Add(label3);
+            panelUpload.Controls.Add(lblLocationFormTitle);
+            panelUpload.Controls.Add(lblLocationPrice);
             panelUpload.Controls.Add(nudLocationPrice);
-            panelUpload.Controls.Add(label2);
+            panelUpload.Controls.Add(lblLocationName);
             panelUpload.Controls.Add(mtbLocationName);
             panelUpload.Controls.Add(btnSaveLocation);
             panelUpload.Controls.Add(btnBack);
@@ -86,29 +86,29 @@
             panelUpload.Size = new Size(1471, 591);
             panelUpload.TabIndex = 10;
             // 
-            // label1
+            // lblLocationFormTitle
             // 
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(40, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(307, 30);
-            label1.TabIndex = 7;
-            label1.Text = "Carga de ubicacion";
+            lblLocationFormTitle.AutoSize = true;
+            lblLocationFormTitle.Depth = 0;
+            lblLocationFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblLocationFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblLocationFormTitle.Location = new Point(40, 30);
+            lblLocationFormTitle.Name = "lblLocationFormTitle";
+            lblLocationFormTitle.Size = new Size(307, 30);
+            lblLocationFormTitle.TabIndex = 7;
+            lblLocationFormTitle.Text = "Carga de ubicacion";
             // 
-            // label3
+            // lblLocationPrice
             // 
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Location = new Point(40, 182);
-            label3.Name = "label3";
-            label3.Size = new Size(377, 21);
-            label3.TabIndex = 9;
-            label3.Text = "Precio por hora";
+            lblLocationPrice.AutoSize = true;
+            lblLocationPrice.Depth = 0;
+            lblLocationPrice.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblLocationPrice.MouseState = MaterialSkin.MouseState.HOVER;
+            lblLocationPrice.Location = new Point(40, 182);
+            lblLocationPrice.Name = "lblLocationPrice";
+            lblLocationPrice.Size = new Size(377, 21);
+            lblLocationPrice.TabIndex = 9;
+            lblLocationPrice.Text = "Precio por hora";
             // 
             // nudLocationPrice
             // 
@@ -120,17 +120,17 @@
             nudLocationPrice.Size = new Size(250, 27);
             nudLocationPrice.TabIndex = 0;
             // 
-            // label2
+            // lblLocationName
             // 
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(40, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(452, 21);
-            label2.TabIndex = 8;
-            label2.Text = "Nombre";
+            lblLocationName.AutoSize = true;
+            lblLocationName.Depth = 0;
+            lblLocationName.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblLocationName.MouseState = MaterialSkin.MouseState.HOVER;
+            lblLocationName.Location = new Point(40, 90);
+            lblLocationName.Name = "lblLocationName";
+            lblLocationName.Size = new Size(452, 21);
+            lblLocationName.TabIndex = 8;
+            lblLocationName.Text = "Nombre";
             // 
             // mtbLocationName
             // 
@@ -150,7 +150,7 @@
             mtbLocationName.Text = "";
             mtbLocationName.TrailingIcon = null;
             // 
-            // btnGuardarUbicacion
+            // btnSaveLocation
             // 
             btnSaveLocation.AutoSize = false;
             btnSaveLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -173,7 +173,7 @@
             btnSaveLocation.UseVisualStyleBackColor = true;
             btnSaveLocation.Click += btnSaveLocation_Click;
             // 
-            // btnVolverAtras
+            // btnBack
             // 
             btnBack.AutoSize = false;
             btnBack.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -195,11 +195,11 @@
             btnBack.UseVisualStyleBackColor = true;
             btnBack.Click += btnBack_Click;
             // 
-            // panel2
+            // panelLocationsList
             // 
             panelLocationsList.Controls.Add(mtLvLocations);
             panelLocationsList.Controls.Add(panelLocationsTitle);
-            panelLocationsList.Controls.Add(panelCrudCtrlUb);
+            panelLocationsList.Controls.Add(panelCrudCtrlLocations);
             panelLocationsList.Dock = DockStyle.Fill;
             panelLocationsList.Location = new Point(0, 0);
             panelLocationsList.Name = "panelLocationsList";
@@ -262,17 +262,17 @@
             lblLocationsTitle.TabIndex = 0;
             lblLocationsTitle.Text = "Ubicaciones";
             // 
-            // panelCrudCtrlUb
+            // panelCrudCtrlLocations
             // 
-            panelCrudCtrlUb.BackColor = Color.White;
-            panelCrudCtrlUb.Controls.Add(btnLocationRemove);
-            panelCrudCtrlUb.Controls.Add(btnLocationEdit);
-            panelCrudCtrlUb.Controls.Add(btnLocationCreate);
-            panelCrudCtrlUb.Dock = DockStyle.Left;
-            panelCrudCtrlUb.Location = new Point(0, 0);
-            panelCrudCtrlUb.Name = "panelCrudCtrlUb";
-            panelCrudCtrlUb.Size = new Size(145, 720);
-            panelCrudCtrlUb.TabIndex = 5;
+            panelCrudCtrlLocations.BackColor = Color.White;
+            panelCrudCtrlLocations.Controls.Add(btnLocationRemove);
+            panelCrudCtrlLocations.Controls.Add(btnLocationEdit);
+            panelCrudCtrlLocations.Controls.Add(btnLocationCreate);
+            panelCrudCtrlLocations.Dock = DockStyle.Left;
+            panelCrudCtrlLocations.Location = new Point(0, 0);
+            panelCrudCtrlLocations.Name = "panelCrudCtrlLocations";
+            panelCrudCtrlLocations.Size = new Size(145, 720);
+            panelCrudCtrlLocations.TabIndex = 5;
             // 
             // btnLocationRemove
             // 
@@ -354,7 +354,7 @@
             panelLocationsList.ResumeLayout(false);
             panelLocationsTitle.ResumeLayout(false);
             panelLocationsTitle.PerformLayout();
-            panelCrudCtrlUb.ResumeLayout(false);
+            panelCrudCtrlLocations.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)nudLocationPrice).EndInit();
             ResumeLayout(false);
         }
@@ -368,7 +368,7 @@
         private MaterialSkin.Controls.MaterialListView mtLvLocations;
         private ColumnHeader NameColumn;
         private ColumnHeader PriceColumn;
-        private Panel panelCrudCtrlUb;
+        private Panel panelCrudCtrlLocations;
         private MaterialSkin.Controls.MaterialButton btnLocationRemove;
         private MaterialSkin.Controls.MaterialButton btnLocationEdit;
         private MaterialSkin.Controls.MaterialButton btnLocationCreate;
@@ -376,9 +376,9 @@
         private MaterialSkin.Controls.MaterialTextBox mtbLocationName;
         private MaterialSkin.Controls.MaterialButton btnBack;
         private MaterialSkin.Controls.MaterialButton btnSaveLocation;
-        private MaterialSkin.Controls.MaterialLabel label3;
-        private MaterialSkin.Controls.MaterialLabel label2;
-        private MaterialSkin.Controls.MaterialLabel label1;
+        private MaterialSkin.Controls.MaterialLabel lblLocationPrice;
+        private MaterialSkin.Controls.MaterialLabel lblLocationName;
+        private MaterialSkin.Controls.MaterialLabel lblLocationFormTitle;
         private Panel panelUpload;
     }
 }

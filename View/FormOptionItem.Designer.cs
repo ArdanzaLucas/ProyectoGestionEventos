@@ -36,144 +36,144 @@
             ListViewItem listViewItem6 = new ListViewItem("");
             ListViewItem listViewItem7 = new ListViewItem("");
             ListViewItem listViewItem8 = new ListViewItem("");
-            panelOICU = new Panel();
-            panelOIUpload = new Panel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
-            nudOIPrice = new NumericUpDown();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
-            mtbOIName = new MaterialSkin.Controls.MaterialTextBox();
-            btnSaveOI = new MaterialSkin.Controls.MaterialButton();
+            panelOptionItemsCU = new Panel();
+            panelOptionItemUpload = new Panel();
+            lblOptionItemFormTitle = new MaterialSkin.Controls.MaterialLabel();
+            lblOptionItemPrice = new MaterialSkin.Controls.MaterialLabel();
+            nudOptionItemPrice = new NumericUpDown();
+            lblOptionItemName = new MaterialSkin.Controls.MaterialLabel();
+            mtbOptionItemName = new MaterialSkin.Controls.MaterialTextBox();
+            btnSaveOptionItem = new MaterialSkin.Controls.MaterialButton();
             btnBack = new MaterialSkin.Controls.MaterialButton();
-            panelOIList = new Panel();
+            panelOptionItemsList = new Panel();
             mtLvOptionItems = new MaterialSkin.Controls.MaterialListView();
             NameColumn = new ColumnHeader();
             PriceColumn = new ColumnHeader();
-            panelOITitle = new Panel();
-            lblOITitle = new MaterialSkin.Controls.MaterialLabel();
-            panelCrudCtrlOI = new Panel();
-            btnOIRemove = new MaterialSkin.Controls.MaterialButton();
-            btnOIEdit = new MaterialSkin.Controls.MaterialButton();
-            btnOICreate = new MaterialSkin.Controls.MaterialButton();
-            panelOICU.SuspendLayout();
-            panelOIUpload.SuspendLayout();
-            panelOIList.SuspendLayout();
-            panelOITitle.SuspendLayout();
-            panelCrudCtrlOI.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)nudOIPrice).BeginInit();
+            panelOptionItemsTitle = new Panel();
+            lblOptionItemsTitle = new MaterialSkin.Controls.MaterialLabel();
+            panelCrudCtrlOptionItems = new Panel();
+            btnOptionItemRemove = new MaterialSkin.Controls.MaterialButton();
+            btnOptionItemEdit = new MaterialSkin.Controls.MaterialButton();
+            btnOptionItemCreate = new MaterialSkin.Controls.MaterialButton();
+            panelOptionItemsCU.SuspendLayout();
+            panelOptionItemUpload.SuspendLayout();
+            panelOptionItemsList.SuspendLayout();
+            panelOptionItemsTitle.SuspendLayout();
+            panelCrudCtrlOptionItems.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudOptionItemPrice).BeginInit();
             SuspendLayout();
             // 
-            // panelOICU
+            // panelOptionItemsCU
             // 
-            panelOICU.Controls.Add(panelOIUpload);
-            panelOICU.Location = new Point(803, 0);
-            panelOICU.Name = "panelOICU";
-            panelOICU.Size = new Size(668, 720);
-            panelOICU.TabIndex = 4;
+            panelOptionItemsCU.Controls.Add(panelOptionItemUpload);
+            panelOptionItemsCU.Location = new Point(803, 0);
+            panelOptionItemsCU.Name = "panelOptionItemsCU";
+            panelOptionItemsCU.Size = new Size(668, 720);
+            panelOptionItemsCU.TabIndex = 4;
             // 
-            // panelOIUpload
+            // panelOptionItemUpload
             // 
-            panelOIUpload.Controls.Add(label1);
-            panelOIUpload.Controls.Add(label3);
-            panelOIUpload.Controls.Add(nudOIPrice);
-            panelOIUpload.Controls.Add(label2);
-            panelOIUpload.Controls.Add(mtbOIName);
-            panelOIUpload.Controls.Add(btnSaveOI);
-            panelOIUpload.Controls.Add(btnBack);
-            panelOIUpload.Location = new Point(0, 0);
-            panelOIUpload.Margin = new Padding(3, 2, 3, 2);
-            panelOIUpload.Name = "panelOIUpload";
-            panelOIUpload.Size = new Size(1471, 591);
-            panelOIUpload.TabIndex = 10;
+            panelOptionItemUpload.Controls.Add(lblOptionItemFormTitle);
+            panelOptionItemUpload.Controls.Add(lblOptionItemPrice);
+            panelOptionItemUpload.Controls.Add(nudOptionItemPrice);
+            panelOptionItemUpload.Controls.Add(lblOptionItemName);
+            panelOptionItemUpload.Controls.Add(mtbOptionItemName);
+            panelOptionItemUpload.Controls.Add(btnSaveOptionItem);
+            panelOptionItemUpload.Controls.Add(btnBack);
+            panelOptionItemUpload.Location = new Point(0, 0);
+            panelOptionItemUpload.Margin = new Padding(3, 2, 3, 2);
+            panelOptionItemUpload.Name = "panelOptionItemUpload";
+            panelOptionItemUpload.Size = new Size(1471, 591);
+            panelOptionItemUpload.TabIndex = 10;
             // 
-            // label1
+            // lblOptionItemFormTitle
             // 
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(40, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(286, 30);
-            label1.TabIndex = 7;
-            label1.Text = "Carga de servicio";
+            lblOptionItemFormTitle.AutoSize = true;
+            lblOptionItemFormTitle.Depth = 0;
+            lblOptionItemFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblOptionItemFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOptionItemFormTitle.Location = new Point(40, 30);
+            lblOptionItemFormTitle.Name = "lblOptionItemFormTitle";
+            lblOptionItemFormTitle.Size = new Size(286, 30);
+            lblOptionItemFormTitle.TabIndex = 7;
+            lblOptionItemFormTitle.Text = "Carga de servicio";
             // 
-            // label3
+            // lblOptionItemPrice
             // 
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Location = new Point(40, 182);
-            label3.Name = "label3";
-            label3.Size = new Size(348, 21);
-            label3.TabIndex = 9;
-            label3.Text = "Precio";
+            lblOptionItemPrice.AutoSize = true;
+            lblOptionItemPrice.Depth = 0;
+            lblOptionItemPrice.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblOptionItemPrice.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOptionItemPrice.Location = new Point(40, 182);
+            lblOptionItemPrice.Name = "lblOptionItemPrice";
+            lblOptionItemPrice.Size = new Size(348, 21);
+            lblOptionItemPrice.TabIndex = 9;
+            lblOptionItemPrice.Text = "Precio";
             // 
-            // nudOIPrice
+            // nudOptionItemPrice
             // 
-            nudOIPrice.DecimalPlaces = 2;
-            nudOIPrice.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            nudOIPrice.Location = new Point(40, 204);
-            nudOIPrice.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
-            nudOIPrice.Name = "nudOIPrice";
-            nudOIPrice.Size = new Size(250, 27);
-            nudOIPrice.TabIndex = 0;
+            nudOptionItemPrice.DecimalPlaces = 2;
+            nudOptionItemPrice.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudOptionItemPrice.Location = new Point(40, 204);
+            nudOptionItemPrice.Maximum = new decimal(new int[] { 1000000000, 0, 0, 0 });
+            nudOptionItemPrice.Name = "nudOptionItemPrice";
+            nudOptionItemPrice.Size = new Size(250, 27);
+            nudOptionItemPrice.TabIndex = 0;
             // 
-            // label2
+            // lblOptionItemName
             // 
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(40, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(424, 21);
-            label2.TabIndex = 8;
-            label2.Text = "Nombre";
+            lblOptionItemName.AutoSize = true;
+            lblOptionItemName.Depth = 0;
+            lblOptionItemName.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblOptionItemName.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOptionItemName.Location = new Point(40, 90);
+            lblOptionItemName.Name = "lblOptionItemName";
+            lblOptionItemName.Size = new Size(424, 21);
+            lblOptionItemName.TabIndex = 8;
+            lblOptionItemName.Text = "Nombre";
             // 
-            // mtbOIName
+            // mtbOptionItemName
             // 
-            mtbOIName.AnimateReadOnly = false;
-            mtbOIName.BorderStyle = BorderStyle.None;
-            mtbOIName.Depth = 0;
-            mtbOIName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            mtbOIName.LeadingIcon = null;
-            mtbOIName.Location = new Point(40, 112);
-            mtbOIName.Margin = new Padding(3, 2, 3, 2);
-            mtbOIName.MaxLength = 50;
-            mtbOIName.MouseState = MaterialSkin.MouseState.OUT;
-            mtbOIName.Multiline = false;
-            mtbOIName.Name = "mtbOIName";
-            mtbOIName.Size = new Size(250, 50);
-            mtbOIName.TabIndex = 1;
-            mtbOIName.Text = "";
-            mtbOIName.TrailingIcon = null;
+            mtbOptionItemName.AnimateReadOnly = false;
+            mtbOptionItemName.BorderStyle = BorderStyle.None;
+            mtbOptionItemName.Depth = 0;
+            mtbOptionItemName.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            mtbOptionItemName.LeadingIcon = null;
+            mtbOptionItemName.Location = new Point(40, 112);
+            mtbOptionItemName.Margin = new Padding(3, 2, 3, 2);
+            mtbOptionItemName.MaxLength = 50;
+            mtbOptionItemName.MouseState = MaterialSkin.MouseState.OUT;
+            mtbOptionItemName.Multiline = false;
+            mtbOptionItemName.Name = "mtbOptionItemName";
+            mtbOptionItemName.Size = new Size(250, 50);
+            mtbOptionItemName.TabIndex = 1;
+            mtbOptionItemName.Text = "";
+            mtbOptionItemName.TrailingIcon = null;
             // 
-            // btnGuardarOI
+            // btnSaveOptionItem
             // 
-            btnSaveOI.AutoSize = false;
-            btnSaveOI.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSaveOI.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnSaveOI.Depth = 0;
-            btnSaveOI.FlatStyle = FlatStyle.Popup;
-            btnSaveOI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnSaveOI.HighEmphasis = true;
-            btnSaveOI.Icon = null;
-            btnSaveOI.Location = new Point(40, 270);
-            btnSaveOI.Margin = new Padding(4);
-            btnSaveOI.MouseState = MaterialSkin.MouseState.HOVER;
-            btnSaveOI.Name = "btnSaveOI";
-            btnSaveOI.NoAccentTextColor = Color.Empty;
-            btnSaveOI.Size = new Size(90, 36);
-            btnSaveOI.TabIndex = 5;
-            btnSaveOI.Text = "Guardar";
-            btnSaveOI.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnSaveOI.UseAccentColor = false;
-            btnSaveOI.UseVisualStyleBackColor = true;
-            btnSaveOI.Click += btnSaveOI_Click;
+            btnSaveOptionItem.AutoSize = false;
+            btnSaveOptionItem.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveOptionItem.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveOptionItem.Depth = 0;
+            btnSaveOptionItem.FlatStyle = FlatStyle.Popup;
+            btnSaveOptionItem.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSaveOptionItem.HighEmphasis = true;
+            btnSaveOptionItem.Icon = null;
+            btnSaveOptionItem.Location = new Point(40, 270);
+            btnSaveOptionItem.Margin = new Padding(4);
+            btnSaveOptionItem.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveOptionItem.Name = "btnSaveOptionItem";
+            btnSaveOptionItem.NoAccentTextColor = Color.Empty;
+            btnSaveOptionItem.Size = new Size(90, 36);
+            btnSaveOptionItem.TabIndex = 5;
+            btnSaveOptionItem.Text = "Guardar";
+            btnSaveOptionItem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveOptionItem.UseAccentColor = false;
+            btnSaveOptionItem.UseVisualStyleBackColor = true;
+            btnSaveOptionItem.Click += btnSaveOptionItem_Click;
             // 
-            // btnVolverAtras
+            // btnBack
             // 
             btnBack.AutoSize = false;
             btnBack.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -195,16 +195,16 @@
             btnBack.UseVisualStyleBackColor = true;
             btnBack.Click += btnBack_Click;
             // 
-            // panelOIList
+            // panelOptionItemsList
             // 
-            panelOIList.Controls.Add(mtLvOptionItems);
-            panelOIList.Controls.Add(panelOITitle);
-            panelOIList.Controls.Add(panelCrudCtrlOI);
-            panelOIList.Dock = DockStyle.Fill;
-            panelOIList.Location = new Point(0, 0);
-            panelOIList.Name = "panelOIList";
-            panelOIList.Size = new Size(1471, 720);
-            panelOIList.TabIndex = 3;
+            panelOptionItemsList.Controls.Add(mtLvOptionItems);
+            panelOptionItemsList.Controls.Add(panelOptionItemsTitle);
+            panelOptionItemsList.Controls.Add(panelCrudCtrlOptionItems);
+            panelOptionItemsList.Dock = DockStyle.Fill;
+            panelOptionItemsList.Location = new Point(0, 0);
+            panelOptionItemsList.Name = "panelOptionItemsList";
+            panelOptionItemsList.Size = new Size(1471, 720);
+            panelOptionItemsList.TabIndex = 3;
             // 
             // mtLvOptionItems
             // 
@@ -240,145 +240,145 @@
             PriceColumn.TextAlign = HorizontalAlignment.Center;
             PriceColumn.Width = 300;
             // 
-            // panelOITitle
+            // panelOptionItemsTitle
             // 
-            panelOITitle.BackColor = Color.White;
-            panelOITitle.Controls.Add(lblOITitle);
-            panelOITitle.Dock = DockStyle.Top;
-            panelOITitle.Location = new Point(145, 0);
-            panelOITitle.Name = "panelOITitle";
-            panelOITitle.Size = new Size(1326, 60);
-            panelOITitle.TabIndex = 6;
+            panelOptionItemsTitle.BackColor = Color.White;
+            panelOptionItemsTitle.Controls.Add(lblOptionItemsTitle);
+            panelOptionItemsTitle.Dock = DockStyle.Top;
+            panelOptionItemsTitle.Location = new Point(145, 0);
+            panelOptionItemsTitle.Name = "panelOptionItemsTitle";
+            panelOptionItemsTitle.Size = new Size(1326, 60);
+            panelOptionItemsTitle.TabIndex = 6;
             // 
-            // lblOITitle
+            // lblOptionItemsTitle
             // 
-            lblOITitle.AutoSize = true;
-            lblOITitle.Depth = 0;
-            lblOITitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            lblOITitle.MouseState = MaterialSkin.MouseState.HOVER;
-            lblOITitle.Location = new Point(15, 10);
-            lblOITitle.Name = "lblOITitle";
-            lblOITitle.Size = new Size(195, 24);
-            lblOITitle.TabIndex = 0;
-            lblOITitle.Text = "Servicios adicionales";
+            lblOptionItemsTitle.AutoSize = true;
+            lblOptionItemsTitle.Depth = 0;
+            lblOptionItemsTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblOptionItemsTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblOptionItemsTitle.Location = new Point(15, 10);
+            lblOptionItemsTitle.Name = "lblOptionItemsTitle";
+            lblOptionItemsTitle.Size = new Size(195, 24);
+            lblOptionItemsTitle.TabIndex = 0;
+            lblOptionItemsTitle.Text = "Servicios adicionales";
             // 
-            // panelCrudCtrlOI
+            // panelCrudCtrlOptionItems
             // 
-            panelCrudCtrlOI.BackColor = Color.White;
-            panelCrudCtrlOI.Controls.Add(btnOIRemove);
-            panelCrudCtrlOI.Controls.Add(btnOIEdit);
-            panelCrudCtrlOI.Controls.Add(btnOICreate);
-            panelCrudCtrlOI.Dock = DockStyle.Left;
-            panelCrudCtrlOI.Location = new Point(0, 0);
-            panelCrudCtrlOI.Name = "panelCrudCtrlOI";
-            panelCrudCtrlOI.Size = new Size(145, 720);
-            panelCrudCtrlOI.TabIndex = 5;
+            panelCrudCtrlOptionItems.BackColor = Color.White;
+            panelCrudCtrlOptionItems.Controls.Add(btnOptionItemRemove);
+            panelCrudCtrlOptionItems.Controls.Add(btnOptionItemEdit);
+            panelCrudCtrlOptionItems.Controls.Add(btnOptionItemCreate);
+            panelCrudCtrlOptionItems.Dock = DockStyle.Left;
+            panelCrudCtrlOptionItems.Location = new Point(0, 0);
+            panelCrudCtrlOptionItems.Name = "panelCrudCtrlOptionItems";
+            panelCrudCtrlOptionItems.Size = new Size(145, 720);
+            panelCrudCtrlOptionItems.TabIndex = 5;
             // 
-            // btnOIRemove
+            // btnOptionItemRemove
             // 
-            btnOIRemove.AutoSize = false;
-            btnOIRemove.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnOIRemove.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnOIRemove.Depth = 0;
-            btnOIRemove.HighEmphasis = true;
-            btnOIRemove.Icon = null;
-            btnOIRemove.Location = new Point(36, 346);
-            btnOIRemove.Margin = new Padding(4, 6, 4, 6);
-            btnOIRemove.MouseState = MaterialSkin.MouseState.HOVER;
-            btnOIRemove.Name = "btnOIRemove";
-            btnOIRemove.NoAccentTextColor = Color.Empty;
-            btnOIRemove.Size = new Size(90, 36);
-            btnOIRemove.TabIndex = 2;
-            btnOIRemove.Text = "Eliminar";
-            btnOIRemove.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnOIRemove.UseAccentColor = false;
-            btnOIRemove.UseVisualStyleBackColor = true;
-            btnOIRemove.Click += btnOIRemove_Click;
+            btnOptionItemRemove.AutoSize = false;
+            btnOptionItemRemove.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnOptionItemRemove.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnOptionItemRemove.Depth = 0;
+            btnOptionItemRemove.HighEmphasis = true;
+            btnOptionItemRemove.Icon = null;
+            btnOptionItemRemove.Location = new Point(36, 346);
+            btnOptionItemRemove.Margin = new Padding(4, 6, 4, 6);
+            btnOptionItemRemove.MouseState = MaterialSkin.MouseState.HOVER;
+            btnOptionItemRemove.Name = "btnOptionItemRemove";
+            btnOptionItemRemove.NoAccentTextColor = Color.Empty;
+            btnOptionItemRemove.Size = new Size(90, 36);
+            btnOptionItemRemove.TabIndex = 2;
+            btnOptionItemRemove.Text = "Eliminar";
+            btnOptionItemRemove.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnOptionItemRemove.UseAccentColor = false;
+            btnOptionItemRemove.UseVisualStyleBackColor = true;
+            btnOptionItemRemove.Click += btnOptionItemRemove_Click;
             // 
-            // btnOIEdit
+            // btnOptionItemEdit
             // 
-            btnOIEdit.AutoSize = false;
-            btnOIEdit.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnOIEdit.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnOIEdit.Depth = 0;
-            btnOIEdit.HighEmphasis = true;
-            btnOIEdit.Icon = null;
-            btnOIEdit.Location = new Point(36, 238);
-            btnOIEdit.Margin = new Padding(4, 6, 4, 6);
-            btnOIEdit.MouseState = MaterialSkin.MouseState.HOVER;
-            btnOIEdit.Name = "btnOIEdit";
-            btnOIEdit.NoAccentTextColor = Color.Empty;
-            btnOIEdit.Size = new Size(90, 36);
-            btnOIEdit.TabIndex = 1;
-            btnOIEdit.Text = "Editar";
-            btnOIEdit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnOIEdit.UseAccentColor = false;
-            btnOIEdit.UseVisualStyleBackColor = true;
-            btnOIEdit.Click += btnOIEdit_Click;
+            btnOptionItemEdit.AutoSize = false;
+            btnOptionItemEdit.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnOptionItemEdit.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnOptionItemEdit.Depth = 0;
+            btnOptionItemEdit.HighEmphasis = true;
+            btnOptionItemEdit.Icon = null;
+            btnOptionItemEdit.Location = new Point(36, 238);
+            btnOptionItemEdit.Margin = new Padding(4, 6, 4, 6);
+            btnOptionItemEdit.MouseState = MaterialSkin.MouseState.HOVER;
+            btnOptionItemEdit.Name = "btnOptionItemEdit";
+            btnOptionItemEdit.NoAccentTextColor = Color.Empty;
+            btnOptionItemEdit.Size = new Size(90, 36);
+            btnOptionItemEdit.TabIndex = 1;
+            btnOptionItemEdit.Text = "Editar";
+            btnOptionItemEdit.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnOptionItemEdit.UseAccentColor = false;
+            btnOptionItemEdit.UseVisualStyleBackColor = true;
+            btnOptionItemEdit.Click += btnOptionItemEdit_Click;
             // 
-            // btnOICreate
+            // btnOptionItemCreate
             // 
-            btnOICreate.AutoSize = false;
-            btnOICreate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnOICreate.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnOICreate.Depth = 0;
-            btnOICreate.HighEmphasis = true;
-            btnOICreate.Icon = null;
-            btnOICreate.Location = new Point(36, 115);
-            btnOICreate.Margin = new Padding(4, 6, 4, 6);
-            btnOICreate.MouseState = MaterialSkin.MouseState.HOVER;
-            btnOICreate.Name = "btnOICreate";
-            btnOICreate.NoAccentTextColor = Color.Empty;
-            btnOICreate.Size = new Size(90, 36);
-            btnOICreate.TabIndex = 0;
-            btnOICreate.Text = "Crear";
-            btnOICreate.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnOICreate.UseAccentColor = false;
-            btnOICreate.UseVisualStyleBackColor = true;
-            btnOICreate.Click += btnOICreate_Click;
+            btnOptionItemCreate.AutoSize = false;
+            btnOptionItemCreate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnOptionItemCreate.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnOptionItemCreate.Depth = 0;
+            btnOptionItemCreate.HighEmphasis = true;
+            btnOptionItemCreate.Icon = null;
+            btnOptionItemCreate.Location = new Point(36, 115);
+            btnOptionItemCreate.Margin = new Padding(4, 6, 4, 6);
+            btnOptionItemCreate.MouseState = MaterialSkin.MouseState.HOVER;
+            btnOptionItemCreate.Name = "btnOptionItemCreate";
+            btnOptionItemCreate.NoAccentTextColor = Color.Empty;
+            btnOptionItemCreate.Size = new Size(90, 36);
+            btnOptionItemCreate.TabIndex = 0;
+            btnOptionItemCreate.Text = "Crear";
+            btnOptionItemCreate.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnOptionItemCreate.UseAccentColor = false;
+            btnOptionItemCreate.UseVisualStyleBackColor = true;
+            btnOptionItemCreate.Click += btnOptionItemCreate_Click;
             // 
             // FormOptionItem
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1471, 720);
-            Controls.Add(panelOICU);
-            Controls.Add(panelOIList);
+            Controls.Add(panelOptionItemsCU);
+            Controls.Add(panelOptionItemsList);
             FormBorderStyle = FormBorderStyle.None;
             Name = "FormOptionItem";
             Text = "FormOptionItem";
             Load += FormOptionItem_Load;
-            panelOICU.ResumeLayout(false);
-            panelOIUpload.ResumeLayout(false);
-            panelOIUpload.PerformLayout();
-            panelOIList.ResumeLayout(false);
-            panelOITitle.ResumeLayout(false);
-            panelOITitle.PerformLayout();
-            panelCrudCtrlOI.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)nudOIPrice).EndInit();
+            panelOptionItemsCU.ResumeLayout(false);
+            panelOptionItemUpload.ResumeLayout(false);
+            panelOptionItemUpload.PerformLayout();
+            panelOptionItemsList.ResumeLayout(false);
+            panelOptionItemsTitle.ResumeLayout(false);
+            panelOptionItemsTitle.PerformLayout();
+            panelCrudCtrlOptionItems.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)nudOptionItemPrice).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Panel panelOICU;
-        private Panel panelOIList;
-        private Panel panelOITitle;
-        private MaterialSkin.Controls.MaterialLabel lblOITitle;
+        private Panel panelOptionItemsCU;
+        private Panel panelOptionItemsList;
+        private Panel panelOptionItemsTitle;
+        private MaterialSkin.Controls.MaterialLabel lblOptionItemsTitle;
         private MaterialSkin.Controls.MaterialListView mtLvOptionItems;
         private ColumnHeader NameColumn;
         private ColumnHeader PriceColumn;
-        private Panel panelCrudCtrlOI;
-        private MaterialSkin.Controls.MaterialButton btnOIRemove;
-        private MaterialSkin.Controls.MaterialButton btnOIEdit;
-        private MaterialSkin.Controls.MaterialButton btnOICreate;
-        private NumericUpDown nudOIPrice;
-        private MaterialSkin.Controls.MaterialTextBox mtbOIName;
+        private Panel panelCrudCtrlOptionItems;
+        private MaterialSkin.Controls.MaterialButton btnOptionItemRemove;
+        private MaterialSkin.Controls.MaterialButton btnOptionItemEdit;
+        private MaterialSkin.Controls.MaterialButton btnOptionItemCreate;
+        private NumericUpDown nudOptionItemPrice;
+        private MaterialSkin.Controls.MaterialTextBox mtbOptionItemName;
         private MaterialSkin.Controls.MaterialButton btnBack;
-        private MaterialSkin.Controls.MaterialButton btnSaveOI;
-        private MaterialSkin.Controls.MaterialLabel label3;
-        private MaterialSkin.Controls.MaterialLabel label2;
-        private MaterialSkin.Controls.MaterialLabel label1;
-        private Panel panelOIUpload;
+        private MaterialSkin.Controls.MaterialButton btnSaveOptionItem;
+        private MaterialSkin.Controls.MaterialLabel lblOptionItemPrice;
+        private MaterialSkin.Controls.MaterialLabel lblOptionItemName;
+        private MaterialSkin.Controls.MaterialLabel lblOptionItemFormTitle;
+        private Panel panelOptionItemUpload;
     }
 }

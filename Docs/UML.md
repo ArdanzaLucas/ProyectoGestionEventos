@@ -74,10 +74,10 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 - `IRepository<T>` no tiene borrado. Eventos, presupuestos y etiquetas implementan `IRemovableRepository<T>`, que agrega `RemoveById`; ubicaciones, menús y servicios (baja lógica) no lo tienen.
 
 **Modelo**
-- Cada atributo tiene su propiedad pública de **solo lectura** (get público, set privado que valida). Para no duplicar cada línea, el diagrama muestra solo los atributos.
+- Cada atributo tiene su propiedad pública de **solo lectura** (get público, set privado que valida). Las listas se exponen como `IReadOnlyList<T>`. Para no duplicar cada línea, el diagrama muestra solo los atributos.
 - Las clases que se leen de la base tienen un **constructor de lectura**, que recibe los datos guardados.
 - **Polimorfismo en el dominio:** `DetailMenu` y `DetailOptionItem` implementan `IQuoteItem` (`Description` y `Subtotal`). `CalculateTotals()` suma cada grupo de ítems con un único método, `SumSubtotals(IEnumerable<IQuoteItem>)`, sin saber de qué tipo es cada uno. Para agregar un ítem nuevo alcanza con otra clase que implemente la interfaz.
-- `EventItem` → `Quote` es **composición conceptual**: en el código `Quote` guarda `EventItemId` (no una referencia), y borrar el evento borra sus presupuestos (`EventItemService.removeEventItem` y `ON DELETE CASCADE`).
+- `EventItem` → `Quote` es **composición conceptual**: en el código `Quote` guarda `EventItemId` (no una referencia), y borrar el evento borra sus presupuestos: `EventItemService.RemoveEventItem` borra el evento y la base borra sus presupuestos con `ON DELETE CASCADE`.
 - `Quote`, `DetailMenu` y `DetailOptionItem` mantienen la **asociación** con la ubicación, el menú y el servicio reales, pero además guardan una **copia** de nombres y precios. Por eso un presupuesto no cambia si después se edita el catálogo.
 - `DetailMenu` guarda el **texto** de la etiqueta (`_tagDescription`), no un `MenuTag`: no hay flecha hacia `MenuTag`.
 

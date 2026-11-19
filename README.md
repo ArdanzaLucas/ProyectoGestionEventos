@@ -66,9 +66,9 @@ View  ──DTO──▶  Controller  ──DTO──▶  Service  ──Model�
 
 | Carpeta | Capa | Responsabilidad | Qué no hace |
 |---|---|---|---|
-| `View/`, `FormMain` | Vista | Captura lo que escribe el usuario, arma un DTO, llama al Controller y muestra el resultado o el error | No calcula ni conoce el modelo ni la base |
+| `View/` | Vista | Captura lo que escribe el usuario, arma un DTO, llama al Controller y muestra el resultado o el error | No calcula ni conoce el modelo ni la base |
 | `Controller/` | Controlador | Punto de entrada único desde la vista: guarda su Service en un atributo y le delega cada pedido | No tiene lógica de negocio |
-| `Service/` | Servicio | Reglas de negocio, conversión DTO ↔ Model (`toModel`, `toDto`) y validaciones que miran varios objetos o la base | No sabe cómo se guardan los datos |
+| `Service/` | Servicio | Reglas de negocio, conversión DTO ↔ Model (`ToModel`, `ToDto`) y validaciones que miran varios objetos o la base | No sabe cómo se guardan los datos |
 | `Repository/`, `Interface/` | Persistencia | Guarda y lee objetos del modelo en SQLite con SQL parametrizado | No valida reglas |
 | `Model/` | Dominio | Clases del negocio con sus datos, validaciones y cálculos | No conoce DTOs, vista ni base |
 | `Dto/` | Transporte | Objetos simples entre la vista y el Service | No tienen lógica |
@@ -95,7 +95,7 @@ FormLocations             new LocationDto(name, price)
   → LocationRepository    INSERT ... ; SELECT last_insert_rowid();  →  location.AssignId(id)
 ```
 
-Ejemplo, el total en vivo: la vista arma un `QuoteDto` con lo elegido y llama a `calculatePreview`. El Service arma el presupuesto real, el modelo calcula y el Service devuelve el DTO con los totales **sin guardarlo**. La vista nunca hace una cuenta de precios.
+Ejemplo, el total en vivo: la vista arma un `QuoteDto` con lo elegido y llama a `CalculatePreview`. El Service arma el presupuesto real, el modelo calcula y el Service devuelve el DTO con los totales **sin guardarlo**. La vista nunca hace una cuenta de precios.
 
 ### La pestaña Inicio
 
@@ -155,7 +155,7 @@ Cada grupo de ítems se suma **una sola vez**, con un único método polimórfic
 
 ```csharp
 TotalLocation = LocationPrice * EventDuration;
-TotalMenus = SumSubtotals(MenusList);
+TotalMenus = SumSubtotals(MenuList);
 TotalOptionItems = SumSubtotals(OptionItemList);
 Total = TotalLocation + TotalMenus + TotalOptionItems;
 
@@ -170,7 +170,11 @@ private decimal SumSubtotals(IEnumerable<IQuoteItem> items)
 }
 ```
 
-`List<DetailMenu>` y `List<DetailOptionItem>` se pueden pasar como `IEnumerable<IQuoteItem>` porque sus elementos implementan la interfaz.
+Las listas de líneas se pueden pasar como `IEnumerable<IQuoteItem>` porque sus elementos implementan la interfaz.
+
+La interfaz también se usa en el PDF: `QuotePdfGenerator.DrawItems(IEnumerable<IQuoteItem>)` dibuja la sección de servicios con `Description` y `Subtotal`, sin saber de qué tipo es cada ítem.
+
+**Listas de solo lectura.** `Quote.MenuList`, `Quote.OptionItemList` y `Menu.TagList` se exponen como `IReadOnlyList<T>`: desde afuera se pueden recorrer y contar, pero no agregar ni quitar elementos. El `set` privado guarda una **copia** de la lista recibida, así que modificar después la lista original no cambia el presupuesto ni el menú.
 
 **Ejemplo:** evento de 5 h, 80 adultos y 20 niños, en un salón de $50.000/h. Menú Milanesa ($15.000 por adulto y $8.000 por niño) en tres variantes, y DJ por $200.000.
 
@@ -249,13 +253,13 @@ Pendiente ───────────▶ Aceptado    (congelado)
 Cancelado   (congelado)
 ```
 
-- Todo presupuesto nuevo o clonado nace **Pendiente**, y solo un Pendiente se puede editar.
+- Todo presupuesto nuevo o clonado nace **Pendiente**, y solo un Pendiente se puede editar. La regla vive en `Quote.IsEditable()`; el service la copia en `QuoteDto.IsEditable` y la vista solo consulta ese valor, sin conocer los estados.
 - `State` tiene `set` privado: el estado solo cambia con `Accept()` o `Cancel()`, que revisan que el presupuesto esté Pendiente (**encapsulamiento** aplicado a un ciclo de vida).
 - Al **aceptar** se revisa que:
   - el evento no haya pasado;
   - los datos del evento no hayan cambiado desde que se guardó el presupuesto (si cambiaron, hay que editarlo y guardarlo antes);
   - el evento no tenga otro presupuesto aceptado;
-  - el salón no esté ocupado en ese horario por otro aceptado (`Quote.overlapsWith` compara los intervalos de inicio a inicio + duración).
+  - el salón no esté ocupado en ese horario por otro aceptado (`Quote.OverlapsWith` compara los intervalos de inicio a inicio + duración).
 - Aceptado y Cancelado son estados finales. Para retomarlos se clonan.
 
 ## 9. Datos congelados y clonación
@@ -274,9 +278,9 @@ Se mantiene congelado porque:
 - `CalculateTotals()` usa solo las copias y no hace nada si el presupuesto no está Pendiente;
 - todos los `set` son privados;
 - la base guarda las copias y los totales, y el constructor de lectura los reconstruye tal cual;
-- `toDto` arma el DTO solo con las copias, así que la vista previa y el PDF muestran exactamente lo guardado.
+- `ToDto` arma el DTO solo con las copias, así que la vista previa y el PDF muestran exactamente lo guardado.
 
-Un Pendiente toma los datos y precios actuales solo cuando se edita y se guarda, porque `toModel` arma todo de nuevo.
+Un Pendiente toma los datos y precios actuales solo cuando se edita y se guarda, porque `ToModel` arma todo de nuevo.
 
 ### Clonación
 
@@ -285,14 +289,14 @@ Un Pendiente toma los datos y precios actuales solo cuando se edita y se guarda,
 - **Las líneas se copian nuevas** (`new DetailMenu(...)`): una parte de una composición pertenece a un solo todo, así que no se comparten entre presupuestos.
 - **Las referencias al catálogo se comparten**: la ubicación, los menús y los servicios son asociaciones a objetos que se usan en muchos presupuestos.
 - **Toma los datos y precios actuales**, porque las líneas nuevas se construyen con el constructor de creación.
-- `QuoteService.cloneQuote` decide si se puede: no debe usar elementos dados de baja, el evento no puede haber pasado, y las líneas se revisan como si se armaran a mano.
+- `QuoteService.CloneQuote` decide si se puede: no debe usar elementos dados de baja, el evento no puede haber pasado, y las líneas se revisan como si se armaran a mano.
 
 ## 10. Persistencia
 
 ### `IRepository<T>` y Singleton
 
 ```csharp
-internal interface IRepository<T> where T : class
+public interface IRepository<T> where T : class
 {
     void AddToRepository(T obj);
     List<T> GetAll();
@@ -300,7 +304,7 @@ internal interface IRepository<T> where T : class
     void Update(int id, T obj);
 }
 
-internal interface IRemovableRepository<T> : IRepository<T> where T : class
+public interface IRemovableRepository<T> : IRepository<T> where T : class
 {
     void RemoveById(int id);
 }
@@ -317,7 +321,7 @@ public EventItemService()
 {
 }
 
-public EventItemService(IRemovableRepository<EventItem> repository, IRemovableRepository<Quote> quoteRepository, IClock clock)
+public EventItemService(IRemovableRepository<EventItem> repository, IRepository<Quote> quoteRepository, IClock clock)
 {
     this.repository = repository;
     this.quoteRepository = quoteRepository;
@@ -329,9 +333,9 @@ Los services no se crean entre sí: si uno necesita datos de otra entidad, recib
 
 ### Cómo trabaja un repositorio
 
-- `addToRepository`: `INSERT` con parámetros y `SELECT last_insert_rowid()`; después `obj.AssignId(id)`.
-- `getAll` / `getById`: `SELECT` y un método `ReadX(reader)` que usa el constructor de lectura. Ubicaciones, menús y servicios filtran `WHERE IsActive = 1` en `getAll`; `getById` trae también los inactivos, que los presupuestos viejos necesitan.
-- `update`: `UPDATE ... WHERE Id = @id`.
+- `AddToRepository`: `INSERT` con parámetros y `SELECT last_insert_rowid()`; después `obj.AssignId(id)`.
+- `GetAll` / `GetById`: `SELECT` y un método `ReadX(reader)` que usa el constructor de lectura. Ubicaciones, menús y servicios filtran `WHERE IsActive = 1` en `GetAll`; `GetById` trae también los inactivos, que los presupuestos viejos necesitan.
+- `Update`: `UPDATE ... WHERE Id = @id`.
 - **Caché de lectura en `QuoteRepository`:** al leer presupuestos, cada ubicación, menú y servicio referenciado se busca una sola vez y se guarda en un `Dictionary<int, T>`; si otro presupuesto usa el mismo, se toma de ahí. El diccionario es una variable local de cada `GetAll` / `GetById`, así que se descarta al terminar y nunca devuelve datos viejos después de editar un menú o darlo de baja.
 - **Transacciones:** un presupuesto se guarda en `QUOTE`, `DETAIL_MENU` y `DETAIL_OPTION_ITEM` dentro de una transacción (todo o nada). Lo mismo un menú con sus etiquetas.
 - **Parámetros SQL** (`@name`): evitan inyección SQL.
@@ -349,7 +353,7 @@ Un tipo de ítem nuevo implica una clase que implemente `IQuoteItem`, su tabla d
 | Concepto | Dónde |
 |---|---|
 | **Abstracción** | Las clases del modelo representan el negocio. `IRepository<T>` abstrae "guardar y leer" sin decir cómo. Los DTO abstraen lo que la pantalla necesita |
-| **Encapsulamiento** | `set` privados que validan, estado cambiado solo por métodos con guardas, constructores privados en los Singleton |
+| **Encapsulamiento** | `set` privados que validan, listas expuestas como `IReadOnlyList<T>`, estado cambiado solo por métodos con guardas, conversiones DTO ↔ Model privadas en cada service, constructores privados en los Singleton |
 | **Polimorfismo** | Por interfaz en el dominio (`IQuoteItem`: cada ítem calcula su subtotal a su manera) y en la persistencia (`IRepository<T>`). También genéricos y sobrecarga de constructores (creación y lectura) |
 | **Herencia** | Solo donde hay un "es un" real: las excepciones propias heredan de `Exception` y los formularios de `Form`. En el dominio se usa **composición sobre herencia**: un presupuesto *tiene* líneas, no *es* una |
 | **Composición / agregación / asociación** | Ver la sección 4 |

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Common;
+﻿using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
@@ -64,16 +59,16 @@ namespace ProyectoPresupuestoEvento.Model
             private set { _priceChild = Validator.RequirePrice(value, "el precio por niño"); }
         }
 
-        public List<MenuTag> TagList
+        public IReadOnlyList<MenuTag> TagList
         {
-            get { return _tagList; }
+            get { return _tagList.AsReadOnly(); }
             private set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value), "la lista de etiquetas es obligatoria");
                 }
-                _tagList = value;
+                _tagList = new List<MenuTag>(value);
             }
         }
 

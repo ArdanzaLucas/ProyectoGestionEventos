@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+﻿using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
 using ProyectoPresupuestoEvento.Interface;
@@ -12,7 +7,7 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // logica de los presupuestos: armarlos, validarlos, calcularlos y cambiar su estado
-    internal class QuoteService
+    public class QuoteService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRemovableRepository<Quote> repository;
@@ -92,7 +87,7 @@ namespace ProyectoPresupuestoEvento.Service
             return ToDto(quote);
         }
 
-        // solo edita un pendiente: arma todo de nuevo con toModel, asi toma los datos y precios actuales
+        // solo edita un pendiente: arma todo de nuevo con ToModel, asi toma los datos y precios actuales
         public void UpdateQuote(int id, QuoteDto dto)
         {
             Quote original = repository.GetById(id);
@@ -157,7 +152,6 @@ namespace ProyectoPresupuestoEvento.Service
             repository.AddToRepository(newQuote);
         }
 
-        // calcula los totales mientras se carga el presupuesto, sin guardarlo
         // genera el pdf del presupuesto en la ruta indicada, con sus datos congelados
         public void ExportPdf(int id, string path)
         {
@@ -165,6 +159,7 @@ namespace ProyectoPresupuestoEvento.Service
             documentGenerator.Generate(quote, path);
         }
 
+        // calcula los totales mientras se carga el presupuesto, sin guardarlo
         public QuoteDto CalculatePreview(QuoteDto dto)
         {
             Quote quote = ToModel(dto);
@@ -186,20 +181,20 @@ namespace ProyectoPresupuestoEvento.Service
         //conversiones
 
         // busca los objetos reales por id en sus repositorios, y el presupuesto y sus lineas copian sus datos
-        public Quote ToModel(QuoteDto dto)
+        private Quote ToModel(QuoteDto dto)
         {
             EventItem eventItem = GetEventItem(dto.EventItemId);
             Location location = locationRepository.GetById(dto.LocationId);
 
             List<DetailMenu> menus = new List<DetailMenu>();
-            foreach (DetailMenuDto lineDto in dto.MenusList)
+            foreach (DetailMenuDto lineDto in dto.MenuList)
             {
                 Menu menu = menuRepository.GetById(lineDto.MenuId);
                 menus.Add(new DetailMenu(menu, lineDto.TagDescription, lineDto.AdultQuantity, lineDto.ChildQuantity));
             }
 
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
-            foreach (DetailOptionItemDto lineDto in dto.OptionItemsList)
+            foreach (DetailOptionItemDto lineDto in dto.OptionItemList)
             {
                 OptionItem optionItem = optionItemRepository.GetById(lineDto.OptionItemId);
                 optionItems.Add(new DetailOptionItem(optionItem));
@@ -210,10 +205,10 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // pasa al dto solo las copias congeladas, sin consultar otras entidades
-        public QuoteDto ToDto(Quote quote)
+        private QuoteDto ToDto(Quote quote)
         {
             List<DetailMenuDto> menusDto = new List<DetailMenuDto>();
-            foreach (DetailMenu detailMenu in quote.MenusList)
+            foreach (DetailMenu detailMenu in quote.MenuList)
             {
                 DetailMenuDto lineDto = new DetailMenuDto(detailMenu.Menu.Id, detailMenu.TagDescription,
                     detailMenu.AdultQuantity, detailMenu.ChildQuantity);
@@ -238,6 +233,7 @@ namespace ProyectoPresupuestoEvento.Service
             dto.LocationName = quote.LocationName;
             dto.LocationPrice = quote.LocationPrice;
             dto.State = quote.State;
+            dto.IsEditable = quote.IsEditable();
             dto.TotalLocation = quote.TotalLocation;
             dto.TotalMenus = quote.TotalMenus;
             dto.TotalOptionItems = quote.TotalOptionItems;

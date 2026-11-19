@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Common;
+﻿using ProyectoPresupuestoEvento.Common;
 using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Model
@@ -21,7 +16,7 @@ namespace ProyectoPresupuestoEvento.Model
         private Location _location;
         private string _locationName;
         private decimal _locationPrice;
-        private List<DetailMenu> _menusList;
+        private List<DetailMenu> _menuList;
         private List<DetailOptionItem> _optionItemList;
         private QuoteState _state;
         private decimal _totalLocation;
@@ -32,7 +27,7 @@ namespace ProyectoPresupuestoEvento.Model
 
         //constructor
 
-        public Quote(EventItem eventItem, Location location, List<DetailMenu> menusList, List<DetailOptionItem> optionItemList)
+        public Quote(EventItem eventItem, Location location, List<DetailMenu> menuList, List<DetailOptionItem> optionItemList)
         {
             EventItemId = eventItem.Id;
             EventName = eventItem.Name;
@@ -44,7 +39,7 @@ namespace ProyectoPresupuestoEvento.Model
             Location = location;
             LocationName = location.Name;
             LocationPrice = location.Price;
-            MenusList = menusList;
+            MenuList = menuList;
             OptionItemList = optionItemList;
             State = QuoteState.Pending;
         }
@@ -52,7 +47,7 @@ namespace ProyectoPresupuestoEvento.Model
         public Quote(int id, QuoteState state, int eventItemId, string eventName, string eventClientName,
             DateTime eventDate, int eventGuestAdults, int eventGuestChildren, int eventDuration,
             Location location, string locationName, decimal locationPrice,
-            List<DetailMenu> menusList, List<DetailOptionItem> optionItemList,
+            List<DetailMenu> menuList, List<DetailOptionItem> optionItemList,
             decimal totalLocation, decimal totalMenus, decimal totalOptionItems, decimal total)
         {
             Id = id;
@@ -67,7 +62,7 @@ namespace ProyectoPresupuestoEvento.Model
             Location = location;
             LocationName = locationName;
             LocationPrice = locationPrice;
-            MenusList = menusList;
+            MenuList = menuList;
             OptionItemList = optionItemList;
             TotalLocation = totalLocation;
             TotalMenus = totalMenus;
@@ -156,29 +151,29 @@ namespace ProyectoPresupuestoEvento.Model
             private set { _locationPrice = value; }
         }
 
-        public List<DetailMenu> MenusList
+        public IReadOnlyList<DetailMenu> MenuList
         {
-            get { return _menusList; }
+            get { return _menuList.AsReadOnly(); }
             private set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value), "la lista de menus es obligatoria");
                 }
-                _menusList = value;
+                _menuList = new List<DetailMenu>(value);
             }
         }
 
-        public List<DetailOptionItem> OptionItemList
+        public IReadOnlyList<DetailOptionItem> OptionItemList
         {
-            get { return _optionItemList; }
+            get { return _optionItemList.AsReadOnly(); }
             private set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value), "la lista de servicios es obligatoria");
                 }
-                _optionItemList = value;
+                _optionItemList = new List<DetailOptionItem>(value);
             }
         }
 
@@ -232,7 +227,7 @@ namespace ProyectoPresupuestoEvento.Model
             }
 
             TotalLocation = LocationPrice * EventDuration;
-            TotalMenus = SumSubtotals(MenusList);
+            TotalMenus = SumSubtotals(MenuList);
             TotalOptionItems = SumSubtotals(OptionItemList);
             Total = TotalLocation + TotalMenus + TotalOptionItems;
         }
@@ -283,7 +278,7 @@ namespace ProyectoPresupuestoEvento.Model
         public Quote Clone(EventItem eventItem)
         {
             List<DetailMenu> menus = new List<DetailMenu>();
-            foreach (DetailMenu detailMenu in _menusList)
+            foreach (DetailMenu detailMenu in _menuList)
             {
                 DetailMenu copy = new DetailMenu(detailMenu.Menu, detailMenu.TagDescription,
                     detailMenu.AdultQuantity, detailMenu.ChildQuantity);

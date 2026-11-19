@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Interface;
 using ProyectoPresupuestoEvento.Common;
@@ -10,7 +5,7 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // reglas de los presupuestos que necesitan mirar varios objetos o la base; las usa QuoteService
-    internal class QuoteValidator
+    public class QuoteValidator
     {
         private IRepository<Quote> quoteRepository;
         private IRepository<EventItem> eventItemRepository;
@@ -26,7 +21,7 @@ namespace ProyectoPresupuestoEvento.Service
         // reglas de las lineas: platos, variantes repetidas, etiquetas del menu, servicios repetidos y elementos de baja
         public void ValidateQuote(Quote quote, Quote original)
         {
-            foreach (DetailMenu detailMenu in quote.MenusList)
+            foreach (DetailMenu detailMenu in quote.MenuList)
             {
                 if (detailMenu.AdultQuantity + detailMenu.ChildQuantity == 0)
                 {
@@ -34,12 +29,12 @@ namespace ProyectoPresupuestoEvento.Service
                 }
             }
 
-            for (int i = 0; i < quote.MenusList.Count; i++)
+            for (int i = 0; i < quote.MenuList.Count; i++)
             {
-                for (int j = i + 1; j < quote.MenusList.Count; j++)
+                for (int j = i + 1; j < quote.MenuList.Count; j++)
                 {
-                    DetailMenu a = quote.MenusList[i];
-                    DetailMenu b = quote.MenusList[j];
+                    DetailMenu a = quote.MenuList[i];
+                    DetailMenu b = quote.MenuList[j];
                     if (a.Menu.Id == b.Menu.Id && a.TagDescription == b.TagDescription)
                     {
                         throw new BusinessRuleException("la variante " + a.Menu.Description + " " + a.TagDescription + " esta repetida");
@@ -47,7 +42,7 @@ namespace ProyectoPresupuestoEvento.Service
                 }
             }
 
-            foreach (DetailMenu detailMenu in quote.MenusList)
+            foreach (DetailMenu detailMenu in quote.MenuList)
             {
                 bool hasTheTag = false;
                 foreach (MenuTag tag in detailMenu.Menu.TagList)
@@ -156,7 +151,7 @@ namespace ProyectoPresupuestoEvento.Service
                 names.Add(quote.Location.Name);
             }
 
-            foreach (DetailMenu detailMenu in quote.MenusList)
+            foreach (DetailMenu detailMenu in quote.MenuList)
             {
                 if (!detailMenu.Menu.IsActive && !names.Contains(detailMenu.Menu.Description))
                 {

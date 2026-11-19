@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using ProyectoPresupuestoEvento.Common;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Interface;
@@ -244,7 +239,7 @@ namespace ProyectoPresupuestoEvento.Repository
             deleteOptionItems.Parameters.AddWithValue("@quoteId", quoteId);
             deleteOptionItems.ExecuteNonQuery();
 
-            foreach (DetailMenu detailMenu in quote.MenusList)
+            foreach (DetailMenu detailMenu in quote.MenuList)
             {
                 SqliteCommand insert = connection.CreateCommand();
                 insert.Transaction = transaction;

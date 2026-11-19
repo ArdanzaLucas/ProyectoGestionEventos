@@ -1,17 +1,14 @@
-using MaterialSkin;
 using MaterialSkin.Controls;
-using ProyectoPresupuestoEvento.View;
 using ProyectoPresupuestoEvento.Controller;
 
-namespace ProyectoPresupuestoEvento
-
+namespace ProyectoPresupuestoEvento.View
 {
     public partial class FormMain : MaterialForm
     {
-        private EventItemController eventsController;
+        private EventItemController eventController;
         private MenuController menuController;
         private MenuTagController menuTagController;
-        private OptionItemController optionItemsController;
+        private OptionItemController optionItemController;
         private QuoteController quoteController;
         private LocationController locationController;
 
@@ -19,7 +16,7 @@ namespace ProyectoPresupuestoEvento
         private FormQuoteEdit frmQuoteEdit;
         private FormEvents frmEvents;
         private FormLocations frmLocations;
-        private FormOptionItem frmOI;
+        private FormOptionItem frmOptionItems;
         private FormMenus frmMenus;
         private FormMenuTags frmMenuTags;
 
@@ -32,13 +29,13 @@ namespace ProyectoPresupuestoEvento
             this.DrawerIsOpen = false;
 
 
-            string[] icons = { "IconQuote.png", "iconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
-            VisualHelper.LinkSidebarIcons(TabCtrl, imageList1, icons);
+            string[] icons = { "IconQuote.png", "IconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
+            VisualHelper.LinkSidebarIcons(TabCtrl, imageListIcons, icons);
 
-            eventsController = new EventItemController();
-            menuController= new MenuController();
+            eventController = new EventItemController();
+            menuController = new MenuController();
             menuTagController = new MenuTagController();
-            optionItemsController= new OptionItemController();
+            optionItemController = new OptionItemController();
             quoteController = new QuoteController();
             locationController = new LocationController();
         }
@@ -46,44 +43,41 @@ namespace ProyectoPresupuestoEvento
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            frmIndex = new FormIndex(quoteController, eventsController);
-            frmIndex.TopLevel = false;
-            frmIndex.Dock = DockStyle.Fill;
-            this.pnlIndex.Controls.Add(frmIndex);
+            frmIndex = new FormIndex(quoteController, eventController);
+            EmbedForm(frmIndex, pnlIndex);
             frmIndex.Show();
-            frmQuoteEdit = new FormQuoteEdit(quoteController, eventsController, locationController, menuController, optionItemsController);
-            frmQuoteEdit.TopLevel = false;
-            frmQuoteEdit.Dock = DockStyle.Fill;
-            this.pnlIndex.Controls.Add(frmQuoteEdit);
+
+            frmQuoteEdit = new FormQuoteEdit(quoteController, eventController, locationController, menuController, optionItemController);
+            EmbedForm(frmQuoteEdit, pnlIndex);
             frmQuoteEdit.SetFormIndex(frmIndex);
             frmIndex.SetFormQuoteEdit(frmQuoteEdit);
-            frmEvents = new FormEvents(eventsController);
-            frmEvents.TopLevel = false;
-            frmEvents.Dock = DockStyle.Fill;
-            this.pnlCntEvents.Controls.Add(frmEvents);
+
+            frmEvents = new FormEvents(eventController);
+            EmbedForm(frmEvents, pnlCntEvents);
             frmEvents.Show();
+
             frmLocations = new FormLocations(locationController);
-            frmLocations.TopLevel = false;
-            frmLocations.Dock = DockStyle.Fill;
-            this.pnlCntLocations.Controls.Add(frmLocations);
+            EmbedForm(frmLocations, pnlCntLocations);
             frmLocations.Show();
-            frmOI = new FormOptionItem(optionItemsController);
-            frmOI.TopLevel = false;
-            frmOI.Dock = DockStyle.Fill;
-            this.pnlCntOpIts.Controls.Add(frmOI);
-            frmOI.Show();
+
+            frmOptionItems = new FormOptionItem(optionItemController);
+            EmbedForm(frmOptionItems, pnlCntOptionItems);
+            frmOptionItems.Show();
+
             frmMenus = new FormMenus(menuController, menuTagController);
-            frmMenus.TopLevel = false;
-            frmMenus.Dock = DockStyle.Fill;
-            this.pnlCntCatering.Controls.Add(frmMenus);
+            EmbedForm(frmMenus, pnlCntCatering);
             frmMenus.Show();
+
             frmMenuTags = new FormMenuTags(menuTagController, frmMenus);
-            frmMenuTags.TopLevel = false;
-            frmMenuTags.Dock = DockStyle.Fill;
-            this.pnlCntCatering.Controls.Add(frmMenuTags);
+            EmbedForm(frmMenuTags, pnlCntCatering);
             frmMenus.SetFormMenuTags(frmMenuTags);
+        }
 
-
+        private void EmbedForm(Form form, Control container)
+        {
+            form.TopLevel = false;
+            form.Dock = DockStyle.Fill;
+            container.Controls.Add(form);
         }
 
         private void TabCtrl_SelectedIndexChanged(object sender, EventArgs e)
@@ -105,7 +99,7 @@ namespace ProyectoPresupuestoEvento
             }
             else if (TabCtrl.SelectedTab == tabOptionItem)
             {
-                frmOI.ResetView();
+                frmOptionItems.ResetView();
             }
             else if (TabCtrl.SelectedTab == tabCatering)
             {

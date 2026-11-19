@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace ProyectoPresupuestoEvento.View
+﻿namespace ProyectoPresupuestoEvento.View
 {
     public static class MessageHelper
     {

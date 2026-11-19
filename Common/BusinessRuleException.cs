@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProyectoPresupuestoEvento.Common
+﻿namespace ProyectoPresupuestoEvento.Common
 {
     public class BusinessRuleException : Exception
     {

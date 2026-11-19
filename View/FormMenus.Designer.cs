@@ -44,15 +44,15 @@
             panelMenuUpload = new Panel();
             btnBackMenu = new MaterialSkin.Controls.MaterialButton();
             btnSaveMenu = new MaterialSkin.Controls.MaterialButton();
-            label5 = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuTags = new MaterialSkin.Controls.MaterialLabel();
             clbMenuTags = new CheckedListBox();
             nudMenuPriceChild = new NumericUpDown();
             nudMenuPriceAdult = new NumericUpDown();
-            label4 = new MaterialSkin.Controls.MaterialLabel();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuPriceChild = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuPriceAdult = new MaterialSkin.Controls.MaterialLabel();
             mtbMenuDescription = new MaterialSkin.Controls.MaterialTextBox();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuDescription = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuFormTitle = new MaterialSkin.Controls.MaterialLabel();
             panelMenusList.SuspendLayout();
             panelMenusTitle.SuspendLayout();
             panelCrudCtrlMenus.SuspendLayout();
@@ -234,21 +234,21 @@
             // 
             panelMenuUpload.Controls.Add(btnBackMenu);
             panelMenuUpload.Controls.Add(btnSaveMenu);
-            panelMenuUpload.Controls.Add(label5);
+            panelMenuUpload.Controls.Add(lblMenuTags);
             panelMenuUpload.Controls.Add(clbMenuTags);
             panelMenuUpload.Controls.Add(nudMenuPriceChild);
             panelMenuUpload.Controls.Add(nudMenuPriceAdult);
-            panelMenuUpload.Controls.Add(label4);
-            panelMenuUpload.Controls.Add(label3);
+            panelMenuUpload.Controls.Add(lblMenuPriceChild);
+            panelMenuUpload.Controls.Add(lblMenuPriceAdult);
             panelMenuUpload.Controls.Add(mtbMenuDescription);
-            panelMenuUpload.Controls.Add(label2);
-            panelMenuUpload.Controls.Add(label1);
+            panelMenuUpload.Controls.Add(lblMenuDescription);
+            panelMenuUpload.Controls.Add(lblMenuFormTitle);
             panelMenuUpload.Location = new Point(640, 0);
             panelMenuUpload.Name = "panelMenuUpload";
             panelMenuUpload.Size = new Size(641, 677);
             panelMenuUpload.TabIndex = 6;
             // 
-            // btnVolverMenu
+            // btnBackMenu
             // 
             btnBackMenu.AutoSize = false;
             btnBackMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -269,7 +269,7 @@
             btnBackMenu.UseVisualStyleBackColor = true;
             btnBackMenu.Click += btnBackMenu_Click;
             // 
-            // btnGuardarMenu
+            // btnSaveMenu
             // 
             btnSaveMenu.AutoSize = false;
             btnSaveMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -290,17 +290,17 @@
             btnSaveMenu.UseVisualStyleBackColor = true;
             btnSaveMenu.Click += btnSaveMenu_Click;
             // 
-            // label5
+            // lblMenuTags
             // 
-            label5.AutoSize = true;
-            label5.Depth = 0;
-            label5.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label5.MouseState = MaterialSkin.MouseState.HOVER;
-            label5.Location = new Point(340, 90);
-            label5.Name = "label5";
-            label5.Size = new Size(55, 15);
-            label5.TabIndex = 8;
-            label5.Text = "Etiquetas";
+            lblMenuTags.AutoSize = true;
+            lblMenuTags.Depth = 0;
+            lblMenuTags.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblMenuTags.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuTags.Location = new Point(340, 90);
+            lblMenuTags.Name = "lblMenuTags";
+            lblMenuTags.Size = new Size(55, 15);
+            lblMenuTags.TabIndex = 8;
+            lblMenuTags.Text = "Etiquetas";
             // 
             // clbMenuTags
             // 
@@ -332,29 +332,29 @@
             nudMenuPriceAdult.Size = new Size(250, 27);
             nudMenuPriceAdult.TabIndex = 5;
             // 
-            // label4
+            // lblMenuPriceChild
             // 
-            label4.AutoSize = true;
-            label4.Depth = 0;
-            label4.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label4.MouseState = MaterialSkin.MouseState.HOVER;
-            label4.Location = new Point(40, 250);
-            label4.Name = "label4";
-            label4.Size = new Size(146, 15);
-            label4.TabIndex = 4;
-            label4.Text = "Precio por niño";
+            lblMenuPriceChild.AutoSize = true;
+            lblMenuPriceChild.Depth = 0;
+            lblMenuPriceChild.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblMenuPriceChild.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuPriceChild.Location = new Point(40, 250);
+            lblMenuPriceChild.Name = "lblMenuPriceChild";
+            lblMenuPriceChild.Size = new Size(146, 15);
+            lblMenuPriceChild.TabIndex = 4;
+            lblMenuPriceChild.Text = "Precio por niño";
             // 
-            // label3
+            // lblMenuPriceAdult
             // 
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Location = new Point(40, 182);
-            label3.Name = "label3";
-            label3.Size = new Size(156, 15);
-            label3.TabIndex = 3;
-            label3.Text = "Precio por adulto";
+            lblMenuPriceAdult.AutoSize = true;
+            lblMenuPriceAdult.Depth = 0;
+            lblMenuPriceAdult.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblMenuPriceAdult.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuPriceAdult.Location = new Point(40, 182);
+            lblMenuPriceAdult.Name = "lblMenuPriceAdult";
+            lblMenuPriceAdult.Size = new Size(156, 15);
+            lblMenuPriceAdult.TabIndex = 3;
+            lblMenuPriceAdult.Text = "Precio por adulto";
             // 
             // mtbMenuDescription
             // 
@@ -373,29 +373,29 @@
             mtbMenuDescription.Text = "";
             mtbMenuDescription.TrailingIcon = null;
             // 
-            // label2
+            // lblMenuDescription
             // 
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(40, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(185, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Descripcion";
+            lblMenuDescription.AutoSize = true;
+            lblMenuDescription.Depth = 0;
+            lblMenuDescription.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblMenuDescription.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuDescription.Location = new Point(40, 90);
+            lblMenuDescription.Name = "lblMenuDescription";
+            lblMenuDescription.Size = new Size(185, 15);
+            lblMenuDescription.TabIndex = 1;
+            lblMenuDescription.Text = "Descripcion";
             // 
-            // label1
+            // lblMenuFormTitle
             // 
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(40, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(88, 15);
-            label1.TabIndex = 0;
-            label1.Text = "Carga de menu";
+            lblMenuFormTitle.AutoSize = true;
+            lblMenuFormTitle.Depth = 0;
+            lblMenuFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblMenuFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuFormTitle.Location = new Point(40, 30);
+            lblMenuFormTitle.Name = "lblMenuFormTitle";
+            lblMenuFormTitle.Size = new Size(88, 15);
+            lblMenuFormTitle.TabIndex = 0;
+            lblMenuFormTitle.Text = "Carga de menu";
             // 
             // FormMenus
             // 
@@ -434,16 +434,16 @@
         private MaterialSkin.Controls.MaterialButton btnMenuCreate;
         private Panel panelMenuUpload;
         private MaterialSkin.Controls.MaterialButton btnMenuTags;
-        private MaterialSkin.Controls.MaterialLabel label2;
-        private MaterialSkin.Controls.MaterialLabel label1;
+        private MaterialSkin.Controls.MaterialLabel lblMenuDescription;
+        private MaterialSkin.Controls.MaterialLabel lblMenuFormTitle;
         private NumericUpDown nudMenuPriceChild;
         private NumericUpDown nudMenuPriceAdult;
-        private MaterialSkin.Controls.MaterialLabel label4;
-        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialLabel lblMenuPriceChild;
+        private MaterialSkin.Controls.MaterialLabel lblMenuPriceAdult;
         private MaterialSkin.Controls.MaterialTextBox mtbMenuDescription;
         private CheckedListBox clbMenuTags;
         private MaterialSkin.Controls.MaterialButton btnBackMenu;
         private MaterialSkin.Controls.MaterialButton btnSaveMenu;
-        private MaterialSkin.Controls.MaterialLabel label5;
+        private MaterialSkin.Controls.MaterialLabel lblMenuTags;
     }
 }

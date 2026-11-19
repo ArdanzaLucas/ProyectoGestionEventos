@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             panelQuoteCU = new Panel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteFormTitle = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteEvent = new MaterialSkin.Controls.MaterialLabel();
             cmbQuoteEvent = new ComboBox();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteLocation = new MaterialSkin.Controls.MaterialLabel();
             cmbQuoteLocation = new ComboBox();
-            label4 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteCatering = new MaterialSkin.Controls.MaterialLabel();
             lblQuoteGuests = new MaterialSkin.Controls.MaterialLabel();
-            label5 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteMenu = new MaterialSkin.Controls.MaterialLabel();
             cmbQuoteMenu = new ComboBox();
-            label6 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteTag = new MaterialSkin.Controls.MaterialLabel();
             cmbQuoteTag = new ComboBox();
-            label7 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteAdults = new MaterialSkin.Controls.MaterialLabel();
             nudQuoteAdults = new NumericUpDown();
-            label8 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteChildren = new MaterialSkin.Controls.MaterialLabel();
             nudQuoteChildren = new NumericUpDown();
             btnAddLine = new MaterialSkin.Controls.MaterialButton();
             lvQuoteLines = new ListView();
@@ -52,9 +52,9 @@
             LineChildrenColumn = new ColumnHeader();
             LineSubtotalColumn = new ColumnHeader();
             btnRemoveLine = new MaterialSkin.Controls.MaterialButton();
-            label9 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteOptionItems = new MaterialSkin.Controls.MaterialLabel();
             clbQuoteOptionItems = new CheckedListBox();
-            label10 = new MaterialSkin.Controls.MaterialLabel();
+            lblQuoteTotals = new MaterialSkin.Controls.MaterialLabel();
             lblTotalLocation = new MaterialSkin.Controls.MaterialLabel();
             lblTotalMenus = new MaterialSkin.Controls.MaterialLabel();
             lblTotalOptionItems = new MaterialSkin.Controls.MaterialLabel();
@@ -68,27 +68,27 @@
             //
             // panelQuoteCU
             //
-            panelQuoteCU.Controls.Add(label1);
-            panelQuoteCU.Controls.Add(label2);
+            panelQuoteCU.Controls.Add(lblQuoteFormTitle);
+            panelQuoteCU.Controls.Add(lblQuoteEvent);
             panelQuoteCU.Controls.Add(cmbQuoteEvent);
-            panelQuoteCU.Controls.Add(label3);
+            panelQuoteCU.Controls.Add(lblQuoteLocation);
             panelQuoteCU.Controls.Add(cmbQuoteLocation);
-            panelQuoteCU.Controls.Add(label4);
+            panelQuoteCU.Controls.Add(lblQuoteCatering);
             panelQuoteCU.Controls.Add(lblQuoteGuests);
-            panelQuoteCU.Controls.Add(label5);
+            panelQuoteCU.Controls.Add(lblQuoteMenu);
             panelQuoteCU.Controls.Add(cmbQuoteMenu);
-            panelQuoteCU.Controls.Add(label6);
+            panelQuoteCU.Controls.Add(lblQuoteTag);
             panelQuoteCU.Controls.Add(cmbQuoteTag);
-            panelQuoteCU.Controls.Add(label7);
+            panelQuoteCU.Controls.Add(lblQuoteAdults);
             panelQuoteCU.Controls.Add(nudQuoteAdults);
-            panelQuoteCU.Controls.Add(label8);
+            panelQuoteCU.Controls.Add(lblQuoteChildren);
             panelQuoteCU.Controls.Add(nudQuoteChildren);
             panelQuoteCU.Controls.Add(btnAddLine);
             panelQuoteCU.Controls.Add(lvQuoteLines);
             panelQuoteCU.Controls.Add(btnRemoveLine);
-            panelQuoteCU.Controls.Add(label9);
+            panelQuoteCU.Controls.Add(lblQuoteOptionItems);
             panelQuoteCU.Controls.Add(clbQuoteOptionItems);
-            panelQuoteCU.Controls.Add(label10);
+            panelQuoteCU.Controls.Add(lblQuoteTotals);
             panelQuoteCU.Controls.Add(lblTotalLocation);
             panelQuoteCU.Controls.Add(lblTotalMenus);
             panelQuoteCU.Controls.Add(lblTotalOptionItems);
@@ -101,29 +101,29 @@
             panelQuoteCU.Size = new Size(640, 720);
             panelQuoteCU.TabIndex = 1;
             //
-            // label1
+            // lblQuoteFormTitle
             //
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(20, 12);
-            label1.Name = "label1";
-            label1.Size = new Size(210, 24);
-            label1.TabIndex = 0;
-            label1.Text = "Carga de presupuesto";
+            lblQuoteFormTitle.AutoSize = true;
+            lblQuoteFormTitle.Depth = 0;
+            lblQuoteFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblQuoteFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteFormTitle.Location = new Point(20, 12);
+            lblQuoteFormTitle.Name = "lblQuoteFormTitle";
+            lblQuoteFormTitle.Size = new Size(210, 24);
+            lblQuoteFormTitle.TabIndex = 0;
+            lblQuoteFormTitle.Text = "Carga de presupuesto";
             //
-            // label2
+            // lblQuoteEvent
             //
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(20, 46);
-            label2.Name = "label2";
-            label2.Size = new Size(43, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Evento";
+            lblQuoteEvent.AutoSize = true;
+            lblQuoteEvent.Depth = 0;
+            lblQuoteEvent.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteEvent.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteEvent.Location = new Point(20, 46);
+            lblQuoteEvent.Name = "lblQuoteEvent";
+            lblQuoteEvent.Size = new Size(43, 15);
+            lblQuoteEvent.TabIndex = 1;
+            lblQuoteEvent.Text = "Evento";
             //
             // cmbQuoteEvent
             //
@@ -135,17 +135,17 @@
             cmbQuoteEvent.TabIndex = 2;
             cmbQuoteEvent.SelectedIndexChanged += cmbQuoteEvent_SelectedIndexChanged;
             //
-            // label3
+            // lblQuoteLocation
             //
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Location = new Point(290, 46);
-            label3.Name = "label3";
-            label3.Size = new Size(59, 15);
-            label3.TabIndex = 3;
-            label3.Text = "Ubicacion";
+            lblQuoteLocation.AutoSize = true;
+            lblQuoteLocation.Depth = 0;
+            lblQuoteLocation.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteLocation.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteLocation.Location = new Point(290, 46);
+            lblQuoteLocation.Name = "lblQuoteLocation";
+            lblQuoteLocation.Size = new Size(59, 15);
+            lblQuoteLocation.TabIndex = 3;
+            lblQuoteLocation.Text = "Ubicacion";
             //
             // cmbQuoteLocation
             //
@@ -157,17 +157,17 @@
             cmbQuoteLocation.TabIndex = 4;
             cmbQuoteLocation.SelectedIndexChanged += cmbQuoteLocation_SelectedIndexChanged;
             //
-            // label4
+            // lblQuoteCatering
             //
-            label4.AutoSize = true;
-            label4.Depth = 0;
-            label4.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            label4.MouseState = MaterialSkin.MouseState.HOVER;
-            label4.Location = new Point(20, 105);
-            label4.Name = "label4";
-            label4.Size = new Size(53, 15);
-            label4.TabIndex = 5;
-            label4.Text = "Catering";
+            lblQuoteCatering.AutoSize = true;
+            lblQuoteCatering.Depth = 0;
+            lblQuoteCatering.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            lblQuoteCatering.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteCatering.Location = new Point(20, 105);
+            lblQuoteCatering.Name = "lblQuoteCatering";
+            lblQuoteCatering.Size = new Size(53, 15);
+            lblQuoteCatering.TabIndex = 5;
+            lblQuoteCatering.Text = "Catering";
             // 
             // lblQuoteGuests
             // 
@@ -182,17 +182,17 @@
             lblQuoteGuests.TabIndex = 26;
             lblQuoteGuests.Text = "Invitados del evento: -";
             //
-            // label5
+            // lblQuoteMenu
             //
-            label5.AutoSize = true;
-            label5.Depth = 0;
-            label5.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label5.MouseState = MaterialSkin.MouseState.HOVER;
-            label5.Location = new Point(20, 124);
-            label5.Name = "label5";
-            label5.Size = new Size(38, 15);
-            label5.TabIndex = 6;
-            label5.Text = "Menu";
+            lblQuoteMenu.AutoSize = true;
+            lblQuoteMenu.Depth = 0;
+            lblQuoteMenu.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteMenu.Location = new Point(20, 124);
+            lblQuoteMenu.Name = "lblQuoteMenu";
+            lblQuoteMenu.Size = new Size(38, 15);
+            lblQuoteMenu.TabIndex = 6;
+            lblQuoteMenu.Text = "Menu";
             //
             // cmbQuoteMenu
             //
@@ -204,17 +204,17 @@
             cmbQuoteMenu.TabIndex = 7;
             cmbQuoteMenu.SelectedIndexChanged += cmbQuoteMenu_SelectedIndexChanged;
             //
-            // label6
+            // lblQuoteTag
             //
-            label6.AutoSize = true;
-            label6.Depth = 0;
-            label6.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label6.MouseState = MaterialSkin.MouseState.HOVER;
-            label6.Location = new Point(190, 124);
-            label6.Name = "label6";
-            label6.Size = new Size(50, 15);
-            label6.TabIndex = 8;
-            label6.Text = "Etiqueta";
+            lblQuoteTag.AutoSize = true;
+            lblQuoteTag.Depth = 0;
+            lblQuoteTag.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteTag.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteTag.Location = new Point(190, 124);
+            lblQuoteTag.Name = "lblQuoteTag";
+            lblQuoteTag.Size = new Size(50, 15);
+            lblQuoteTag.TabIndex = 8;
+            lblQuoteTag.Text = "Etiqueta";
             //
             // cmbQuoteTag
             //
@@ -225,17 +225,17 @@
             cmbQuoteTag.Size = new Size(120, 23);
             cmbQuoteTag.TabIndex = 9;
             //
-            // label7
+            // lblQuoteAdults
             //
-            label7.AutoSize = true;
-            label7.Depth = 0;
-            label7.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label7.MouseState = MaterialSkin.MouseState.HOVER;
-            label7.Location = new Point(320, 124);
-            label7.Name = "label7";
-            label7.Size = new Size(48, 15);
-            label7.TabIndex = 10;
-            label7.Text = "Adultos";
+            lblQuoteAdults.AutoSize = true;
+            lblQuoteAdults.Depth = 0;
+            lblQuoteAdults.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteAdults.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteAdults.Location = new Point(320, 124);
+            lblQuoteAdults.Name = "lblQuoteAdults";
+            lblQuoteAdults.Size = new Size(48, 15);
+            lblQuoteAdults.TabIndex = 10;
+            lblQuoteAdults.Text = "Adultos";
             //
             // nudQuoteAdults
             //
@@ -246,17 +246,17 @@
             nudQuoteAdults.Size = new Size(60, 23);
             nudQuoteAdults.TabIndex = 11;
             //
-            // label8
+            // lblQuoteChildren
             //
-            label8.AutoSize = true;
-            label8.Depth = 0;
-            label8.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label8.MouseState = MaterialSkin.MouseState.HOVER;
-            label8.Location = new Point(390, 124);
-            label8.Name = "label8";
-            label8.Size = new Size(37, 15);
-            label8.TabIndex = 12;
-            label8.Text = "Niños";
+            lblQuoteChildren.AutoSize = true;
+            lblQuoteChildren.Depth = 0;
+            lblQuoteChildren.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblQuoteChildren.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteChildren.Location = new Point(390, 124);
+            lblQuoteChildren.Name = "lblQuoteChildren";
+            lblQuoteChildren.Size = new Size(37, 15);
+            lblQuoteChildren.TabIndex = 12;
+            lblQuoteChildren.Text = "Niños";
             //
             // nudQuoteChildren
             //
@@ -347,17 +347,17 @@
             btnRemoveLine.UseVisualStyleBackColor = true;
             btnRemoveLine.Click += btnRemoveLine_Click;
             //
-            // label9
+            // lblQuoteOptionItems
             //
-            label9.AutoSize = true;
-            label9.Depth = 0;
-            label9.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            label9.MouseState = MaterialSkin.MouseState.HOVER;
-            label9.Location = new Point(20, 325);
-            label9.Name = "label9";
-            label9.Size = new Size(57, 15);
-            label9.TabIndex = 17;
-            label9.Text = "Servicios";
+            lblQuoteOptionItems.AutoSize = true;
+            lblQuoteOptionItems.Depth = 0;
+            lblQuoteOptionItems.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            lblQuoteOptionItems.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteOptionItems.Location = new Point(20, 325);
+            lblQuoteOptionItems.Name = "lblQuoteOptionItems";
+            lblQuoteOptionItems.Size = new Size(57, 15);
+            lblQuoteOptionItems.TabIndex = 17;
+            lblQuoteOptionItems.Text = "Servicios";
             //
             // clbQuoteOptionItems
             //
@@ -369,17 +369,17 @@
             clbQuoteOptionItems.TabIndex = 18;
             clbQuoteOptionItems.ItemCheck += clbQuoteOptionItems_ItemCheck;
             //
-            // label10
+            // lblQuoteTotals
             //
-            label10.AutoSize = true;
-            label10.Depth = 0;
-            label10.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
-            label10.MouseState = MaterialSkin.MouseState.HOVER;
-            label10.Location = new Point(300, 325);
-            label10.Name = "label10";
-            label10.Size = new Size(48, 15);
-            label10.TabIndex = 19;
-            label10.Text = "Totales";
+            lblQuoteTotals.AutoSize = true;
+            lblQuoteTotals.Depth = 0;
+            lblQuoteTotals.FontType = MaterialSkin.MaterialSkinManager.fontType.Subtitle2;
+            lblQuoteTotals.MouseState = MaterialSkin.MouseState.HOVER;
+            lblQuoteTotals.Location = new Point(300, 325);
+            lblQuoteTotals.Name = "lblQuoteTotals";
+            lblQuoteTotals.Size = new Size(48, 15);
+            lblQuoteTotals.TabIndex = 19;
+            lblQuoteTotals.Text = "Totales";
             //
             // lblTotalLocation
             //
@@ -429,7 +429,7 @@
             lblTotal.TabIndex = 23;
             lblTotal.Text = "Total: -";
             //
-            // btnGuardarQuote
+            // btnSaveQuote
             //
             btnSaveQuote.AutoSize = false;
             btnSaveQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -450,7 +450,7 @@
             btnSaveQuote.UseVisualStyleBackColor = true;
             btnSaveQuote.Click += btnSaveQuote_Click;
             //
-            // btnVolverQuote
+            // btnBackQuote
             //
             btnBackQuote.AutoSize = false;
             btnBackQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -490,20 +490,20 @@
         #endregion
 
         private Panel panelQuoteCU;
-        private MaterialSkin.Controls.MaterialLabel label1;
-        private MaterialSkin.Controls.MaterialLabel label2;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteFormTitle;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteEvent;
         private ComboBox cmbQuoteEvent;
-        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteLocation;
         private ComboBox cmbQuoteLocation;
-        private MaterialSkin.Controls.MaterialLabel label4;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteCatering;
         private MaterialSkin.Controls.MaterialLabel lblQuoteGuests;
-        private MaterialSkin.Controls.MaterialLabel label5;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteMenu;
         private ComboBox cmbQuoteMenu;
-        private MaterialSkin.Controls.MaterialLabel label6;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteTag;
         private ComboBox cmbQuoteTag;
-        private MaterialSkin.Controls.MaterialLabel label7;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteAdults;
         private NumericUpDown nudQuoteAdults;
-        private MaterialSkin.Controls.MaterialLabel label8;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteChildren;
         private NumericUpDown nudQuoteChildren;
         private MaterialSkin.Controls.MaterialButton btnAddLine;
         private ListView lvQuoteLines;
@@ -513,9 +513,9 @@
         private ColumnHeader LineChildrenColumn;
         private ColumnHeader LineSubtotalColumn;
         private MaterialSkin.Controls.MaterialButton btnRemoveLine;
-        private MaterialSkin.Controls.MaterialLabel label9;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteOptionItems;
         private CheckedListBox clbQuoteOptionItems;
-        private MaterialSkin.Controls.MaterialLabel label10;
+        private MaterialSkin.Controls.MaterialLabel lblQuoteTotals;
         private MaterialSkin.Controls.MaterialLabel lblTotalLocation;
         private MaterialSkin.Controls.MaterialLabel lblTotalMenus;
         private MaterialSkin.Controls.MaterialLabel lblTotalOptionItems;

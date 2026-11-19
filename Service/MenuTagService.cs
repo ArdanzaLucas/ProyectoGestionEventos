@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+﻿using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
 using ProyectoPresupuestoEvento.Interface;
@@ -12,7 +7,7 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // logica de las etiquetas que se asignan a los menus
-    internal class MenuTagService
+    public class MenuTagService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRemovableRepository<MenuTag> repository;
@@ -119,13 +114,13 @@ namespace ProyectoPresupuestoEvento.Service
             }
         }
 
-        public MenuTag ToModel(MenuTagDto dto)
+        private MenuTag ToModel(MenuTagDto dto)
         {
             MenuTag model = new MenuTag(dto.Description);
             return model;
         }
 
-        public MenuTagDto ToDto(MenuTag menuTag)
+        private MenuTagDto ToDto(MenuTag menuTag)
         {
             MenuTagDto dto = new MenuTagDto(menuTag.Id, menuTag.Description);
             return dto;

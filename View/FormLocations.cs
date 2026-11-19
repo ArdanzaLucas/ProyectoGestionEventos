@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ProyectoPresupuestoEvento.Controller;
+﻿using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Common;
 
@@ -85,10 +76,7 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnLocationEdit_Click(object sender, EventArgs e)
         {
-            if
-                (
-                    mtLvLocations.SelectedItems.Count == 0
-                )
+            if (mtLvLocations.SelectedItems.Count == 0)
             {
                 MessageHelper.ShowWarning("seleccione una ubicacion para editar");
                 return;
@@ -180,6 +168,6 @@ namespace ProyectoPresupuestoEvento.View
             btnBack_Click(sender, e);
         }
 
-        
+
     }
 }

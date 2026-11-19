@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using ProyectoPresupuestoEvento.Common;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Interface;
@@ -47,7 +42,7 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
-        // solo los activos: los dados de baja se buscan con getById
+        // solo los activos: los dados de baja se buscan con GetById
         public List<OptionItem> GetAll()
         {
             List<OptionItem> optionItems = new List<OptionItem>();

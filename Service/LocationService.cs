@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+﻿using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
 using ProyectoPresupuestoEvento.Interface;
@@ -12,7 +7,7 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // logica de las ubicaciones
-    internal class LocationService
+    public class LocationService
     {
         // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<Location> repository;
@@ -35,7 +30,7 @@ namespace ProyectoPresupuestoEvento.Service
             ValidateUniqueName(location.Name, 0);
             repository.AddToRepository(location);
         }
-        
+
         // devuelve solo los activos
         public List<LocationDto> GetLocations()
         {
@@ -70,25 +65,24 @@ namespace ProyectoPresupuestoEvento.Service
             }
         }
 
-        public Location ToModel(LocationDto dto)
-        {
-            Location model = new Location(dto.Name, dto.Price);
-            return model;
-        }
-
-        public LocationDto ToDto(Location location)
-        {
-            LocationDto dto = new LocationDto(location.Id, location.Name, location.Price);
-            return dto;
-        }
-
-
         // baja logica: queda guardado pero inactivo
         public void RemoveLocation(int id)
         {
             Location location = repository.GetById(id);
             location.Deactivate();
             repository.Update(id, location);
+        }
+
+        private Location ToModel(LocationDto dto)
+        {
+            Location model = new Location(dto.Name, dto.Price);
+            return model;
+        }
+
+        private LocationDto ToDto(Location location)
+        {
+            LocationDto dto = new LocationDto(location.Id, location.Name, location.Price);
+            return dto;
         }
     }
 }

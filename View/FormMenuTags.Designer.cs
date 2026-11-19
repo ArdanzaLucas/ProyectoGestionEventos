@@ -30,8 +30,8 @@
         {
             panelMenuTagCU = new Panel();
             panelMenuTagUpload = new Panel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuTagFormTitle = new MaterialSkin.Controls.MaterialLabel();
+            lblMenuTagDescription = new MaterialSkin.Controls.MaterialLabel();
             mtbMenuTagDescription = new MaterialSkin.Controls.MaterialTextBox();
             btnSaveMenuTag = new MaterialSkin.Controls.MaterialButton();
             btnBack = new MaterialSkin.Controls.MaterialButton();
@@ -62,8 +62,8 @@
             // 
             // panelMenuTagUpload
             // 
-            panelMenuTagUpload.Controls.Add(label1);
-            panelMenuTagUpload.Controls.Add(label2);
+            panelMenuTagUpload.Controls.Add(lblMenuTagFormTitle);
+            panelMenuTagUpload.Controls.Add(lblMenuTagDescription);
             panelMenuTagUpload.Controls.Add(mtbMenuTagDescription);
             panelMenuTagUpload.Controls.Add(btnSaveMenuTag);
             panelMenuTagUpload.Controls.Add(btnBack);
@@ -73,29 +73,29 @@
             panelMenuTagUpload.Size = new Size(1471, 591);
             panelMenuTagUpload.TabIndex = 10;
             // 
-            // label1
+            // lblMenuTagFormTitle
             // 
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(40, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(215, 30);
-            label1.TabIndex = 7;
-            label1.Text = "Carga de etiqueta";
+            lblMenuTagFormTitle.AutoSize = true;
+            lblMenuTagFormTitle.Depth = 0;
+            lblMenuTagFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblMenuTagFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuTagFormTitle.Location = new Point(40, 30);
+            lblMenuTagFormTitle.Name = "lblMenuTagFormTitle";
+            lblMenuTagFormTitle.Size = new Size(215, 30);
+            lblMenuTagFormTitle.TabIndex = 7;
+            lblMenuTagFormTitle.Text = "Carga de etiqueta";
             // 
-            // label2
+            // lblMenuTagDescription
             // 
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(40, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(432, 21);
-            label2.TabIndex = 8;
-            label2.Text = "Descripcion";
+            lblMenuTagDescription.AutoSize = true;
+            lblMenuTagDescription.Depth = 0;
+            lblMenuTagDescription.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblMenuTagDescription.MouseState = MaterialSkin.MouseState.HOVER;
+            lblMenuTagDescription.Location = new Point(40, 90);
+            lblMenuTagDescription.Name = "lblMenuTagDescription";
+            lblMenuTagDescription.Size = new Size(432, 21);
+            lblMenuTagDescription.TabIndex = 8;
+            lblMenuTagDescription.Text = "Descripcion";
             // 
             // mtbMenuTagDescription
             // 
@@ -115,7 +115,7 @@
             mtbMenuTagDescription.Text = "";
             mtbMenuTagDescription.TrailingIcon = null;
             // 
-            // btnGuardarMenuTag
+            // btnSaveMenuTag
             // 
             btnSaveMenuTag.AutoSize = false;
             btnSaveMenuTag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -138,7 +138,7 @@
             btnSaveMenuTag.UseVisualStyleBackColor = true;
             btnSaveMenuTag.Click += btnSaveMenuTag_Click;
             // 
-            // btnVolverAtras
+            // btnBack
             // 
             btnBack.AutoSize = false;
             btnBack.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -233,7 +233,7 @@
             panelCrudCtrlMenuTag.Size = new Size(145, 720);
             panelCrudCtrlMenuTag.TabIndex = 5;
             // 
-            // btnVolverMenus
+            // btnBackToMenus
             // 
             btnBackToMenus.AutoSize = false;
             btnBackToMenus.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -354,8 +354,8 @@
         private MaterialSkin.Controls.MaterialTextBox mtbMenuTagDescription;
         private MaterialSkin.Controls.MaterialButton btnBack;
         private MaterialSkin.Controls.MaterialButton btnSaveMenuTag;
-        private MaterialSkin.Controls.MaterialLabel label2;
-        private MaterialSkin.Controls.MaterialLabel label1;
+        private MaterialSkin.Controls.MaterialLabel lblMenuTagDescription;
+        private MaterialSkin.Controls.MaterialLabel lblMenuTagFormTitle;
         private Panel panelMenuTagUpload;
     }
 }

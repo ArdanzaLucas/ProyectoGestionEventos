@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Common;
+﻿using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Dto
 {
@@ -21,9 +16,10 @@ namespace ProyectoPresupuestoEvento.Dto
         private int _locationId;
         private string _locationName;
         private decimal _locationPrice;
-        private List<DetailMenuDto> _menusList;
-        private List<DetailOptionItemDto> _optionItemsList;
+        private List<DetailMenuDto> _menuList;
+        private List<DetailOptionItemDto> _optionItemList;
         private QuoteState _state;
+        private bool _isEditable;
         private decimal _totalLocation;
         private decimal _totalMenus;
         private decimal _totalOptionItems;
@@ -32,12 +28,12 @@ namespace ProyectoPresupuestoEvento.Dto
 
         //constructor
 
-        public QuoteDto(int eventItemId, int locationId, List<DetailMenuDto> menusList, List<DetailOptionItemDto> optionItemsList)
+        public QuoteDto(int eventItemId, int locationId, List<DetailMenuDto> menuList, List<DetailOptionItemDto> optionItemList)
         {
             EventItemId = eventItemId;
             LocationId = locationId;
-            MenusList = menusList;
-            OptionItemsList = optionItemsList;
+            MenuList = menuList;
+            OptionItemList = optionItemList;
         }
 
 
@@ -115,22 +111,28 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _locationPrice = value; }
         }
 
-        public List<DetailMenuDto> MenusList
+        public List<DetailMenuDto> MenuList
         {
-            get { return _menusList; }
-            set { _menusList = value; }
+            get { return _menuList; }
+            set { _menuList = value; }
         }
 
-        public List<DetailOptionItemDto> OptionItemsList
+        public List<DetailOptionItemDto> OptionItemList
         {
-            get { return _optionItemsList; }
-            set { _optionItemsList = value; }
+            get { return _optionItemList; }
+            set { _optionItemList = value; }
         }
 
         public QuoteState State
         {
             get { return _state; }
             set { _state = value; }
+        }
+
+        public bool IsEditable
+        {
+            get { return _isEditable; }
+            set { _isEditable = value; }
         }
 
         public decimal TotalLocation

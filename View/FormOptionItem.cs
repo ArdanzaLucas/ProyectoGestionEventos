@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ProyectoPresupuestoEvento.Controller;
+﻿using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Common;
 
@@ -25,14 +16,14 @@ namespace ProyectoPresupuestoEvento.View
             this.optionItemController = controller;
             InitializeComponent();
             VisualHelper.FitColumns(mtLvOptionItems);
-            VisualHelper.CenterContent(panelOIUpload);
+            VisualHelper.CenterContent(panelOptionItemUpload);
         }
 
 
         private void FormOptionItem_Load(object sender, EventArgs e)
         {
-            panelOIList.Visible = true;
-            panelOICU.Visible = false;
+            panelOptionItemsList.Visible = true;
+            panelOptionItemsCU.Visible = false;
 
             ReloadList();
         }
@@ -67,29 +58,26 @@ namespace ProyectoPresupuestoEvento.View
 
 
         //seccion CRUD
-        private void btnOICreate_Click(object sender, EventArgs e)
+        private void btnOptionItemCreate_Click(object sender, EventArgs e)
         {
             editingId = 0;
 
-            panelOIList.Visible = false;
-            panelOICU.Visible = true;
-            panelOICU.Dock = DockStyle.Fill;
-            panelOIUpload.Dock = DockStyle.Fill;
+            panelOptionItemsList.Visible = false;
+            panelOptionItemsCU.Visible = true;
+            panelOptionItemsCU.Dock = DockStyle.Fill;
+            panelOptionItemUpload.Dock = DockStyle.Fill;
 
         }
 
 
         private void mtLvOptionItems_DoubleClick(object sender, EventArgs e)
         {
-            btnOIEdit_Click(sender, e);
+            btnOptionItemEdit_Click(sender, e);
         }
 
-        private void btnOIEdit_Click(object sender, EventArgs e)
+        private void btnOptionItemEdit_Click(object sender, EventArgs e)
         {
-            if
-                (
-                    mtLvOptionItems.SelectedItems.Count == 0
-                )
+            if (mtLvOptionItems.SelectedItems.Count == 0)
             {
                 MessageHelper.ShowWarning("seleccione un servicio para editar");
                 return;
@@ -101,19 +89,19 @@ namespace ProyectoPresupuestoEvento.View
 
             editingId = selected.Id;
 
-            mtbOIName.Text = selected.Name;
-            nudOIPrice.Value = selected.Price;
+            mtbOptionItemName.Text = selected.Name;
+            nudOptionItemPrice.Value = selected.Price;
 
 
 
-            panelOIList.Visible = false;
-            panelOICU.Visible = true;
-            panelOICU.Dock = DockStyle.Fill;
-            panelOIUpload.Dock = DockStyle.Fill;
+            panelOptionItemsList.Visible = false;
+            panelOptionItemsCU.Visible = true;
+            panelOptionItemsCU.Dock = DockStyle.Fill;
+            panelOptionItemUpload.Dock = DockStyle.Fill;
 
         }
 
-        private void btnOIRemove_Click(object sender, EventArgs e)
+        private void btnOptionItemRemove_Click(object sender, EventArgs e)
         {
             if (mtLvOptionItems.SelectedItems.Count == 0)
             {
@@ -142,22 +130,22 @@ namespace ProyectoPresupuestoEvento.View
         //seccion Carga
         private void btnBack_Click(object sender, EventArgs e)
         {
-            panelOIList.Visible = true;
-            panelOICU.Visible = false;
-            panelOICU.Dock = DockStyle.None;
-            panelOIUpload.Dock = DockStyle.None;
+            panelOptionItemsList.Visible = true;
+            panelOptionItemsCU.Visible = false;
+            panelOptionItemsCU.Dock = DockStyle.None;
+            panelOptionItemUpload.Dock = DockStyle.None;
 
-            mtbOIName.Text = null;
-            nudOIPrice.Value = 0;
+            mtbOptionItemName.Text = null;
+            nudOptionItemPrice.Value = 0;
 
             editingId = 0;
         }
 
-        private void btnSaveOI_Click(object sender, EventArgs e)
+        private void btnSaveOptionItem_Click(object sender, EventArgs e)
         {
-            decimal price = decimal.Round(nudOIPrice.Value, 2);
+            decimal price = decimal.Round(nudOptionItemPrice.Value, 2);
 
-            OptionItemDto optionItemDto = new OptionItemDto(mtbOIName.Text, price);
+            OptionItemDto optionItemDto = new OptionItemDto(mtbOptionItemName.Text, price);
 
             try
             {
@@ -181,6 +169,6 @@ namespace ProyectoPresupuestoEvento.View
             btnBack_Click(sender, e);
         }
 
-        
+
     }
 }

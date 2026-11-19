@@ -24,7 +24,7 @@ namespace ProyectoPresupuestoEvento
                 return;
             }
 
-            Application.Run(new FormMain());
+            Application.Run(new View.FormMain());
         }
 
         private static void ShowUnexpectedError(object sender, ThreadExceptionEventArgs e)

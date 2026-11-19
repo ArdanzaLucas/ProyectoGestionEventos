@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Common;
@@ -172,7 +162,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            if (selected.State != QuoteState.Pending)
+            if (!selected.IsEditable)
             {
                 MessageHelper.ShowWarning("solo se puede editar un presupuesto pendiente");
                 return;
@@ -197,16 +187,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            try
-            {
-                quoteController.AcceptQuote(selected.Id);
-            }
-            catch (BusinessRuleException ex)
-            {
-                MessageHelper.ShowWarning(ex.Message);
-            }
-
-            ReloadList();
+            RunQuoteAction(() => quoteController.AcceptQuote(selected.Id));
         }
 
         private void btnQuoteCancel_Click(object sender, EventArgs e)
@@ -223,16 +204,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            try
-            {
-                quoteController.CancelQuote(selected.Id);
-            }
-            catch (BusinessRuleException ex)
-            {
-                MessageHelper.ShowWarning(ex.Message);
-            }
-
-            ReloadList();
+            RunQuoteAction(() => quoteController.CancelQuote(selected.Id));
         }
 
         private void btnQuoteClone_Click(object sender, EventArgs e)
@@ -243,16 +215,7 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            try
-            {
-                quoteController.CloneQuote(selected.Id);
-            }
-            catch (BusinessRuleException ex)
-            {
-                MessageHelper.ShowWarning(ex.Message);
-            }
-
-            ReloadList();
+            RunQuoteAction(() => quoteController.CloneQuote(selected.Id));
         }
 
         private void btnQuoteRemove_Click(object sender, EventArgs e)
@@ -321,6 +284,20 @@ namespace ProyectoPresupuestoEvento.View
             {
                 MessageHelper.ShowInfo("el PDF se guardo en " + dialog.FileName);
             }
+        }
+
+        private void RunQuoteAction(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (BusinessRuleException ex)
+            {
+                MessageHelper.ShowWarning(ex.Message);
+            }
+
+            ReloadList();
         }
 
         private void ClearTempPdfFolder()

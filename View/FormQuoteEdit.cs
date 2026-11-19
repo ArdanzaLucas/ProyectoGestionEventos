@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Common;
@@ -105,14 +96,14 @@ namespace ProyectoPresupuestoEvento.View
             }
 
             lines = new List<DetailMenuDto>();
-            foreach (DetailMenuDto line in selected.MenusList)
+            foreach (DetailMenuDto line in selected.MenuList)
             {
                 DetailMenuDto copy = new DetailMenuDto(line.MenuId, line.TagDescription, line.AdultQuantity, line.ChildQuantity);
                 copy.MenuDescription = line.MenuDescription;
                 lines.Add(copy);
             }
 
-            foreach (DetailOptionItemDto optionItem in selected.OptionItemsList)
+            foreach (DetailOptionItemDto optionItem in selected.OptionItemList)
             {
                 bool optionItemFound = false;
                 for (int i = 0; i < clbQuoteOptionItems.Items.Count; i++)
@@ -218,7 +209,7 @@ namespace ProyectoPresupuestoEvento.View
 
         private void clbQuoteOptionItems_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            this.BeginInvoke(new Action(RefreshTotals));
+            this.BeginInvoke(new Action(() => RefreshTotals()));
         }
 
         private void btnAddLine_Click(object sender, EventArgs e)
@@ -246,28 +237,45 @@ namespace ProyectoPresupuestoEvento.View
             MenuDto menu = (MenuDto)cmbQuoteMenu.SelectedItem;
             MenuTagDto tag = (MenuTagDto)cmbQuoteTag.SelectedItem;
 
-            bool alreadyAdded = false;
+            DetailMenuDto existingLine = null;
             foreach (DetailMenuDto line in lines)
             {
                 if (line.MenuId == menu.Id && line.TagDescription == tag.Description)
                 {
-                    line.AdultQuantity = line.AdultQuantity + adults;
-                    line.ChildQuantity = line.ChildQuantity + children;
-                    alreadyAdded = true;
+                    existingLine = line;
                 }
             }
 
-            if (!alreadyAdded)
+            DetailMenuDto newLine = null;
+            if (existingLine != null)
             {
-                DetailMenuDto newLine = new DetailMenuDto(menu.Id, tag.Description, adults, children);
+                existingLine.AdultQuantity = existingLine.AdultQuantity + adults;
+                existingLine.ChildQuantity = existingLine.ChildQuantity + children;
+            }
+            else
+            {
+                newLine = new DetailMenuDto(menu.Id, tag.Description, adults, children);
                 newLine.MenuDescription = menu.Description;
                 lines.Add(newLine);
             }
 
+            if (!RefreshTotals())
+            {
+                if (existingLine != null)
+                {
+                    existingLine.AdultQuantity = existingLine.AdultQuantity - adults;
+                    existingLine.ChildQuantity = existingLine.ChildQuantity - children;
+                }
+                else
+                {
+                    lines.Remove(newLine);
+                }
+                RefreshTotals();
+                return;
+            }
+
             nudQuoteAdults.Value = 0;
             nudQuoteChildren.Value = 0;
-
-            RefreshTotals();
         }
 
         private void btnRemoveLine_Click(object sender, EventArgs e)
@@ -299,25 +307,41 @@ namespace ProyectoPresupuestoEvento.View
             return dto;
         }
 
-        private void RefreshTotals()
+        private bool RefreshTotals()
         {
             if (cmbQuoteEvent.SelectedItem == null || cmbQuoteLocation.SelectedItem == null)
             {
-                ShowLines(lines, false);
-                lblTotalLocation.Text = "Ubicacion: -";
-                lblTotalMenus.Text = "Catering: -";
-                lblTotalOptionItems.Text = "Servicios: -";
-                lblTotal.Text = "Total: -";
-                return;
+                ShowEmptyTotals();
+                return true;
             }
 
-            QuoteDto preview = quoteController.CalculatePreview(BuildQuoteDto());
+            QuoteDto preview;
+            try
+            {
+                preview = quoteController.CalculatePreview(BuildQuoteDto());
+            }
+            catch (BusinessRuleException ex)
+            {
+                MessageHelper.ShowWarning(ex.Message);
+                ShowEmptyTotals();
+                return false;
+            }
 
-            ShowLines(preview.MenusList, true);
+            ShowLines(preview.MenuList, true);
             lblTotalLocation.Text = "Ubicacion: " + preview.TotalLocation.ToString("C");
             lblTotalMenus.Text = "Catering: " + preview.TotalMenus.ToString("C");
             lblTotalOptionItems.Text = "Servicios: " + preview.TotalOptionItems.ToString("C");
             lblTotal.Text = "Total: " + preview.Total.ToString("C");
+            return true;
+        }
+
+        private void ShowEmptyTotals()
+        {
+            ShowLines(lines, false);
+            lblTotalLocation.Text = "Ubicacion: -";
+            lblTotalMenus.Text = "Catering: -";
+            lblTotalOptionItems.Text = "Servicios: -";
+            lblTotal.Text = "Total: -";
         }
 
         private void ShowLines(List<DetailMenuDto> list, bool withSubtotal)

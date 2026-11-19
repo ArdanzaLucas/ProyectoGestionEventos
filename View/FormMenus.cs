@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ProyectoPresupuestoEvento.Controller;
+﻿using ProyectoPresupuestoEvento.Controller;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Common;
 
@@ -16,11 +7,11 @@ namespace ProyectoPresupuestoEvento.View
     public partial class FormMenus : Form
     {
 
-        MenuController menuController;
+        private MenuController menuController;
 
-        MenuTagController menuTagController;
+        private MenuTagController menuTagController;
 
-        FormMenuTags formMenuTags;
+        private FormMenuTags formMenuTags;
 
         private int editingId = 0;
 

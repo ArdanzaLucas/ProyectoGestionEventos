@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -13,7 +8,7 @@ using ProyectoPresupuestoEvento.Interface;
 namespace ProyectoPresupuestoEvento.Service
 {
     // arma el pdf del presupuesto con la libreria PDFsharp; lo usa QuoteService
-    internal class QuotePdfGenerator : IQuoteDocumentGenerator
+    public class QuotePdfGenerator : IQuoteDocumentGenerator
     {
         private XFont fontTitle = new XFont("Georgia", 18, XFontStyleEx.Bold);
         private XFont fontSection = new XFont("Georgia", 12, XFontStyleEx.Bold);
@@ -96,7 +91,7 @@ namespace ProyectoPresupuestoEvento.Service
             Write("Catering", fontSection, left);
             y = y + 18;
 
-            if (quote.MenusList.Count == 0)
+            if (quote.MenuList.Count == 0)
             {
                 Write("Sin catering", fontText, left);
                 y = y + 15;
@@ -105,7 +100,7 @@ namespace ProyectoPresupuestoEvento.Service
             {
                 DrawMenuTableHeader();
 
-                foreach (DetailMenu detailMenu in quote.MenusList)
+                foreach (DetailMenu detailMenu in quote.MenuList)
                 {
                     // si la linea no entra, sigue en una pagina nueva con el encabezado de la tabla
                     if (EnsureSpace(15))
@@ -152,15 +147,21 @@ namespace ProyectoPresupuestoEvento.Service
             }
             else
             {
-                foreach (DetailOptionItem detailOptionItem in quote.OptionItemList)
-                {
-                    EnsureSpace(15);
-                    Write(detailOptionItem.OptionItemName, fontText, left);
-                    WriteRight(detailOptionItem.UnitPrice.ToString("C"), fontText, right, y);
-                    y = y + 15;
-                }
+                DrawItems(quote.OptionItemList);
             }
             y = y + 15;
+        }
+
+        // dibuja cualquier item del presupuesto a traves de la interfaz: su descripcion y su subtotal
+        private void DrawItems(IEnumerable<IQuoteItem> items)
+        {
+            foreach (IQuoteItem item in items)
+            {
+                EnsureSpace(15);
+                Write(item.Description, fontText, left);
+                WriteRight(item.Subtotal.ToString("C"), fontText, right, y);
+                y = y + 15;
+            }
         }
 
         // el bloque de totales no se parte entre dos paginas

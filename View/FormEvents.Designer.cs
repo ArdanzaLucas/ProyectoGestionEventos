@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panelCrudCtrlEv = new Panel();
+            panelCrudCtrlEvents = new Panel();
             btnEventRemove = new MaterialSkin.Controls.MaterialButton();
             btnEventEdit = new MaterialSkin.Controls.MaterialButton();
             btnEventCreate = new MaterialSkin.Controls.MaterialButton();
@@ -43,22 +43,22 @@
             ChildrenColumn = new ColumnHeader();
             DurationColumn = new ColumnHeader();
             panelEventsCU = new Panel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventFormTitle = new MaterialSkin.Controls.MaterialLabel();
+            lblEventName = new MaterialSkin.Controls.MaterialLabel();
             mtbEventName = new MaterialSkin.Controls.MaterialTextBox();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventClient = new MaterialSkin.Controls.MaterialLabel();
             mtbEventClient = new MaterialSkin.Controls.MaterialTextBox();
-            label4 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventDate = new MaterialSkin.Controls.MaterialLabel();
             dtpEventDate = new DateTimePicker();
-            label5 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventAdults = new MaterialSkin.Controls.MaterialLabel();
             nudEventAdults = new NumericUpDown();
-            label6 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventChildren = new MaterialSkin.Controls.MaterialLabel();
             nudEventChildren = new NumericUpDown();
-            label7 = new MaterialSkin.Controls.MaterialLabel();
+            lblEventDuration = new MaterialSkin.Controls.MaterialLabel();
             nudEventDuration = new NumericUpDown();
             btnSaveEvent = new MaterialSkin.Controls.MaterialButton();
             btnBackEvent = new MaterialSkin.Controls.MaterialButton();
-            panelCrudCtrlEv.SuspendLayout();
+            panelCrudCtrlEvents.SuspendLayout();
             panelEventsList.SuspendLayout();
             panelEventsTitle.SuspendLayout();
             panelEventsCU.SuspendLayout();
@@ -67,17 +67,17 @@
             ((System.ComponentModel.ISupportInitialize)nudEventDuration).BeginInit();
             SuspendLayout();
             //
-            // panelCrudCtrlEv
+            // panelCrudCtrlEvents
             //
-            panelCrudCtrlEv.BackColor = Color.White;
-            panelCrudCtrlEv.Controls.Add(btnEventRemove);
-            panelCrudCtrlEv.Controls.Add(btnEventEdit);
-            panelCrudCtrlEv.Controls.Add(btnEventCreate);
-            panelCrudCtrlEv.Dock = DockStyle.Left;
-            panelCrudCtrlEv.Location = new Point(0, 0);
-            panelCrudCtrlEv.Name = "panelCrudCtrlEv";
-            panelCrudCtrlEv.Size = new Size(151, 720);
-            panelCrudCtrlEv.TabIndex = 2;
+            panelCrudCtrlEvents.BackColor = Color.White;
+            panelCrudCtrlEvents.Controls.Add(btnEventRemove);
+            panelCrudCtrlEvents.Controls.Add(btnEventEdit);
+            panelCrudCtrlEvents.Controls.Add(btnEventCreate);
+            panelCrudCtrlEvents.Dock = DockStyle.Left;
+            panelCrudCtrlEvents.Location = new Point(0, 0);
+            panelCrudCtrlEvents.Name = "panelCrudCtrlEvents";
+            panelCrudCtrlEvents.Size = new Size(151, 720);
+            panelCrudCtrlEvents.TabIndex = 2;
             //
             // btnEventRemove
             //
@@ -146,7 +146,7 @@
             //
             panelEventsList.Controls.Add(mtLvEvents);
             panelEventsList.Controls.Add(panelEventsTitle);
-            panelEventsList.Controls.Add(panelCrudCtrlEv);
+            panelEventsList.Controls.Add(panelCrudCtrlEvents);
             panelEventsList.Dock = DockStyle.Fill;
             panelEventsList.Location = new Point(0, 0);
             panelEventsList.Name = "panelEventsList";
@@ -227,18 +227,18 @@
             //
             // panelEventsCU
             //
-            panelEventsCU.Controls.Add(label1);
-            panelEventsCU.Controls.Add(label2);
+            panelEventsCU.Controls.Add(lblEventFormTitle);
+            panelEventsCU.Controls.Add(lblEventName);
             panelEventsCU.Controls.Add(mtbEventName);
-            panelEventsCU.Controls.Add(label3);
+            panelEventsCU.Controls.Add(lblEventClient);
             panelEventsCU.Controls.Add(mtbEventClient);
-            panelEventsCU.Controls.Add(label4);
+            panelEventsCU.Controls.Add(lblEventDate);
             panelEventsCU.Controls.Add(dtpEventDate);
-            panelEventsCU.Controls.Add(label5);
+            panelEventsCU.Controls.Add(lblEventAdults);
             panelEventsCU.Controls.Add(nudEventAdults);
-            panelEventsCU.Controls.Add(label6);
+            panelEventsCU.Controls.Add(lblEventChildren);
             panelEventsCU.Controls.Add(nudEventChildren);
-            panelEventsCU.Controls.Add(label7);
+            panelEventsCU.Controls.Add(lblEventDuration);
             panelEventsCU.Controls.Add(nudEventDuration);
             panelEventsCU.Controls.Add(btnSaveEvent);
             panelEventsCU.Controls.Add(btnBackEvent);
@@ -247,29 +247,29 @@
             panelEventsCU.Size = new Size(640, 720);
             panelEventsCU.TabIndex = 2;
             //
-            // label1
+            // lblEventFormTitle
             //
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Location = new Point(40, 30);
-            label1.Name = "label1";
-            label1.Size = new Size(160, 24);
-            label1.TabIndex = 0;
-            label1.Text = "Carga de evento";
+            lblEventFormTitle.AutoSize = true;
+            lblEventFormTitle.Depth = 0;
+            lblEventFormTitle.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblEventFormTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventFormTitle.Location = new Point(40, 30);
+            lblEventFormTitle.Name = "lblEventFormTitle";
+            lblEventFormTitle.Size = new Size(160, 24);
+            lblEventFormTitle.TabIndex = 0;
+            lblEventFormTitle.Text = "Carga de evento";
             //
-            // label2
+            // lblEventName
             //
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Location = new Point(40, 90);
-            label2.Name = "label2";
-            label2.Size = new Size(110, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Nombre del evento";
+            lblEventName.AutoSize = true;
+            lblEventName.Depth = 0;
+            lblEventName.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventName.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventName.Location = new Point(40, 90);
+            lblEventName.Name = "lblEventName";
+            lblEventName.Size = new Size(110, 15);
+            lblEventName.TabIndex = 1;
+            lblEventName.Text = "Nombre del evento";
             //
             // mtbEventName
             //
@@ -288,17 +288,17 @@
             mtbEventName.Text = "";
             mtbEventName.TrailingIcon = null;
             //
-            // label3
+            // lblEventClient
             //
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Location = new Point(40, 182);
-            label3.Name = "label3";
-            label3.Size = new Size(110, 15);
-            label3.TabIndex = 3;
-            label3.Text = "Nombre del cliente";
+            lblEventClient.AutoSize = true;
+            lblEventClient.Depth = 0;
+            lblEventClient.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventClient.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventClient.Location = new Point(40, 182);
+            lblEventClient.Name = "lblEventClient";
+            lblEventClient.Size = new Size(110, 15);
+            lblEventClient.TabIndex = 3;
+            lblEventClient.Text = "Nombre del cliente";
             //
             // mtbEventClient
             //
@@ -317,17 +317,17 @@
             mtbEventClient.Text = "";
             mtbEventClient.TrailingIcon = null;
             //
-            // label4
+            // lblEventDate
             //
-            label4.AutoSize = true;
-            label4.Depth = 0;
-            label4.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label4.MouseState = MaterialSkin.MouseState.HOVER;
-            label4.Location = new Point(40, 274);
-            label4.Name = "label4";
-            label4.Size = new Size(125, 15);
-            label4.TabIndex = 5;
-            label4.Text = "Fecha y hora de inicio";
+            lblEventDate.AutoSize = true;
+            lblEventDate.Depth = 0;
+            lblEventDate.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventDate.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventDate.Location = new Point(40, 274);
+            lblEventDate.Name = "lblEventDate";
+            lblEventDate.Size = new Size(125, 15);
+            lblEventDate.TabIndex = 5;
+            lblEventDate.Text = "Fecha y hora de inicio";
             //
             // dtpEventDate
             //
@@ -339,17 +339,17 @@
             dtpEventDate.Size = new Size(250, 27);
             dtpEventDate.TabIndex = 6;
             //
-            // label5
+            // lblEventAdults
             //
-            label5.AutoSize = true;
-            label5.Depth = 0;
-            label5.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label5.MouseState = MaterialSkin.MouseState.HOVER;
-            label5.Location = new Point(340, 90);
-            label5.Name = "label5";
-            label5.Size = new Size(100, 15);
-            label5.TabIndex = 7;
-            label5.Text = "Invitados adultos";
+            lblEventAdults.AutoSize = true;
+            lblEventAdults.Depth = 0;
+            lblEventAdults.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventAdults.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventAdults.Location = new Point(340, 90);
+            lblEventAdults.Name = "lblEventAdults";
+            lblEventAdults.Size = new Size(100, 15);
+            lblEventAdults.TabIndex = 7;
+            lblEventAdults.Text = "Invitados adultos";
             //
             // nudEventAdults
             //
@@ -360,17 +360,17 @@
             nudEventAdults.Size = new Size(250, 27);
             nudEventAdults.TabIndex = 8;
             //
-            // label6
+            // lblEventChildren
             //
-            label6.AutoSize = true;
-            label6.Depth = 0;
-            label6.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label6.MouseState = MaterialSkin.MouseState.HOVER;
-            label6.Location = new Point(340, 182);
-            label6.Name = "label6";
-            label6.Size = new Size(90, 15);
-            label6.TabIndex = 9;
-            label6.Text = "Invitados niños";
+            lblEventChildren.AutoSize = true;
+            lblEventChildren.Depth = 0;
+            lblEventChildren.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventChildren.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventChildren.Location = new Point(340, 182);
+            lblEventChildren.Name = "lblEventChildren";
+            lblEventChildren.Size = new Size(90, 15);
+            lblEventChildren.TabIndex = 9;
+            lblEventChildren.Text = "Invitados niños";
             //
             // nudEventChildren
             //
@@ -381,17 +381,17 @@
             nudEventChildren.Size = new Size(250, 27);
             nudEventChildren.TabIndex = 10;
             //
-            // label7
+            // lblEventDuration
             //
-            label7.AutoSize = true;
-            label7.Depth = 0;
-            label7.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            label7.MouseState = MaterialSkin.MouseState.HOVER;
-            label7.Location = new Point(340, 274);
-            label7.Name = "label7";
-            label7.Size = new Size(100, 15);
-            label7.TabIndex = 11;
-            label7.Text = "Duracion (horas)";
+            lblEventDuration.AutoSize = true;
+            lblEventDuration.Depth = 0;
+            lblEventDuration.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblEventDuration.MouseState = MaterialSkin.MouseState.HOVER;
+            lblEventDuration.Location = new Point(340, 274);
+            lblEventDuration.Name = "lblEventDuration";
+            lblEventDuration.Size = new Size(100, 15);
+            lblEventDuration.TabIndex = 11;
+            lblEventDuration.Text = "Duracion (horas)";
             //
             // nudEventDuration
             //
@@ -404,7 +404,7 @@
             nudEventDuration.TabIndex = 12;
             nudEventDuration.Value = new decimal(new int[] { 1, 0, 0, 0 });
             //
-            // btnGuardarEvento
+            // btnSaveEvent
             //
             btnSaveEvent.AutoSize = false;
             btnSaveEvent.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -425,7 +425,7 @@
             btnSaveEvent.UseVisualStyleBackColor = true;
             btnSaveEvent.Click += btnSaveEvent_Click;
             //
-            // btnVolverEvento
+            // btnBackEvent
             //
             btnBackEvent.AutoSize = false;
             btnBackEvent.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -457,7 +457,7 @@
             Name = "FormEvents";
             Text = "FormEvents";
             Load += FormEvents_Load;
-            panelCrudCtrlEv.ResumeLayout(false);
+            panelCrudCtrlEvents.ResumeLayout(false);
             panelEventsList.ResumeLayout(false);
             panelEventsTitle.ResumeLayout(false);
             panelEventsTitle.PerformLayout();
@@ -482,22 +482,22 @@
         private ColumnHeader AdultsColumn;
         private ColumnHeader ChildrenColumn;
         private ColumnHeader DurationColumn;
-        private Panel panelCrudCtrlEv;
+        private Panel panelCrudCtrlEvents;
         private MaterialSkin.Controls.MaterialButton btnEventRemove;
         private MaterialSkin.Controls.MaterialButton btnEventEdit;
         private MaterialSkin.Controls.MaterialButton btnEventCreate;
-        private MaterialSkin.Controls.MaterialLabel label1;
-        private MaterialSkin.Controls.MaterialLabel label2;
+        private MaterialSkin.Controls.MaterialLabel lblEventFormTitle;
+        private MaterialSkin.Controls.MaterialLabel lblEventName;
         private MaterialSkin.Controls.MaterialTextBox mtbEventName;
-        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialLabel lblEventClient;
         private MaterialSkin.Controls.MaterialTextBox mtbEventClient;
-        private MaterialSkin.Controls.MaterialLabel label4;
+        private MaterialSkin.Controls.MaterialLabel lblEventDate;
         private DateTimePicker dtpEventDate;
-        private MaterialSkin.Controls.MaterialLabel label5;
+        private MaterialSkin.Controls.MaterialLabel lblEventAdults;
         private NumericUpDown nudEventAdults;
-        private MaterialSkin.Controls.MaterialLabel label6;
+        private MaterialSkin.Controls.MaterialLabel lblEventChildren;
         private NumericUpDown nudEventChildren;
-        private MaterialSkin.Controls.MaterialLabel label7;
+        private MaterialSkin.Controls.MaterialLabel lblEventDuration;
         private NumericUpDown nudEventDuration;
         private MaterialSkin.Controls.MaterialButton btnSaveEvent;
         private MaterialSkin.Controls.MaterialButton btnBackEvent;

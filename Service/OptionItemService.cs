@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+﻿using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
 using ProyectoPresupuestoEvento.Interface;
@@ -12,7 +7,7 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // logica de los servicios adicionales
-    internal class OptionItemService
+    public class OptionItemService
     {
         // se guarda como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<OptionItem> repository;
@@ -35,7 +30,7 @@ namespace ProyectoPresupuestoEvento.Service
             ValidateUniqueName(optionItem.Name, 0);
             repository.AddToRepository(optionItem);
         }
-        
+
         // devuelve solo los activos
         public List<OptionItemDto> GetOptionItems()
         {
@@ -78,13 +73,13 @@ namespace ProyectoPresupuestoEvento.Service
             repository.Update(id, optionItem);
         }
 
-        public OptionItem ToModel(OptionItemDto dto)
+        private OptionItem ToModel(OptionItemDto dto)
         {
             OptionItem model = new OptionItem(dto.Name, dto.Price);
             return model;
         }
 
-        public OptionItemDto ToDto(OptionItem optionItem)
+        private OptionItemDto ToDto(OptionItem optionItem)
         {
             OptionItemDto dto = new OptionItemDto(optionItem.Id, optionItem.Name, optionItem.Price);
             return dto;

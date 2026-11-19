@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Dto;
+﻿using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Service;
 
 
@@ -22,7 +17,7 @@ namespace ProyectoPresupuestoEvento.Controller
         {
             service.AddToRepository(dto);
         }
-        
+
         public List<LocationDto> GetLocations()
         {
            return service.GetLocations();
@@ -39,6 +34,6 @@ namespace ProyectoPresupuestoEvento.Controller
 
         }
 
-        
+
     }
 }

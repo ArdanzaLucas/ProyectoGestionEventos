@@ -1,4 +1,4 @@
-﻿namespace ProyectoPresupuestoEvento
+﻿namespace ProyectoPresupuestoEvento.View
 {
     partial class FormMain
     {
@@ -32,20 +32,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             TabCtrl = new MaterialSkin.Controls.MaterialTabControl();
             tabIndex = new TabPage();
-            panel4 = new Panel();
+            pnlIndexContainer = new Panel();
             pnlIndex = new Panel();
             tabEvents = new TabPage();
             pnlCntEvents = new Panel();
             tabLocations = new TabPage();
             pnlCntLocations = new Panel();
             tabOptionItem = new TabPage();
-            pnlCntOpIts = new Panel();
+            pnlCntOptionItems = new Panel();
             tabCatering = new TabPage();
             pnlCntCatering = new Panel();
-            imageList1 = new ImageList(components);
+            imageListIcons = new ImageList(components);
             TabCtrl.SuspendLayout();
             tabIndex.SuspendLayout();
-            panel4.SuspendLayout();
+            pnlIndexContainer.SuspendLayout();
             tabEvents.SuspendLayout();
             tabLocations.SuspendLayout();
             tabOptionItem.SuspendLayout();
@@ -61,7 +61,6 @@
             TabCtrl.Controls.Add(tabOptionItem);
             TabCtrl.Controls.Add(tabCatering);
             TabCtrl.Depth = 0;
-            TabCtrl.SelectedIndexChanged += TabCtrl_SelectedIndexChanged;
             TabCtrl.Dock = DockStyle.Fill;
             TabCtrl.Location = new Point(3, 64);
             TabCtrl.MouseState = MaterialSkin.MouseState.HOVER;
@@ -70,27 +69,28 @@
             TabCtrl.SelectedIndex = 0;
             TabCtrl.Size = new Size(834, 608);
             TabCtrl.TabIndex = 0;
+            TabCtrl.SelectedIndexChanged += TabCtrl_SelectedIndexChanged;
             // 
             // tabIndex
             // 
-            tabIndex.Controls.Add(panel4);
+            tabIndex.Controls.Add(pnlIndexContainer);
             tabIndex.Location = new Point(27, 4);
             tabIndex.Name = "tabIndex";
-            tabIndex.Padding = new Padding(3, 3, 3, 3);
+            tabIndex.Padding = new Padding(3);
             tabIndex.RightToLeft = RightToLeft.No;
             tabIndex.Size = new Size(803, 600);
             tabIndex.TabIndex = 0;
             tabIndex.Text = "Inicio";
             tabIndex.UseVisualStyleBackColor = true;
             // 
-            // panel4
+            // pnlIndexContainer
             // 
-            panel4.Controls.Add(pnlIndex);
-            panel4.Dock = DockStyle.Fill;
-            panel4.Location = new Point(3, 3);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(797, 594);
-            panel4.TabIndex = 0;
+            pnlIndexContainer.Controls.Add(pnlIndex);
+            pnlIndexContainer.Dock = DockStyle.Fill;
+            pnlIndexContainer.Location = new Point(3, 3);
+            pnlIndexContainer.Name = "pnlIndexContainer";
+            pnlIndexContainer.Size = new Size(797, 594);
+            pnlIndexContainer.TabIndex = 0;
             // 
             // pnlIndex
             // 
@@ -105,8 +105,8 @@
             tabEvents.Controls.Add(pnlCntEvents);
             tabEvents.Location = new Point(27, 4);
             tabEvents.Name = "tabEvents";
-            tabEvents.Padding = new Padding(3, 3, 3, 3);
-            tabEvents.Size = new Size(804, 600);
+            tabEvents.Padding = new Padding(3);
+            tabEvents.Size = new Size(803, 600);
             tabEvents.TabIndex = 1;
             tabEvents.Text = "Eventos";
             tabEvents.UseVisualStyleBackColor = true;
@@ -116,7 +116,7 @@
             pnlCntEvents.Dock = DockStyle.Fill;
             pnlCntEvents.Location = new Point(3, 3);
             pnlCntEvents.Name = "pnlCntEvents";
-            pnlCntEvents.Size = new Size(798, 594);
+            pnlCntEvents.Size = new Size(797, 594);
             pnlCntEvents.TabIndex = 1;
             // 
             // tabLocations
@@ -124,8 +124,8 @@
             tabLocations.Controls.Add(pnlCntLocations);
             tabLocations.Location = new Point(27, 4);
             tabLocations.Name = "tabLocations";
-            tabLocations.Padding = new Padding(3, 3, 3, 3);
-            tabLocations.Size = new Size(804, 600);
+            tabLocations.Padding = new Padding(3);
+            tabLocations.Size = new Size(803, 600);
             tabLocations.TabIndex = 2;
             tabLocations.Text = "Ubicaciones";
             tabLocations.UseVisualStyleBackColor = true;
@@ -135,35 +135,35 @@
             pnlCntLocations.Dock = DockStyle.Fill;
             pnlCntLocations.Location = new Point(3, 3);
             pnlCntLocations.Name = "pnlCntLocations";
-            pnlCntLocations.Size = new Size(798, 594);
+            pnlCntLocations.Size = new Size(797, 594);
             pnlCntLocations.TabIndex = 2;
             // 
             // tabOptionItem
             // 
-            tabOptionItem.Controls.Add(pnlCntOpIts);
+            tabOptionItem.Controls.Add(pnlCntOptionItems);
             tabOptionItem.Location = new Point(27, 4);
             tabOptionItem.Name = "tabOptionItem";
-            tabOptionItem.Padding = new Padding(3, 3, 3, 3);
-            tabOptionItem.Size = new Size(804, 600);
+            tabOptionItem.Padding = new Padding(3);
+            tabOptionItem.Size = new Size(803, 600);
             tabOptionItem.TabIndex = 3;
             tabOptionItem.Text = "Servicios";
             tabOptionItem.UseVisualStyleBackColor = true;
             // 
-            // pnlCntOpIts
+            // pnlCntOptionItems
             // 
-            pnlCntOpIts.Dock = DockStyle.Fill;
-            pnlCntOpIts.Location = new Point(3, 3);
-            pnlCntOpIts.Name = "pnlCntOpIts";
-            pnlCntOpIts.Size = new Size(798, 594);
-            pnlCntOpIts.TabIndex = 2;
+            pnlCntOptionItems.Dock = DockStyle.Fill;
+            pnlCntOptionItems.Location = new Point(3, 3);
+            pnlCntOptionItems.Name = "pnlCntOptionItems";
+            pnlCntOptionItems.Size = new Size(797, 594);
+            pnlCntOptionItems.TabIndex = 2;
             // 
             // tabCatering
             // 
             tabCatering.Controls.Add(pnlCntCatering);
             tabCatering.Location = new Point(27, 4);
             tabCatering.Name = "tabCatering";
-            tabCatering.Padding = new Padding(3, 3, 3, 3);
-            tabCatering.Size = new Size(804, 600);
+            tabCatering.Padding = new Padding(3);
+            tabCatering.Size = new Size(803, 600);
             tabCatering.TabIndex = 4;
             tabCatering.Text = "Catering";
             tabCatering.UseVisualStyleBackColor = true;
@@ -173,26 +173,20 @@
             pnlCntCatering.Dock = DockStyle.Fill;
             pnlCntCatering.Location = new Point(3, 3);
             pnlCntCatering.Name = "pnlCntCatering";
-            pnlCntCatering.Size = new Size(798, 594);
+            pnlCntCatering.Size = new Size(797, 594);
             pnlCntCatering.TabIndex = 2;
             // 
-            // imageList1
+            // imageListIcons
             // 
-            imageList1.ColorDepth = ColorDepth.Depth32Bit;
-            imageList1.ImageStream = (ImageListStreamer)resources.GetObject("imageList1.ImageStream");
-            imageList1.Tag = "icons";
-            imageList1.TransparentColor = Color.Transparent;
-            imageList1.Images.SetKeyName(0, "IconSave.png");
-            imageList1.Images.SetKeyName(1, "IconRegistry.png");
-            imageList1.Images.SetKeyName(2, "IconPin.png");
-            imageList1.Images.SetKeyName(3, "IconHome.png");
-            imageList1.Images.SetKeyName(4, "008-compartimiento.png");
-            imageList1.Images.SetKeyName(5, "009-signo-de-mas.png");
-            imageList1.Images.SetKeyName(6, "IconEdition.png");
-            imageList1.Images.SetKeyName(7, "IconPrint.png");
-            imageList1.Images.SetKeyName(8, "IconMenus.png");
-            imageList1.Images.SetKeyName(9, "IconQuote.png");
-            imageList1.Images.SetKeyName(10, "iconEvent.png");
+            imageListIcons.ColorDepth = ColorDepth.Depth32Bit;
+            imageListIcons.ImageStream = (ImageListStreamer)resources.GetObject("imageListIcons.ImageStream");
+            imageListIcons.Tag = "icons";
+            imageListIcons.TransparentColor = Color.Transparent;
+            imageListIcons.Images.SetKeyName(0, "IconRegistry.png");
+            imageListIcons.Images.SetKeyName(1, "IconPin.png");
+            imageListIcons.Images.SetKeyName(2, "IconMenus.png");
+            imageListIcons.Images.SetKeyName(3, "IconQuote.png");
+            imageListIcons.Images.SetKeyName(4, "IconEvent.png");
             // 
             // FormMain
             // 
@@ -210,7 +204,7 @@
             Load += FormMain_Load;
             TabCtrl.ResumeLayout(false);
             tabIndex.ResumeLayout(false);
-            panel4.ResumeLayout(false);
+            pnlIndexContainer.ResumeLayout(false);
             tabEvents.ResumeLayout(false);
             tabLocations.ResumeLayout(false);
             tabOptionItem.ResumeLayout(false);
@@ -227,11 +221,11 @@
         private TabPage tabOptionItem;
         private TabPage tabCatering;
         private Panel pnlCntEvents;
-        private Panel panel4;
+        private Panel pnlIndexContainer;
         private Panel pnlIndex;
-        private ImageList imageList1;
+        private ImageList imageListIcons;
         private Panel pnlCntLocations;
-        private Panel pnlCntOpIts;
+        private Panel pnlCntOptionItems;
         private Panel pnlCntCatering;
     }
 }

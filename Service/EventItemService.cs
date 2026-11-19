@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProyectoPresupuestoEvento.Model;
+﻿using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Dto;
 using ProyectoPresupuestoEvento.Repository;
 using ProyectoPresupuestoEvento.Interface;
@@ -12,11 +7,11 @@ using ProyectoPresupuestoEvento.Common;
 namespace ProyectoPresupuestoEvento.Service
 {
     // logica de los eventos y sus reglas
-    internal class EventItemService
+    public class EventItemService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRemovableRepository<EventItem> repository;
-        private IRemovableRepository<Quote> quoteRepository;
+        private IRepository<Quote> quoteRepository;
         private IClock clock;
 
         // el controller usa este: le pasa los repositorios y el reloj reales al otro constructor
@@ -26,7 +21,7 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // recibe sus dependencias desde afuera (inyeccion de dependencias)
-        public EventItemService(IRemovableRepository<EventItem> repository, IRemovableRepository<Quote> quoteRepository, IClock clock)
+        public EventItemService(IRemovableRepository<EventItem> repository, IRepository<Quote> quoteRepository, IClock clock)
         {
             this.repository = repository;
             this.quoteRepository = quoteRepository;
@@ -114,14 +109,9 @@ namespace ProyectoPresupuestoEvento.Service
             }
         }
 
-        // borra primero los presupuestos del evento y despues el evento
+        // sus presupuestos y sus lineas se borran solos por ON DELETE CASCADE
         public void RemoveEventItem(int id)
         {
-            foreach (Quote quote in GetQuotes(id))
-            {
-                quoteRepository.RemoveById(quote.Id);
-            }
-
             repository.RemoveById(id);
         }
 
@@ -144,13 +134,13 @@ namespace ProyectoPresupuestoEvento.Service
             return quotes;
         }
 
-        public EventItem ToModel(EventItemDto dto)
+        private EventItem ToModel(EventItemDto dto)
         {
             EventItem model = new EventItem(dto.Name, dto.ClientName, dto.Date, dto.GuestAdults, dto.GuestChildren, dto.Duration);
             return model;
         }
 
-        public EventItemDto ToDto(EventItem eventItem)
+        private EventItemDto ToDto(EventItem eventItem)
         {
             EventItemDto dto = new EventItemDto(eventItem.Id, eventItem.Name, eventItem.ClientName, eventItem.Date,
                 eventItem.GuestAdults, eventItem.GuestChildren, eventItem.Duration);

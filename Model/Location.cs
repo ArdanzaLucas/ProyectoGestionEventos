@@ -7,7 +7,7 @@ using ProyectoPresupuestoEvento.Common;
 
 namespace ProyectoPresupuestoEvento.Model
 {
-    public class Ubication
+    public class Location
     {
         private int _id;
         private string _name;
@@ -17,13 +17,13 @@ namespace ProyectoPresupuestoEvento.Model
 
         //constructor
 
-        public Ubication(string name, decimal price)
+        public Location(string name, decimal price)
         {
             Name = name;
             Price = price;
         }
 
-        public Ubication(int id, string name, decimal price, bool isActive)
+        public Location(int id, string name, decimal price, bool isActive)
         {
             Id = id;
             Name = name;
@@ -43,13 +43,13 @@ namespace ProyectoPresupuestoEvento.Model
         public string Name
         {
             get { return _name; }
-            private set { _name = Validator.requireText(value, "ingrese un nombre para la ubicacion"); }
+            private set { _name = Validator.RequireText(value, "ingrese un nombre para la ubicacion"); }
         }
 
         public decimal Price
         {
             get { return _price; }
-            private set { _price = Validator.requirePrice(value, "el precio de la ubicacion"); }
+            private set { _price = Validator.RequirePrice(value, "el precio de la ubicacion"); }
         }
 
         public bool IsActive
@@ -61,7 +61,7 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {
@@ -70,7 +70,7 @@ namespace ProyectoPresupuestoEvento.Model
             Id = id;
         }
 
-        public void deactivate()
+        public void Deactivate()
         {
             IsActive = false;
         }

@@ -18,54 +18,59 @@ namespace ProyectoPresupuestoEvento.Controller
             service = new QuoteService();
         }
 
-        public void addQuote(QuoteDto dto)
+        public void AddQuote(QuoteDto dto)
         {
-            service.addQuote(dto);
+            service.AddQuote(dto);
         }
 
-        public List<QuoteDto> getQuotes()
+        public List<QuoteDto> GetQuotes()
         {
-            return service.getQuotes();
+            return service.GetQuotes();
         }
 
-        public List<QuoteDto> getQuotesByEventItem(int eventItemId)
+        public List<QuoteDto> GetQuotesByEventItem(int eventItemId)
         {
-            return service.getQuotesByEventItem(eventItemId);
+            return service.GetQuotesByEventItem(eventItemId);
         }
 
-        public QuoteDto getQuoteById(int id)
+        public QuoteDto GetQuoteById(int id)
         {
-            return service.getQuoteById(id);
+            return service.GetQuoteById(id);
         }
 
-        public void updateQuote(int id, QuoteDto dto)
+        public void UpdateQuote(int id, QuoteDto dto)
         {
-            service.updateQuote(id, dto);
+            service.UpdateQuote(id, dto);
         }
 
-        public void removeQuote(int id)
+        public void RemoveQuote(int id)
         {
-            service.removeQuote(id);
+            service.RemoveQuote(id);
         }
 
-        public void acceptQuote(int id)
+        public void AcceptQuote(int id)
         {
-            service.acceptQuote(id);
+            service.AcceptQuote(id);
         }
 
-        public void cancelQuote(int id)
+        public void CancelQuote(int id)
         {
-            service.cancelQuote(id);
+            service.CancelQuote(id);
         }
 
-        public void cloneQuote(int id)
+        public void CloneQuote(int id)
         {
-            service.cloneQuote(id);
+            service.CloneQuote(id);
         }
 
-        public QuoteDto calculatePreview(QuoteDto dto)
+        public QuoteDto CalculatePreview(QuoteDto dto)
         {
-            return service.calculatePreview(dto);
+            return service.CalculatePreview(dto);
+        }
+
+        public void ExportPdf(int id, string path)
+        {
+            service.ExportPdf(id, path);
         }
     }
 }

@@ -13,13 +13,12 @@ namespace ProyectoPresupuestoEvento
         private MenuTagController menuTagController;
         private OptionItemController optionItemsController;
         private QuoteController quoteController;
-        private UbicationController ubicationController;
+        private LocationController locationController;
 
         private FormIndex frmIndex;
-        private FormReport frmReport;
         private FormQuoteEdit frmQuoteEdit;
         private FormEvents frmEvents;
-        private FormUbications frmUbications;
+        private FormLocations frmLocations;
         private FormOptionItem frmOI;
         private FormMenus frmMenus;
         private FormMenuTags frmMenuTags;
@@ -28,20 +27,20 @@ namespace ProyectoPresupuestoEvento
         {
             InitializeComponent();
 
-            VisualHelper.setMaterialTheme();
+            VisualHelper.SetMaterialTheme();
 
             this.DrawerIsOpen = false;
 
 
-            string[] iconos = { "IconQuote.png", "iconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
-            VisualHelper.linkSidebarIcons(TabCtrl, imageList1, iconos);
+            string[] icons = { "IconQuote.png", "iconEvent.png", "IconPin.png", "IconRegistry.png", "IconMenus.png" };
+            VisualHelper.LinkSidebarIcons(TabCtrl, imageList1, icons);
 
             eventsController = new EventItemController();
             menuController= new MenuController();
             menuTagController = new MenuTagController();
             optionItemsController= new OptionItemController();
             quoteController = new QuoteController();
-            ubicationController = new UbicationController();
+            locationController = new LocationController();
         }
 
 
@@ -52,27 +51,22 @@ namespace ProyectoPresupuestoEvento
             frmIndex.Dock = DockStyle.Fill;
             this.pnlIndex.Controls.Add(frmIndex);
             frmIndex.Show();
-            frmReport = new FormReport(frmIndex);
-            frmReport.TopLevel = false;
-            frmReport.Dock = DockStyle.Fill;
-            this.pnlIndex.Controls.Add(frmReport);
-            frmIndex.setFormReport(frmReport);
-            frmQuoteEdit = new FormQuoteEdit(quoteController, eventsController, ubicationController, menuController, optionItemsController);
+            frmQuoteEdit = new FormQuoteEdit(quoteController, eventsController, locationController, menuController, optionItemsController);
             frmQuoteEdit.TopLevel = false;
             frmQuoteEdit.Dock = DockStyle.Fill;
             this.pnlIndex.Controls.Add(frmQuoteEdit);
-            frmQuoteEdit.setFormIndex(frmIndex);
-            frmIndex.setFormQuoteEdit(frmQuoteEdit);
+            frmQuoteEdit.SetFormIndex(frmIndex);
+            frmIndex.SetFormQuoteEdit(frmQuoteEdit);
             frmEvents = new FormEvents(eventsController);
             frmEvents.TopLevel = false;
             frmEvents.Dock = DockStyle.Fill;
             this.pnlCntEvents.Controls.Add(frmEvents);
             frmEvents.Show();
-            frmUbications = new FormUbications(ubicationController);
-            frmUbications.TopLevel = false;
-            frmUbications.Dock = DockStyle.Fill;
-            this.pnlCntUbications.Controls.Add(frmUbications);
-            frmUbications.Show();
+            frmLocations = new FormLocations(locationController);
+            frmLocations.TopLevel = false;
+            frmLocations.Dock = DockStyle.Fill;
+            this.pnlCntLocations.Controls.Add(frmLocations);
+            frmLocations.Show();
             frmOI = new FormOptionItem(optionItemsController);
             frmOI.TopLevel = false;
             frmOI.Dock = DockStyle.Fill;
@@ -87,7 +81,7 @@ namespace ProyectoPresupuestoEvento
             frmMenuTags.TopLevel = false;
             frmMenuTags.Dock = DockStyle.Fill;
             this.pnlCntCatering.Controls.Add(frmMenuTags);
-            frmMenus.setFormMenuTags(frmMenuTags);
+            frmMenus.SetFormMenuTags(frmMenuTags);
 
 
         }
@@ -96,30 +90,29 @@ namespace ProyectoPresupuestoEvento
         {
             if (TabCtrl.SelectedTab == tabIndex)
             {
-                frmReport.Hide();
                 frmQuoteEdit.Hide();
-                frmQuoteEdit.resetView();
+                frmQuoteEdit.ResetView();
                 frmIndex.Show();
-                frmIndex.resetView();
+                frmIndex.ResetView();
             }
             else if (TabCtrl.SelectedTab == tabEvents)
             {
-                frmEvents.resetView();
+                frmEvents.ResetView();
             }
-            else if (TabCtrl.SelectedTab == tabUbications)
+            else if (TabCtrl.SelectedTab == tabLocations)
             {
-                frmUbications.resetView();
+                frmLocations.ResetView();
             }
             else if (TabCtrl.SelectedTab == tabOptionItem)
             {
-                frmOI.resetView();
+                frmOI.ResetView();
             }
             else if (TabCtrl.SelectedTab == tabCatering)
             {
                 frmMenuTags.Hide();
-                frmMenuTags.resetView();
+                frmMenuTags.ResetView();
                 frmMenus.Show();
-                frmMenus.resetView();
+                frmMenus.ResetView();
             }
         }
     }

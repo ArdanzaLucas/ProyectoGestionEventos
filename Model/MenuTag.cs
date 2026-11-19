@@ -38,13 +38,13 @@ namespace ProyectoPresupuestoEvento.Model
         public string Description
         {
             get { return _description; }
-            private set { _description = Validator.requireText(value, "ingrese una descripcion para la etiqueta"); }
+            private set { _description = Validator.RequireText(value, "ingrese una descripcion para la etiqueta"); }
         }
 
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {

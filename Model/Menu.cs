@@ -49,19 +49,19 @@ namespace ProyectoPresupuestoEvento.Model
         public string Description
         {
             get { return _description; }
-            private set { _description = Validator.requireText(value, "ingrese una descripcion para el menu"); }
+            private set { _description = Validator.RequireText(value, "ingrese una descripcion para el menu"); }
         }
 
         public decimal PriceAdult
         {
             get { return _priceAdult; }
-            private set { _priceAdult = Validator.requirePrice(value, "el precio por adulto"); }
+            private set { _priceAdult = Validator.RequirePrice(value, "el precio por adulto"); }
         }
 
         public decimal PriceChild
         {
             get { return _priceChild; }
-            private set { _priceChild = Validator.requirePrice(value, "el precio por niño"); }
+            private set { _priceChild = Validator.RequirePrice(value, "el precio por niño"); }
         }
 
         public List<MenuTag> TagList
@@ -71,7 +71,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("la lista de etiquetas es obligatoria");
+                    throw new ArgumentNullException(nameof(value), "la lista de etiquetas es obligatoria");
                 }
                 _tagList = value;
             }
@@ -86,7 +86,7 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {
@@ -95,12 +95,12 @@ namespace ProyectoPresupuestoEvento.Model
             Id = id;
         }
 
-        public void deactivate()
+        public void Deactivate()
         {
             IsActive = false;
         }
 
-        public bool hasTag(int tagId)
+        public bool HasTag(int tagId)
         {
             foreach (MenuTag tag in _tagList)
             {

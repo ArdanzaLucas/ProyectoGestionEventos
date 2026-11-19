@@ -19,12 +19,12 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private OptionItemRepository()
         {
-            database = SqliteDatabase.getInstance();
+            database = SqliteDatabase.GetInstance();
         }
 
 
         // singleton: siempre devuelve la misma instancia
-        public static OptionItemRepository getInstance()
+        public static OptionItemRepository GetInstance()
         {
             if (instance == null)
             {
@@ -34,25 +34,25 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // inserta la fila y le pasa al objeto el id que asigno la base
-        public void addToRepository(OptionItem optionItem)
+        public void AddToRepository(OptionItem optionItem)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "INSERT INTO OPTION_ITEM (Name, Price, IsActive) VALUES (@name, @price, @isActive); SELECT last_insert_rowid();";
                 command.Parameters.AddWithValue("@name", optionItem.Name);
                 command.Parameters.AddWithValue("@price", optionItem.Price);
                 command.Parameters.AddWithValue("@isActive", optionItem.IsActive);
-                optionItem.assignId(Convert.ToInt32(command.ExecuteScalar()));
+                optionItem.AssignId(Convert.ToInt32(command.ExecuteScalar()));
             }
         }
 
         // solo los activos: los dados de baja se buscan con getById
-        public List<OptionItem> getAll()
+        public List<OptionItem> GetAll()
         {
             List<OptionItem> optionItems = new List<OptionItem>();
 
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Name, Price, IsActive FROM OPTION_ITEM WHERE IsActive = 1 ORDER BY Id";
@@ -61,7 +61,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     while (reader.Read())
                     {
-                        optionItems.Add(readOptionItem(reader));
+                        optionItems.Add(ReadOptionItem(reader));
                     }
                 }
             }
@@ -70,9 +70,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // si no existe, lanza NotFoundException
-        public OptionItem getById(int id)
+        public OptionItem GetById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Name, Price, IsActive FROM OPTION_ITEM WHERE Id = @id";
@@ -82,7 +82,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     if (reader.Read())
                     {
-                        return readOptionItem(reader);
+                        return ReadOptionItem(reader);
                     }
                 }
             }
@@ -90,9 +90,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // guarda todos los datos, incluido IsActive para la baja logica
-        public void update(int id, OptionItem optionItem)
+        public void Update(int id, OptionItem optionItem)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "UPDATE OPTION_ITEM SET Name = @name, Price = @price, IsActive = @isActive WHERE Id = @id";
@@ -105,9 +105,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // no se usa: el service hace baja logica, pero la interfaz lo pide
-        public void removeById(int id)
+        public void RemoveById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "DELETE FROM OPTION_ITEM WHERE Id = @id";
@@ -117,7 +117,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // arma un objeto del modelo con una fila, en el orden de las columnas del SELECT
-        private OptionItem readOptionItem(SqliteDataReader reader)
+        private OptionItem ReadOptionItem(SqliteDataReader reader)
         {
             return new OptionItem(reader.GetInt32(0), reader.GetString(1), reader.GetDecimal(2), reader.GetBoolean(3));
         }

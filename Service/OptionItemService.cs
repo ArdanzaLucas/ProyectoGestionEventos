@@ -19,7 +19,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         // el controller usa este: le pasa el repositorio real al otro constructor
         public OptionItemService()
-            : this(OptionItemRepository.getInstance())
+            : this(OptionItemRepository.GetInstance())
         {
         }
 
@@ -29,41 +29,41 @@ namespace ProyectoPresupuestoEvento.Service
             this.repository = repository;
         }
 
-        public void addToRepository(OptionItemDto dto)
+        public void AddToRepository(OptionItemDto dto)
         {
-            OptionItem optionItem = toModel(dto);
-            validateUniqueName(optionItem.Name, 0);
-            repository.addToRepository(optionItem);
+            OptionItem optionItem = ToModel(dto);
+            ValidateUniqueName(optionItem.Name, 0);
+            repository.AddToRepository(optionItem);
         }
         
         // devuelve solo los activos
-        public List<OptionItemDto> getOptionItems()
+        public List<OptionItemDto> GetOptionItems()
         {
-            List<OptionItem> optionItems = repository.getAll();
+            List<OptionItem> optionItems = repository.GetAll();
             List<OptionItemDto> dtos = new List<OptionItemDto>();
 
             foreach (OptionItem optionItem in optionItems)
             {
-                OptionItemDto dto = toDto(optionItem);
+                OptionItemDto dto = ToDto(optionItem);
                 dtos.Add(dto);
             }
 
             return dtos;
         }
 
-        public void updateOptionItem(int id, OptionItemDto dto)
+        public void UpdateOptionItem(int id, OptionItemDto dto)
         {
-            OptionItem optionItem = toModel(dto);
-            validateUniqueName(optionItem.Name, id);
-            repository.update(id, optionItem);
+            OptionItem optionItem = ToModel(dto);
+            ValidateUniqueName(optionItem.Name, id);
+            repository.Update(id, optionItem);
         }
 
         // compara solo con los activos y sin distinguir mayusculas
-        private void validateUniqueName(string name, int idEditando)
+        private void ValidateUniqueName(string name, int editingId)
         {
-            foreach (OptionItem optionItem in repository.getAll())
+            foreach (OptionItem optionItem in repository.GetAll())
             {
-                if (optionItem.Id != idEditando && optionItem.Name.ToLower() == name.ToLower())
+                if (optionItem.Id != editingId && optionItem.Name.ToLower() == name.ToLower())
                 {
                     throw new BusinessRuleException("ya existe un servicio con ese nombre");
                 }
@@ -71,20 +71,20 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // baja logica: queda guardado pero inactivo
-        public void removeOptionItem(int id)
+        public void RemoveOptionItem(int id)
         {
-            OptionItem optionItem = repository.getById(id);
-            optionItem.deactivate();
-            repository.update(id, optionItem);
+            OptionItem optionItem = repository.GetById(id);
+            optionItem.Deactivate();
+            repository.Update(id, optionItem);
         }
 
-        public OptionItem toModel(OptionItemDto dto)
+        public OptionItem ToModel(OptionItemDto dto)
         {
             OptionItem model = new OptionItem(dto.Name, dto.Price);
             return model;
         }
 
-        public OptionItemDto toDto(OptionItem optionItem)
+        public OptionItemDto ToDto(OptionItem optionItem)
         {
             OptionItemDto dto = new OptionItemDto(optionItem.Id, optionItem.Name, optionItem.Price);
             return dto;

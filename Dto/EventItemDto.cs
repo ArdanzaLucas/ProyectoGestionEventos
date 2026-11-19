@@ -13,30 +13,30 @@ namespace ProyectoPresupuestoEvento.Dto
         private string _clientName;
         private DateTime _date;
         private int _guestAdults;
-        private int _guestChilds;
+        private int _guestChildren;
         private int _duration;
 
 
         //constructor
 
-        public EventItemDto(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+        public EventItemDto(int id, string name, string clientName, DateTime date, int guestAdults, int guestChildren, int duration)
         {
             Id = id;
             Name = name;
             ClientName = clientName;
             Date = date;
             GuestAdults = guestAdults;
-            GuestChilds = guestChilds;
+            GuestChildren = guestChildren;
             Duration = duration;
         }
 
-        public EventItemDto(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+        public EventItemDto(string name, string clientName, DateTime date, int guestAdults, int guestChildren, int duration)
         {
             Name = name;
             ClientName = clientName;
             Date = date;
             GuestAdults = guestAdults;
-            GuestChilds = guestChilds;
+            GuestChildren = guestChildren;
             Duration = duration;
         }
 
@@ -73,10 +73,10 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _guestAdults = value; }
         }
 
-        public int GuestChilds
+        public int GuestChildren
         {
-            get { return _guestChilds; }
-            set { _guestChilds = value; }
+            get { return _guestChildren; }
+            set { _guestChildren = value; }
         }
 
         public int Duration

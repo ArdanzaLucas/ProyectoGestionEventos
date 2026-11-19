@@ -20,22 +20,22 @@ namespace ProyectoPresupuestoEvento.Repository
         private SqliteDatabase()
         {
             // la carpeta Data queda en la raiz del proyecto: tres carpetas arriba del ejecutable
-            string carpeta = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data"));
-            Directory.CreateDirectory(carpeta);
+            string folder = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data"));
+            Directory.CreateDirectory(folder);
 
             SqliteConnectionStringBuilder builder = new SqliteConnectionStringBuilder();
-            builder.DataSource = Path.Combine(carpeta, "presupuestos.db");
+            builder.DataSource = Path.Combine(folder, "presupuestos.db");
             // activa las claves foraneas, necesarias para ON DELETE CASCADE
             builder.ForeignKeys = true;
             connectionString = builder.ToString();
 
-            createTables();
+            CreateTables();
         }
 
 
         //metodos
 
-        public static SqliteDatabase getInstance()
+        public static SqliteDatabase GetInstance()
         {
             if (instance == null)
             {
@@ -45,7 +45,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // devuelve una conexion abierta: quien la usa la cierra con using
-        public SqliteConnection getConnection()
+        public SqliteConnection GetConnection()
         {
             SqliteConnection connection = new SqliteConnection(connectionString);
             connection.Open();
@@ -53,10 +53,10 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // crea las tablas solo si no existen, asi no se pierden los datos guardados
-        private void createTables()
+        private void CreateTables()
         {
             string sql = @"
-                CREATE TABLE IF NOT EXISTS UBICATION (
+                CREATE TABLE IF NOT EXISTS LOCATION (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT,
                     Price TEXT,
@@ -97,7 +97,7 @@ namespace ProyectoPresupuestoEvento.Repository
                     ClientName TEXT,
                     Date TEXT,
                     GuestAdults INTEGER,
-                    GuestChilds INTEGER,
+                    GuestChildren INTEGER,
                     Duration INTEGER
                 );
 
@@ -108,18 +108,18 @@ namespace ProyectoPresupuestoEvento.Repository
                     EventClientName TEXT,
                     EventDate TEXT,
                     EventGuestAdults INTEGER,
-                    EventGuestChilds INTEGER,
+                    EventGuestChildren INTEGER,
                     EventDuration INTEGER,
-                    UbicationId INTEGER,
-                    UbicationName TEXT,
-                    UbicationPrice TEXT,
+                    LocationId INTEGER,
+                    LocationName TEXT,
+                    LocationPrice TEXT,
                     State INTEGER,
-                    TotalUbication TEXT,
+                    TotalLocation TEXT,
                     TotalMenus TEXT,
                     TotalOptionItems TEXT,
                     Total TEXT,
                     FOREIGN KEY (EventItemId) REFERENCES EVENT_ITEM (Id) ON DELETE CASCADE,
-                    FOREIGN KEY (UbicationId) REFERENCES UBICATION (Id)
+                    FOREIGN KEY (LocationId) REFERENCES LOCATION (Id)
                 );
 
                 CREATE TABLE IF NOT EXISTS DETAIL_MENU (
@@ -147,7 +147,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 );
             ";
 
-            using (SqliteConnection connection = getConnection())
+            using (SqliteConnection connection = GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = sql;

@@ -9,15 +9,15 @@ namespace ProyectoPresupuestoEvento.Interface
 {
     internal interface IRepository<T> where T : class
     {
-        public void addToRepository(T obj);
+        public void AddToRepository(T obj);
 
-        public List<T> getAll();
+        public List<T> GetAll();
 
-        public T getById(int id);
+        public T GetById(int id);
 
-        public void removeById(int id);
+        public void RemoveById(int id);
 
-        public void update( int id, T obj);
+        public void Update( int id, T obj);
 
 
 

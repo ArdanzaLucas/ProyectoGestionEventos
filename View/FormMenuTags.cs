@@ -19,7 +19,7 @@ namespace ProyectoPresupuestoEvento.View
 
         private FormMenus formMenus;
 
-        private int idEditando = 0;
+        private int editingId = 0;
 
 
         public FormMenuTags(MenuTagController controller, FormMenus formMenus)
@@ -27,8 +27,8 @@ namespace ProyectoPresupuestoEvento.View
             this.menuTagController = controller;
             this.formMenus = formMenus;
             InitializeComponent();
-            VisualHelper.fitColumns(mtLvMenuTags);
-            VisualHelper.centerContent(panelMenuTagUpload);
+            VisualHelper.FitColumns(mtLvMenuTags);
+            VisualHelper.CenterContent(panelMenuTagUpload);
         }
 
 
@@ -37,33 +37,33 @@ namespace ProyectoPresupuestoEvento.View
             panelMenuTagList.Visible = true;
             panelMenuTagCU.Visible = false;
 
-            reloadMtlv();
+            ReloadList();
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            btnVolverAtras_Click(null, EventArgs.Empty);
-            reloadMtlv();
+            btnBack_Click(null, EventArgs.Empty);
+            ReloadList();
         }
 
-        private void reloadMtlv()
+        private void ReloadList()
         {
-            List<MenuTagDto> etiquetas = menuTagController.getMenuTags();
+            List<MenuTagDto> tags = menuTagController.GetMenuTags();
 
             mtLvMenuTags.Items.Clear();
 
-            foreach (MenuTagDto etiqueta in etiquetas)
+            foreach (MenuTagDto tag in tags)
             {
-                ListViewItem fila = new ListViewItem();
+                ListViewItem row = new ListViewItem();
 
-                fila.Text = etiqueta.Description;
+                row.Text = tag.Description;
 
-                fila.Tag = etiqueta;
+                row.Tag = tag;
 
-                mtLvMenuTags.Items.Add(fila);
+                mtLvMenuTags.Items.Add(row);
             }
 
-            VisualHelper.showEmptyMessage(mtLvMenuTags, "Todavia no hay etiquetas. Toque Crear para agregar una.");
+            VisualHelper.ShowEmptyMessage(mtLvMenuTags, "Todavia no hay etiquetas. Toque Crear para agregar una.");
         }
 
 
@@ -71,7 +71,7 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnMenuTagCreate_Click(object sender, EventArgs e)
         {
-            idEditando = 0;
+            editingId = 0;
 
             panelMenuTagList.Visible = false;
             panelMenuTagCU.Visible = true;
@@ -88,14 +88,14 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenuTags.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione una etiqueta para editar");
+                MessageHelper.ShowWarning("seleccione una etiqueta para editar");
                 return;
             }
 
             ListViewItem selectedMenuTag = mtLvMenuTags.SelectedItems[0];
             MenuTagDto selected = (MenuTagDto)selectedMenuTag.Tag;
 
-            idEditando = selected.Id;
+            editingId = selected.Id;
 
             mtbMenuTagDescription.Text = selected.Description;
 
@@ -109,54 +109,54 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenuTags.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione una etiqueta para eliminar");
+                MessageHelper.ShowWarning("seleccione una etiqueta para eliminar");
                 return;
             }
 
             ListViewItem selectedMenuTag = mtLvMenuTags.SelectedItems[0];
             MenuTagDto selected = (MenuTagDto)selectedMenuTag.Tag;
 
-            List<string> menusConSoloEsta = menuTagController.getMenusWithOnlyThisTag(selected.Id);
-            if (menusConSoloEsta.Count > 0)
+            List<string> menusWithOnlyThisTag = menuTagController.GetMenusWithOnlyThisTag(selected.Id);
+            if (menusWithOnlyThisTag.Count > 0)
             {
-                MessageHelper.showWarning("no se puede eliminar: es la unica etiqueta de estos menus: "
-                    + string.Join(", ", menusConSoloEsta)
+                MessageHelper.ShowWarning("no se puede eliminar: es la unica etiqueta de estos menus: "
+                    + string.Join(", ", menusWithOnlyThisTag)
                     + ". primero asigneles otra etiqueta");
                 return;
             }
 
-            int cantidadMenus = menuTagController.countMenusUsing(selected.Id);
+            int menuCount = menuTagController.CountMenusUsing(selected.Id);
 
-            if (!MessageHelper.confirm(
-                "¿Eliminar la etiqueta " + selected.Description + "? la usan " + cantidadMenus + " menus"))
+            if (!MessageHelper.Confirm(
+                "¿Eliminar la etiqueta " + selected.Description + "? la usan " + menuCount + " menus"))
             {
                 return;
             }
 
             try
             {
-                menuTagController.removeMenuTag(selected.Id);
+                menuTagController.RemoveMenuTag(selected.Id);
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            reloadMtlv();
+            ReloadList();
         }
 
-        private void btnVolverMenus_Click(object sender, EventArgs e)
+        private void btnBackToMenus_Click(object sender, EventArgs e)
         {
             this.Hide();
-            formMenus.reloadMtlv();
+            formMenus.ReloadList();
             formMenus.Show();
         }
 
 
 
         //seccion Carga
-        private void btnVolverAtras_Click(object sender, EventArgs e)
+        private void btnBack_Click(object sender, EventArgs e)
         {
             panelMenuTagList.Visible = true;
             panelMenuTagCU.Visible = false;
@@ -165,33 +165,33 @@ namespace ProyectoPresupuestoEvento.View
 
             mtbMenuTagDescription.Text = null;
 
-            idEditando = 0;
+            editingId = 0;
         }
 
-        private void btnGuardarMenuTag_Click(object sender, EventArgs e)
+        private void btnSaveMenuTag_Click(object sender, EventArgs e)
         {
             MenuTagDto menuTagDto = new MenuTagDto(mtbMenuTagDescription.Text);
 
             try
             {
-                if (idEditando == 0)
+                if (editingId == 0)
                 {
-                    menuTagController.addToRepository(menuTagDto);
+                    menuTagController.AddToRepository(menuTagDto);
                 }
                 else
                 {
-                    menuTagController.updateMenuTag(idEditando, menuTagDto);
+                    menuTagController.UpdateMenuTag(editingId, menuTagDto);
                 }
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            reloadMtlv();
+            ReloadList();
 
-            btnVolverAtras_Click(sender, e);
+            btnBack_Click(sender, e);
         }
 
 

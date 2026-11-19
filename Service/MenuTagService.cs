@@ -20,7 +20,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         // el controller usa este: le pasa los repositorios reales al otro constructor
         public MenuTagService()
-            : this(MenuTagRepository.getInstance(), MenuRepository.getInstance())
+            : this(MenuTagRepository.GetInstance(), MenuRepository.GetInstance())
         {
         }
 
@@ -31,101 +31,101 @@ namespace ProyectoPresupuestoEvento.Service
             this.menuRepository = menuRepository;
         }
 
-        public void addToRepository(MenuTagDto dto)
+        public void AddToRepository(MenuTagDto dto)
         {
-            MenuTag model = toModel(dto);
-            validateUniqueDescription(model.Description, 0);
-            repository.addToRepository(model);
+            MenuTag model = ToModel(dto);
+            ValidateUniqueDescription(model.Description, 0);
+            repository.AddToRepository(model);
         }
 
-        public List<MenuTagDto> getMenuTags()
+        public List<MenuTagDto> GetMenuTags()
         {
-            List<MenuTag> menuTags = repository.getAll();
+            List<MenuTag> menuTags = repository.GetAll();
             List<MenuTagDto> dtos = new List<MenuTagDto>();
 
             foreach (MenuTag menuTag in menuTags)
             {
-                MenuTagDto dto = toDto(menuTag);
+                MenuTagDto dto = ToDto(menuTag);
                 dtos.Add(dto);
             }
 
             return dtos;
         }
 
-        public void updateMenuTag(int id, MenuTagDto dto)
+        public void UpdateMenuTag(int id, MenuTagDto dto)
         {
-            MenuTag model = toModel(dto);
-            validateUniqueDescription(model.Description, id);
-            repository.update(id, model);
+            MenuTag model = ToModel(dto);
+            ValidateUniqueDescription(model.Description, id);
+            repository.Update(id, model);
         }
 
         // borrado fisico: no se puede si es la unica etiqueta de algun menu activo
-        public void removeMenuTag(int id)
+        public void RemoveMenuTag(int id)
         {
-            List<string> menusConSoloEsta = getMenusWithOnlyThisTag(id);
-            if (menusConSoloEsta.Count > 0)
+            List<string> menusWithOnlyThisTag = GetMenusWithOnlyThisTag(id);
+            if (menusWithOnlyThisTag.Count > 0)
             {
                 throw new BusinessRuleException("no se puede eliminar: es la unica etiqueta de estos menus: "
-                    + string.Join(", ", menusConSoloEsta) + ". primero asigneles otra etiqueta");
+                    + string.Join(", ", menusWithOnlyThisTag) + ". primero asigneles otra etiqueta");
             }
 
-            repository.removeById(id);
+            repository.RemoveById(id);
         }
 
         // menus activos que se quedarian sin etiquetas si se borra esta
-        public List<string> getMenusWithOnlyThisTag(int id)
+        public List<string> GetMenusWithOnlyThisTag(int id)
         {
-            List<Menu> menus = menuRepository.getAll();
-            List<string> nombres = new List<string>();
+            List<Menu> menus = menuRepository.GetAll();
+            List<string> names = new List<string>();
 
             foreach (Menu menu in menus)
             {
-                if (menu.TagList.Count == 1 && menu.hasTag(id))
+                if (menu.TagList.Count == 1 && menu.HasTag(id))
                 {
-                    nombres.Add(menu.Description);
+                    names.Add(menu.Description);
                 }
             }
 
-            return nombres;
+            return names;
         }
 
         // cuantos menus activos la usan, para el mensaje de confirmacion
-        public int countMenusUsing(int id)
+        public int CountMenusUsing(int id)
         {
-            List<Menu> menus = menuRepository.getAll();
-            int cantidad = 0;
+            List<Menu> menus = menuRepository.GetAll();
+            int count = 0;
 
             foreach (Menu menu in menus)
             {
-                if (menu.hasTag(id))
+                if (menu.HasTag(id))
                 {
-                    cantidad++;
+                    count++;
                 }
             }
 
-            return cantidad;
+            return count;
         }
 
-        private void validateUniqueDescription(string description, int idEditando)
+        private void ValidateUniqueDescription(string description, int editingId)
         {
-            List<MenuTag> menuTags = repository.getAll();
+            List<MenuTag> menuTags = repository.GetAll();
 
             foreach (MenuTag menuTag in menuTags)
             {
-                if (menuTag.Id != idEditando && menuTag.Description.ToLower() == description.ToLower())
+                if (menuTag.Id != editingId && menuTag.Description.ToLower() == description.ToLower())
                 {
                     throw new BusinessRuleException("ya existe una etiqueta con ese nombre");
                 }
             }
         }
 
-        public MenuTag toModel(MenuTagDto dto)
+        public MenuTag ToModel(MenuTagDto dto)
         {
             MenuTag model = new MenuTag(dto.Description);
             return model;
         }
 
-        public MenuTagDto toDto(MenuTag menuTag)
+        public MenuTagDto ToDto(MenuTag menuTag)
         {
             MenuTagDto dto = new MenuTagDto(menuTag.Id, menuTag.Description);
             return dto;

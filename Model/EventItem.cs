@@ -14,30 +14,30 @@ namespace ProyectoPresupuestoEvento.Model
         private string _clientName;
         private DateTime _date;
         private int _guestAdults;
-        private int _guestChilds;
+        private int _guestChildren;
         private int _duration;
 
 
         //constructor
 
-        public EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+        public EventItem(int id, string name, string clientName, DateTime date, int guestAdults, int guestChildren, int duration)
         {
             Id = id;
             Name = name;
             ClientName = clientName;
             Date = date;
             GuestAdults = guestAdults;
-            GuestChilds = guestChilds;
+            GuestChildren = guestChildren;
             Duration = duration;
         }
 
-        public EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChilds, int duration)
+        public EventItem(string name, string clientName, DateTime date, int guestAdults, int guestChildren, int duration)
         {
             Name = name;
             ClientName = clientName;
             Date = date;
             GuestAdults = guestAdults;
-            GuestChilds = guestChilds;
+            GuestChildren = guestChildren;
             Duration = duration;
         }
 
@@ -53,13 +53,13 @@ namespace ProyectoPresupuestoEvento.Model
         public string Name
         {
             get { return _name; }
-            private set { _name = Validator.requireText(value, "ingrese un nombre para el evento"); }
+            private set { _name = Validator.RequireText(value, "ingrese un nombre para el evento"); }
         }
 
         public string ClientName
         {
             get { return _clientName; }
-            private set { _clientName = Validator.requireText(value, "ingrese el nombre del cliente"); }
+            private set { _clientName = Validator.RequireText(value, "ingrese el nombre del cliente"); }
         }
 
         public DateTime Date
@@ -73,26 +73,26 @@ namespace ProyectoPresupuestoEvento.Model
             get { return _guestAdults; }
             private set
             {
-                int cantidad = Validator.requireQuantity(value, "la cantidad de adultos");
-                if (cantidad + _guestChilds > 10000)
+                int count = Validator.RequireQuantity(value, "la cantidad de adultos");
+                if (count + _guestChildren > Limits.MaxGuests)
                 {
-                    throw new BusinessRuleException("el evento no puede tener mas de 10000 invitados");
+                    throw new BusinessRuleException("el evento no puede tener mas de " + Limits.MaxGuests + " invitados");
                 }
-                _guestAdults = cantidad;
+                _guestAdults = count;
             }
         }
 
-        public int GuestChilds
+        public int GuestChildren
         {
-            get { return _guestChilds; }
+            get { return _guestChildren; }
             private set
             {
-                int cantidad = Validator.requireQuantity(value, "la cantidad de niños");
-                if (_guestAdults + cantidad > 10000)
+                int count = Validator.RequireQuantity(value, "la cantidad de niños");
+                if (_guestAdults + count > Limits.MaxGuests)
                 {
-                    throw new BusinessRuleException("el evento no puede tener mas de 10000 invitados");
+                    throw new BusinessRuleException("el evento no puede tener mas de " + Limits.MaxGuests + " invitados");
                 }
-                _guestChilds = cantidad;
+                _guestChildren = count;
             }
         }
 
@@ -101,13 +101,13 @@ namespace ProyectoPresupuestoEvento.Model
             get { return _duration; }
             private set
             {
-                if (value <= 0)
+                if (value < Limits.MinDuration)
                 {
-                    throw new BusinessRuleException("la duracion tiene que ser mayor a 0 horas");
+                    throw new BusinessRuleException("la duracion tiene que ser de al menos " + Limits.MinDuration + " hora");
                 }
-                if (value > 24)
+                if (value > Limits.MaxDuration)
                 {
-                    throw new BusinessRuleException("la duracion no puede ser mayor a 24 horas");
+                    throw new BusinessRuleException("la duracion no puede ser mayor a " + Limits.MaxDuration + " horas");
                 }
                 _duration = value;
             }
@@ -116,13 +116,13 @@ namespace ProyectoPresupuestoEvento.Model
 
         public int TotalGuests
         {
-            get { return _guestAdults + _guestChilds; }
+            get { return _guestAdults + _guestChildren; }
         }
 
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {

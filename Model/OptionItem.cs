@@ -43,13 +43,13 @@ namespace ProyectoPresupuestoEvento.Model
         public string Name
         {
             get { return _name; }
-            private set { _name = Validator.requireText(value, "ingrese un nombre para el servicio"); }
+            private set { _name = Validator.RequireText(value, "ingrese un nombre para el servicio"); }
         }
 
         public decimal Price
         {
             get { return _price; }
-            private set { _price = Validator.requirePrice(value, "el precio del servicio"); }
+            private set { _price = Validator.RequirePrice(value, "el precio del servicio"); }
         }
 
         public bool IsActive
@@ -61,7 +61,7 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {
@@ -70,7 +70,7 @@ namespace ProyectoPresupuestoEvento.Model
             Id = id;
         }
 
-        public void deactivate()
+        public void Deactivate()
         {
             IsActive = false;
         }

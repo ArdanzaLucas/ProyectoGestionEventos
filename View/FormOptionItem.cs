@@ -17,15 +17,15 @@ namespace ProyectoPresupuestoEvento.View
     {
         private OptionItemController optionItemController;
 
-        private int idEditando = 0;
+        private int editingId = 0;
 
 
         public FormOptionItem(OptionItemController controller)
         {
             this.optionItemController = controller;
             InitializeComponent();
-            VisualHelper.fitColumns(mtLvOptionItems);
-            VisualHelper.centerContent(panelOIUpload);
+            VisualHelper.FitColumns(mtLvOptionItems);
+            VisualHelper.CenterContent(panelOIUpload);
         }
 
 
@@ -34,34 +34,34 @@ namespace ProyectoPresupuestoEvento.View
             panelOIList.Visible = true;
             panelOICU.Visible = false;
 
-            reloadMtlv();
+            ReloadList();
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            btnVolverAtras_Click(null, EventArgs.Empty);
-            reloadMtlv();
+            btnBack_Click(null, EventArgs.Empty);
+            ReloadList();
         }
 
-        private void reloadMtlv()
+        private void ReloadList()
         {
-            List<OptionItemDto> servicios = optionItemController.getOptionItems();
+            List<OptionItemDto> optionItems = optionItemController.GetOptionItems();
 
             mtLvOptionItems.Items.Clear();
 
-            foreach (OptionItemDto servicio in servicios)
+            foreach (OptionItemDto optionItem in optionItems)
             {
-                ListViewItem fila = new ListViewItem();
+                ListViewItem row = new ListViewItem();
 
-                fila.Text = servicio.Name;
-                fila.SubItems.Add(servicio.Price.ToString("C"));
+                row.Text = optionItem.Name;
+                row.SubItems.Add(optionItem.Price.ToString("C"));
 
-                fila.Tag = servicio;
+                row.Tag = optionItem;
 
-                mtLvOptionItems.Items.Add(fila);
+                mtLvOptionItems.Items.Add(row);
             }
 
-            VisualHelper.showEmptyMessage(mtLvOptionItems, "Todavia no hay servicios. Toque Crear para agregar uno.");
+            VisualHelper.ShowEmptyMessage(mtLvOptionItems, "Todavia no hay servicios. Toque Crear para agregar uno.");
         }
 
 
@@ -69,7 +69,7 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnOICreate_Click(object sender, EventArgs e)
         {
-            idEditando = 0;
+            editingId = 0;
 
             panelOIList.Visible = false;
             panelOICU.Visible = true;
@@ -91,7 +91,7 @@ namespace ProyectoPresupuestoEvento.View
                     mtLvOptionItems.SelectedItems.Count == 0
                 )
             {
-                MessageHelper.showWarning("seleccione un servicio para editar");
+                MessageHelper.ShowWarning("seleccione un servicio para editar");
                 return;
             }
 
@@ -99,7 +99,7 @@ namespace ProyectoPresupuestoEvento.View
             OptionItemDto selected = (OptionItemDto)selectedOptionItem.Tag;
 
 
-            idEditando = selected.Id;
+            editingId = selected.Id;
 
             mtbOIName.Text = selected.Name;
             nudOIPrice.Value = selected.Price;
@@ -117,21 +117,21 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvOptionItems.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un servicio para eliminar");
+                MessageHelper.ShowWarning("seleccione un servicio para eliminar");
                 return;
             }
 
             ListViewItem selectedOptionItem = mtLvOptionItems.SelectedItems[0];
             OptionItemDto selected = (OptionItemDto)selectedOptionItem.Tag;
 
-            if (!MessageHelper.confirm(
+            if (!MessageHelper.Confirm(
                 "¿Eliminar el servicio " + selected.Name + "?"))
             {
                 return;
             }
 
-            optionItemController.removeOptionItem(selected.Id);
-            reloadMtlv();
+            optionItemController.RemoveOptionItem(selected.Id);
+            ReloadList();
 
         }
 
@@ -140,7 +140,7 @@ namespace ProyectoPresupuestoEvento.View
 
 
         //seccion Carga
-        private void btnVolverAtras_Click(object sender, EventArgs e)
+        private void btnBack_Click(object sender, EventArgs e)
         {
             panelOIList.Visible = true;
             panelOICU.Visible = false;
@@ -150,10 +150,10 @@ namespace ProyectoPresupuestoEvento.View
             mtbOIName.Text = null;
             nudOIPrice.Value = 0;
 
-            idEditando = 0;
+            editingId = 0;
         }
 
-        private void btnGuardarOI_Click(object sender, EventArgs e)
+        private void btnSaveOI_Click(object sender, EventArgs e)
         {
             decimal price = decimal.Round(nudOIPrice.Value, 2);
 
@@ -161,24 +161,24 @@ namespace ProyectoPresupuestoEvento.View
 
             try
             {
-                if (idEditando == 0)
+                if (editingId == 0)
                 {
-                    optionItemController.addToRepository(optionItemDto);
+                    optionItemController.AddToRepository(optionItemDto);
                 }
                 else
                 {
-                    optionItemController.updateOptionItem(idEditando, optionItemDto);
+                    optionItemController.UpdateOptionItem(editingId, optionItemDto);
                 }
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            reloadMtlv();
+            ReloadList();
 
-            btnVolverAtras_Click(sender, e);
+            btnBack_Click(sender, e);
         }
 
         

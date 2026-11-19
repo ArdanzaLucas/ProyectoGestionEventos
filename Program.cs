@@ -7,19 +7,19 @@ namespace ProyectoPresupuestoEvento
         {
             ApplicationConfiguration.Initialize();
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.ThreadException += mostrarErrorInesperado;
+            Application.ThreadException += ShowUnexpectedError;
 
-            Repository.SqliteDatabase.getInstance();
+            Repository.SqliteDatabase.GetInstance();
 #if DEBUG
-            Mock.MockData.load();
+            Mock.MockData.Load();
 #endif
 
             Application.Run(new FormMain());
         }
 
-        private static void mostrarErrorInesperado(object sender, ThreadExceptionEventArgs e)
+        private static void ShowUnexpectedError(object sender, ThreadExceptionEventArgs e)
         {
-            View.MessageHelper.showError("ocurrio un error inesperado: " + e.Exception.Message);
+            View.MessageHelper.ShowError("ocurrio un error inesperado: " + e.Exception.Message);
         }
     }
 }

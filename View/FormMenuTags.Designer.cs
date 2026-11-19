@@ -33,15 +33,15 @@
             label1 = new MaterialSkin.Controls.MaterialLabel();
             label2 = new MaterialSkin.Controls.MaterialLabel();
             mtbMenuTagDescription = new MaterialSkin.Controls.MaterialTextBox();
-            btnGuardarMenuTag = new MaterialSkin.Controls.MaterialButton();
-            btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
+            btnSaveMenuTag = new MaterialSkin.Controls.MaterialButton();
+            btnBack = new MaterialSkin.Controls.MaterialButton();
             panelMenuTagList = new Panel();
             mtLvMenuTags = new MaterialSkin.Controls.MaterialListView();
             DescriptionColumn = new ColumnHeader();
             panelMenuTagTitle = new Panel();
             lblMenuTagTitle = new MaterialSkin.Controls.MaterialLabel();
             panelCrudCtrlMenuTag = new Panel();
-            btnVolverMenus = new MaterialSkin.Controls.MaterialButton();
+            btnBackToMenus = new MaterialSkin.Controls.MaterialButton();
             btnMenuTagRemove = new MaterialSkin.Controls.MaterialButton();
             btnMenuTagEdit = new MaterialSkin.Controls.MaterialButton();
             btnMenuTagCreate = new MaterialSkin.Controls.MaterialButton();
@@ -65,8 +65,8 @@
             panelMenuTagUpload.Controls.Add(label1);
             panelMenuTagUpload.Controls.Add(label2);
             panelMenuTagUpload.Controls.Add(mtbMenuTagDescription);
-            panelMenuTagUpload.Controls.Add(btnGuardarMenuTag);
-            panelMenuTagUpload.Controls.Add(btnVolverAtras);
+            panelMenuTagUpload.Controls.Add(btnSaveMenuTag);
+            panelMenuTagUpload.Controls.Add(btnBack);
             panelMenuTagUpload.Location = new Point(0, 0);
             panelMenuTagUpload.Margin = new Padding(3, 2, 3, 2);
             panelMenuTagUpload.Name = "panelMenuTagUpload";
@@ -117,48 +117,48 @@
             // 
             // btnGuardarMenuTag
             // 
-            btnGuardarMenuTag.AutoSize = false;
-            btnGuardarMenuTag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGuardarMenuTag.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnGuardarMenuTag.Depth = 0;
-            btnGuardarMenuTag.FlatStyle = FlatStyle.Popup;
-            btnGuardarMenuTag.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnGuardarMenuTag.HighEmphasis = true;
-            btnGuardarMenuTag.Icon = null;
-            btnGuardarMenuTag.Location = new Point(40, 202);
-            btnGuardarMenuTag.Margin = new Padding(4);
-            btnGuardarMenuTag.MouseState = MaterialSkin.MouseState.HOVER;
-            btnGuardarMenuTag.Name = "btnGuardarMenuTag";
-            btnGuardarMenuTag.NoAccentTextColor = Color.Empty;
-            btnGuardarMenuTag.Size = new Size(90, 36);
-            btnGuardarMenuTag.TabIndex = 5;
-            btnGuardarMenuTag.Text = "Guardar";
-            btnGuardarMenuTag.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnGuardarMenuTag.UseAccentColor = false;
-            btnGuardarMenuTag.UseVisualStyleBackColor = true;
-            btnGuardarMenuTag.Click += btnGuardarMenuTag_Click;
+            btnSaveMenuTag.AutoSize = false;
+            btnSaveMenuTag.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveMenuTag.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveMenuTag.Depth = 0;
+            btnSaveMenuTag.FlatStyle = FlatStyle.Popup;
+            btnSaveMenuTag.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSaveMenuTag.HighEmphasis = true;
+            btnSaveMenuTag.Icon = null;
+            btnSaveMenuTag.Location = new Point(40, 202);
+            btnSaveMenuTag.Margin = new Padding(4);
+            btnSaveMenuTag.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveMenuTag.Name = "btnSaveMenuTag";
+            btnSaveMenuTag.NoAccentTextColor = Color.Empty;
+            btnSaveMenuTag.Size = new Size(90, 36);
+            btnSaveMenuTag.TabIndex = 5;
+            btnSaveMenuTag.Text = "Guardar";
+            btnSaveMenuTag.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveMenuTag.UseAccentColor = false;
+            btnSaveMenuTag.UseVisualStyleBackColor = true;
+            btnSaveMenuTag.Click += btnSaveMenuTag_Click;
             // 
             // btnVolverAtras
             // 
-            btnVolverAtras.AutoSize = false;
-            btnVolverAtras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverAtras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverAtras.Depth = 0;
-            btnVolverAtras.HighEmphasis = true;
-            btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(200, 202);
-            btnVolverAtras.Margin = new Padding(4);
-            btnVolverAtras.MinimumSize = new Size(77, 0);
-            btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverAtras.Name = "btnVolverAtras";
-            btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(90, 36);
-            btnVolverAtras.TabIndex = 6;
-            btnVolverAtras.Text = "Volver";
-            btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverAtras.UseAccentColor = false;
-            btnVolverAtras.UseVisualStyleBackColor = true;
-            btnVolverAtras.Click += btnVolverAtras_Click;
+            btnBack.AutoSize = false;
+            btnBack.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBack.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBack.Depth = 0;
+            btnBack.HighEmphasis = true;
+            btnBack.Icon = null;
+            btnBack.Location = new Point(200, 202);
+            btnBack.Margin = new Padding(4);
+            btnBack.MinimumSize = new Size(77, 0);
+            btnBack.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBack.Name = "btnBack";
+            btnBack.NoAccentTextColor = Color.Empty;
+            btnBack.Size = new Size(90, 36);
+            btnBack.TabIndex = 6;
+            btnBack.Text = "Volver";
+            btnBack.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBack.UseAccentColor = false;
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
             // 
             // panelMenuTagList
             // 
@@ -223,7 +223,7 @@
             // panelCrudCtrlMenuTag
             // 
             panelCrudCtrlMenuTag.BackColor = Color.White;
-            panelCrudCtrlMenuTag.Controls.Add(btnVolverMenus);
+            panelCrudCtrlMenuTag.Controls.Add(btnBackToMenus);
             panelCrudCtrlMenuTag.Controls.Add(btnMenuTagRemove);
             panelCrudCtrlMenuTag.Controls.Add(btnMenuTagEdit);
             panelCrudCtrlMenuTag.Controls.Add(btnMenuTagCreate);
@@ -235,24 +235,24 @@
             // 
             // btnVolverMenus
             // 
-            btnVolverMenus.AutoSize = false;
-            btnVolverMenus.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverMenus.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverMenus.Depth = 0;
-            btnVolverMenus.HighEmphasis = true;
-            btnVolverMenus.Icon = null;
-            btnVolverMenus.Location = new Point(36, 461);
-            btnVolverMenus.Margin = new Padding(4, 6, 4, 6);
-            btnVolverMenus.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverMenus.Name = "btnVolverMenus";
-            btnVolverMenus.NoAccentTextColor = Color.Empty;
-            btnVolverMenus.Size = new Size(90, 36);
-            btnVolverMenus.TabIndex = 3;
-            btnVolverMenus.Text = "Volver";
-            btnVolverMenus.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverMenus.UseAccentColor = false;
-            btnVolverMenus.UseVisualStyleBackColor = true;
-            btnVolverMenus.Click += btnVolverMenus_Click;
+            btnBackToMenus.AutoSize = false;
+            btnBackToMenus.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBackToMenus.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBackToMenus.Depth = 0;
+            btnBackToMenus.HighEmphasis = true;
+            btnBackToMenus.Icon = null;
+            btnBackToMenus.Location = new Point(36, 461);
+            btnBackToMenus.Margin = new Padding(4, 6, 4, 6);
+            btnBackToMenus.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBackToMenus.Name = "btnBackToMenus";
+            btnBackToMenus.NoAccentTextColor = Color.Empty;
+            btnBackToMenus.Size = new Size(90, 36);
+            btnBackToMenus.TabIndex = 3;
+            btnBackToMenus.Text = "Volver";
+            btnBackToMenus.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBackToMenus.UseAccentColor = false;
+            btnBackToMenus.UseVisualStyleBackColor = true;
+            btnBackToMenus.Click += btnBackToMenus_Click;
             // 
             // btnMenuTagRemove
             // 
@@ -347,13 +347,13 @@
         private MaterialSkin.Controls.MaterialListView mtLvMenuTags;
         private ColumnHeader DescriptionColumn;
         private Panel panelCrudCtrlMenuTag;
-        private MaterialSkin.Controls.MaterialButton btnVolverMenus;
+        private MaterialSkin.Controls.MaterialButton btnBackToMenus;
         private MaterialSkin.Controls.MaterialButton btnMenuTagRemove;
         private MaterialSkin.Controls.MaterialButton btnMenuTagEdit;
         private MaterialSkin.Controls.MaterialButton btnMenuTagCreate;
         private MaterialSkin.Controls.MaterialTextBox mtbMenuTagDescription;
-        private MaterialSkin.Controls.MaterialButton btnVolverAtras;
-        private MaterialSkin.Controls.MaterialButton btnGuardarMenuTag;
+        private MaterialSkin.Controls.MaterialButton btnBack;
+        private MaterialSkin.Controls.MaterialButton btnSaveMenuTag;
         private MaterialSkin.Controls.MaterialLabel label2;
         private MaterialSkin.Controls.MaterialLabel label1;
         private Panel panelMenuTagUpload;

@@ -15,7 +15,7 @@ namespace ProyectoPresupuestoEvento.View
 
 
 
-        public static void setMaterialTheme()
+        public static void SetMaterialTheme()
         {
             MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
 
@@ -30,54 +30,54 @@ namespace ProyectoPresupuestoEvento.View
              );
         }
 
-        public static void linkSidebarIcons(MaterialTabControl tabControl, ImageList listaImagenes, string[] nombresIconos)
+        public static void LinkSidebarIcons(MaterialTabControl tabControl, ImageList imageList, string[] iconNames)
         {
-            tabControl.ImageList = listaImagenes;
+            tabControl.ImageList = imageList;
 
             for (int i = 0; i < tabControl.TabPages.Count; i++)
             {
-                if (i < nombresIconos.Length)
+                if (i < iconNames.Length)
                 {
-                    tabControl.TabPages[i].ImageKey = nombresIconos[i];
+                    tabControl.TabPages[i].ImageKey = iconNames[i];
                 }
             }
         }
 
-        public static void showEmptyMessage(ListView lista, string mensaje)
+        public static void ShowEmptyMessage(ListView list, string message)
         {
-            MaterialLabel etiqueta = null;
-            foreach (Control control in lista.Controls)
+            MaterialLabel tag = null;
+            foreach (Control control in list.Controls)
             {
-                if (control.Name == "lblListaVacia")
+                if (control.Name == "lblEmptyList")
                 {
-                    etiqueta = (MaterialLabel)control;
+                    tag = (MaterialLabel)control;
                 }
             }
 
-            if (etiqueta == null)
+            if (tag == null)
             {
-                etiqueta = new MaterialLabel();
-                etiqueta.Name = "lblListaVacia";
-                etiqueta.AutoSize = false;
-                etiqueta.TextAlign = ContentAlignment.MiddleCenter;
-                etiqueta.FontType = MaterialSkinManager.fontType.Subtitle1;
-                etiqueta.HighEmphasis = false;
-                etiqueta.Location = new Point(0, 60);
-                etiqueta.Size = new Size(lista.Width, 60);
-                etiqueta.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-                lista.Controls.Add(etiqueta);
+                tag = new MaterialLabel();
+                tag.Name = "lblEmptyList";
+                tag.AutoSize = false;
+                tag.TextAlign = ContentAlignment.MiddleCenter;
+                tag.FontType = MaterialSkinManager.fontType.Subtitle1;
+                tag.HighEmphasis = false;
+                tag.Location = new Point(0, 60);
+                tag.Size = new Size(list.Width, 60);
+                tag.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                list.Controls.Add(tag);
             }
 
-            etiqueta.Text = mensaje;
-            etiqueta.Visible = lista.Items.Count == 0;
+            tag.Text = message;
+            tag.Visible = list.Items.Count == 0;
         }
 
-        public static void centerContent(Panel panel)
+        public static void CenterContent(Panel panel)
         {
-            panel.Resize += panelCentrado_Resize;
+            panel.Resize += centeredPanel_Resize;
         }
 
-        private static void panelCentrado_Resize(object sender, EventArgs e)
+        private static void centeredPanel_Resize(object sender, EventArgs e)
         {
             Panel panel = (Panel)sender;
             if (panel.Controls.Count == 0)
@@ -85,70 +85,70 @@ namespace ProyectoPresupuestoEvento.View
                 return;
             }
 
-            int izquierda = int.MaxValue;
-            int derecha = 0;
+            int left = int.MaxValue;
+            int right = 0;
             foreach (Control control in panel.Controls)
             {
-                if (control.Left < izquierda)
+                if (control.Left < left)
                 {
-                    izquierda = control.Left;
+                    left = control.Left;
                 }
-                if (control.Right > derecha)
+                if (control.Right > right)
                 {
-                    derecha = control.Right;
+                    right = control.Right;
                 }
             }
 
-            int anchoContenido = derecha - izquierda;
-            int nuevaIzquierda = (panel.ClientSize.Width - anchoContenido) / 2;
-            if (nuevaIzquierda < 10)
+            int contentWidth = right - left;
+            int newLeft = (panel.ClientSize.Width - contentWidth) / 2;
+            if (newLeft < 10)
             {
-                nuevaIzquierda = 10;
+                newLeft = 10;
             }
 
-            int desplazamiento = nuevaIzquierda - izquierda;
+            int offset = newLeft - left;
             foreach (Control control in panel.Controls)
             {
-                control.Left = control.Left + desplazamiento;
+                control.Left = control.Left + offset;
             }
         }
 
-        public static void fitColumns(ListView lista)
+        public static void FitColumns(ListView list)
         {
-            foreach (ColumnHeader columna in lista.Columns)
+            foreach (ColumnHeader column in list.Columns)
             {
-                columna.Tag = columna.Width;
+                column.Tag = column.Width;
             }
-            lista.Resize += listaAjustada_Resize;
+            list.Resize += fittedList_Resize;
         }
 
-        private static void listaAjustada_Resize(object sender, EventArgs e)
+        private static void fittedList_Resize(object sender, EventArgs e)
         {
-            ListView lista = (ListView)sender;
-            int anchoDisponible = lista.ClientSize.Width;
-            if (anchoDisponible < 100 || lista.Columns.Count == 0)
+            ListView list = (ListView)sender;
+            int availableWidth = list.ClientSize.Width;
+            if (availableWidth < 100 || list.Columns.Count == 0)
             {
                 return;
             }
 
-            int anchoOriginal = 0;
-            foreach (ColumnHeader columna in lista.Columns)
+            int originalWidth = 0;
+            foreach (ColumnHeader column in list.Columns)
             {
-                anchoOriginal = anchoOriginal + (int)columna.Tag;
+                originalWidth = originalWidth + (int)column.Tag;
             }
-            if (anchoDisponible < anchoOriginal)
+            if (availableWidth < originalWidth)
             {
-                anchoDisponible = anchoOriginal;
+                availableWidth = originalWidth;
             }
 
-            int anchoUsado = 0;
-            for (int i = 0; i < lista.Columns.Count - 1; i++)
+            int usedWidth = 0;
+            for (int i = 0; i < list.Columns.Count - 1; i++)
             {
-                ColumnHeader columna = lista.Columns[i];
-                columna.Width = (int)columna.Tag * anchoDisponible / anchoOriginal;
-                anchoUsado = anchoUsado + columna.Width;
+                ColumnHeader column = list.Columns[i];
+                column.Width = (int)column.Tag * availableWidth / originalWidth;
+                usedWidth = usedWidth + column.Width;
             }
-            lista.Columns[lista.Columns.Count - 1].Width = anchoDisponible - anchoUsado;
+            list.Columns[list.Columns.Count - 1].Width = availableWidth - usedWidth;
         }
     }
 }

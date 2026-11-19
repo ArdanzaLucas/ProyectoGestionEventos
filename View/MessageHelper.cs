@@ -4,27 +4,27 @@ namespace ProyectoPresupuestoEvento.View
 {
     public static class MessageHelper
     {
-        private const string TITULO = "Gestion de Eventos";
+        private const string TITLE = "Gestion de Eventos";
 
-        public static void showWarning(string mensaje)
+        public static void ShowWarning(string message)
         {
-            MessageBox.Show(mensaje, TITULO, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(message, TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
-        public static void showError(string mensaje)
+        public static void ShowError(string message)
         {
-            MessageBox.Show(mensaje, TITULO, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public static void showInfo(string mensaje)
+        public static void ShowInfo(string message)
         {
-            MessageBox.Show(mensaje, TITULO, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(message, TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public static bool confirm(string mensaje)
+        public static bool Confirm(string message)
         {
-            DialogResult respuesta = MessageBox.Show(mensaje, TITULO, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            return respuesta == DialogResult.Yes;
+            DialogResult answer = MessageBox.Show(message, TITLE, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return answer == DialogResult.Yes;
         }
     }
 }

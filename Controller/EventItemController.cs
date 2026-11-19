@@ -18,29 +18,29 @@ namespace ProyectoPresupuestoEvento.Controller
             service = new EventItemService();
         }
 
-        public void addToRepository(EventItemDto dto)
+        public void AddToRepository(EventItemDto dto)
         {
-            service.addToRepository(dto);
+            service.AddToRepository(dto);
         }
 
-        public List<EventItemDto> getEventItems()
+        public List<EventItemDto> GetEventItems()
         {
-            return service.getEventItems();
+            return service.GetEventItems();
         }
 
-        public void updateEventItem(int id, EventItemDto dto)
+        public void UpdateEventItem(int id, EventItemDto dto)
         {
-            service.updateEventItem(id, dto);
+            service.UpdateEventItem(id, dto);
         }
 
-        public void removeEventItem(int id)
+        public void RemoveEventItem(int id)
         {
-            service.removeEventItem(id);
+            service.RemoveEventItem(id);
         }
 
-        public int countQuotes(int id)
+        public int CountQuotes(int id)
         {
-            return service.countQuotes(id);
+            return service.CountQuotes(id);
         }
     }
 }

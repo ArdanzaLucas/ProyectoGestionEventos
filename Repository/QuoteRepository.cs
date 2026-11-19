@@ -19,12 +19,12 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private QuoteRepository()
         {
-            database = SqliteDatabase.getInstance();
+            database = SqliteDatabase.GetInstance();
         }
 
 
         // singleton: siempre devuelve la misma instancia
-        public static QuoteRepository getInstance()
+        public static QuoteRepository GetInstance()
         {
             if (instance == null)
             {
@@ -34,42 +34,42 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // inserta el presupuesto y sus lineas en una transaccion: se guarda todo o nada
-        public void addToRepository(Quote quote)
+        public void AddToRepository(Quote quote)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             using (SqliteTransaction transaction = connection.BeginTransaction())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.Transaction = transaction;
-                command.CommandText = "INSERT INTO QUOTE (EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChilds, EventDuration, "
-                    + "UbicationId, UbicationName, UbicationPrice, State, TotalUbication, TotalMenus, TotalOptionItems, Total) "
-                    + "VALUES (@eventItemId, @eventName, @eventClientName, @eventDate, @eventGuestAdults, @eventGuestChilds, @eventDuration, "
-                    + "@ubicationId, @ubicationName, @ubicationPrice, @state, @totalUbication, @totalMenus, @totalOptionItems, @total); "
+                command.CommandText = "INSERT INTO QUOTE (EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChildren, EventDuration, "
+                    + "LocationId, LocationName, LocationPrice, State, TotalLocation, TotalMenus, TotalOptionItems, Total) "
+                    + "VALUES (@eventItemId, @eventName, @eventClientName, @eventDate, @eventGuestAdults, @eventGuestChildren, @eventDuration, "
+                    + "@locationId, @locationName, @locationPrice, @state, @totalLocation, @totalMenus, @totalOptionItems, @total); "
                     + "SELECT last_insert_rowid();";
                 command.Parameters.AddWithValue("@eventItemId", quote.EventItemId);
-                addParameters(command, quote);
-                quote.assignId(Convert.ToInt32(command.ExecuteScalar()));
+                AddParameters(command, quote);
+                quote.AssignId(Convert.ToInt32(command.ExecuteScalar()));
 
-                saveDetails(quote.Id, quote, connection, transaction);
+                SaveDetails(quote.Id, quote, connection, transaction);
                 transaction.Commit();
             }
         }
 
-        public List<Quote> getAll()
+        public List<Quote> GetAll()
         {
             List<Quote> quotes = new List<Quote>();
 
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT Id, EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChilds, EventDuration, "
-                    + "UbicationId, UbicationName, UbicationPrice, State, TotalUbication, TotalMenus, TotalOptionItems, Total FROM QUOTE ORDER BY Id";
+                command.CommandText = "SELECT Id, EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChildren, EventDuration, "
+                    + "LocationId, LocationName, LocationPrice, State, TotalLocation, TotalMenus, TotalOptionItems, Total FROM QUOTE ORDER BY Id";
 
                 using (SqliteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        quotes.Add(readQuote(reader, connection));
+                        quotes.Add(ReadQuote(reader, connection));
                     }
                 }
             }
@@ -78,20 +78,20 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // si no existe, lanza NotFoundException
-        public Quote getById(int id)
+        public Quote GetById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT Id, EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChilds, EventDuration, "
-                    + "UbicationId, UbicationName, UbicationPrice, State, TotalUbication, TotalMenus, TotalOptionItems, Total FROM QUOTE WHERE Id = @id";
+                command.CommandText = "SELECT Id, EventItemId, EventName, EventClientName, EventDate, EventGuestAdults, EventGuestChildren, EventDuration, "
+                    + "LocationId, LocationName, LocationPrice, State, TotalLocation, TotalMenus, TotalOptionItems, Total FROM QUOTE WHERE Id = @id";
                 command.Parameters.AddWithValue("@id", id);
 
                 using (SqliteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        return readQuote(reader, connection);
+                        return ReadQuote(reader, connection);
                     }
                 }
             }
@@ -99,30 +99,30 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // actualiza el presupuesto, incluido su estado, y reemplaza sus lineas
-        public void update(int id, Quote quote)
+        public void Update(int id, Quote quote)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             using (SqliteTransaction transaction = connection.BeginTransaction())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.Transaction = transaction;
                 command.CommandText = "UPDATE QUOTE SET EventName = @eventName, EventClientName = @eventClientName, EventDate = @eventDate, "
-                    + "EventGuestAdults = @eventGuestAdults, EventGuestChilds = @eventGuestChilds, EventDuration = @eventDuration, "
-                    + "UbicationId = @ubicationId, UbicationName = @ubicationName, UbicationPrice = @ubicationPrice, State = @state, "
-                    + "TotalUbication = @totalUbication, TotalMenus = @totalMenus, TotalOptionItems = @totalOptionItems, Total = @total WHERE Id = @id";
-                addParameters(command, quote);
+                    + "EventGuestAdults = @eventGuestAdults, EventGuestChildren = @eventGuestChildren, EventDuration = @eventDuration, "
+                    + "LocationId = @locationId, LocationName = @locationName, LocationPrice = @locationPrice, State = @state, "
+                    + "TotalLocation = @totalLocation, TotalMenus = @totalMenus, TotalOptionItems = @totalOptionItems, Total = @total WHERE Id = @id";
+                AddParameters(command, quote);
                 command.Parameters.AddWithValue("@id", id);
                 command.ExecuteNonQuery();
 
-                saveDetails(id, quote, connection, transaction);
+                SaveDetails(id, quote, connection, transaction);
                 transaction.Commit();
             }
         }
 
         // sus lineas se borran solas por ON DELETE CASCADE
-        public void removeById(int id)
+        public void RemoveById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "DELETE FROM QUOTE WHERE Id = @id";
@@ -131,44 +131,44 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
-        private void addParameters(SqliteCommand command, Quote quote)
+        private void AddParameters(SqliteCommand command, Quote quote)
         {
             command.Parameters.AddWithValue("@eventName", quote.EventName);
             command.Parameters.AddWithValue("@eventClientName", quote.EventClientName);
             command.Parameters.AddWithValue("@eventDate", quote.EventDate);
             command.Parameters.AddWithValue("@eventGuestAdults", quote.EventGuestAdults);
-            command.Parameters.AddWithValue("@eventGuestChilds", quote.EventGuestChilds);
+            command.Parameters.AddWithValue("@eventGuestChildren", quote.EventGuestChildren);
             command.Parameters.AddWithValue("@eventDuration", quote.EventDuration);
-            command.Parameters.AddWithValue("@ubicationId", quote.Ubication.Id);
-            command.Parameters.AddWithValue("@ubicationName", quote.UbicationName);
-            command.Parameters.AddWithValue("@ubicationPrice", quote.UbicationPrice);
+            command.Parameters.AddWithValue("@locationId", quote.Location.Id);
+            command.Parameters.AddWithValue("@locationName", quote.LocationName);
+            command.Parameters.AddWithValue("@locationPrice", quote.LocationPrice);
             command.Parameters.AddWithValue("@state", (int)quote.State);
-            command.Parameters.AddWithValue("@totalUbication", quote.TotalUbication);
+            command.Parameters.AddWithValue("@totalLocation", quote.TotalLocation);
             command.Parameters.AddWithValue("@totalMenus", quote.TotalMenus);
             command.Parameters.AddWithValue("@totalOptionItems", quote.TotalOptionItems);
             command.Parameters.AddWithValue("@total", quote.Total);
         }
 
         // arma el presupuesto con sus copias congeladas
-        private Quote readQuote(SqliteDataReader reader, SqliteConnection connection)
+        private Quote ReadQuote(SqliteDataReader reader, SqliteConnection connection)
         {
             int id = reader.GetInt32(0);
-            Ubication ubication = UbicationRepository.getInstance().getById(reader.GetInt32(8));
-            List<DetailMenu> menus = loadDetailMenus(id, connection);
-            List<DetailOptionItem> optionItems = loadDetailOptionItems(id, connection);
+            Location location = LocationRepository.GetInstance().GetById(reader.GetInt32(8));
+            List<DetailMenu> menus = LoadDetailMenus(id, connection);
+            List<DetailOptionItem> optionItems = LoadDetailOptionItems(id, connection);
 
             // constructor de lectura: recibe las copias guardadas, no los datos actuales
-            Quote quote = new Quote(id, (EstadoPresupuesto)reader.GetInt32(11),
+            Quote quote = new Quote(id, (QuoteState)reader.GetInt32(11),
                 reader.GetInt32(1), reader.GetString(2), reader.GetString(3), reader.GetDateTime(4),
                 reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7),
-                ubication, reader.GetString(9), reader.GetDecimal(10),
+                location, reader.GetString(9), reader.GetDecimal(10),
                 menus, optionItems,
                 reader.GetDecimal(12), reader.GetDecimal(13), reader.GetDecimal(14), reader.GetDecimal(15));
             return quote;
         }
 
         // cada linea se arma con el menu real y los datos congelados guardados
-        private List<DetailMenu> loadDetailMenus(int quoteId, SqliteConnection connection)
+        private List<DetailMenu> LoadDetailMenus(int quoteId, SqliteConnection connection)
         {
             List<DetailMenu> menus = new List<DetailMenu>();
 
@@ -181,7 +181,7 @@ namespace ProyectoPresupuestoEvento.Repository
             {
                 while (reader.Read())
                 {
-                    Menu menu = MenuRepository.getInstance().getById(reader.GetInt32(0));
+                    Menu menu = MenuRepository.GetInstance().GetById(reader.GetInt32(0));
                     DetailMenu detailMenu = new DetailMenu(menu, reader.GetString(2), reader.GetString(1), reader.GetInt32(3), reader.GetInt32(4),
                         reader.GetDecimal(5), reader.GetDecimal(6));
                     menus.Add(detailMenu);
@@ -192,7 +192,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // igual que las lineas de catering, con el servicio real y su nombre y precio congelados
-        private List<DetailOptionItem> loadDetailOptionItems(int quoteId, SqliteConnection connection)
+        private List<DetailOptionItem> LoadDetailOptionItems(int quoteId, SqliteConnection connection)
         {
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
 
@@ -204,7 +204,7 @@ namespace ProyectoPresupuestoEvento.Repository
             {
                 while (reader.Read())
                 {
-                    OptionItem optionItem = OptionItemRepository.getInstance().getById(reader.GetInt32(0));
+                    OptionItem optionItem = OptionItemRepository.GetInstance().GetById(reader.GetInt32(0));
                     DetailOptionItem detailOptionItem = new DetailOptionItem(optionItem, reader.GetString(1), reader.GetDecimal(2));
                     optionItems.Add(detailOptionItem);
                 }
@@ -214,7 +214,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // borra las lineas guardadas del presupuesto e inserta las actuales
-        private void saveDetails(int quoteId, Quote quote, SqliteConnection connection, SqliteTransaction transaction)
+        private void SaveDetails(int quoteId, Quote quote, SqliteConnection connection, SqliteTransaction transaction)
         {
             SqliteCommand deleteMenus = connection.CreateCommand();
             deleteMenus.Transaction = transaction;

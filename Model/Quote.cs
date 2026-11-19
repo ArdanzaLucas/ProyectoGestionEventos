@@ -16,15 +16,15 @@ namespace ProyectoPresupuestoEvento.Model
         private string _eventClientName;
         private DateTime _eventDate;
         private int _eventGuestAdults;
-        private int _eventGuestChilds;
+        private int _eventGuestChildren;
         private int _eventDuration;
-        private Ubication _ubication;
-        private string _ubicationName;
-        private decimal _ubicationPrice;
+        private Location _location;
+        private string _locationName;
+        private decimal _locationPrice;
         private List<DetailMenu> _menusList;
         private List<DetailOptionItem> _optionItemList;
-        private EstadoPresupuesto _state;
-        private decimal _totalUbication;
+        private QuoteState _state;
+        private decimal _totalLocation;
         private decimal _totalMenus;
         private decimal _totalOptionItems;
         private decimal _total;
@@ -32,28 +32,28 @@ namespace ProyectoPresupuestoEvento.Model
 
         //constructor
 
-        public Quote(EventItem eventItem, Ubication ubication, List<DetailMenu> menusList, List<DetailOptionItem> optionItemList)
+        public Quote(EventItem eventItem, Location location, List<DetailMenu> menusList, List<DetailOptionItem> optionItemList)
         {
             EventItemId = eventItem.Id;
             EventName = eventItem.Name;
             EventClientName = eventItem.ClientName;
             EventDate = eventItem.Date;
             EventGuestAdults = eventItem.GuestAdults;
-            EventGuestChilds = eventItem.GuestChilds;
+            EventGuestChildren = eventItem.GuestChildren;
             EventDuration = eventItem.Duration;
-            Ubication = ubication;
-            UbicationName = ubication.Name;
-            UbicationPrice = ubication.Price;
+            Location = location;
+            LocationName = location.Name;
+            LocationPrice = location.Price;
             MenusList = menusList;
             OptionItemList = optionItemList;
-            State = EstadoPresupuesto.Pendiente;
+            State = QuoteState.Pending;
         }
 
-        public Quote(int id, EstadoPresupuesto state, int eventItemId, string eventName, string eventClientName,
-            DateTime eventDate, int eventGuestAdults, int eventGuestChilds, int eventDuration,
-            Ubication ubication, string ubicationName, decimal ubicationPrice,
+        public Quote(int id, QuoteState state, int eventItemId, string eventName, string eventClientName,
+            DateTime eventDate, int eventGuestAdults, int eventGuestChildren, int eventDuration,
+            Location location, string locationName, decimal locationPrice,
             List<DetailMenu> menusList, List<DetailOptionItem> optionItemList,
-            decimal totalUbication, decimal totalMenus, decimal totalOptionItems, decimal total)
+            decimal totalLocation, decimal totalMenus, decimal totalOptionItems, decimal total)
         {
             Id = id;
             State = state;
@@ -62,14 +62,14 @@ namespace ProyectoPresupuestoEvento.Model
             EventClientName = eventClientName;
             EventDate = eventDate;
             EventGuestAdults = eventGuestAdults;
-            EventGuestChilds = eventGuestChilds;
+            EventGuestChildren = eventGuestChildren;
             EventDuration = eventDuration;
-            Ubication = ubication;
-            UbicationName = ubicationName;
-            UbicationPrice = ubicationPrice;
+            Location = location;
+            LocationName = locationName;
+            LocationPrice = locationPrice;
             MenusList = menusList;
             OptionItemList = optionItemList;
-            TotalUbication = totalUbication;
+            TotalLocation = totalLocation;
             TotalMenus = totalMenus;
             TotalOptionItems = totalOptionItems;
             Total = total;
@@ -114,10 +114,10 @@ namespace ProyectoPresupuestoEvento.Model
             private set { _eventGuestAdults = value; }
         }
 
-        public int EventGuestChilds
+        public int EventGuestChildren
         {
-            get { return _eventGuestChilds; }
-            private set { _eventGuestChilds = value; }
+            get { return _eventGuestChildren; }
+            private set { _eventGuestChildren = value; }
         }
 
         public int EventDuration
@@ -128,32 +128,32 @@ namespace ProyectoPresupuestoEvento.Model
 
         public int TotalGuests
         {
-            get { return _eventGuestAdults + _eventGuestChilds; }
+            get { return _eventGuestAdults + _eventGuestChildren; }
         }
 
-        public Ubication Ubication
+        public Location Location
         {
-            get { return _ubication; }
+            get { return _location; }
             private set
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("la ubicacion es obligatoria");
+                    throw new ArgumentNullException(nameof(value), "la ubicacion es obligatoria");
                 }
-                _ubication = value;
+                _location = value;
             }
         }
 
-        public string UbicationName
+        public string LocationName
         {
-            get { return _ubicationName; }
-            private set { _ubicationName = value; }
+            get { return _locationName; }
+            private set { _locationName = value; }
         }
 
-        public decimal UbicationPrice
+        public decimal LocationPrice
         {
-            get { return _ubicationPrice; }
-            private set { _ubicationPrice = value; }
+            get { return _locationPrice; }
+            private set { _locationPrice = value; }
         }
 
         public List<DetailMenu> MenusList
@@ -163,7 +163,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("la lista de menus es obligatoria");
+                    throw new ArgumentNullException(nameof(value), "la lista de menus es obligatoria");
                 }
                 _menusList = value;
             }
@@ -176,22 +176,22 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("la lista de servicios es obligatoria");
+                    throw new ArgumentNullException(nameof(value), "la lista de servicios es obligatoria");
                 }
                 _optionItemList = value;
             }
         }
 
-        public EstadoPresupuesto State
+        public QuoteState State
         {
             get { return _state; }
             private set { _state = value; }
         }
 
-        public decimal TotalUbication
+        public decimal TotalLocation
         {
-            get { return _totalUbication; }
-            private set { _totalUbication = value; }
+            get { return _totalLocation; }
+            private set { _totalLocation = value; }
         }
 
         public decimal TotalMenus
@@ -215,7 +215,7 @@ namespace ProyectoPresupuestoEvento.Model
 
         //metodos
 
-        public void assignId(int id)
+        public void AssignId(int id)
         {
             if (Id != 0)
             {
@@ -224,103 +224,81 @@ namespace ProyectoPresupuestoEvento.Model
             Id = id;
         }
 
-        public void calculateTotals()
+        public void CalculateTotals()
         {
-            if (_state != EstadoPresupuesto.Pendiente)
+            if (_state != QuoteState.Pending)
             {
                 return;
             }
 
-            TotalUbication = UbicationPrice * EventDuration;
-
-            decimal totalMenus = 0;
-            foreach (DetailMenu detailMenu in MenusList)
-            {
-                totalMenus = totalMenus + detailMenu.Subtotal;
-            }
-            TotalMenus = totalMenus;
-
-            decimal totalOptionItems = 0;
-            foreach (DetailOptionItem detailOptionItem in OptionItemList)
-            {
-                totalOptionItems = totalOptionItems + detailOptionItem.Subtotal;
-            }
-            TotalOptionItems = totalOptionItems;
-
-            decimal totalItems = 0;
-            foreach (IQuoteItem item in getItems())
-            {
-                totalItems = totalItems + item.Subtotal;
-            }
-            Total = TotalUbication + totalItems;
+            TotalLocation = LocationPrice * EventDuration;
+            TotalMenus = SumSubtotals(MenusList);
+            TotalOptionItems = SumSubtotals(OptionItemList);
+            Total = TotalLocation + TotalMenus + TotalOptionItems;
         }
 
-        public List<IQuoteItem> getItems()
+        private decimal SumSubtotals(IEnumerable<IQuoteItem> items)
         {
-            List<IQuoteItem> items = new List<IQuoteItem>();
-            foreach (DetailMenu detailMenu in _menusList)
+            decimal total = 0;
+            foreach (IQuoteItem item in items)
             {
-                items.Add(detailMenu);
+                total = total + item.Subtotal;
             }
-            foreach (DetailOptionItem detailOptionItem in _optionItemList)
-            {
-                items.Add(detailOptionItem);
-            }
-            return items;
+            return total;
         }
 
-        public void accept()
+        public void Accept()
         {
-            if (_state != EstadoPresupuesto.Pendiente)
+            if (_state != QuoteState.Pending)
             {
                 throw new BusinessRuleException("solo se puede aceptar un presupuesto pendiente");
             }
-            State = EstadoPresupuesto.Aceptado;
+            State = QuoteState.Accepted;
         }
 
-        public void cancel()
+        public void Cancel()
         {
-            if (_state != EstadoPresupuesto.Pendiente)
+            if (_state != QuoteState.Pending)
             {
                 throw new BusinessRuleException("solo se puede cancelar un presupuesto pendiente");
             }
-            State = EstadoPresupuesto.Cancelado;
+            State = QuoteState.Cancelled;
         }
 
-        public bool isEditable()
+        public bool IsEditable()
         {
-            return _state == EstadoPresupuesto.Pendiente;
+            return _state == QuoteState.Pending;
         }
 
-        public bool overlapsWith(Quote otro)
+        public bool OverlapsWith(Quote other)
         {
-            DateTime inicio = _eventDate;
-            DateTime fin = inicio.AddHours(_eventDuration);
-            DateTime inicioOtro = otro.EventDate;
-            DateTime finOtro = inicioOtro.AddHours(otro.EventDuration);
+            DateTime start = _eventDate;
+            DateTime end = start.AddHours(_eventDuration);
+            DateTime otherStart = other.EventDate;
+            DateTime otherEnd = otherStart.AddHours(other.EventDuration);
 
-            return inicio < finOtro && inicioOtro < fin;
+            return start < otherEnd && otherStart < end;
         }
 
-        public Quote clone(EventItem eventItem)
+        public Quote Clone(EventItem eventItem)
         {
             List<DetailMenu> menus = new List<DetailMenu>();
             foreach (DetailMenu detailMenu in _menusList)
             {
-                DetailMenu copia = new DetailMenu(detailMenu.Menu, detailMenu.TagDescription,
+                DetailMenu copy = new DetailMenu(detailMenu.Menu, detailMenu.TagDescription,
                     detailMenu.AdultQuantity, detailMenu.ChildQuantity);
-                menus.Add(copia);
+                menus.Add(copy);
             }
 
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
             foreach (DetailOptionItem detailOptionItem in _optionItemList)
             {
-                DetailOptionItem copia = new DetailOptionItem(detailOptionItem.OptionItem);
-                optionItems.Add(copia);
+                DetailOptionItem copy = new DetailOptionItem(detailOptionItem.OptionItem);
+                optionItems.Add(copy);
             }
 
-            Quote nuevo = new Quote(eventItem, _ubication, menus, optionItems);
-            return nuevo;
+            Quote newQuote = new Quote(eventItem, _location, menus, optionItems);
+            return newQuote;
         }
 
 

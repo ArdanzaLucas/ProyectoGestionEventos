@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoPresupuestoEvento.Common
 {
-    public class NotFoundException : BusinessRuleException
+    public class NotFoundException : Exception
     {
         public NotFoundException(string message) : base(message)
         {

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +20,6 @@ namespace ProyectoPresupuestoEvento.View
         private QuoteController quoteController;
         private EventItemController eventController;
 
-        private FormReport formReport;
         private FormQuoteEdit formQuoteEdit;
 
         public FormIndex(QuoteController quoteController, EventItemController eventController)
@@ -26,15 +27,10 @@ namespace ProyectoPresupuestoEvento.View
             this.quoteController = quoteController;
             this.eventController = eventController;
             InitializeComponent();
-            VisualHelper.fitColumns(mtLvIndex);
+            VisualHelper.FitColumns(mtLvIndex);
         }
 
-        public void setFormReport(FormReport formReport)
-        {
-            this.formReport = formReport;
-        }
-
-        public void setFormQuoteEdit(FormQuoteEdit formQuoteEdit)
+        public void SetFormQuoteEdit(FormQuoteEdit formQuoteEdit)
         {
             this.formQuoteEdit = formQuoteEdit;
         }
@@ -44,27 +40,27 @@ namespace ProyectoPresupuestoEvento.View
             panelIndexList.Visible = true;
             panelIndexList.Dock = DockStyle.Fill;
 
-            reloadFilter();
-            reloadMtlv();
+            ReloadFilter();
+            ReloadList();
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            reloadFilter();
+            ReloadFilter();
             cmbFilterEvent.SelectedIndex = 0;
-            reloadMtlv();
+            ReloadList();
         }
 
 
 
         //seccion Lista
 
-        private void reloadFilter()
+        private void ReloadFilter()
         {
-            int idElegido = 0;
+            int selectedId = 0;
             if (cmbFilterEvent.SelectedItem != null)
             {
-                idElegido = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
+                selectedId = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
             }
 
             cmbFilterEvent.Items.Clear();
@@ -72,79 +68,79 @@ namespace ProyectoPresupuestoEvento.View
 
             cmbFilterEvent.Items.Add(new EventItemDto(0, "Todos", "", DateTime.Now, 0, 0, 0));
 
-            List<EventItemDto> eventos = eventController.getEventItems();
-            foreach (EventItemDto evento in eventos)
+            List<EventItemDto> eventItems = eventController.GetEventItems();
+            foreach (EventItemDto eventItem in eventItems)
             {
-                cmbFilterEvent.Items.Add(evento);
+                cmbFilterEvent.Items.Add(eventItem);
             }
 
             cmbFilterEvent.SelectedIndex = 0;
             for (int i = 0; i < cmbFilterEvent.Items.Count; i++)
             {
-                if (((EventItemDto)cmbFilterEvent.Items[i]).Id == idElegido)
+                if (((EventItemDto)cmbFilterEvent.Items[i]).Id == selectedId)
                 {
                     cmbFilterEvent.SelectedIndex = i;
                 }
             }
         }
 
-        public void reloadMtlv()
+        public void ReloadList()
         {
-            int idEvento = 0;
+            int selectedEventId = 0;
             if (cmbFilterEvent.SelectedItem != null)
             {
-                idEvento = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
+                selectedEventId = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
             }
 
-            List<QuoteDto> presupuestos;
-            if (idEvento == 0)
+            List<QuoteDto> quotes;
+            if (selectedEventId == 0)
             {
-                presupuestos = quoteController.getQuotes();
+                quotes = quoteController.GetQuotes();
             }
             else
             {
-                presupuestos = quoteController.getQuotesByEventItem(idEvento);
+                quotes = quoteController.GetQuotesByEventItem(selectedEventId);
             }
 
             mtLvIndex.Items.Clear();
 
-            foreach (QuoteDto presupuesto in presupuestos)
+            foreach (QuoteDto quote in quotes)
             {
-                ListViewItem fila = new ListViewItem();
+                ListViewItem row = new ListViewItem();
 
-                fila.Text = presupuesto.Id.ToString();
-                fila.SubItems.Add(presupuesto.EventItemName);
-                fila.SubItems.Add(presupuesto.EventDate.ToString("dd/MM/yyyy"));
-                fila.SubItems.Add(presupuesto.UbicationName);
-                fila.SubItems.Add(presupuesto.TotalGuests.ToString());
-                fila.SubItems.Add(presupuesto.State.ToString());
-                fila.SubItems.Add(presupuesto.Total.ToString("C"));
+                row.Text = quote.Id.ToString();
+                row.SubItems.Add(quote.EventItemName);
+                row.SubItems.Add(quote.EventDate.ToString("dd/MM/yyyy"));
+                row.SubItems.Add(quote.LocationName);
+                row.SubItems.Add(quote.TotalGuests.ToString());
+                row.SubItems.Add(QuoteStateText.GetDisplayName(quote.State));
+                row.SubItems.Add(quote.Total.ToString("C"));
 
-                fila.Tag = presupuesto;
+                row.Tag = quote;
 
-                mtLvIndex.Items.Add(fila);
+                mtLvIndex.Items.Add(row);
             }
 
-            if (idEvento == 0)
+            if (selectedEventId == 0)
             {
-                VisualHelper.showEmptyMessage(mtLvIndex, "Todavia no hay presupuestos. Toque Nuevo para armar uno.");
+                VisualHelper.ShowEmptyMessage(mtLvIndex, "Todavia no hay presupuestos. Toque Nuevo para armar uno.");
             }
             else
             {
-                VisualHelper.showEmptyMessage(mtLvIndex, "Este evento todavia no tiene presupuestos.");
+                VisualHelper.ShowEmptyMessage(mtLvIndex, "Este evento todavia no tiene presupuestos.");
             }
         }
 
         private void cmbFilterEvent_SelectedIndexChanged(object sender, EventArgs e)
         {
-            reloadMtlv();
+            ReloadList();
         }
 
-        private QuoteDto getSelectedQuote(string accion)
+        private QuoteDto GetSelectedQuote(string action)
         {
             if (mtLvIndex.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un presupuesto para " + accion);
+                MessageHelper.ShowWarning("seleccione un presupuesto para " + action);
                 return null;
             }
 
@@ -156,8 +152,8 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnQuoteCreate_Click(object sender, EventArgs e)
         {
-            int idFiltro = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
-            formQuoteEdit.showNew(idFiltro);
+            int filterId = ((EventItemDto)cmbFilterEvent.SelectedItem).Id;
+            formQuoteEdit.ShowNew(filterId);
             this.Hide();
             formQuoteEdit.Show();
         }
@@ -169,32 +165,32 @@ namespace ProyectoPresupuestoEvento.View
 
         private void btnQuoteEdit_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("editar");
+            QuoteDto selected = GetSelectedQuote("editar");
             if (selected == null)
             {
                 return;
             }
 
-            if (selected.State != EstadoPresupuesto.Pendiente)
+            if (selected.State != QuoteState.Pending)
             {
-                MessageHelper.showWarning("solo se puede editar un presupuesto pendiente");
+                MessageHelper.ShowWarning("solo se puede editar un presupuesto pendiente");
                 return;
             }
 
-            formQuoteEdit.showEdit(selected);
+            formQuoteEdit.ShowEdit(selected);
             this.Hide();
             formQuoteEdit.Show();
         }
 
         private void btnQuoteAccept_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("aceptar");
+            QuoteDto selected = GetSelectedQuote("aceptar");
             if (selected == null)
             {
                 return;
             }
 
-            if (!MessageHelper.confirm(
+            if (!MessageHelper.Confirm(
                 "¿Aceptar el presupuesto N° " + selected.Id + " de " + selected.EventItemName + "? ya no se va a poder editar"))
             {
                 return;
@@ -202,25 +198,25 @@ namespace ProyectoPresupuestoEvento.View
 
             try
             {
-                quoteController.acceptQuote(selected.Id);
+                quoteController.AcceptQuote(selected.Id);
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
             }
 
-            reloadMtlv();
+            ReloadList();
         }
 
         private void btnQuoteCancel_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("cancelar");
+            QuoteDto selected = GetSelectedQuote("cancelar");
             if (selected == null)
             {
                 return;
             }
 
-            if (!MessageHelper.confirm(
+            if (!MessageHelper.Confirm(
                 "¿Cancelar el presupuesto N° " + selected.Id + " de " + selected.EventItemName + "? ya no se va a poder editar"))
             {
                 return;
@@ -228,19 +224,19 @@ namespace ProyectoPresupuestoEvento.View
 
             try
             {
-                quoteController.cancelQuote(selected.Id);
+                quoteController.CancelQuote(selected.Id);
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
             }
 
-            reloadMtlv();
+            ReloadList();
         }
 
         private void btnQuoteClone_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("clonar");
+            QuoteDto selected = GetSelectedQuote("clonar");
             if (selected == null)
             {
                 return;
@@ -248,50 +244,105 @@ namespace ProyectoPresupuestoEvento.View
 
             try
             {
-                quoteController.cloneQuote(selected.Id);
+                quoteController.CloneQuote(selected.Id);
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
             }
 
-            reloadMtlv();
+            ReloadList();
         }
 
         private void btnQuoteRemove_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("eliminar");
+            QuoteDto selected = GetSelectedQuote("eliminar");
             if (selected == null)
             {
                 return;
             }
 
-            string mensaje = "¿Eliminar el presupuesto N° " + selected.Id + " de " + selected.EventItemName + "?";
-            if (selected.State == EstadoPresupuesto.Aceptado)
+            string message = "¿Eliminar el presupuesto N° " + selected.Id + " de " + selected.EventItemName + "?";
+            if (selected.State == QuoteState.Accepted)
             {
-                mensaje = mensaje + " es el presupuesto ACEPTADO del evento";
+                message = message + " es el presupuesto ACEPTADO del evento";
             }
 
-            if (!MessageHelper.confirm(mensaje))
+            if (!MessageHelper.Confirm(message))
             {
                 return;
             }
 
-            quoteController.removeQuote(selected.Id);
-            reloadMtlv();
+            quoteController.RemoveQuote(selected.Id);
+            ReloadList();
         }
 
+        // genera el pdf en una carpeta temporal y lo abre con el visor de pdf de Windows
         private void btnIndexReport_Click(object sender, EventArgs e)
         {
-            QuoteDto selected = getSelectedQuote("ver el detalle");
+            QuoteDto selected = GetSelectedQuote("ver el detalle");
             if (selected == null)
             {
                 return;
             }
 
-            formReport.showQuote(selected);
-            this.Hide();
-            formReport.Show();
+            string path = Path.Combine(Path.GetTempPath(), BuildPdfName(selected) + "_" + DateTime.Now.ToString("HHmmss") + ".pdf");
+            if (!ExportPdf(selected, path))
+            {
+                return;
+            }
+
+            ProcessStartInfo viewer = new ProcessStartInfo(path);
+            viewer.UseShellExecute = true;
+            Process.Start(viewer);
+        }
+
+        private void btnQuoteSavePdf_Click(object sender, EventArgs e)
+        {
+            QuoteDto selected = GetSelectedQuote("guardar el PDF");
+            if (selected == null)
+            {
+                return;
+            }
+
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Title = "Guardar presupuesto en PDF";
+            dialog.Filter = "Archivo PDF (*.pdf)|*.pdf";
+            dialog.FileName = BuildPdfName(selected) + ".pdf";
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            if (ExportPdf(selected, dialog.FileName))
+            {
+                MessageHelper.ShowInfo("el PDF se guardo en " + dialog.FileName);
+            }
+        }
+
+        private bool ExportPdf(QuoteDto quote, string path)
+        {
+            try
+            {
+                quoteController.ExportPdf(quote.Id, path);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError("no se pudo generar el PDF: " + ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        private string BuildPdfName(QuoteDto quote)
+        {
+            string name = "Presupuesto_" + quote.Id + "_" + quote.EventItemName;
+            foreach (char character in Path.GetInvalidFileNameChars())
+            {
+                name = name.Replace(character, '_');
+            }
+            return name.Replace(' ', '_');
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         // el controller usa este: le pasa los repositorios reales al otro constructor
         public MenuService()
-            : this(MenuRepository.getInstance(), MenuTagRepository.getInstance())
+            : this(MenuRepository.GetInstance(), MenuTagRepository.GetInstance())
         {
         }
 
@@ -31,38 +31,38 @@ namespace ProyectoPresupuestoEvento.Service
             this.menuTagRepository = menuTagRepository;
         }
 
-        public void addToRepository(MenuDto dto)
+        public void AddToRepository(MenuDto dto)
         {
-            Menu menu = toModel(dto);
-            validateHasTags(menu);
-            validateUniqueDescription(menu.Description, 0);
-            repository.addToRepository(menu);
+            Menu menu = ToModel(dto);
+            ValidateHasTags(menu);
+            ValidateUniqueDescription(menu.Description, 0);
+            repository.AddToRepository(menu);
         }
 
         // devuelve solo los menus activos
-        public List<MenuDto> getMenus()
+        public List<MenuDto> GetMenus()
         {
-            List<Menu> menus = repository.getAll();
+            List<Menu> menus = repository.GetAll();
             List<MenuDto> dtos = new List<MenuDto>();
 
             foreach (Menu menu in menus)
             {
-                MenuDto dto = toDto(menu);
+                MenuDto dto = ToDto(menu);
                 dtos.Add(dto);
             }
 
             return dtos;
         }
 
-        public void updateMenu(int id, MenuDto dto)
+        public void UpdateMenu(int id, MenuDto dto)
         {
-            Menu menu = toModel(dto);
-            validateHasTags(menu);
-            validateUniqueDescription(menu.Description, id);
-            repository.update(id, menu);
+            Menu menu = ToModel(dto);
+            ValidateHasTags(menu);
+            ValidateUniqueDescription(menu.Description, id);
+            repository.Update(id, menu);
         }
 
-        private void validateHasTags(Menu menu)
+        private void ValidateHasTags(Menu menu)
         {
             if (menu.TagList.Count == 0)
             {
@@ -71,11 +71,11 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // compara solo con los menus activos y sin distinguir mayusculas
-        private void validateUniqueDescription(string description, int idEditando)
+        private void ValidateUniqueDescription(string description, int editingId)
         {
-            foreach (Menu menu in repository.getAll())
+            foreach (Menu menu in repository.GetAll())
             {
-                if (menu.Id != idEditando && menu.Description.ToLower() == description.ToLower())
+                if (menu.Id != editingId && menu.Description.ToLower() == description.ToLower())
                 {
                     throw new BusinessRuleException("ya existe un menu con ese nombre");
                 }
@@ -83,20 +83,20 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // baja logica: el menu queda guardado pero inactivo
-        public void removeMenu(int id)
+        public void RemoveMenu(int id)
         {
-            Menu menu = repository.getById(id);
-            menu.deactivate();
-            repository.update(id, menu);
+            Menu menu = repository.GetById(id);
+            menu.Deactivate();
+            repository.Update(id, menu);
         }
 
         // busca cada etiqueta real por su id
-        public Menu toModel(MenuDto dto)
+        public Menu ToModel(MenuDto dto)
         {
             List<MenuTag> tags = new List<MenuTag>();
             foreach (MenuTagDto tagDto in dto.TagList)
             {
-                MenuTag tag = menuTagRepository.getById(tagDto.Id);
+                MenuTag tag = menuTagRepository.GetById(tagDto.Id);
                 tags.Add(tag);
             }
 
@@ -104,7 +104,7 @@ namespace ProyectoPresupuestoEvento.Service
             return model;
         }
 
-        public MenuDto toDto(Menu menu)
+        public MenuDto ToDto(Menu menu)
         {
             List<MenuTagDto> tagDtos = new List<MenuTagDto>();
             foreach (MenuTag tag in menu.TagList)

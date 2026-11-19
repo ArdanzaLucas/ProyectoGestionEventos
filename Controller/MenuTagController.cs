@@ -18,34 +18,34 @@ namespace ProyectoPresupuestoEvento.Controller
             service = new MenuTagService();
         }
 
-        public void addToRepository(MenuTagDto dto)
+        public void AddToRepository(MenuTagDto dto)
         {
-            service.addToRepository(dto);
+            service.AddToRepository(dto);
         }
 
-        public List<MenuTagDto> getMenuTags()
+        public List<MenuTagDto> GetMenuTags()
         {
-            return service.getMenuTags();
+            return service.GetMenuTags();
         }
 
-        public void updateMenuTag(int id, MenuTagDto dto)
+        public void UpdateMenuTag(int id, MenuTagDto dto)
         {
-            service.updateMenuTag(id, dto);
+            service.UpdateMenuTag(id, dto);
         }
 
-        public void removeMenuTag(int id)
+        public void RemoveMenuTag(int id)
         {
-            service.removeMenuTag(id);
+            service.RemoveMenuTag(id);
         }
 
-        public List<string> getMenusWithOnlyThisTag(int id)
+        public List<string> GetMenusWithOnlyThisTag(int id)
         {
-            return service.getMenusWithOnlyThisTag(id);
+            return service.GetMenusWithOnlyThisTag(id);
         }
 
-        public int countMenusUsing(int id)
+        public int CountMenusUsing(int id)
         {
-            return service.countMenusUsing(id);
+            return service.CountMenusUsing(id);
         }
     }
 }

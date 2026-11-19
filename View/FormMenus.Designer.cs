@@ -42,8 +42,8 @@
             btnMenuEdit = new MaterialSkin.Controls.MaterialButton();
             btnMenuCreate = new MaterialSkin.Controls.MaterialButton();
             panelMenuUpload = new Panel();
-            btnVolverMenu = new MaterialSkin.Controls.MaterialButton();
-            btnGuardarMenu = new MaterialSkin.Controls.MaterialButton();
+            btnBackMenu = new MaterialSkin.Controls.MaterialButton();
+            btnSaveMenu = new MaterialSkin.Controls.MaterialButton();
             label5 = new MaterialSkin.Controls.MaterialLabel();
             clbMenuTags = new CheckedListBox();
             nudMenuPriceChild = new NumericUpDown();
@@ -232,8 +232,8 @@
             // 
             // panelMenuUpload
             // 
-            panelMenuUpload.Controls.Add(btnVolverMenu);
-            panelMenuUpload.Controls.Add(btnGuardarMenu);
+            panelMenuUpload.Controls.Add(btnBackMenu);
+            panelMenuUpload.Controls.Add(btnSaveMenu);
             panelMenuUpload.Controls.Add(label5);
             panelMenuUpload.Controls.Add(clbMenuTags);
             panelMenuUpload.Controls.Add(nudMenuPriceChild);
@@ -250,45 +250,45 @@
             // 
             // btnVolverMenu
             // 
-            btnVolverMenu.AutoSize = false;
-            btnVolverMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverMenu.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverMenu.Depth = 0;
-            btnVolverMenu.HighEmphasis = true;
-            btnVolverMenu.Icon = null;
-            btnVolverMenu.Location = new Point(500, 338);
-            btnVolverMenu.Margin = new Padding(4, 6, 4, 6);
-            btnVolverMenu.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverMenu.Name = "btnVolverMenu";
-            btnVolverMenu.NoAccentTextColor = Color.Empty;
-            btnVolverMenu.Size = new Size(90, 36);
-            btnVolverMenu.TabIndex = 10;
-            btnVolverMenu.Text = "Volver";
-            btnVolverMenu.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverMenu.UseAccentColor = false;
-            btnVolverMenu.UseVisualStyleBackColor = true;
-            btnVolverMenu.Click += btnVolverMenu_Click;
+            btnBackMenu.AutoSize = false;
+            btnBackMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBackMenu.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBackMenu.Depth = 0;
+            btnBackMenu.HighEmphasis = true;
+            btnBackMenu.Icon = null;
+            btnBackMenu.Location = new Point(500, 338);
+            btnBackMenu.Margin = new Padding(4, 6, 4, 6);
+            btnBackMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBackMenu.Name = "btnBackMenu";
+            btnBackMenu.NoAccentTextColor = Color.Empty;
+            btnBackMenu.Size = new Size(90, 36);
+            btnBackMenu.TabIndex = 10;
+            btnBackMenu.Text = "Volver";
+            btnBackMenu.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBackMenu.UseAccentColor = false;
+            btnBackMenu.UseVisualStyleBackColor = true;
+            btnBackMenu.Click += btnBackMenu_Click;
             // 
             // btnGuardarMenu
             // 
-            btnGuardarMenu.AutoSize = false;
-            btnGuardarMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGuardarMenu.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnGuardarMenu.Depth = 0;
-            btnGuardarMenu.HighEmphasis = true;
-            btnGuardarMenu.Icon = null;
-            btnGuardarMenu.Location = new Point(40, 338);
-            btnGuardarMenu.Margin = new Padding(4, 6, 4, 6);
-            btnGuardarMenu.MouseState = MaterialSkin.MouseState.HOVER;
-            btnGuardarMenu.Name = "btnGuardarMenu";
-            btnGuardarMenu.NoAccentTextColor = Color.Empty;
-            btnGuardarMenu.Size = new Size(90, 36);
-            btnGuardarMenu.TabIndex = 9;
-            btnGuardarMenu.Text = "Guardar";
-            btnGuardarMenu.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnGuardarMenu.UseAccentColor = false;
-            btnGuardarMenu.UseVisualStyleBackColor = true;
-            btnGuardarMenu.Click += btnGuardarMenu_Click;
+            btnSaveMenu.AutoSize = false;
+            btnSaveMenu.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveMenu.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveMenu.Depth = 0;
+            btnSaveMenu.HighEmphasis = true;
+            btnSaveMenu.Icon = null;
+            btnSaveMenu.Location = new Point(40, 338);
+            btnSaveMenu.Margin = new Padding(4, 6, 4, 6);
+            btnSaveMenu.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveMenu.Name = "btnSaveMenu";
+            btnSaveMenu.NoAccentTextColor = Color.Empty;
+            btnSaveMenu.Size = new Size(90, 36);
+            btnSaveMenu.TabIndex = 9;
+            btnSaveMenu.Text = "Guardar";
+            btnSaveMenu.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveMenu.UseAccentColor = false;
+            btnSaveMenu.UseVisualStyleBackColor = true;
+            btnSaveMenu.Click += btnSaveMenu_Click;
             // 
             // label5
             // 
@@ -442,8 +442,8 @@
         private MaterialSkin.Controls.MaterialLabel label3;
         private MaterialSkin.Controls.MaterialTextBox mtbMenuDescription;
         private CheckedListBox clbMenuTags;
-        private MaterialSkin.Controls.MaterialButton btnVolverMenu;
-        private MaterialSkin.Controls.MaterialButton btnGuardarMenu;
+        private MaterialSkin.Controls.MaterialButton btnBackMenu;
+        private MaterialSkin.Controls.MaterialButton btnSaveMenu;
         private MaterialSkin.Controls.MaterialLabel label5;
     }
 }

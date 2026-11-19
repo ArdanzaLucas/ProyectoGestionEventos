@@ -43,8 +43,8 @@
             nudOIPrice = new NumericUpDown();
             label2 = new MaterialSkin.Controls.MaterialLabel();
             mtbOIName = new MaterialSkin.Controls.MaterialTextBox();
-            btnGuardarOI = new MaterialSkin.Controls.MaterialButton();
-            btnVolverAtras = new MaterialSkin.Controls.MaterialButton();
+            btnSaveOI = new MaterialSkin.Controls.MaterialButton();
+            btnBack = new MaterialSkin.Controls.MaterialButton();
             panelOIList = new Panel();
             mtLvOptionItems = new MaterialSkin.Controls.MaterialListView();
             NameColumn = new ColumnHeader();
@@ -78,8 +78,8 @@
             panelOIUpload.Controls.Add(nudOIPrice);
             panelOIUpload.Controls.Add(label2);
             panelOIUpload.Controls.Add(mtbOIName);
-            panelOIUpload.Controls.Add(btnGuardarOI);
-            panelOIUpload.Controls.Add(btnVolverAtras);
+            panelOIUpload.Controls.Add(btnSaveOI);
+            panelOIUpload.Controls.Add(btnBack);
             panelOIUpload.Location = new Point(0, 0);
             panelOIUpload.Margin = new Padding(3, 2, 3, 2);
             panelOIUpload.Name = "panelOIUpload";
@@ -152,48 +152,48 @@
             // 
             // btnGuardarOI
             // 
-            btnGuardarOI.AutoSize = false;
-            btnGuardarOI.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGuardarOI.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnGuardarOI.Depth = 0;
-            btnGuardarOI.FlatStyle = FlatStyle.Popup;
-            btnGuardarOI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnGuardarOI.HighEmphasis = true;
-            btnGuardarOI.Icon = null;
-            btnGuardarOI.Location = new Point(40, 270);
-            btnGuardarOI.Margin = new Padding(4);
-            btnGuardarOI.MouseState = MaterialSkin.MouseState.HOVER;
-            btnGuardarOI.Name = "btnGuardarOI";
-            btnGuardarOI.NoAccentTextColor = Color.Empty;
-            btnGuardarOI.Size = new Size(90, 36);
-            btnGuardarOI.TabIndex = 5;
-            btnGuardarOI.Text = "Guardar";
-            btnGuardarOI.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnGuardarOI.UseAccentColor = false;
-            btnGuardarOI.UseVisualStyleBackColor = true;
-            btnGuardarOI.Click += btnGuardarOI_Click;
+            btnSaveOI.AutoSize = false;
+            btnSaveOI.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveOI.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveOI.Depth = 0;
+            btnSaveOI.FlatStyle = FlatStyle.Popup;
+            btnSaveOI.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSaveOI.HighEmphasis = true;
+            btnSaveOI.Icon = null;
+            btnSaveOI.Location = new Point(40, 270);
+            btnSaveOI.Margin = new Padding(4);
+            btnSaveOI.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveOI.Name = "btnSaveOI";
+            btnSaveOI.NoAccentTextColor = Color.Empty;
+            btnSaveOI.Size = new Size(90, 36);
+            btnSaveOI.TabIndex = 5;
+            btnSaveOI.Text = "Guardar";
+            btnSaveOI.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveOI.UseAccentColor = false;
+            btnSaveOI.UseVisualStyleBackColor = true;
+            btnSaveOI.Click += btnSaveOI_Click;
             // 
             // btnVolverAtras
             // 
-            btnVolverAtras.AutoSize = false;
-            btnVolverAtras.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverAtras.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverAtras.Depth = 0;
-            btnVolverAtras.HighEmphasis = true;
-            btnVolverAtras.Icon = null;
-            btnVolverAtras.Location = new Point(200, 270);
-            btnVolverAtras.Margin = new Padding(4);
-            btnVolverAtras.MinimumSize = new Size(77, 0);
-            btnVolverAtras.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverAtras.Name = "btnVolverAtras";
-            btnVolverAtras.NoAccentTextColor = Color.Empty;
-            btnVolverAtras.Size = new Size(90, 36);
-            btnVolverAtras.TabIndex = 6;
-            btnVolverAtras.Text = "Volver";
-            btnVolverAtras.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverAtras.UseAccentColor = false;
-            btnVolverAtras.UseVisualStyleBackColor = true;
-            btnVolverAtras.Click += btnVolverAtras_Click;
+            btnBack.AutoSize = false;
+            btnBack.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBack.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBack.Depth = 0;
+            btnBack.HighEmphasis = true;
+            btnBack.Icon = null;
+            btnBack.Location = new Point(200, 270);
+            btnBack.Margin = new Padding(4);
+            btnBack.MinimumSize = new Size(77, 0);
+            btnBack.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBack.Name = "btnBack";
+            btnBack.NoAccentTextColor = Color.Empty;
+            btnBack.Size = new Size(90, 36);
+            btnBack.TabIndex = 6;
+            btnBack.Text = "Volver";
+            btnBack.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBack.UseAccentColor = false;
+            btnBack.UseVisualStyleBackColor = true;
+            btnBack.Click += btnBack_Click;
             // 
             // panelOIList
             // 
@@ -374,8 +374,8 @@
         private MaterialSkin.Controls.MaterialButton btnOICreate;
         private NumericUpDown nudOIPrice;
         private MaterialSkin.Controls.MaterialTextBox mtbOIName;
-        private MaterialSkin.Controls.MaterialButton btnVolverAtras;
-        private MaterialSkin.Controls.MaterialButton btnGuardarOI;
+        private MaterialSkin.Controls.MaterialButton btnBack;
+        private MaterialSkin.Controls.MaterialButton btnSaveOI;
         private MaterialSkin.Controls.MaterialLabel label3;
         private MaterialSkin.Controls.MaterialLabel label2;
         private MaterialSkin.Controls.MaterialLabel label1;

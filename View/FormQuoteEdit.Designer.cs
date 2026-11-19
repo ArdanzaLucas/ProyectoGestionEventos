@@ -33,7 +33,7 @@
             label2 = new MaterialSkin.Controls.MaterialLabel();
             cmbQuoteEvent = new ComboBox();
             label3 = new MaterialSkin.Controls.MaterialLabel();
-            cmbQuoteUbication = new ComboBox();
+            cmbQuoteLocation = new ComboBox();
             label4 = new MaterialSkin.Controls.MaterialLabel();
             lblQuoteGuests = new MaterialSkin.Controls.MaterialLabel();
             label5 = new MaterialSkin.Controls.MaterialLabel();
@@ -43,27 +43,27 @@
             label7 = new MaterialSkin.Controls.MaterialLabel();
             nudQuoteAdults = new NumericUpDown();
             label8 = new MaterialSkin.Controls.MaterialLabel();
-            nudQuoteChilds = new NumericUpDown();
+            nudQuoteChildren = new NumericUpDown();
             btnAddLine = new MaterialSkin.Controls.MaterialButton();
             lvQuoteLines = new ListView();
             LineMenuColumn = new ColumnHeader();
             LineTagColumn = new ColumnHeader();
             LineAdultsColumn = new ColumnHeader();
-            LineChildsColumn = new ColumnHeader();
+            LineChildrenColumn = new ColumnHeader();
             LineSubtotalColumn = new ColumnHeader();
             btnRemoveLine = new MaterialSkin.Controls.MaterialButton();
             label9 = new MaterialSkin.Controls.MaterialLabel();
             clbQuoteOptionItems = new CheckedListBox();
             label10 = new MaterialSkin.Controls.MaterialLabel();
-            lblTotalUbication = new MaterialSkin.Controls.MaterialLabel();
+            lblTotalLocation = new MaterialSkin.Controls.MaterialLabel();
             lblTotalMenus = new MaterialSkin.Controls.MaterialLabel();
             lblTotalOptionItems = new MaterialSkin.Controls.MaterialLabel();
             lblTotal = new MaterialSkin.Controls.MaterialLabel();
-            btnGuardarQuote = new MaterialSkin.Controls.MaterialButton();
-            btnVolverQuote = new MaterialSkin.Controls.MaterialButton();
+            btnSaveQuote = new MaterialSkin.Controls.MaterialButton();
+            btnBackQuote = new MaterialSkin.Controls.MaterialButton();
             panelQuoteCU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudQuoteAdults).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)nudQuoteChilds).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudQuoteChildren).BeginInit();
             SuspendLayout();
             //
             // panelQuoteCU
@@ -72,7 +72,7 @@
             panelQuoteCU.Controls.Add(label2);
             panelQuoteCU.Controls.Add(cmbQuoteEvent);
             panelQuoteCU.Controls.Add(label3);
-            panelQuoteCU.Controls.Add(cmbQuoteUbication);
+            panelQuoteCU.Controls.Add(cmbQuoteLocation);
             panelQuoteCU.Controls.Add(label4);
             panelQuoteCU.Controls.Add(lblQuoteGuests);
             panelQuoteCU.Controls.Add(label5);
@@ -82,19 +82,19 @@
             panelQuoteCU.Controls.Add(label7);
             panelQuoteCU.Controls.Add(nudQuoteAdults);
             panelQuoteCU.Controls.Add(label8);
-            panelQuoteCU.Controls.Add(nudQuoteChilds);
+            panelQuoteCU.Controls.Add(nudQuoteChildren);
             panelQuoteCU.Controls.Add(btnAddLine);
             panelQuoteCU.Controls.Add(lvQuoteLines);
             panelQuoteCU.Controls.Add(btnRemoveLine);
             panelQuoteCU.Controls.Add(label9);
             panelQuoteCU.Controls.Add(clbQuoteOptionItems);
             panelQuoteCU.Controls.Add(label10);
-            panelQuoteCU.Controls.Add(lblTotalUbication);
+            panelQuoteCU.Controls.Add(lblTotalLocation);
             panelQuoteCU.Controls.Add(lblTotalMenus);
             panelQuoteCU.Controls.Add(lblTotalOptionItems);
             panelQuoteCU.Controls.Add(lblTotal);
-            panelQuoteCU.Controls.Add(btnGuardarQuote);
-            panelQuoteCU.Controls.Add(btnVolverQuote);
+            panelQuoteCU.Controls.Add(btnSaveQuote);
+            panelQuoteCU.Controls.Add(btnBackQuote);
             panelQuoteCU.Name = "panelQuoteCU";
             panelQuoteCU.Dock = DockStyle.Fill;
             panelQuoteCU.Location = new Point(0, 0);
@@ -147,15 +147,15 @@
             label3.TabIndex = 3;
             label3.Text = "Ubicacion";
             //
-            // cmbQuoteUbication
+            // cmbQuoteLocation
             //
-            cmbQuoteUbication.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbQuoteUbication.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            cmbQuoteUbication.Location = new Point(290, 68);
-            cmbQuoteUbication.Name = "cmbQuoteUbication";
-            cmbQuoteUbication.Size = new Size(220, 23);
-            cmbQuoteUbication.TabIndex = 4;
-            cmbQuoteUbication.SelectedIndexChanged += cmbQuoteUbication_SelectedIndexChanged;
+            cmbQuoteLocation.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbQuoteLocation.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            cmbQuoteLocation.Location = new Point(290, 68);
+            cmbQuoteLocation.Name = "cmbQuoteLocation";
+            cmbQuoteLocation.Size = new Size(220, 23);
+            cmbQuoteLocation.TabIndex = 4;
+            cmbQuoteLocation.SelectedIndexChanged += cmbQuoteLocation_SelectedIndexChanged;
             //
             // label4
             //
@@ -258,14 +258,14 @@
             label8.TabIndex = 12;
             label8.Text = "Niños";
             //
-            // nudQuoteChilds
+            // nudQuoteChildren
             //
-            nudQuoteChilds.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            nudQuoteChilds.Location = new Point(390, 146);
-            nudQuoteChilds.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            nudQuoteChilds.Name = "nudQuoteChilds";
-            nudQuoteChilds.Size = new Size(60, 23);
-            nudQuoteChilds.TabIndex = 13;
+            nudQuoteChildren.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudQuoteChildren.Location = new Point(390, 146);
+            nudQuoteChildren.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudQuoteChildren.Name = "nudQuoteChildren";
+            nudQuoteChildren.Size = new Size(60, 23);
+            nudQuoteChildren.TabIndex = 13;
             //
             // btnAddLine
             //
@@ -290,7 +290,7 @@
             //
             // lvQuoteLines
             //
-            lvQuoteLines.Columns.AddRange(new ColumnHeader[] { LineMenuColumn, LineTagColumn, LineAdultsColumn, LineChildsColumn, LineSubtotalColumn });
+            lvQuoteLines.Columns.AddRange(new ColumnHeader[] { LineMenuColumn, LineTagColumn, LineAdultsColumn, LineChildrenColumn, LineSubtotalColumn });
             lvQuoteLines.FullRowSelect = true;
             lvQuoteLines.GridLines = true;
             lvQuoteLines.Location = new Point(20, 185);
@@ -316,10 +316,10 @@
             LineAdultsColumn.Text = "Adultos";
             LineAdultsColumn.Width = 70;
             //
-            // LineChildsColumn
+            // LineChildrenColumn
             //
-            LineChildsColumn.Text = "Niños";
-            LineChildsColumn.Width = 70;
+            LineChildrenColumn.Text = "Niños";
+            LineChildrenColumn.Width = 70;
             //
             // LineSubtotalColumn
             //
@@ -381,17 +381,17 @@
             label10.TabIndex = 19;
             label10.Text = "Totales";
             //
-            // lblTotalUbication
+            // lblTotalLocation
             //
-            lblTotalUbication.AutoSize = true;
-            lblTotalUbication.Depth = 0;
-            lblTotalUbication.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
-            lblTotalUbication.MouseState = MaterialSkin.MouseState.HOVER;
-            lblTotalUbication.Location = new Point(300, 348);
-            lblTotalUbication.Name = "lblTotalUbication";
-            lblTotalUbication.Size = new Size(70, 15);
-            lblTotalUbication.TabIndex = 20;
-            lblTotalUbication.Text = "Ubicacion: -";
+            lblTotalLocation.AutoSize = true;
+            lblTotalLocation.Depth = 0;
+            lblTotalLocation.FontType = MaterialSkin.MaterialSkinManager.fontType.Body1;
+            lblTotalLocation.MouseState = MaterialSkin.MouseState.HOVER;
+            lblTotalLocation.Location = new Point(300, 348);
+            lblTotalLocation.Name = "lblTotalLocation";
+            lblTotalLocation.Size = new Size(70, 15);
+            lblTotalLocation.TabIndex = 20;
+            lblTotalLocation.Text = "Ubicacion: -";
             //
             // lblTotalMenus
             //
@@ -431,45 +431,45 @@
             //
             // btnGuardarQuote
             //
-            btnGuardarQuote.AutoSize = false;
-            btnGuardarQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGuardarQuote.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnGuardarQuote.Depth = 0;
-            btnGuardarQuote.HighEmphasis = true;
-            btnGuardarQuote.Icon = null;
-            btnGuardarQuote.Location = new Point(150, 480);
-            btnGuardarQuote.Margin = new Padding(4, 6, 4, 6);
-            btnGuardarQuote.MouseState = MaterialSkin.MouseState.HOVER;
-            btnGuardarQuote.Name = "btnGuardarQuote";
-            btnGuardarQuote.NoAccentTextColor = Color.Empty;
-            btnGuardarQuote.Size = new Size(90, 36);
-            btnGuardarQuote.TabIndex = 24;
-            btnGuardarQuote.Text = "Guardar";
-            btnGuardarQuote.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnGuardarQuote.UseAccentColor = false;
-            btnGuardarQuote.UseVisualStyleBackColor = true;
-            btnGuardarQuote.Click += btnGuardarQuote_Click;
+            btnSaveQuote.AutoSize = false;
+            btnSaveQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveQuote.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveQuote.Depth = 0;
+            btnSaveQuote.HighEmphasis = true;
+            btnSaveQuote.Icon = null;
+            btnSaveQuote.Location = new Point(150, 480);
+            btnSaveQuote.Margin = new Padding(4, 6, 4, 6);
+            btnSaveQuote.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveQuote.Name = "btnSaveQuote";
+            btnSaveQuote.NoAccentTextColor = Color.Empty;
+            btnSaveQuote.Size = new Size(90, 36);
+            btnSaveQuote.TabIndex = 24;
+            btnSaveQuote.Text = "Guardar";
+            btnSaveQuote.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveQuote.UseAccentColor = false;
+            btnSaveQuote.UseVisualStyleBackColor = true;
+            btnSaveQuote.Click += btnSaveQuote_Click;
             //
             // btnVolverQuote
             //
-            btnVolverQuote.AutoSize = false;
-            btnVolverQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverQuote.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverQuote.Depth = 0;
-            btnVolverQuote.HighEmphasis = true;
-            btnVolverQuote.Icon = null;
-            btnVolverQuote.Location = new Point(350, 480);
-            btnVolverQuote.Margin = new Padding(4, 6, 4, 6);
-            btnVolverQuote.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverQuote.Name = "btnVolverQuote";
-            btnVolverQuote.NoAccentTextColor = Color.Empty;
-            btnVolverQuote.Size = new Size(90, 36);
-            btnVolverQuote.TabIndex = 25;
-            btnVolverQuote.Text = "Volver";
-            btnVolverQuote.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverQuote.UseAccentColor = false;
-            btnVolverQuote.UseVisualStyleBackColor = true;
-            btnVolverQuote.Click += btnVolverQuote_Click;
+            btnBackQuote.AutoSize = false;
+            btnBackQuote.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBackQuote.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBackQuote.Depth = 0;
+            btnBackQuote.HighEmphasis = true;
+            btnBackQuote.Icon = null;
+            btnBackQuote.Location = new Point(350, 480);
+            btnBackQuote.Margin = new Padding(4, 6, 4, 6);
+            btnBackQuote.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBackQuote.Name = "btnBackQuote";
+            btnBackQuote.NoAccentTextColor = Color.Empty;
+            btnBackQuote.Size = new Size(90, 36);
+            btnBackQuote.TabIndex = 25;
+            btnBackQuote.Text = "Volver";
+            btnBackQuote.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBackQuote.UseAccentColor = false;
+            btnBackQuote.UseVisualStyleBackColor = true;
+            btnBackQuote.Click += btnBackQuote_Click;
             //
             // FormQuoteEdit
             //
@@ -483,7 +483,7 @@
             panelQuoteCU.ResumeLayout(false);
             panelQuoteCU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudQuoteAdults).EndInit();
-            ((System.ComponentModel.ISupportInitialize)nudQuoteChilds).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudQuoteChildren).EndInit();
             ResumeLayout(false);
         }
 
@@ -494,7 +494,7 @@
         private MaterialSkin.Controls.MaterialLabel label2;
         private ComboBox cmbQuoteEvent;
         private MaterialSkin.Controls.MaterialLabel label3;
-        private ComboBox cmbQuoteUbication;
+        private ComboBox cmbQuoteLocation;
         private MaterialSkin.Controls.MaterialLabel label4;
         private MaterialSkin.Controls.MaterialLabel lblQuoteGuests;
         private MaterialSkin.Controls.MaterialLabel label5;
@@ -504,23 +504,23 @@
         private MaterialSkin.Controls.MaterialLabel label7;
         private NumericUpDown nudQuoteAdults;
         private MaterialSkin.Controls.MaterialLabel label8;
-        private NumericUpDown nudQuoteChilds;
+        private NumericUpDown nudQuoteChildren;
         private MaterialSkin.Controls.MaterialButton btnAddLine;
         private ListView lvQuoteLines;
         private ColumnHeader LineMenuColumn;
         private ColumnHeader LineTagColumn;
         private ColumnHeader LineAdultsColumn;
-        private ColumnHeader LineChildsColumn;
+        private ColumnHeader LineChildrenColumn;
         private ColumnHeader LineSubtotalColumn;
         private MaterialSkin.Controls.MaterialButton btnRemoveLine;
         private MaterialSkin.Controls.MaterialLabel label9;
         private CheckedListBox clbQuoteOptionItems;
         private MaterialSkin.Controls.MaterialLabel label10;
-        private MaterialSkin.Controls.MaterialLabel lblTotalUbication;
+        private MaterialSkin.Controls.MaterialLabel lblTotalLocation;
         private MaterialSkin.Controls.MaterialLabel lblTotalMenus;
         private MaterialSkin.Controls.MaterialLabel lblTotalOptionItems;
         private MaterialSkin.Controls.MaterialLabel lblTotal;
-        private MaterialSkin.Controls.MaterialButton btnGuardarQuote;
-        private MaterialSkin.Controls.MaterialButton btnVolverQuote;
+        private MaterialSkin.Controls.MaterialButton btnSaveQuote;
+        private MaterialSkin.Controls.MaterialButton btnBackQuote;
     }
 }

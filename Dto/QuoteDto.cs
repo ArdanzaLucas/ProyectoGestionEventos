@@ -15,16 +15,16 @@ namespace ProyectoPresupuestoEvento.Dto
         private string _eventClientName;
         private DateTime _eventDate;
         private int _eventGuestAdults;
-        private int _eventGuestChilds;
+        private int _eventGuestChildren;
         private int _eventDuration;
         private int _totalGuests;
-        private int _ubicationId;
-        private string _ubicationName;
-        private decimal _ubicationPrice;
+        private int _locationId;
+        private string _locationName;
+        private decimal _locationPrice;
         private List<DetailMenuDto> _menusList;
         private List<DetailOptionItemDto> _optionItemsList;
-        private EstadoPresupuesto _state;
-        private decimal _totalUbication;
+        private QuoteState _state;
+        private decimal _totalLocation;
         private decimal _totalMenus;
         private decimal _totalOptionItems;
         private decimal _total;
@@ -32,10 +32,10 @@ namespace ProyectoPresupuestoEvento.Dto
 
         //constructor
 
-        public QuoteDto(int eventItemId, int ubicationId, List<DetailMenuDto> menusList, List<DetailOptionItemDto> optionItemsList)
+        public QuoteDto(int eventItemId, int locationId, List<DetailMenuDto> menusList, List<DetailOptionItemDto> optionItemsList)
         {
             EventItemId = eventItemId;
-            UbicationId = ubicationId;
+            LocationId = locationId;
             MenusList = menusList;
             OptionItemsList = optionItemsList;
         }
@@ -79,10 +79,10 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _eventGuestAdults = value; }
         }
 
-        public int EventGuestChilds
+        public int EventGuestChildren
         {
-            get { return _eventGuestChilds; }
-            set { _eventGuestChilds = value; }
+            get { return _eventGuestChildren; }
+            set { _eventGuestChildren = value; }
         }
 
         public int EventDuration
@@ -97,22 +97,22 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _totalGuests = value; }
         }
 
-        public int UbicationId
+        public int LocationId
         {
-            get { return _ubicationId; }
-            set { _ubicationId = value; }
+            get { return _locationId; }
+            set { _locationId = value; }
         }
 
-        public string UbicationName
+        public string LocationName
         {
-            get { return _ubicationName; }
-            set { _ubicationName = value; }
+            get { return _locationName; }
+            set { _locationName = value; }
         }
 
-        public decimal UbicationPrice
+        public decimal LocationPrice
         {
-            get { return _ubicationPrice; }
-            set { _ubicationPrice = value; }
+            get { return _locationPrice; }
+            set { _locationPrice = value; }
         }
 
         public List<DetailMenuDto> MenusList
@@ -127,16 +127,16 @@ namespace ProyectoPresupuestoEvento.Dto
             set { _optionItemsList = value; }
         }
 
-        public EstadoPresupuesto State
+        public QuoteState State
         {
             get { return _state; }
             set { _state = value; }
         }
 
-        public decimal TotalUbication
+        public decimal TotalLocation
         {
-            get { return _totalUbication; }
-            set { _totalUbication = value; }
+            get { return _totalLocation; }
+            set { _totalLocation = value; }
         }
 
         public decimal TotalMenus

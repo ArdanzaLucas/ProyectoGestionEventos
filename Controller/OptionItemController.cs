@@ -18,24 +18,24 @@ namespace ProyectoPresupuestoEvento.Controller
             service = new OptionItemService();
         }
 
-        public void addToRepository(OptionItemDto dto)
+        public void AddToRepository(OptionItemDto dto)
         {
-            service.addToRepository(dto);
+            service.AddToRepository(dto);
         }
         
-        public List<OptionItemDto> getOptionItems()
+        public List<OptionItemDto> GetOptionItems()
         {
-           return service.getOptionItems();
+           return service.GetOptionItems();
         }
 
-        public void updateOptionItem(int id, OptionItemDto dto)
+        public void UpdateOptionItem(int id, OptionItemDto dto)
         {
-            service.updateOptionItem(id, dto);
+            service.UpdateOptionItem(id, dto);
         }
 
-        public void removeOptionItem(int id)
+        public void RemoveOptionItem(int id)
         {
-            service.removeOptionItem(id);
+            service.RemoveOptionItem(id);
 
         }
 

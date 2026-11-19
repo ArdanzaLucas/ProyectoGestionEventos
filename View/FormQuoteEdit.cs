@@ -17,67 +17,67 @@ namespace ProyectoPresupuestoEvento.View
     {
         private QuoteController quoteController;
         private EventItemController eventController;
-        private UbicationController ubicationController;
+        private LocationController locationController;
         private MenuController menuController;
         private OptionItemController optionItemController;
 
         private FormIndex formIndex;
 
-        private int idEditando = 0;
+        private int editingId = 0;
 
-        private List<DetailMenuDto> lineas = new List<DetailMenuDto>();
+        private List<DetailMenuDto> lines = new List<DetailMenuDto>();
 
         public FormQuoteEdit(QuoteController quoteController, EventItemController eventController,
-            UbicationController ubicationController, MenuController menuController, OptionItemController optionItemController)
+            LocationController locationController, MenuController menuController, OptionItemController optionItemController)
         {
             this.quoteController = quoteController;
             this.eventController = eventController;
-            this.ubicationController = ubicationController;
+            this.locationController = locationController;
             this.menuController = menuController;
             this.optionItemController = optionItemController;
             InitializeComponent();
-            VisualHelper.centerContent(panelQuoteCU);
+            VisualHelper.CenterContent(panelQuoteCU);
         }
 
-        public void setFormIndex(FormIndex formIndex)
+        public void SetFormIndex(FormIndex formIndex)
         {
             this.formIndex = formIndex;
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            lineas = new List<DetailMenuDto>();
+            lines = new List<DetailMenuDto>();
             lvQuoteLines.Items.Clear();
-            idEditando = 0;
+            editingId = 0;
         }
 
 
 
         //seccion Abrir
 
-        public void showNew(int idEventoFiltro)
+        public void ShowNew(int filterEventId)
         {
-            idEditando = 0;
-            loadCombos();
+            editingId = 0;
+            LoadCombos();
 
             cmbQuoteEvent.Enabled = true;
             for (int i = 0; i < cmbQuoteEvent.Items.Count; i++)
             {
-                if (((EventItemDto)cmbQuoteEvent.Items[i]).Id == idEventoFiltro)
+                if (((EventItemDto)cmbQuoteEvent.Items[i]).Id == filterEventId)
                 {
                     cmbQuoteEvent.SelectedIndex = i;
                 }
             }
 
-            lineas = new List<DetailMenuDto>();
+            lines = new List<DetailMenuDto>();
 
-            refreshTotals();
+            RefreshTotals();
         }
 
-        public void showEdit(QuoteDto selected)
+        public void ShowEdit(QuoteDto selected)
         {
-            idEditando = selected.Id;
-            loadCombos();
+            editingId = selected.Id;
+            LoadCombos();
 
             for (int i = 0; i < cmbQuoteEvent.Items.Count; i++)
             {
@@ -88,71 +88,71 @@ namespace ProyectoPresupuestoEvento.View
             }
             cmbQuoteEvent.Enabled = false;
 
-            bool ubicacionEncontrada = false;
-            for (int i = 0; i < cmbQuoteUbication.Items.Count; i++)
+            bool locationFound = false;
+            for (int i = 0; i < cmbQuoteLocation.Items.Count; i++)
             {
-                if (((UbicationDto)cmbQuoteUbication.Items[i]).Id == selected.UbicationId)
+                if (((LocationDto)cmbQuoteLocation.Items[i]).Id == selected.LocationId)
                 {
-                    cmbQuoteUbication.SelectedIndex = i;
-                    ubicacionEncontrada = true;
+                    cmbQuoteLocation.SelectedIndex = i;
+                    locationFound = true;
                 }
             }
-            if (!ubicacionEncontrada)
+            if (!locationFound)
             {
-                UbicationDto deBaja = new UbicationDto(selected.UbicationId, selected.UbicationName + " (dada de baja)", selected.UbicationPrice);
-                cmbQuoteUbication.Items.Add(deBaja);
-                cmbQuoteUbication.SelectedItem = deBaja;
+                LocationDto inactiveItem = new LocationDto(selected.LocationId, selected.LocationName + " (dada de baja)", selected.LocationPrice);
+                cmbQuoteLocation.Items.Add(inactiveItem);
+                cmbQuoteLocation.SelectedItem = inactiveItem;
             }
 
-            lineas = new List<DetailMenuDto>();
-            foreach (DetailMenuDto linea in selected.MenusList)
+            lines = new List<DetailMenuDto>();
+            foreach (DetailMenuDto line in selected.MenusList)
             {
-                DetailMenuDto copia = new DetailMenuDto(linea.MenuId, linea.TagDescription, linea.AdultQuantity, linea.ChildQuantity);
-                copia.MenuDescription = linea.MenuDescription;
-                lineas.Add(copia);
+                DetailMenuDto copy = new DetailMenuDto(line.MenuId, line.TagDescription, line.AdultQuantity, line.ChildQuantity);
+                copy.MenuDescription = line.MenuDescription;
+                lines.Add(copy);
             }
 
-            foreach (DetailOptionItemDto servicio in selected.OptionItemsList)
+            foreach (DetailOptionItemDto optionItem in selected.OptionItemsList)
             {
-                bool servicioEncontrado = false;
+                bool optionItemFound = false;
                 for (int i = 0; i < clbQuoteOptionItems.Items.Count; i++)
                 {
-                    if (((OptionItemDto)clbQuoteOptionItems.Items[i]).Id == servicio.OptionItemId)
+                    if (((OptionItemDto)clbQuoteOptionItems.Items[i]).Id == optionItem.OptionItemId)
                     {
                         clbQuoteOptionItems.SetItemChecked(i, true);
-                        servicioEncontrado = true;
+                        optionItemFound = true;
                     }
                 }
-                if (!servicioEncontrado)
+                if (!optionItemFound)
                 {
-                    OptionItemDto deBaja = new OptionItemDto(servicio.OptionItemId, servicio.OptionItemName + " (dado de baja)", servicio.UnitPrice);
-                    int indice = clbQuoteOptionItems.Items.Add(deBaja);
-                    clbQuoteOptionItems.SetItemChecked(indice, true);
+                    OptionItemDto inactiveItem = new OptionItemDto(optionItem.OptionItemId, optionItem.OptionItemName + " (dado de baja)", optionItem.UnitPrice);
+                    int index = clbQuoteOptionItems.Items.Add(inactiveItem);
+                    clbQuoteOptionItems.SetItemChecked(index, true);
                 }
             }
 
-            refreshTotals();
+            RefreshTotals();
         }
 
-        private void loadCombos()
+        private void LoadCombos()
         {
             cmbQuoteEvent.Items.Clear();
             cmbQuoteEvent.DisplayMember = "DisplayName";
-            foreach (EventItemDto evento in eventController.getEventItems())
+            foreach (EventItemDto eventItem in eventController.GetEventItems())
             {
-                cmbQuoteEvent.Items.Add(evento);
+                cmbQuoteEvent.Items.Add(eventItem);
             }
 
-            cmbQuoteUbication.Items.Clear();
-            cmbQuoteUbication.DisplayMember = "Name";
-            foreach (UbicationDto ubicacion in ubicationController.getUbications())
+            cmbQuoteLocation.Items.Clear();
+            cmbQuoteLocation.DisplayMember = "Name";
+            foreach (LocationDto location in locationController.GetLocations())
             {
-                cmbQuoteUbication.Items.Add(ubicacion);
+                cmbQuoteLocation.Items.Add(location);
             }
 
             cmbQuoteMenu.Items.Clear();
             cmbQuoteMenu.DisplayMember = "Description";
-            foreach (MenuDto menu in menuController.getMenus())
+            foreach (MenuDto menu in menuController.GetMenus())
             {
                 cmbQuoteMenu.Items.Add(menu);
             }
@@ -160,13 +160,13 @@ namespace ProyectoPresupuestoEvento.View
 
             clbQuoteOptionItems.Items.Clear();
             clbQuoteOptionItems.DisplayMember = "Name";
-            foreach (OptionItemDto servicio in optionItemController.getOptionItems())
+            foreach (OptionItemDto optionItem in optionItemController.GetOptionItems())
             {
-                clbQuoteOptionItems.Items.Add(servicio);
+                clbQuoteOptionItems.Items.Add(optionItem);
             }
 
             nudQuoteAdults.Value = 0;
-            nudQuoteChilds.Value = 0;
+            nudQuoteChildren.Value = 0;
             lblQuoteGuests.Text = "Invitados del evento: -";
         }
 
@@ -185,9 +185,9 @@ namespace ProyectoPresupuestoEvento.View
             }
 
             MenuDto menu = (MenuDto)cmbQuoteMenu.SelectedItem;
-            foreach (MenuTagDto etiqueta in menu.TagList)
+            foreach (MenuTagDto tag in menu.TagList)
             {
-                cmbQuoteTag.Items.Add(etiqueta);
+                cmbQuoteTag.Items.Add(tag);
             }
 
             if (cmbQuoteTag.Items.Count > 0)
@@ -204,144 +204,144 @@ namespace ProyectoPresupuestoEvento.View
             }
             else
             {
-                EventItemDto evento = (EventItemDto)cmbQuoteEvent.SelectedItem;
-                lblQuoteGuests.Text = "Invitados del evento: " + evento.GuestAdults + " adultos / " + evento.GuestChilds + " niños";
+                EventItemDto eventItem = (EventItemDto)cmbQuoteEvent.SelectedItem;
+                lblQuoteGuests.Text = "Invitados del evento: " + eventItem.GuestAdults + " adultos / " + eventItem.GuestChildren + " niños";
             }
 
-            refreshTotals();
+            RefreshTotals();
         }
 
-        private void cmbQuoteUbication_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbQuoteLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            refreshTotals();
+            RefreshTotals();
         }
 
         private void clbQuoteOptionItems_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            this.BeginInvoke(new Action(refreshTotals));
+            this.BeginInvoke(new Action(RefreshTotals));
         }
 
         private void btnAddLine_Click(object sender, EventArgs e)
         {
             if (cmbQuoteMenu.SelectedItem == null)
             {
-                MessageHelper.showWarning("seleccione un menu");
+                MessageHelper.ShowWarning("seleccione un menu");
                 return;
             }
 
             if (cmbQuoteTag.SelectedItem == null)
             {
-                MessageHelper.showWarning("seleccione una etiqueta");
+                MessageHelper.ShowWarning("seleccione una etiqueta");
                 return;
             }
 
-            int adultos = (int)nudQuoteAdults.Value;
-            int ninos = (int)nudQuoteChilds.Value;
-            if (adultos + ninos == 0)
+            int adults = (int)nudQuoteAdults.Value;
+            int children = (int)nudQuoteChildren.Value;
+            if (adults + children == 0)
             {
-                MessageHelper.showWarning("ingrese al menos un plato (adultos o niños)");
+                MessageHelper.ShowWarning("ingrese al menos un plato (adultos o niños)");
                 return;
             }
 
             MenuDto menu = (MenuDto)cmbQuoteMenu.SelectedItem;
-            MenuTagDto etiqueta = (MenuTagDto)cmbQuoteTag.SelectedItem;
+            MenuTagDto tag = (MenuTagDto)cmbQuoteTag.SelectedItem;
 
-            bool yaEstaba = false;
-            foreach (DetailMenuDto linea in lineas)
+            bool alreadyAdded = false;
+            foreach (DetailMenuDto line in lines)
             {
-                if (linea.MenuId == menu.Id && linea.TagDescription == etiqueta.Description)
+                if (line.MenuId == menu.Id && line.TagDescription == tag.Description)
                 {
-                    linea.AdultQuantity = linea.AdultQuantity + adultos;
-                    linea.ChildQuantity = linea.ChildQuantity + ninos;
-                    yaEstaba = true;
+                    line.AdultQuantity = line.AdultQuantity + adults;
+                    line.ChildQuantity = line.ChildQuantity + children;
+                    alreadyAdded = true;
                 }
             }
 
-            if (!yaEstaba)
+            if (!alreadyAdded)
             {
-                DetailMenuDto nueva = new DetailMenuDto(menu.Id, etiqueta.Description, adultos, ninos);
-                nueva.MenuDescription = menu.Description;
-                lineas.Add(nueva);
+                DetailMenuDto newLine = new DetailMenuDto(menu.Id, tag.Description, adults, children);
+                newLine.MenuDescription = menu.Description;
+                lines.Add(newLine);
             }
 
             nudQuoteAdults.Value = 0;
-            nudQuoteChilds.Value = 0;
+            nudQuoteChildren.Value = 0;
 
-            refreshTotals();
+            RefreshTotals();
         }
 
         private void btnRemoveLine_Click(object sender, EventArgs e)
         {
             if (lvQuoteLines.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione una linea para quitar");
+                MessageHelper.ShowWarning("seleccione una linea para quitar");
                 return;
             }
 
-            int indice = lvQuoteLines.SelectedItems[0].Index;
-            lineas.RemoveAt(indice);
+            int index = lvQuoteLines.SelectedItems[0].Index;
+            lines.RemoveAt(index);
 
-            refreshTotals();
+            RefreshTotals();
         }
 
-        private QuoteDto buildQuoteDto()
+        private QuoteDto BuildQuoteDto()
         {
-            EventItemDto evento = (EventItemDto)cmbQuoteEvent.SelectedItem;
-            UbicationDto ubicacion = (UbicationDto)cmbQuoteUbication.SelectedItem;
+            EventItemDto eventItem = (EventItemDto)cmbQuoteEvent.SelectedItem;
+            LocationDto location = (LocationDto)cmbQuoteLocation.SelectedItem;
 
-            List<DetailOptionItemDto> servicios = new List<DetailOptionItemDto>();
-            foreach (OptionItemDto servicio in clbQuoteOptionItems.CheckedItems)
+            List<DetailOptionItemDto> optionItems = new List<DetailOptionItemDto>();
+            foreach (OptionItemDto optionItem in clbQuoteOptionItems.CheckedItems)
             {
-                servicios.Add(new DetailOptionItemDto(servicio.Id));
+                optionItems.Add(new DetailOptionItemDto(optionItem.Id));
             }
 
-            QuoteDto dto = new QuoteDto(evento.Id, ubicacion.Id, lineas, servicios);
+            QuoteDto dto = new QuoteDto(eventItem.Id, location.Id, lines, optionItems);
             return dto;
         }
 
-        private void refreshTotals()
+        private void RefreshTotals()
         {
-            if (cmbQuoteEvent.SelectedItem == null || cmbQuoteUbication.SelectedItem == null)
+            if (cmbQuoteEvent.SelectedItem == null || cmbQuoteLocation.SelectedItem == null)
             {
-                showLines(lineas, false);
-                lblTotalUbication.Text = "Ubicacion: -";
+                ShowLines(lines, false);
+                lblTotalLocation.Text = "Ubicacion: -";
                 lblTotalMenus.Text = "Catering: -";
                 lblTotalOptionItems.Text = "Servicios: -";
                 lblTotal.Text = "Total: -";
                 return;
             }
 
-            QuoteDto preview = quoteController.calculatePreview(buildQuoteDto());
+            QuoteDto preview = quoteController.CalculatePreview(BuildQuoteDto());
 
-            showLines(preview.MenusList, true);
-            lblTotalUbication.Text = "Ubicacion: " + preview.TotalUbication.ToString("C");
+            ShowLines(preview.MenusList, true);
+            lblTotalLocation.Text = "Ubicacion: " + preview.TotalLocation.ToString("C");
             lblTotalMenus.Text = "Catering: " + preview.TotalMenus.ToString("C");
             lblTotalOptionItems.Text = "Servicios: " + preview.TotalOptionItems.ToString("C");
             lblTotal.Text = "Total: " + preview.Total.ToString("C");
         }
 
-        private void showLines(List<DetailMenuDto> lista, bool conSubtotal)
+        private void ShowLines(List<DetailMenuDto> list, bool withSubtotal)
         {
             lvQuoteLines.Items.Clear();
 
-            foreach (DetailMenuDto linea in lista)
+            foreach (DetailMenuDto line in list)
             {
-                ListViewItem fila = new ListViewItem();
-                fila.Text = linea.MenuDescription;
-                fila.SubItems.Add(linea.TagDescription);
-                fila.SubItems.Add(linea.AdultQuantity.ToString());
-                fila.SubItems.Add(linea.ChildQuantity.ToString());
+                ListViewItem row = new ListViewItem();
+                row.Text = line.MenuDescription;
+                row.SubItems.Add(line.TagDescription);
+                row.SubItems.Add(line.AdultQuantity.ToString());
+                row.SubItems.Add(line.ChildQuantity.ToString());
 
-                if (conSubtotal)
+                if (withSubtotal)
                 {
-                    fila.SubItems.Add(linea.Subtotal.ToString("C"));
+                    row.SubItems.Add(line.Subtotal.ToString("C"));
                 }
                 else
                 {
-                    fila.SubItems.Add("-");
+                    row.SubItems.Add("-");
                 }
 
-                lvQuoteLines.Items.Add(fila);
+                lvQuoteLines.Items.Add(row);
             }
         }
 
@@ -349,49 +349,49 @@ namespace ProyectoPresupuestoEvento.View
 
         //seccion Guardar y volver
 
-        private void btnVolverQuote_Click(object sender, EventArgs e)
+        private void btnBackQuote_Click(object sender, EventArgs e)
         {
-            resetView();
+            ResetView();
             this.Hide();
             formIndex.Show();
         }
 
-        private void btnGuardarQuote_Click(object sender, EventArgs e)
+        private void btnSaveQuote_Click(object sender, EventArgs e)
         {
             if (cmbQuoteEvent.SelectedItem == null)
             {
-                MessageHelper.showWarning("seleccione un evento");
+                MessageHelper.ShowWarning("seleccione un evento");
                 return;
             }
 
-            if (cmbQuoteUbication.SelectedItem == null)
+            if (cmbQuoteLocation.SelectedItem == null)
             {
-                MessageHelper.showWarning("seleccione una ubicacion");
+                MessageHelper.ShowWarning("seleccione una ubicacion");
                 return;
             }
 
-            QuoteDto quoteDto = buildQuoteDto();
+            QuoteDto quoteDto = BuildQuoteDto();
 
             try
             {
-                if (idEditando == 0)
+                if (editingId == 0)
                 {
-                    quoteController.addQuote(quoteDto);
+                    quoteController.AddQuote(quoteDto);
                 }
                 else
                 {
-                    quoteController.updateQuote(idEditando, quoteDto);
+                    quoteController.UpdateQuote(editingId, quoteDto);
                 }
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            formIndex.reloadMtlv();
+            formIndex.ReloadList();
 
-            btnVolverQuote_Click(sender, e);
+            btnBackQuote_Click(sender, e);
         }
     }
 }

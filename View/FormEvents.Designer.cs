@@ -40,7 +40,7 @@
             ClientColumn = new ColumnHeader();
             DateColumn = new ColumnHeader();
             AdultsColumn = new ColumnHeader();
-            ChildsColumn = new ColumnHeader();
+            ChildrenColumn = new ColumnHeader();
             DurationColumn = new ColumnHeader();
             panelEventsCU = new Panel();
             label1 = new MaterialSkin.Controls.MaterialLabel();
@@ -53,17 +53,17 @@
             label5 = new MaterialSkin.Controls.MaterialLabel();
             nudEventAdults = new NumericUpDown();
             label6 = new MaterialSkin.Controls.MaterialLabel();
-            nudEventChilds = new NumericUpDown();
+            nudEventChildren = new NumericUpDown();
             label7 = new MaterialSkin.Controls.MaterialLabel();
             nudEventDuration = new NumericUpDown();
-            btnGuardarEvento = new MaterialSkin.Controls.MaterialButton();
-            btnVolverEvento = new MaterialSkin.Controls.MaterialButton();
+            btnSaveEvent = new MaterialSkin.Controls.MaterialButton();
+            btnBackEvent = new MaterialSkin.Controls.MaterialButton();
             panelCrudCtrlEv.SuspendLayout();
             panelEventsList.SuspendLayout();
             panelEventsTitle.SuspendLayout();
             panelEventsCU.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nudEventAdults).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)nudEventChilds).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventChildren).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nudEventDuration).BeginInit();
             SuspendLayout();
             //
@@ -179,7 +179,7 @@
             mtLvEvents.AutoSizeTable = false;
             mtLvEvents.BackColor = Color.FromArgb(255, 255, 255);
             mtLvEvents.BorderStyle = BorderStyle.None;
-            mtLvEvents.Columns.AddRange(new ColumnHeader[] { NameColumn, ClientColumn, DateColumn, AdultsColumn, ChildsColumn, DurationColumn });
+            mtLvEvents.Columns.AddRange(new ColumnHeader[] { NameColumn, ClientColumn, DateColumn, AdultsColumn, ChildrenColumn, DurationColumn });
             mtLvEvents.Depth = 0;
             mtLvEvents.Dock = DockStyle.Fill;
             mtLvEvents.FullRowSelect = true;
@@ -215,10 +215,10 @@
             AdultsColumn.Text = "Adultos";
             AdultsColumn.Width = 80;
             //
-            // ChildsColumn
+            // ChildrenColumn
             //
-            ChildsColumn.Text = "Niños";
-            ChildsColumn.Width = 70;
+            ChildrenColumn.Text = "Niños";
+            ChildrenColumn.Width = 70;
             //
             // DurationColumn
             //
@@ -237,11 +237,11 @@
             panelEventsCU.Controls.Add(label5);
             panelEventsCU.Controls.Add(nudEventAdults);
             panelEventsCU.Controls.Add(label6);
-            panelEventsCU.Controls.Add(nudEventChilds);
+            panelEventsCU.Controls.Add(nudEventChildren);
             panelEventsCU.Controls.Add(label7);
             panelEventsCU.Controls.Add(nudEventDuration);
-            panelEventsCU.Controls.Add(btnGuardarEvento);
-            panelEventsCU.Controls.Add(btnVolverEvento);
+            panelEventsCU.Controls.Add(btnSaveEvent);
+            panelEventsCU.Controls.Add(btnBackEvent);
             panelEventsCU.Location = new Point(640, 0);
             panelEventsCU.Name = "panelEventsCU";
             panelEventsCU.Size = new Size(640, 720);
@@ -372,14 +372,14 @@
             label6.TabIndex = 9;
             label6.Text = "Invitados niños";
             //
-            // nudEventChilds
+            // nudEventChildren
             //
-            nudEventChilds.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            nudEventChilds.Location = new Point(340, 204);
-            nudEventChilds.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
-            nudEventChilds.Name = "nudEventChilds";
-            nudEventChilds.Size = new Size(250, 27);
-            nudEventChilds.TabIndex = 10;
+            nudEventChildren.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            nudEventChildren.Location = new Point(340, 204);
+            nudEventChildren.Maximum = new decimal(new int[] { 10000, 0, 0, 0 });
+            nudEventChildren.Name = "nudEventChildren";
+            nudEventChildren.Size = new Size(250, 27);
+            nudEventChildren.TabIndex = 10;
             //
             // label7
             //
@@ -406,45 +406,45 @@
             //
             // btnGuardarEvento
             //
-            btnGuardarEvento.AutoSize = false;
-            btnGuardarEvento.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnGuardarEvento.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnGuardarEvento.Depth = 0;
-            btnGuardarEvento.HighEmphasis = true;
-            btnGuardarEvento.Icon = null;
-            btnGuardarEvento.Location = new Point(40, 362);
-            btnGuardarEvento.Margin = new Padding(4, 6, 4, 6);
-            btnGuardarEvento.MouseState = MaterialSkin.MouseState.HOVER;
-            btnGuardarEvento.Name = "btnGuardarEvento";
-            btnGuardarEvento.NoAccentTextColor = Color.Empty;
-            btnGuardarEvento.Size = new Size(90, 36);
-            btnGuardarEvento.TabIndex = 13;
-            btnGuardarEvento.Text = "Guardar";
-            btnGuardarEvento.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnGuardarEvento.UseAccentColor = false;
-            btnGuardarEvento.UseVisualStyleBackColor = true;
-            btnGuardarEvento.Click += btnGuardarEvento_Click;
+            btnSaveEvent.AutoSize = false;
+            btnSaveEvent.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnSaveEvent.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnSaveEvent.Depth = 0;
+            btnSaveEvent.HighEmphasis = true;
+            btnSaveEvent.Icon = null;
+            btnSaveEvent.Location = new Point(40, 362);
+            btnSaveEvent.Margin = new Padding(4, 6, 4, 6);
+            btnSaveEvent.MouseState = MaterialSkin.MouseState.HOVER;
+            btnSaveEvent.Name = "btnSaveEvent";
+            btnSaveEvent.NoAccentTextColor = Color.Empty;
+            btnSaveEvent.Size = new Size(90, 36);
+            btnSaveEvent.TabIndex = 13;
+            btnSaveEvent.Text = "Guardar";
+            btnSaveEvent.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnSaveEvent.UseAccentColor = false;
+            btnSaveEvent.UseVisualStyleBackColor = true;
+            btnSaveEvent.Click += btnSaveEvent_Click;
             //
             // btnVolverEvento
             //
-            btnVolverEvento.AutoSize = false;
-            btnVolverEvento.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnVolverEvento.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnVolverEvento.Depth = 0;
-            btnVolverEvento.HighEmphasis = true;
-            btnVolverEvento.Icon = null;
-            btnVolverEvento.Location = new Point(500, 362);
-            btnVolverEvento.Margin = new Padding(4, 6, 4, 6);
-            btnVolverEvento.MouseState = MaterialSkin.MouseState.HOVER;
-            btnVolverEvento.Name = "btnVolverEvento";
-            btnVolverEvento.NoAccentTextColor = Color.Empty;
-            btnVolverEvento.Size = new Size(90, 36);
-            btnVolverEvento.TabIndex = 14;
-            btnVolverEvento.Text = "Volver";
-            btnVolverEvento.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnVolverEvento.UseAccentColor = false;
-            btnVolverEvento.UseVisualStyleBackColor = true;
-            btnVolverEvento.Click += btnVolverEvento_Click;
+            btnBackEvent.AutoSize = false;
+            btnBackEvent.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBackEvent.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBackEvent.Depth = 0;
+            btnBackEvent.HighEmphasis = true;
+            btnBackEvent.Icon = null;
+            btnBackEvent.Location = new Point(500, 362);
+            btnBackEvent.Margin = new Padding(4, 6, 4, 6);
+            btnBackEvent.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBackEvent.Name = "btnBackEvent";
+            btnBackEvent.NoAccentTextColor = Color.Empty;
+            btnBackEvent.Size = new Size(90, 36);
+            btnBackEvent.TabIndex = 14;
+            btnBackEvent.Text = "Volver";
+            btnBackEvent.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBackEvent.UseAccentColor = false;
+            btnBackEvent.UseVisualStyleBackColor = true;
+            btnBackEvent.Click += btnBackEvent_Click;
             //
             // FormEvents
             //
@@ -464,7 +464,7 @@
             panelEventsCU.ResumeLayout(false);
             panelEventsCU.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nudEventAdults).EndInit();
-            ((System.ComponentModel.ISupportInitialize)nudEventChilds).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nudEventChildren).EndInit();
             ((System.ComponentModel.ISupportInitialize)nudEventDuration).EndInit();
             ResumeLayout(false);
         }
@@ -480,7 +480,7 @@
         private ColumnHeader ClientColumn;
         private ColumnHeader DateColumn;
         private ColumnHeader AdultsColumn;
-        private ColumnHeader ChildsColumn;
+        private ColumnHeader ChildrenColumn;
         private ColumnHeader DurationColumn;
         private Panel panelCrudCtrlEv;
         private MaterialSkin.Controls.MaterialButton btnEventRemove;
@@ -496,10 +496,10 @@
         private MaterialSkin.Controls.MaterialLabel label5;
         private NumericUpDown nudEventAdults;
         private MaterialSkin.Controls.MaterialLabel label6;
-        private NumericUpDown nudEventChilds;
+        private NumericUpDown nudEventChildren;
         private MaterialSkin.Controls.MaterialLabel label7;
         private NumericUpDown nudEventDuration;
-        private MaterialSkin.Controls.MaterialButton btnGuardarEvento;
-        private MaterialSkin.Controls.MaterialButton btnVolverEvento;
+        private MaterialSkin.Controls.MaterialButton btnSaveEvent;
+        private MaterialSkin.Controls.MaterialButton btnBackEvent;
     }
 }

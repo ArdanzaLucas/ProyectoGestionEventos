@@ -41,7 +41,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("el servicio es obligatorio");
+                    throw new ArgumentNullException(nameof(value), "el servicio es obligatorio");
                 }
                 _optionItem = value;
             }

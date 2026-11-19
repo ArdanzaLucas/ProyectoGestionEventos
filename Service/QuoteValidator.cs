@@ -22,7 +22,7 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // reglas de las lineas: platos, variantes repetidas, etiquetas del menu, servicios repetidos y elementos de baja
-        public void validateQuote(Quote quote, Quote original)
+        public void ValidateQuote(Quote quote, Quote original)
         {
             foreach (DetailMenu detailMenu in quote.MenusList)
             {
@@ -47,15 +47,15 @@ namespace ProyectoPresupuestoEvento.Service
 
             foreach (DetailMenu detailMenu in quote.MenusList)
             {
-                bool tieneLaEtiqueta = false;
+                bool hasTheTag = false;
                 foreach (MenuTag tag in detailMenu.Menu.TagList)
                 {
                     if (tag.Description == detailMenu.TagDescription)
                     {
-                        tieneLaEtiqueta = true;
+                        hasTheTag = true;
                     }
                 }
-                if (!tieneLaEtiqueta)
+                if (!hasTheTag)
                 {
                     throw new BusinessRuleException("el menu " + detailMenu.Menu.Description + " no tiene la etiqueta " + detailMenu.TagDescription);
                 }
@@ -73,48 +73,48 @@ namespace ProyectoPresupuestoEvento.Service
             }
 
             // al editar se pueden conservar los elementos de baja que ya tenia el original
-            List<string> inactivos = getInactiveItems(quote);
-            foreach (string nombre in inactivos)
+            List<string> inactiveNames = GetInactiveItems(quote);
+            foreach (string name in inactiveNames)
             {
-                if (original == null || !getInactiveItems(original).Contains(nombre))
+                if (original == null || !GetInactiveItems(original).Contains(name))
                 {
-                    throw new BusinessRuleException("no se puede usar " + nombre + " porque esta dado de baja");
+                    throw new BusinessRuleException("no se puede usar " + name + " porque esta dado de baja");
                 }
             }
         }
 
-        public void validateEventNotPast(DateTime eventDate, string accion)
+        public void ValidateEventNotPast(DateTime eventDate, string action)
         {
             if (eventDate.Date < DateTime.Today)
             {
-                throw new BusinessRuleException("no se puede " + accion + " un presupuesto de un evento que ya paso");
+                throw new BusinessRuleException("no se puede " + action + " un presupuesto de un evento que ya paso");
             }
         }
 
         // compara las copias del presupuesto con el evento actual
-        public void validateEventNotChanged(Quote quote)
+        public void ValidateEventNotChanged(Quote quote)
         {
-            EventItem eventItem = eventItemRepository.getById(quote.EventItemId);
+            EventItem eventItem = eventItemRepository.GetById(quote.EventItemId);
 
-            bool igual = quote.EventName == eventItem.Name
+            bool unchanged = quote.EventName == eventItem.Name
                 && quote.EventClientName == eventItem.ClientName
                 && quote.EventDate.ToString("yyyy-MM-dd HH:mm") == eventItem.Date.ToString("yyyy-MM-dd HH:mm")
                 && quote.EventGuestAdults == eventItem.GuestAdults
-                && quote.EventGuestChilds == eventItem.GuestChilds
+                && quote.EventGuestChildren == eventItem.GuestChildren
                 && quote.EventDuration == eventItem.Duration;
 
-            if (!igual)
+            if (!unchanged)
             {
                 throw new BusinessRuleException("los datos del evento cambiaron: edite y guarde el presupuesto antes de aceptarlo");
             }
         }
 
         // un evento puede tener un solo presupuesto aceptado
-        public void validateNoOtherAccepted(Quote quote)
+        public void ValidateNoOtherAccepted(Quote quote)
         {
-            foreach (Quote otro in quoteRepository.getAll())
+            foreach (Quote other in quoteRepository.GetAll())
             {
-                if (otro.Id != quote.Id && otro.EventItemId == quote.EventItemId && otro.State == EstadoPresupuesto.Aceptado)
+                if (other.Id != quote.Id && other.EventItemId == quote.EventItemId && other.State == QuoteState.Accepted)
                 {
                     throw new BusinessRuleException("el evento ya tiene un presupuesto aceptado");
                 }
@@ -122,43 +122,43 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // busca otro aceptado en el mismo salon con un horario que se pise
-        public void validateUbicationFree(Quote quote)
+        public void ValidateLocationFree(Quote quote)
         {
-            foreach (Quote otro in quoteRepository.getAll())
+            foreach (Quote other in quoteRepository.GetAll())
             {
-                if (otro.Id != quote.Id && otro.State == EstadoPresupuesto.Aceptado && otro.Ubication.Id == quote.Ubication.Id && quote.overlapsWith(otro))
+                if (other.Id != quote.Id && other.State == QuoteState.Accepted && other.Location.Id == quote.Location.Id && quote.OverlapsWith(other))
                 {
-                    throw new BusinessRuleException("la ubicacion ya esta ocupada en ese horario por el evento " + otro.EventName);
+                    throw new BusinessRuleException("la ubicacion ya esta ocupada en ese horario por el evento " + other.EventName);
                 }
             }
         }
 
         // no se puede clonar si usa algo dado de baja
-        public void validateCanClone(Quote original)
+        public void ValidateCanClone(Quote original)
         {
-            List<string> inactivos = getInactiveItems(original);
-            if (inactivos.Count > 0)
+            List<string> inactiveNames = GetInactiveItems(original);
+            if (inactiveNames.Count > 0)
             {
                 throw new BusinessRuleException("no se puede clonar: usa elementos dados de baja ("
-                    + string.Join(", ", inactivos) + ")");
+                    + string.Join(", ", inactiveNames) + ")");
             }
         }
 
         // nombres de la ubicacion, los menus y los servicios dados de baja que usa el presupuesto
-        private List<string> getInactiveItems(Quote quote)
+        private List<string> GetInactiveItems(Quote quote)
         {
-            List<string> nombres = new List<string>();
+            List<string> names = new List<string>();
 
-            if (!quote.Ubication.IsActive)
+            if (!quote.Location.IsActive)
             {
-                nombres.Add(quote.Ubication.Name);
+                names.Add(quote.Location.Name);
             }
 
             foreach (DetailMenu detailMenu in quote.MenusList)
             {
-                if (!detailMenu.Menu.IsActive && !nombres.Contains(detailMenu.Menu.Description))
+                if (!detailMenu.Menu.IsActive && !names.Contains(detailMenu.Menu.Description))
                 {
-                    nombres.Add(detailMenu.Menu.Description);
+                    names.Add(detailMenu.Menu.Description);
                 }
             }
 
@@ -166,11 +166,11 @@ namespace ProyectoPresupuestoEvento.Service
             {
                 if (!detailOptionItem.OptionItem.IsActive)
                 {
-                    nombres.Add(detailOptionItem.OptionItem.Name);
+                    names.Add(detailOptionItem.OptionItem.Name);
                 }
             }
 
-            return nombres;
+            return names;
         }
     }
 }

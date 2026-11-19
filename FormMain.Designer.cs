@@ -36,8 +36,8 @@
             pnlIndex = new Panel();
             tabEvents = new TabPage();
             pnlCntEvents = new Panel();
-            tabUbications = new TabPage();
-            pnlCntUbications = new Panel();
+            tabLocations = new TabPage();
+            pnlCntLocations = new Panel();
             tabOptionItem = new TabPage();
             pnlCntOpIts = new Panel();
             tabCatering = new TabPage();
@@ -47,7 +47,7 @@
             tabIndex.SuspendLayout();
             panel4.SuspendLayout();
             tabEvents.SuspendLayout();
-            tabUbications.SuspendLayout();
+            tabLocations.SuspendLayout();
             tabOptionItem.SuspendLayout();
             tabCatering.SuspendLayout();
             SuspendLayout();
@@ -57,7 +57,7 @@
             TabCtrl.Alignment = TabAlignment.Left;
             TabCtrl.Controls.Add(tabIndex);
             TabCtrl.Controls.Add(tabEvents);
-            TabCtrl.Controls.Add(tabUbications);
+            TabCtrl.Controls.Add(tabLocations);
             TabCtrl.Controls.Add(tabOptionItem);
             TabCtrl.Controls.Add(tabCatering);
             TabCtrl.Depth = 0;
@@ -119,24 +119,24 @@
             pnlCntEvents.Size = new Size(798, 594);
             pnlCntEvents.TabIndex = 1;
             // 
-            // tabUbications
+            // tabLocations
             // 
-            tabUbications.Controls.Add(pnlCntUbications);
-            tabUbications.Location = new Point(27, 4);
-            tabUbications.Name = "tabUbications";
-            tabUbications.Padding = new Padding(3, 3, 3, 3);
-            tabUbications.Size = new Size(804, 600);
-            tabUbications.TabIndex = 2;
-            tabUbications.Text = "Ubicaciones";
-            tabUbications.UseVisualStyleBackColor = true;
+            tabLocations.Controls.Add(pnlCntLocations);
+            tabLocations.Location = new Point(27, 4);
+            tabLocations.Name = "tabLocations";
+            tabLocations.Padding = new Padding(3, 3, 3, 3);
+            tabLocations.Size = new Size(804, 600);
+            tabLocations.TabIndex = 2;
+            tabLocations.Text = "Ubicaciones";
+            tabLocations.UseVisualStyleBackColor = true;
             // 
-            // pnlCntUbications
+            // pnlCntLocations
             // 
-            pnlCntUbications.Dock = DockStyle.Fill;
-            pnlCntUbications.Location = new Point(3, 3);
-            pnlCntUbications.Name = "pnlCntUbications";
-            pnlCntUbications.Size = new Size(798, 594);
-            pnlCntUbications.TabIndex = 2;
+            pnlCntLocations.Dock = DockStyle.Fill;
+            pnlCntLocations.Location = new Point(3, 3);
+            pnlCntLocations.Name = "pnlCntLocations";
+            pnlCntLocations.Size = new Size(798, 594);
+            pnlCntLocations.TabIndex = 2;
             // 
             // tabOptionItem
             // 
@@ -212,7 +212,7 @@
             tabIndex.ResumeLayout(false);
             panel4.ResumeLayout(false);
             tabEvents.ResumeLayout(false);
-            tabUbications.ResumeLayout(false);
+            tabLocations.ResumeLayout(false);
             tabOptionItem.ResumeLayout(false);
             tabCatering.ResumeLayout(false);
             ResumeLayout(false);
@@ -223,14 +223,14 @@
         private MaterialSkin.Controls.MaterialTabControl TabCtrl;
         private TabPage tabIndex;
         private TabPage tabEvents;
-        private TabPage tabUbications;
+        private TabPage tabLocations;
         private TabPage tabOptionItem;
         private TabPage tabCatering;
         private Panel pnlCntEvents;
         private Panel panel4;
         private Panel pnlIndex;
         private ImageList imageList1;
-        private Panel pnlCntUbications;
+        private Panel pnlCntLocations;
         private Panel pnlCntOpIts;
         private Panel pnlCntCatering;
     }

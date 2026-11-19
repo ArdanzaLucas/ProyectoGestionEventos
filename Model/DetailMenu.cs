@@ -54,7 +54,7 @@ namespace ProyectoPresupuestoEvento.Model
             {
                 if (value == null)
                 {
-                    throw new BusinessRuleException("el menu es obligatorio");
+                    throw new ArgumentNullException(nameof(value), "el menu es obligatorio");
                 }
                 _menu = value;
             }
@@ -75,13 +75,13 @@ namespace ProyectoPresupuestoEvento.Model
         public int AdultQuantity
         {
             get { return _adultQuantity; }
-            private set { _adultQuantity = Validator.requireQuantity(value, "la cantidad de adultos"); }
+            private set { _adultQuantity = Validator.RequireQuantity(value, "la cantidad de adultos"); }
         }
 
         public int ChildQuantity
         {
             get { return _childQuantity; }
-            private set { _childQuantity = Validator.requireQuantity(value, "la cantidad de niños"); }
+            private set { _childQuantity = Validator.RequireQuantity(value, "la cantidad de niños"); }
         }
 
         public decimal UnitPriceAdult

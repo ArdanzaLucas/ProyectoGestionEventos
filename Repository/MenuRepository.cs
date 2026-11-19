@@ -19,12 +19,12 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private MenuRepository()
         {
-            database = SqliteDatabase.getInstance();
+            database = SqliteDatabase.GetInstance();
         }
 
 
         // singleton: siempre devuelve la misma instancia
-        public static MenuRepository getInstance()
+        public static MenuRepository GetInstance()
         {
             if (instance == null)
             {
@@ -34,9 +34,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // inserta el menu y sus etiquetas en una transaccion: se guarda todo o nada
-        public void addToRepository(Menu menu)
+        public void AddToRepository(Menu menu)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             using (SqliteTransaction transaction = connection.BeginTransaction())
             {
                 SqliteCommand command = connection.CreateCommand();
@@ -46,19 +46,19 @@ namespace ProyectoPresupuestoEvento.Repository
                 command.Parameters.AddWithValue("@priceAdult", menu.PriceAdult);
                 command.Parameters.AddWithValue("@priceChild", menu.PriceChild);
                 command.Parameters.AddWithValue("@isActive", menu.IsActive);
-                menu.assignId(Convert.ToInt32(command.ExecuteScalar()));
+                menu.AssignId(Convert.ToInt32(command.ExecuteScalar()));
 
-                saveTags(menu.Id, menu, connection, transaction);
+                SaveTags(menu.Id, menu, connection, transaction);
                 transaction.Commit();
             }
         }
 
         // solo los activos: los dados de baja se buscan con getById
-        public List<Menu> getAll()
+        public List<Menu> GetAll()
         {
             List<Menu> menus = new List<Menu>();
 
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Description, PriceAdult, PriceChild, IsActive FROM MENU WHERE IsActive = 1 ORDER BY Id";
@@ -67,7 +67,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     while (reader.Read())
                     {
-                        menus.Add(readMenu(reader, connection));
+                        menus.Add(ReadMenu(reader, connection));
                     }
                 }
             }
@@ -76,9 +76,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // si no existe, lanza NotFoundException
-        public Menu getById(int id)
+        public Menu GetById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Description, PriceAdult, PriceChild, IsActive FROM MENU WHERE Id = @id";
@@ -88,7 +88,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     if (reader.Read())
                     {
-                        return readMenu(reader, connection);
+                        return ReadMenu(reader, connection);
                     }
                 }
             }
@@ -96,9 +96,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // actualiza el menu, incluido IsActive, y vuelve a guardar sus etiquetas
-        public void update(int id, Menu menu)
+        public void Update(int id, Menu menu)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             using (SqliteTransaction transaction = connection.BeginTransaction())
             {
                 SqliteCommand command = connection.CreateCommand();
@@ -111,15 +111,15 @@ namespace ProyectoPresupuestoEvento.Repository
                 command.Parameters.AddWithValue("@id", id);
                 command.ExecuteNonQuery();
 
-                saveTags(id, menu, connection, transaction);
+                SaveTags(id, menu, connection, transaction);
                 transaction.Commit();
             }
         }
 
         // no se usa: el service hace baja logica, pero la interfaz lo pide
-        public void removeById(int id)
+        public void RemoveById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "DELETE FROM MENU WHERE Id = @id";
@@ -129,15 +129,15 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // arma el menu y carga sus etiquetas con otra consulta sobre la misma conexion
-        private Menu readMenu(SqliteDataReader reader, SqliteConnection connection)
+        private Menu ReadMenu(SqliteDataReader reader, SqliteConnection connection)
         {
             int id = reader.GetInt32(0);
-            List<MenuTag> tags = loadTags(id, connection);
+            List<MenuTag> tags = LoadTags(id, connection);
             return new Menu(id, reader.GetString(1), reader.GetDecimal(2), reader.GetDecimal(3), tags, reader.GetBoolean(4));
         }
 
         // lee las etiquetas del menu uniendo MENU_TAG con la tabla intermedia
-        private List<MenuTag> loadTags(int menuId, SqliteConnection connection)
+        private List<MenuTag> LoadTags(int menuId, SqliteConnection connection)
         {
             List<MenuTag> tags = new List<MenuTag>();
 
@@ -159,7 +159,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // borra las etiquetas guardadas del menu e inserta las actuales
-        private void saveTags(int menuId, Menu menu, SqliteConnection connection, SqliteTransaction transaction)
+        private void SaveTags(int menuId, Menu menu, SqliteConnection connection, SqliteTransaction transaction)
         {
             SqliteCommand delete = connection.CreateCommand();
             delete.Transaction = transaction;

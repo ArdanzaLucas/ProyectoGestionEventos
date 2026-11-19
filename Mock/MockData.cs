@@ -11,86 +11,86 @@ namespace ProyectoPresupuestoEvento.Mock
 {
     public class MockData
     {
-        public static void load()
+        public static void Load()
         {
-            if (!isDatabaseEmpty())
+            if (!IsDatabaseEmpty())
             {
                 return;
             }
 
-            loadUbications();
-            loadOptionItems();
-            loadMenuTags();
-            loadMenus();
-            loadEventItems();
+            LoadLocations();
+            LoadOptionItems();
+            LoadMenuTags();
+            LoadMenus();
+            LoadEventItems();
         }
 
-        private static bool isDatabaseEmpty()
+        private static bool IsDatabaseEmpty()
         {
-            return UbicationRepository.getInstance().getAll().Count == 0
-                && OptionItemRepository.getInstance().getAll().Count == 0
-                && MenuTagRepository.getInstance().getAll().Count == 0
-                && MenuRepository.getInstance().getAll().Count == 0
-                && EventItemRepository.getInstance().getAll().Count == 0;
+            return LocationRepository.GetInstance().GetAll().Count == 0
+                && OptionItemRepository.GetInstance().GetAll().Count == 0
+                && MenuTagRepository.GetInstance().GetAll().Count == 0
+                && MenuRepository.GetInstance().GetAll().Count == 0
+                && EventItemRepository.GetInstance().GetAll().Count == 0;
         }
 
-        private static void loadUbications()
+        private static void LoadLocations()
         {
-            UbicationController controller = new UbicationController();
-            controller.addToRepository(new UbicationDto("Salon Los Robles", 50000));
-            controller.addToRepository(new UbicationDto("Quinta Las Acacias", 80000));
-            controller.addToRepository(new UbicationDto("Terraza Centro", 35000));
+            LocationController controller = new LocationController();
+            controller.AddToRepository(new LocationDto("Salon Los Robles", 50000));
+            controller.AddToRepository(new LocationDto("Quinta Las Acacias", 80000));
+            controller.AddToRepository(new LocationDto("Terraza Centro", 35000));
         }
 
-        private static void loadOptionItems()
+        private static void LoadOptionItems()
         {
             OptionItemController controller = new OptionItemController();
-            controller.addToRepository(new OptionItemDto("DJ", 200000));
-            controller.addToRepository(new OptionItemDto("Fotografo", 150000));
-            controller.addToRepository(new OptionItemDto("Decoracion", 120000));
-            controller.addToRepository(new OptionItemDto("Animacion infantil", 90000));
+            controller.AddToRepository(new OptionItemDto("DJ", 200000));
+            controller.AddToRepository(new OptionItemDto("Fotografo", 150000));
+            controller.AddToRepository(new OptionItemDto("Decoracion", 120000));
+            controller.AddToRepository(new OptionItemDto("Animacion infantil", 90000));
         }
 
-        private static void loadMenuTags()
+        private static void LoadMenuTags()
         {
             MenuTagController controller = new MenuTagController();
-            controller.addToRepository(new MenuTagDto("Estandar"));
-            controller.addToRepository(new MenuTagDto("Vegana"));
-            controller.addToRepository(new MenuTagDto("Sin TACC"));
-            controller.addToRepository(new MenuTagDto("Vegetariana"));
+            controller.AddToRepository(new MenuTagDto("Estandar"));
+            controller.AddToRepository(new MenuTagDto("Vegana"));
+            controller.AddToRepository(new MenuTagDto("Sin TACC"));
+            controller.AddToRepository(new MenuTagDto("Vegetariana"));
         }
 
-        private static void loadMenus()
+        private static void LoadMenus()
         {
             MenuController controller = new MenuController();
-            controller.addToRepository(new MenuDto("Milanesa con papas", 15000, 8000, getTags("Estandar", "Vegana", "Sin TACC")));
-            controller.addToRepository(new MenuDto("Pollo al horno", 14000, 7500, getTags("Estandar", "Sin TACC")));
-            controller.addToRepository(new MenuDto("Pastas caseras", 12000, 6000, getTags("Estandar", "Vegetariana", "Vegana")));
-            controller.addToRepository(new MenuDto("Asado completo", 22000, 11000, getTags("Estandar")));
-            controller.addToRepository(new MenuDto("Mesa dulce", 6000, 4000, getTags("Estandar", "Sin TACC")));
+            controller.AddToRepository(new MenuDto("Milanesa con papas", 15000, 8000, GetTags("Estandar", "Vegana", "Sin TACC")));
+            controller.AddToRepository(new MenuDto("Pollo al horno", 14000, 7500, GetTags("Estandar", "Sin TACC")));
+            controller.AddToRepository(new MenuDto("Pastas caseras", 12000, 6000, GetTags("Estandar", "Vegetariana", "Vegana")));
+            controller.AddToRepository(new MenuDto("Asado completo", 22000, 11000, GetTags("Estandar")));
+            controller.AddToRepository(new MenuDto("Mesa dulce", 6000, 4000, GetTags("Estandar", "Sin TACC")));
         }
 
-        private static void loadEventItems()
+        private static void LoadEventItems()
         {
             EventItemController controller = new EventItemController();
-            controller.addToRepository(new EventItemDto("Cumpleaños de Ana", "Ana Gomez", DateTime.Today.AddDays(30).AddHours(21), 40, 15, 5));
-            controller.addToRepository(new EventItemDto("Casamiento Perez", "Juan Perez", DateTime.Today.AddDays(90).AddHours(20), 120, 20, 6));
-            controller.addToRepository(new EventItemDto("Aniversario empresa", "Tecno SA", DateTime.Today.AddDays(45).AddHours(19), 60, 0, 4));
+            controller.AddToRepository(new EventItemDto("Cumpleaños de Ana", "Ana Gomez", DateTime.Today.AddDays(30).AddHours(21), 40, 15, 5));
+            controller.AddToRepository(new EventItemDto("Casamiento Perez", "Juan Perez", DateTime.Today.AddDays(90).AddHours(20), 120, 20, 6));
+            controller.AddToRepository(new EventItemDto("Aniversario empresa", "Tecno SA", DateTime.Today.AddDays(45).AddHours(19), 60, 0, 4));
         }
 
-        private static List<MenuTagDto> getTags(params string[] nombres)
+        private static List<MenuTagDto> GetTags(params string[] names)
         {
-            List<MenuTagDto> elegidas = new List<MenuTagDto>();
+            List<MenuTagDto> selectedTags = new List<MenuTagDto>();
 
-            foreach (MenuTagDto etiqueta in new MenuTagController().getMenuTags())
+            foreach (MenuTagDto tag in new MenuTagController().GetMenuTags())
             {
-                if (nombres.Contains(etiqueta.Description))
+                if (names.Contains(tag.Description))
                 {
-                    elegidas.Add(etiqueta);
+                    selectedTags.Add(tag);
                 }
             }
 
-            return elegidas;
+            return selectedTags;
         }
     }
 }

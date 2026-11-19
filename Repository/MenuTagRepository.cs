@@ -19,12 +19,12 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private MenuTagRepository()
         {
-            database = SqliteDatabase.getInstance();
+            database = SqliteDatabase.GetInstance();
         }
 
 
         // singleton: siempre devuelve la misma instancia
-        public static MenuTagRepository getInstance()
+        public static MenuTagRepository GetInstance()
         {
             if (instance == null)
             {
@@ -34,22 +34,22 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // inserta la fila y le pasa al objeto el id que asigno la base
-        public void addToRepository(MenuTag menuTag)
+        public void AddToRepository(MenuTag menuTag)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "INSERT INTO MENU_TAG (Description) VALUES (@description); SELECT last_insert_rowid();";
                 command.Parameters.AddWithValue("@description", menuTag.Description);
-                menuTag.assignId(Convert.ToInt32(command.ExecuteScalar()));
+                menuTag.AssignId(Convert.ToInt32(command.ExecuteScalar()));
             }
         }
 
-        public List<MenuTag> getAll()
+        public List<MenuTag> GetAll()
         {
             List<MenuTag> menuTags = new List<MenuTag>();
 
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Description FROM MENU_TAG ORDER BY Id";
@@ -58,7 +58,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     while (reader.Read())
                     {
-                        menuTags.Add(readMenuTag(reader));
+                        menuTags.Add(ReadMenuTag(reader));
                     }
                 }
             }
@@ -67,9 +67,9 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // si no existe, lanza NotFoundException
-        public MenuTag getById(int id)
+        public MenuTag GetById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT Id, Description FROM MENU_TAG WHERE Id = @id";
@@ -79,16 +79,16 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     if (reader.Read())
                     {
-                        return readMenuTag(reader);
+                        return ReadMenuTag(reader);
                     }
                 }
             }
             throw new NotFoundException("no se encontro la etiqueta");
         }
 
-        public void update(int id, MenuTag menuTag)
+        public void Update(int id, MenuTag menuTag)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "UPDATE MENU_TAG SET Description = @description WHERE Id = @id";
@@ -98,9 +98,9 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
-        public void removeById(int id)
+        public void RemoveById(int id)
         {
-            using (SqliteConnection connection = database.getConnection())
+            using (SqliteConnection connection = database.GetConnection())
             {
                 SqliteCommand command = connection.CreateCommand();
                 command.CommandText = "DELETE FROM MENU_TAG WHERE Id = @id";
@@ -110,7 +110,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // arma un objeto del modelo con una fila, en el orden de las columnas del SELECT
-        private MenuTag readMenuTag(SqliteDataReader reader)
+        private MenuTag ReadMenuTag(SqliteDataReader reader)
         {
             return new MenuTag(reader.GetInt32(0), reader.GetString(1));
         }

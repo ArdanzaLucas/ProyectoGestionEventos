@@ -11,47 +11,47 @@ namespace ProyectoPresupuestoEvento.Common
 
         //metodos
 
-        public static string requireText(string value, string mensaje)
+        public static string RequireText(string value, string message)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new BusinessRuleException(mensaje);
+                throw new BusinessRuleException(message);
             }
 
-            string texto = value.Trim();
-            if (texto.Length > 50)
+            string text = value.Trim();
+            if (text.Length > Limits.MaxTextLength)
             {
-                throw new BusinessRuleException("el texto no puede tener mas de 50 caracteres");
+                throw new BusinessRuleException("el texto no puede tener mas de " + Limits.MaxTextLength + " caracteres");
             }
-            return texto;
+            return text;
         }
 
-        public static decimal requirePrice(decimal value, string nombre)
+        public static decimal RequirePrice(decimal value, string name)
         {
             if (value < 0)
             {
-                throw new BusinessRuleException(nombre + " no puede ser negativo");
+                throw new BusinessRuleException(name + " no puede ser negativo");
             }
-            if (value > 1000000000)
+            if (value > Limits.MaxPrice)
             {
-                throw new BusinessRuleException(nombre + " no puede ser mayor a 1000000000");
+                throw new BusinessRuleException(name + " no puede ser mayor a " + Limits.MaxPrice);
             }
             if (decimal.Round(value, 2) != value)
             {
-                throw new BusinessRuleException(nombre + " no puede tener mas de 2 decimales");
+                throw new BusinessRuleException(name + " no puede tener mas de 2 decimales");
             }
             return value;
         }
 
-        public static int requireQuantity(int value, string nombre)
+        public static int RequireQuantity(int value, string name)
         {
             if (value < 0)
             {
-                throw new BusinessRuleException(nombre + " no puede ser negativa");
+                throw new BusinessRuleException(name + " no puede ser negativa");
             }
-            if (value > 10000)
+            if (value > Limits.MaxQuantity)
             {
-                throw new BusinessRuleException(nombre + " no puede ser mayor a 10000");
+                throw new BusinessRuleException(name + " no puede ser mayor a " + Limits.MaxQuantity);
             }
             return value;
         }

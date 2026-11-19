@@ -35,7 +35,7 @@
             NumberColumn = new ColumnHeader();
             EventColumn = new ColumnHeader();
             DateColumn = new ColumnHeader();
-            UbicationColumn = new ColumnHeader();
+            LocationColumn = new ColumnHeader();
             GuestsColumn = new ColumnHeader();
             StateColumn = new ColumnHeader();
             TotalColumn = new ColumnHeader();
@@ -50,6 +50,7 @@
             btnQuoteClone = new MaterialSkin.Controls.MaterialButton();
             btnQuoteRemove = new MaterialSkin.Controls.MaterialButton();
             btnIndexReport = new MaterialSkin.Controls.MaterialButton();
+            btnQuoteSavePdf = new MaterialSkin.Controls.MaterialButton();
             panelIndexList.SuspendLayout();
             panelIndexTitle.SuspendLayout();
             panelIndexFilter.SuspendLayout();
@@ -94,7 +95,7 @@
             mtLvIndex.AutoSizeTable = false;
             mtLvIndex.BackColor = Color.FromArgb(255, 255, 255);
             mtLvIndex.BorderStyle = BorderStyle.None;
-            mtLvIndex.Columns.AddRange(new ColumnHeader[] { NumberColumn, EventColumn, DateColumn, UbicationColumn, GuestsColumn, StateColumn, TotalColumn });
+            mtLvIndex.Columns.AddRange(new ColumnHeader[] { NumberColumn, EventColumn, DateColumn, LocationColumn, GuestsColumn, StateColumn, TotalColumn });
             mtLvIndex.Depth = 0;
             mtLvIndex.Dock = DockStyle.Fill;
             mtLvIndex.FullRowSelect = true;
@@ -125,10 +126,10 @@
             DateColumn.Text = "Fecha";
             DateColumn.Width = 105;
             //
-            // UbicationColumn
+            // LocationColumn
             //
-            UbicationColumn.Text = "Ubicacion";
-            UbicationColumn.Width = 95;
+            LocationColumn.Text = "Ubicacion";
+            LocationColumn.Width = 95;
             //
             // GuestsColumn
             //
@@ -188,6 +189,7 @@
             panelCrudCtrlIndex.Controls.Add(btnQuoteClone);
             panelCrudCtrlIndex.Controls.Add(btnQuoteRemove);
             panelCrudCtrlIndex.Controls.Add(btnIndexReport);
+            panelCrudCtrlIndex.Controls.Add(btnQuoteSavePdf);
             panelCrudCtrlIndex.Dock = DockStyle.Left;
             panelCrudCtrlIndex.Location = new Point(0, 0);
             panelCrudCtrlIndex.Name = "panelCrudCtrlIndex";
@@ -341,6 +343,27 @@
             btnIndexReport.UseVisualStyleBackColor = true;
             btnIndexReport.Click += btnIndexReport_Click;
             //
+            // btnQuoteSavePdf
+            //
+            btnQuoteSavePdf.AutoSize = false;
+            btnQuoteSavePdf.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnQuoteSavePdf.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnQuoteSavePdf.Depth = 0;
+            btnQuoteSavePdf.HighEmphasis = true;
+            btnQuoteSavePdf.Icon = null;
+            btnQuoteSavePdf.Location = new Point(20, 480);
+            btnQuoteSavePdf.Margin = new Padding(4, 6, 4, 6);
+            btnQuoteSavePdf.MouseState = MaterialSkin.MouseState.HOVER;
+            btnQuoteSavePdf.Name = "btnQuoteSavePdf";
+            btnQuoteSavePdf.NoAccentTextColor = Color.Empty;
+            btnQuoteSavePdf.Size = new Size(110, 36);
+            btnQuoteSavePdf.TabIndex = 7;
+            btnQuoteSavePdf.Text = "Guardar PDF";
+            btnQuoteSavePdf.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
+            btnQuoteSavePdf.UseAccentColor = false;
+            btnQuoteSavePdf.UseVisualStyleBackColor = true;
+            btnQuoteSavePdf.Click += btnQuoteSavePdf_Click;
+            //
             // FormIndex
             //
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -369,7 +392,7 @@
         private ColumnHeader NumberColumn;
         private ColumnHeader EventColumn;
         private ColumnHeader DateColumn;
-        private ColumnHeader UbicationColumn;
+        private ColumnHeader LocationColumn;
         private ColumnHeader GuestsColumn;
         private ColumnHeader StateColumn;
         private ColumnHeader TotalColumn;
@@ -384,5 +407,6 @@
         private MaterialSkin.Controls.MaterialButton btnQuoteClone;
         private MaterialSkin.Controls.MaterialButton btnQuoteRemove;
         private MaterialSkin.Controls.MaterialButton btnIndexReport;
+        private MaterialSkin.Controls.MaterialButton btnQuoteSavePdf;
     }
 }

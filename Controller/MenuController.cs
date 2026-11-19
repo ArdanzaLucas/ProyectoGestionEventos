@@ -18,24 +18,24 @@ namespace ProyectoPresupuestoEvento.Controller
             service = new MenuService();
         }
 
-        public void addToRepository(MenuDto dto)
+        public void AddToRepository(MenuDto dto)
         {
-            service.addToRepository(dto);
+            service.AddToRepository(dto);
         }
 
-        public List<MenuDto> getMenus()
+        public List<MenuDto> GetMenus()
         {
-            return service.getMenus();
+            return service.GetMenus();
         }
 
-        public void updateMenu(int id, MenuDto dto)
+        public void UpdateMenu(int id, MenuDto dto)
         {
-            service.updateMenu(id, dto);
+            service.UpdateMenu(id, dto);
         }
 
-        public void removeMenu(int id)
+        public void RemoveMenu(int id)
         {
-            service.removeMenu(id);
+            service.RemoveMenu(id);
         }
     }
 }

@@ -18,14 +18,14 @@ namespace ProyectoPresupuestoEvento.View
 
         EventItemController eventController;
 
-        private int idEditando = 0;
+        private int editingId = 0;
 
         public FormEvents(EventItemController controller)
         {
             eventController = controller;
             InitializeComponent();
-            VisualHelper.fitColumns(mtLvEvents);
-            VisualHelper.centerContent(panelEventsCU);
+            VisualHelper.FitColumns(mtLvEvents);
+            VisualHelper.CenterContent(panelEventsCU);
         }
 
         private void FormEvents_Load(object sender, EventArgs e)
@@ -34,38 +34,38 @@ namespace ProyectoPresupuestoEvento.View
             panelEventsList.Dock = DockStyle.Fill;
             panelEventsCU.Visible = false;
 
-            reloadMtlv();
+            ReloadList();
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            btnVolverEvento_Click(null, EventArgs.Empty);
-            reloadMtlv();
+            btnBackEvent_Click(null, EventArgs.Empty);
+            ReloadList();
         }
 
-        private void reloadMtlv()
+        private void ReloadList()
         {
-            List<EventItemDto> eventos = eventController.getEventItems();
+            List<EventItemDto> eventItems = eventController.GetEventItems();
 
             mtLvEvents.Items.Clear();
 
-            foreach (EventItemDto evento in eventos)
+            foreach (EventItemDto eventItem in eventItems)
             {
-                ListViewItem fila = new ListViewItem();
+                ListViewItem row = new ListViewItem();
 
-                fila.Text = evento.Name;
-                fila.SubItems.Add(evento.ClientName);
-                fila.SubItems.Add(evento.Date.ToString("dd/MM/yyyy HH:mm"));
-                fila.SubItems.Add(evento.GuestAdults.ToString());
-                fila.SubItems.Add(evento.GuestChilds.ToString());
-                fila.SubItems.Add(evento.Duration.ToString());
+                row.Text = eventItem.Name;
+                row.SubItems.Add(eventItem.ClientName);
+                row.SubItems.Add(eventItem.Date.ToString("dd/MM/yyyy HH:mm"));
+                row.SubItems.Add(eventItem.GuestAdults.ToString());
+                row.SubItems.Add(eventItem.GuestChildren.ToString());
+                row.SubItems.Add(eventItem.Duration.ToString());
 
-                fila.Tag = evento;
+                row.Tag = eventItem;
 
-                mtLvEvents.Items.Add(fila);
+                mtLvEvents.Items.Add(row);
             }
 
-            VisualHelper.showEmptyMessage(mtLvEvents, "Todavia no hay eventos. Toque Crear para agregar uno.");
+            VisualHelper.ShowEmptyMessage(mtLvEvents, "Todavia no hay eventos. Toque Crear para agregar uno.");
         }
 
 
@@ -73,7 +73,7 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnEventCreate_Click(object sender, EventArgs e)
         {
-            idEditando = 0;
+            editingId = 0;
             dtpEventDate.Value = DateTime.Now;
 
             panelEventsList.Visible = false;
@@ -91,20 +91,20 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvEvents.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un evento para editar");
+                MessageHelper.ShowWarning("seleccione un evento para editar");
                 return;
             }
 
             ListViewItem selectedEvent = mtLvEvents.SelectedItems[0];
             EventItemDto selected = (EventItemDto)selectedEvent.Tag;
 
-            idEditando = selected.Id;
+            editingId = selected.Id;
 
             mtbEventName.Text = selected.Name;
             mtbEventClient.Text = selected.ClientName;
             dtpEventDate.Value = selected.Date;
             nudEventAdults.Value = selected.GuestAdults;
-            nudEventChilds.Value = selected.GuestChilds;
+            nudEventChildren.Value = selected.GuestChildren;
             nudEventDuration.Value = selected.Duration;
 
             panelEventsList.Visible = false;
@@ -117,33 +117,33 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvEvents.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un evento para eliminar");
+                MessageHelper.ShowWarning("seleccione un evento para eliminar");
                 return;
             }
 
             ListViewItem selectedEvent = mtLvEvents.SelectedItems[0];
             EventItemDto selected = (EventItemDto)selectedEvent.Tag;
 
-            string mensaje = "¿Eliminar el evento " + selected.Name + "?";
-            int cantidadPresupuestos = eventController.countQuotes(selected.Id);
-            if (cantidadPresupuestos > 0)
+            string message = "¿Eliminar el evento " + selected.Name + "?";
+            int quoteCount = eventController.CountQuotes(selected.Id);
+            if (quoteCount > 0)
             {
-                mensaje = mensaje + " tiene " + cantidadPresupuestos + " presupuestos que tambien se borran";
+                message = message + " tiene " + quoteCount + " presupuestos que tambien se borran";
             }
 
-            if (!MessageHelper.confirm(mensaje))
+            if (!MessageHelper.Confirm(message))
             {
                 return;
             }
 
-            eventController.removeEventItem(selected.Id);
-            reloadMtlv();
+            eventController.RemoveEventItem(selected.Id);
+            ReloadList();
         }
 
 
 
         //seccion Carga
-        private void btnVolverEvento_Click(object sender, EventArgs e)
+        private void btnBackEvent_Click(object sender, EventArgs e)
         {
             panelEventsList.Visible = true;
             panelEventsList.Dock = DockStyle.Fill;
@@ -153,40 +153,40 @@ namespace ProyectoPresupuestoEvento.View
             mtbEventName.Text = null;
             mtbEventClient.Text = null;
             nudEventAdults.Value = 0;
-            nudEventChilds.Value = 0;
+            nudEventChildren.Value = 0;
             nudEventDuration.Value = 1;
 
-            idEditando = 0;
+            editingId = 0;
         }
 
-        private void btnGuardarEvento_Click(object sender, EventArgs e)
+        private void btnSaveEvent_Click(object sender, EventArgs e)
         {
             int guestAdults = (int)nudEventAdults.Value;
-            int guestChilds = (int)nudEventChilds.Value;
+            int guestChildren = (int)nudEventChildren.Value;
             int duration = (int)nudEventDuration.Value;
 
-            EventItemDto eventItemDto = new EventItemDto(mtbEventName.Text, mtbEventClient.Text, dtpEventDate.Value, guestAdults, guestChilds, duration);
+            EventItemDto eventItemDto = new EventItemDto(mtbEventName.Text, mtbEventClient.Text, dtpEventDate.Value, guestAdults, guestChildren, duration);
 
             try
             {
-                if (idEditando == 0)
+                if (editingId == 0)
                 {
-                    eventController.addToRepository(eventItemDto);
+                    eventController.AddToRepository(eventItemDto);
                 }
                 else
                 {
-                    eventController.updateEventItem(idEditando, eventItemDto);
+                    eventController.UpdateEventItem(editingId, eventItemDto);
                 }
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            reloadMtlv();
+            ReloadList();
 
-            btnVolverEvento_Click(sender, e);
+            btnBackEvent_Click(sender, e);
         }
     }
 }

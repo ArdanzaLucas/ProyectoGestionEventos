@@ -22,18 +22,18 @@ namespace ProyectoPresupuestoEvento.View
 
         FormMenuTags formMenuTags;
 
-        private int idEditando = 0;
+        private int editingId = 0;
 
         public FormMenus(MenuController controller, MenuTagController menuTagController)
         {
             menuController = controller;
             this.menuTagController = menuTagController;
             InitializeComponent();
-            VisualHelper.fitColumns(mtLvMenus);
-            VisualHelper.centerContent(panelMenuUpload);
+            VisualHelper.FitColumns(mtLvMenus);
+            VisualHelper.CenterContent(panelMenuUpload);
         }
 
-        public void setFormMenuTags(FormMenuTags formMenuTags)
+        public void SetFormMenuTags(FormMenuTags formMenuTags)
         {
             this.formMenuTags = formMenuTags;
         }
@@ -44,57 +44,57 @@ namespace ProyectoPresupuestoEvento.View
             panelMenusList.Dock = DockStyle.Fill;
             panelMenuUpload.Visible = false;
 
-            reloadMtlv();
+            ReloadList();
         }
 
-        public void resetView()
+        public void ResetView()
         {
-            btnVolverMenu_Click(null, EventArgs.Empty);
-            reloadMtlv();
+            btnBackMenu_Click(null, EventArgs.Empty);
+            ReloadList();
         }
 
-        public void reloadMtlv()
+        public void ReloadList()
         {
-            List<MenuDto> menus = menuController.getMenus();
+            List<MenuDto> menus = menuController.GetMenus();
 
             mtLvMenus.Items.Clear();
 
             foreach (MenuDto menu in menus)
             {
-                ListViewItem fila = new ListViewItem();
+                ListViewItem row = new ListViewItem();
 
-                fila.Text = menu.Description;
-                fila.SubItems.Add(menu.PriceAdult.ToString("C"));
-                fila.SubItems.Add(menu.PriceChild.ToString("C"));
+                row.Text = menu.Description;
+                row.SubItems.Add(menu.PriceAdult.ToString("C"));
+                row.SubItems.Add(menu.PriceChild.ToString("C"));
 
-                string etiquetas = "";
+                string tags = "";
                 foreach (MenuTagDto tag in menu.TagList)
                 {
-                    if (etiquetas != "")
+                    if (tags != "")
                     {
-                        etiquetas = etiquetas + ", ";
+                        tags = tags + ", ";
                     }
-                    etiquetas = etiquetas + tag.Description;
+                    tags = tags + tag.Description;
                 }
-                fila.SubItems.Add(etiquetas);
-                fila.Tag = menu;
+                row.SubItems.Add(tags);
+                row.Tag = menu;
 
-                mtLvMenus.Items.Add(fila);
+                mtLvMenus.Items.Add(row);
             }
 
-            VisualHelper.showEmptyMessage(mtLvMenus, "Todavia no hay menus. Toque Crear para agregar uno.");
+            VisualHelper.ShowEmptyMessage(mtLvMenus, "Todavia no hay menus. Toque Crear para agregar uno.");
         }
 
-        private void loadTags()
+        private void LoadTags()
         {
             clbMenuTags.Items.Clear();
 
             clbMenuTags.DisplayMember = "Description";
 
-            List<MenuTagDto> etiquetas = menuTagController.getMenuTags();
-            foreach (MenuTagDto etiqueta in etiquetas)
+            List<MenuTagDto> tags = menuTagController.GetMenuTags();
+            foreach (MenuTagDto tag in tags)
             {
-                clbMenuTags.Items.Add(etiqueta);
+                clbMenuTags.Items.Add(tag);
             }
         }
 
@@ -103,8 +103,8 @@ namespace ProyectoPresupuestoEvento.View
         //seccion CRUD
         private void btnMenuCreate_Click(object sender, EventArgs e)
         {
-            idEditando = 0;
-            loadTags();
+            editingId = 0;
+            LoadTags();
 
             panelMenusList.Visible = false;
             panelMenusList.Dock = DockStyle.None;
@@ -121,26 +121,26 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenus.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un menu para editar");
+                MessageHelper.ShowWarning("seleccione un menu para editar");
                 return;
             }
 
             ListViewItem selectedMenu = mtLvMenus.SelectedItems[0];
             MenuDto selected = (MenuDto)selectedMenu.Tag;
 
-            idEditando = selected.Id;
+            editingId = selected.Id;
 
             mtbMenuDescription.Text = selected.Description;
             nudMenuPriceAdult.Value = selected.PriceAdult;
             nudMenuPriceChild.Value = selected.PriceChild;
 
-            loadTags();
+            LoadTags();
             for (int i = 0; i < clbMenuTags.Items.Count; i++)
             {
-                MenuTagDto etiqueta = (MenuTagDto)clbMenuTags.Items[i];
-                foreach (MenuTagDto tagDelMenu in selected.TagList)
+                MenuTagDto tag = (MenuTagDto)clbMenuTags.Items[i];
+                foreach (MenuTagDto menuTag in selected.TagList)
                 {
-                    if (tagDelMenu.Id == etiqueta.Id)
+                    if (menuTag.Id == tag.Id)
                     {
                         clbMenuTags.SetItemChecked(i, true);
                     }
@@ -157,21 +157,21 @@ namespace ProyectoPresupuestoEvento.View
         {
             if (mtLvMenus.SelectedItems.Count == 0)
             {
-                MessageHelper.showWarning("seleccione un menu para eliminar");
+                MessageHelper.ShowWarning("seleccione un menu para eliminar");
                 return;
             }
 
             ListViewItem selectedMenu = mtLvMenus.SelectedItems[0];
             MenuDto selected = (MenuDto)selectedMenu.Tag;
 
-            if (!MessageHelper.confirm(
+            if (!MessageHelper.Confirm(
                 "¿Eliminar el menu " + selected.Description + "?"))
             {
                 return;
             }
 
-            menuController.removeMenu(selected.Id);
-            reloadMtlv();
+            menuController.RemoveMenu(selected.Id);
+            ReloadList();
         }
 
         private void btnMenuTags_Click(object sender, EventArgs e)
@@ -183,7 +183,7 @@ namespace ProyectoPresupuestoEvento.View
 
 
         //seccion Carga
-        private void btnVolverMenu_Click(object sender, EventArgs e)
+        private void btnBackMenu_Click(object sender, EventArgs e)
         {
             panelMenusList.Visible = true;
             panelMenusList.Dock = DockStyle.Fill;
@@ -195,42 +195,42 @@ namespace ProyectoPresupuestoEvento.View
             nudMenuPriceChild.Value = 0;
             clbMenuTags.Items.Clear();
 
-            idEditando = 0;
+            editingId = 0;
         }
 
-        private void btnGuardarMenu_Click(object sender, EventArgs e)
+        private void btnSaveMenu_Click(object sender, EventArgs e)
         {
             decimal priceAdult = decimal.Round(nudMenuPriceAdult.Value, 2);
             decimal priceChild = decimal.Round(nudMenuPriceChild.Value, 2);
 
-            List<MenuTagDto> etiquetas = new List<MenuTagDto>();
-            foreach (MenuTagDto etiqueta in clbMenuTags.CheckedItems)
+            List<MenuTagDto> tags = new List<MenuTagDto>();
+            foreach (MenuTagDto tag in clbMenuTags.CheckedItems)
             {
-                etiquetas.Add(etiqueta);
+                tags.Add(tag);
             }
 
-            MenuDto menuDto = new MenuDto(mtbMenuDescription.Text, priceAdult, priceChild, etiquetas);
+            MenuDto menuDto = new MenuDto(mtbMenuDescription.Text, priceAdult, priceChild, tags);
 
             try
             {
-                if (idEditando == 0)
+                if (editingId == 0)
                 {
-                    menuController.addToRepository(menuDto);
+                    menuController.AddToRepository(menuDto);
                 }
                 else
                 {
-                    menuController.updateMenu(idEditando, menuDto);
+                    menuController.UpdateMenu(editingId, menuDto);
                 }
             }
             catch (BusinessRuleException ex)
             {
-                MessageHelper.showWarning(ex.Message);
+                MessageHelper.ShowWarning(ex.Message);
                 return;
             }
 
-            reloadMtlv();
+            ReloadList();
 
-            btnVolverMenu_Click(sender, e);
+            btnBackMenu_Click(sender, e);
         }
     }
 }

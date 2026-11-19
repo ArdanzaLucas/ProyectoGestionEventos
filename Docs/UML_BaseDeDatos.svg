@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1870" height="1271" font-family="Helvetica,Arial" font-size="11">
+<svg xmlns="http://www.w3.org/2000/svg" width="1880" height="1271" font-family="Helvetica,Arial" font-size="11">
 <defs>
 <marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#333" stroke-width="1.3"/></marker>
 <marker id="tri" viewBox="0 0 14 14" refX="13" refY="7" markerWidth="14" markerHeight="14" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L13,7 L1,13 Z" fill="#fff" stroke="#333" stroke-width="1.3"/></marker>
@@ -8,7 +8,7 @@
 <marker id="one" viewBox="0 0 16 16" refX="15" refY="8" markerWidth="16" markerHeight="16" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M6,1 L6,15 M10,1 L10,15" fill="none" stroke="#333" stroke-width="1.2"/></marker>
 </defs>
 <rect width="100%" height="100%" fill="#ffffff"/>
-<rect x="100" y="70" width="1160" height="1121" fill="#f5f9fe" stroke="#6c8ebf" stroke-dasharray="8,4" rx="6"/>
+<rect x="100" y="70" width="1170" height="1121" fill="#f5f9fe" stroke="#6c8ebf" stroke-dasharray="8,4" rx="6"/>
 <text x="112" y="94" font-size="15" font-weight="bold" fill="#6c8ebf">Base de datos SQLite (Data/presupuestos.db)</text>
 <rect x="160" y="180" width="170" height="139" fill="#fff" stroke="#6c8ebf"/>
 <rect x="160" y="180" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
@@ -18,34 +18,34 @@
 <text x="168" y="251">ClientName TEXT</text>
 <text x="168" y="266">Date TEXT</text>
 <text x="168" y="281">GuestAdults INTEGER</text>
-<text x="168" y="296">GuestChilds INTEGER</text>
+<text x="168" y="296">GuestChildren INTEGER</text>
 <text x="168" y="311">Duration INTEGER</text>
-<rect x="590" y="140" width="180" height="274" fill="#fff" stroke="#6c8ebf"/>
-<rect x="590" y="140" width="180" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="680" y="157" text-anchor="middle" font-weight="bold" font-size="12">QUOTE</text>
+<rect x="590" y="140" width="190" height="274" fill="#fff" stroke="#6c8ebf"/>
+<rect x="590" y="140" width="190" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="685" y="157" text-anchor="middle" font-weight="bold" font-size="12">QUOTE</text>
 <text x="598" y="181">PK  Id INTEGER</text>
 <text x="598" y="196">FK  EventItemId INTEGER</text>
 <text x="598" y="211">EventName TEXT</text>
 <text x="598" y="226">EventClientName TEXT</text>
 <text x="598" y="241">EventDate TEXT</text>
 <text x="598" y="256">EventGuestAdults INTEGER</text>
-<text x="598" y="271">EventGuestChilds INTEGER</text>
+<text x="598" y="271">EventGuestChildren INTEGER</text>
 <text x="598" y="286">EventDuration INTEGER</text>
-<text x="598" y="301">FK  UbicationId INTEGER</text>
-<text x="598" y="316">UbicationName TEXT</text>
-<text x="598" y="331">UbicationPrice TEXT</text>
+<text x="598" y="301">FK  LocationId INTEGER</text>
+<text x="598" y="316">LocationName TEXT</text>
+<text x="598" y="331">LocationPrice TEXT</text>
 <text x="598" y="346">State INTEGER</text>
-<text x="598" y="361">TotalUbication TEXT</text>
+<text x="598" y="361">TotalLocation TEXT</text>
 <text x="598" y="376">TotalMenus TEXT</text>
 <text x="598" y="391">TotalOptionItems TEXT</text>
 <text x="598" y="406">Total TEXT</text>
-<rect x="970" y="180" width="170" height="94" fill="#fff" stroke="#6c8ebf"/>
-<rect x="970" y="180" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="1055" y="197" text-anchor="middle" font-weight="bold" font-size="12">UBICATION</text>
-<text x="978" y="221">PK  Id INTEGER</text>
-<text x="978" y="236">Name TEXT</text>
-<text x="978" y="251">Price TEXT</text>
-<text x="978" y="266">IsActive INTEGER</text>
+<rect x="980" y="180" width="170" height="94" fill="#fff" stroke="#6c8ebf"/>
+<rect x="980" y="180" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="1065" y="197" text-anchor="middle" font-weight="bold" font-size="12">LOCATION</text>
+<text x="988" y="221">PK  Id INTEGER</text>
+<text x="988" y="236">Name TEXT</text>
+<text x="988" y="251">Price TEXT</text>
+<text x="988" y="266">IsActive INTEGER</text>
 <rect x="590" y="544" width="170" height="154" fill="#fff" stroke="#6c8ebf"/>
 <rect x="590" y="544" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
 <text x="675" y="561" text-anchor="middle" font-weight="bold" font-size="12">DETAIL_MENU</text>
@@ -57,13 +57,13 @@
 <text x="598" y="660">ChildQuantity INTEGER</text>
 <text x="598" y="675">UnitPriceAdult TEXT</text>
 <text x="598" y="690">UnitPriceChild TEXT</text>
-<rect x="970" y="544" width="190" height="94" fill="#fff" stroke="#6c8ebf"/>
-<rect x="970" y="544" width="190" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="1065" y="561" text-anchor="middle" font-weight="bold" font-size="12">DETAIL_OPTION_ITEM</text>
-<text x="978" y="585">PK FK  QuoteId INTEGER</text>
-<text x="978" y="600">PK FK  OptionItemId INTEGER</text>
-<text x="978" y="615">OptionItemName TEXT</text>
-<text x="978" y="630">UnitPrice TEXT</text>
+<rect x="980" y="544" width="190" height="94" fill="#fff" stroke="#6c8ebf"/>
+<rect x="980" y="544" width="190" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="1075" y="561" text-anchor="middle" font-weight="bold" font-size="12">DETAIL_OPTION_ITEM</text>
+<text x="988" y="585">PK FK  QuoteId INTEGER</text>
+<text x="988" y="600">PK FK  OptionItemId INTEGER</text>
+<text x="988" y="615">OptionItemName TEXT</text>
+<text x="988" y="630">UnitPrice TEXT</text>
 <rect x="590" y="828" width="170" height="109" fill="#fff" stroke="#6c8ebf"/>
 <rect x="590" y="828" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
 <text x="675" y="845" text-anchor="middle" font-weight="bold" font-size="12">MENU</text>
@@ -72,45 +72,45 @@
 <text x="598" y="899">PriceAdult TEXT</text>
 <text x="598" y="914">PriceChild TEXT</text>
 <text x="598" y="929">IsActive INTEGER</text>
-<rect x="970" y="828" width="170" height="94" fill="#fff" stroke="#6c8ebf"/>
-<rect x="970" y="828" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="1055" y="845" text-anchor="middle" font-weight="bold" font-size="12">OPTION_ITEM</text>
-<text x="978" y="869">PK  Id INTEGER</text>
-<text x="978" y="884">Name TEXT</text>
-<text x="978" y="899">Price TEXT</text>
-<text x="978" y="914">IsActive INTEGER</text>
+<rect x="980" y="828" width="170" height="94" fill="#fff" stroke="#6c8ebf"/>
+<rect x="980" y="828" width="170" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="1065" y="845" text-anchor="middle" font-weight="bold" font-size="12">OPTION_ITEM</text>
+<text x="988" y="869">PK  Id INTEGER</text>
+<text x="988" y="884">Name TEXT</text>
+<text x="988" y="899">Price TEXT</text>
+<text x="988" y="914">IsActive INTEGER</text>
 <rect x="590" y="1067" width="180" height="64" fill="#fff" stroke="#6c8ebf"/>
 <rect x="590" y="1067" width="180" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
 <text x="680" y="1084" text-anchor="middle" font-weight="bold" font-size="12">MENU_MENU_TAG</text>
 <text x="598" y="1108">PK FK  MenuId INTEGER</text>
 <text x="598" y="1123">PK FK  MenuTagId INTEGER</text>
-<rect x="970" y="1067" width="230" height="64" fill="#fff" stroke="#6c8ebf"/>
-<rect x="970" y="1067" width="230" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="1085" y="1084" text-anchor="middle" font-weight="bold" font-size="12">MENU_TAG</text>
-<text x="978" y="1108">PK  Id INTEGER</text>
-<text x="978" y="1123">Description TEXT  UNIQUE  NOCASE</text>
+<rect x="980" y="1067" width="230" height="64" fill="#fff" stroke="#6c8ebf"/>
+<rect x="980" y="1067" width="230" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="1095" y="1084" text-anchor="middle" font-weight="bold" font-size="12">MENU_TAG</text>
+<text x="988" y="1108">PK  Id INTEGER</text>
+<text x="988" y="1123">Description TEXT  UNIQUE  NOCASE</text>
 <path d="M590.0,240.0 L330.0,240.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
 <text x="460.0" y="235.0" text-anchor="middle" fill="#555" font-style="italic">EventItemId  (ON DELETE CASCADE)</text>
-<path d="M770.0,227.0 L970.0,227.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
-<text x="870.0" y="222.0" text-anchor="middle" fill="#555" font-style="italic">UbicationId</text>
+<path d="M780.0,227.0 L980.0,227.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
+<text x="880.0" y="222.0" text-anchor="middle" fill="#555" font-style="italic">LocationId</text>
 <path d="M630.0,544.0 L630.0,414.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
 <text x="638.0" y="483.0" text-anchor="start" fill="#555" font-style="italic">QuoteId  (CASCADE)</text>
-<path d="M1065.0,544.0 L1065.0,444.0 L710.0,444.0 L710.0,414.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
-<text x="887.5" y="439.0" text-anchor="middle" fill="#555" font-style="italic">QuoteId  (CASCADE)</text>
+<path d="M1075.0,544.0 L1075.0,444.0 L716.7,444.0 L716.7,414.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
+<text x="895.9" y="439.0" text-anchor="middle" fill="#555" font-style="italic">QuoteId  (CASCADE)</text>
 <path d="M630.0,698.0 L630.0,828.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
 <text x="638.0" y="767.0" text-anchor="start" fill="#555" font-style="italic">MenuId</text>
-<path d="M1010.0,638.0 L1010.0,828.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
-<text x="1018.0" y="737.0" text-anchor="start" fill="#555" font-style="italic">OptionItemId</text>
+<path d="M1020.0,638.0 L1020.0,828.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
+<text x="1028.0" y="737.0" text-anchor="start" fill="#555" font-style="italic">OptionItemId</text>
 <path d="M630.0,1067.0 L630.0,937.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
 <text x="638.0" y="1006.0" text-anchor="start" fill="#555" font-style="italic">MenuId  (CASCADE)</text>
-<path d="M770.0,1099.0 L970.0,1099.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
-<text x="870.0" y="1094.0" text-anchor="middle" fill="#555" font-style="italic">MenuTagId  (CASCADE)</text>
-<rect x="1320" y="140" width="470" height="121" fill="#fffde7" stroke="#bbb"/>
-<text x="1328" y="158">PK = clave primaria, FK = clave foranea.</text>
-<text x="1328" y="173">Las tablas se crean al arrancar si no existen (SqliteDatabase).</text>
-<text x="1328" y="188">Los precios se guardan como TEXT y se leen como decimal.</text>
-<text x="1328" y="203">QUOTE, DETAIL_MENU y DETAIL_OPTION_ITEM guardan una copia</text>
-<text x="1328" y="218">de los nombres y precios: el presupuesto no cambia si despues</text>
-<text x="1328" y="233">se edita el evento, la ubicacion, el menu o el servicio.</text>
-<text x="1328" y="248">MENU_MENU_TAG es la tabla intermedia de menus y etiquetas.</text>
+<path d="M770.0,1099.0 L980.0,1099.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#many)" marker-end="url(#one)"/>
+<text x="875.0" y="1094.0" text-anchor="middle" fill="#555" font-style="italic">MenuTagId  (CASCADE)</text>
+<rect x="1330" y="140" width="470" height="121" fill="#fffde7" stroke="#bbb"/>
+<text x="1338" y="158">PK = clave primaria, FK = clave foranea.</text>
+<text x="1338" y="173">Las tablas se crean al arrancar si no existen (SqliteDatabase).</text>
+<text x="1338" y="188">Los precios se guardan como TEXT y se leen como decimal.</text>
+<text x="1338" y="203">QUOTE, DETAIL_MENU y DETAIL_OPTION_ITEM guardan una copia</text>
+<text x="1338" y="218">de los nombres y precios: el presupuesto no cambia si despues</text>
+<text x="1338" y="233">se edita el evento, la ubicacion, el menu o el servicio.</text>
+<text x="1338" y="248">MENU_MENU_TAG es la tabla intermedia de menus y etiquetas.</text>
 </svg>

@@ -35,7 +35,7 @@ Aplicación de escritorio en **C# (WinForms, .NET 8)** para armar presupuestos d
   - El **total se calcula en vivo** mientras se arma.
   - Estados **Pendiente**, **Aceptado** y **Cancelado**; se pueden editar (solo Pendiente), aceptar, cancelar, clonar y eliminar.
   - Lista con filtro por evento.
-- **Vista previa y PDF** del presupuesto, con el detalle línea por línea y los totales.
+- **PDF del presupuesto** con el detalle línea por línea y los totales: el botón Detalle lo abre en el visor de PDF y Guardar PDF lo guarda donde se elija.
 - **Persistencia en SQLite:** los datos quedan guardados al cerrar el programa.
 
 ## 2. Cómo ejecutarlo
@@ -52,7 +52,7 @@ Desde la línea de comandos:
 dotnet run --project ProyectoPresupuestoEvento.csproj
 ```
 
-El PDF se genera con la impresora **"Microsoft Print to PDF"** de Windows.
+El PDF se genera con la librería **PDFsharp**, que se restaura sola con NuGet: no depende de ninguna impresora instalada.
 
 ## 3. Arquitectura en capas
 
@@ -70,45 +70,49 @@ View  ──DTO──▶  Controller  ──DTO──▶  Service  ──Model�
 | `Repository/`, `Interface/` | Persistencia | Guarda y lee objetos del modelo en SQLite con SQL parametrizado | No valida reglas |
 | `Model/` | Dominio | Clases del negocio con sus datos, validaciones y cálculos | No conoce DTOs, vista ni base |
 | `Dto/` | Transporte | Objetos simples entre la vista y el Service | No tienen lógica |
-| `Common/` | Compartido | `Validator`, `BusinessRuleException`, `NotFoundException`, enum `EstadoPresupuesto` | — |
+| `Common/` | Compartido | `Validator`, `Limits`, `BusinessRuleException`, `NotFoundException`, enum `QuoteState` y `QuoteStateText` | — |
 | `Mock/` | Arranque | Datos de ejemplo si la base está vacía | — |
 
-Cada entidad tiene su "columna" con el mismo patrón: formulario → controller → service → repositorio. Por ejemplo, `FormUbications` → `UbicationController` → `UbicationService` → `UbicationRepository`.
+Cada entidad tiene su "columna" con el mismo patrón: formulario → controller → service → repositorio. Por ejemplo, `FormLocations` → `LocationController` → `LocationService` → `LocationRepository`.
 
 **Justificación (POO):** separar responsabilidades da **bajo acoplamiento** y **alta cohesión** (principio de *responsabilidad única*): si cambia la pantalla se toca la vista, si cambia una regla el Service o el Model, y si cambia el almacenamiento solo el Repository. Por eso se pudo pasar de listas en memoria a SQLite sin modificar ni los Services ni la vista.
 
 ### Cómo viajan los datos
 
-- **Entre la vista y el Service viajan DTOs.** La vista nunca toca un objeto del modelo: no puede llamar a `accept()` ni modificar un presupuesto, solo enviar datos. Los DTO referencian otras entidades **por id** (`UbicationId`, `MenuId`) y traen datos listos para mostrar.
-- **Entre el Service y el Repository viajan objetos del modelo.** `toModel(dto)` arma el objeto con su constructor (y así se valida al nacer); `toDto(model)` lo convierte de vuelta.
+- **Entre la vista y el Service viajan DTOs.** La vista nunca toca un objeto del modelo: no puede llamar a `Accept()` ni modificar un presupuesto, solo enviar datos. Los DTO referencian otras entidades **por id** (`LocationId`, `MenuId`) y traen datos listos para mostrar.
+- **Entre el Service y el Repository viajan objetos del modelo.** `ToModel(dto)` arma el objeto con su constructor (y así se valida al nacer); `ToDto(model)` lo convierte de vuelta.
 
 Ejemplo, crear una ubicación:
 
 ```
-FormUbications            new UbicationDto(nombre, precio)
-  → UbicationController   delega
-  → UbicationService      toModel(dto) → new Ubication(...)   (el set valida nombre y precio)
-                          validateUniqueName(...)              (regla que mira otros registros)
-                          repository.addToRepository(ubicacion)
-  → UbicationRepository   INSERT ... ; SELECT last_insert_rowid();  →  ubicacion.assignId(id)
+FormLocations             new LocationDto(name, price)
+  → LocationController    delega
+  → LocationService       ToModel(dto) → new Location(...)    (el set valida nombre y precio)
+                          ValidateUniqueName(...)              (regla que mira otros registros)
+                          repository.AddToRepository(ubicacion)
+  → LocationRepository    INSERT ... ; SELECT last_insert_rowid();  →  location.AssignId(id)
 ```
 
 Ejemplo, el total en vivo: la vista arma un `QuoteDto` con lo elegido y llama a `calculatePreview`. El Service arma el presupuesto real, el modelo calcula y el Service devuelve el DTO con los totales **sin guardarlo**. La vista nunca hace una cuenta de precios.
 
 ### La pestaña Inicio
 
-Tiene tres formularios en el **mismo panel**: `FormIndex` (la lista), `FormQuoteEdit` (la carga) y `FormReport` (la vista previa). Se crean con `TopLevel = false` y `Dock = Fill` y se alternan mostrando uno y escondiendo los otros, así que nunca aparecen como ventanas aparte.
+Tiene dos formularios en el **mismo panel**: `FormIndex` (la lista) y `FormQuoteEdit` (la carga). Se crean con `TopLevel = false` y `Dock = Fill` y se alternan mostrando uno y escondiendo el otro, así que nunca aparecen como ventanas aparte.
+
+### El PDF
+
+La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteController.ExportPdf(id, path)`. `QuoteService.ExportPdf` busca el presupuesto y se lo pasa a `QuotePdfGenerator` (capa Service), que arma la hoja con la librería **PDFsharp** usando los datos congelados del presupuesto. `QuoteService` lo usa por **composición**, igual que a `QuoteValidator`. Así la lógica del documento queda fuera de la vista y no depende de una impresora virtual del sistema.
 
 ## 4. Modelo de dominio
 
 | Clase | Representa | Datos y comportamiento |
 |---|---|---|
 | `EventItem` | Un evento de un cliente | Nombre, cliente, fecha y hora, adultos, niños, duración. Calcula `TotalGuests` |
-| `Ubication` | Un salón | Nombre, precio por hora, activo. `deactivate()` |
-| `Menu` | Una opción de catering | Descripción, precio por adulto y por niño, etiquetas, activo. `hasTag()`, `deactivate()` |
+| `Location` | Un salón | Nombre, precio por hora, activo. `Deactivate()` |
+| `Menu` | Una opción de catering | Descripción, precio por adulto y por niño, etiquetas, activo. `HasTag()`, `Deactivate()` |
 | `MenuTag` | Una variante o particularidad del menú | Descripción |
 | `OptionItem` | Un servicio adicional | Nombre, monto fijo, activo |
-| `Quote` | Un presupuesto | Copia de los datos del evento y la ubicación, líneas, estado y totales. `calculateTotals()`, `getItems()`, `accept()`, `cancel()`, `isEditable()`, `overlapsWith()`, `clone()` |
+| `Quote` | Un presupuesto | Copia de los datos del evento y la ubicación, líneas, estado y totales. `CalculateTotals()`, `Accept()`, `Cancel()`, `IsEditable()`, `OverlapsWith()`, `Clone()` |
 | `DetailMenu` | Una línea de catering | Menú, etiqueta (texto), adultos, niños, copia de descripción y precios. `Subtotal` |
 | `DetailOptionItem` | Un servicio dentro del presupuesto | Servicio, copia de nombre y precio. `Subtotal` |
 | `IQuoteItem` | Contrato común de los ítems del presupuesto | `Description` y `Subtotal` |
@@ -120,36 +124,46 @@ Tiene tres formularios en el **mismo panel**: `FormIndex` (la lista), `FormQuote
 | `Quote` ◆— `DetailMenu`, `DetailOptionItem` | **Composición** | Las líneas se crean para un presupuesto, no se comparten (al clonar se copian), no tienen id propio y se borran con él |
 | `EventItem` ◆— `Quote` | **Composición** (por id) | Un presupuesto no tiene sentido sin su evento. Se implementa con `Quote.EventItemId`: borrar el evento borra sus presupuestos |
 | `Menu` ◇— `MenuTag` | **Agregación** | Las etiquetas existen solas, se comparten entre menús (muchos a muchos) y sobreviven al menú |
-| `Quote` → `Ubication`, `DetailMenu` → `Menu`, `DetailOptionItem` → `OptionItem` | **Asociación** | Son elementos del catálogo que el presupuesto usa, con su propio ciclo de vida. Los precios no se leen por la referencia: se copian |
+| `Quote` → `Location`, `DetailMenu` → `Menu`, `DetailOptionItem` → `OptionItem` | **Asociación** | Son elementos del catálogo que el presupuesto usa, con su propio ciclo de vida. Los precios no se leen por la referencia: se copian |
 | `DetailMenu`, `DetailOptionItem` ⇢ `IQuoteItem` | **Realización** | Implementan el contrato de ítem del presupuesto |
-| `QuoteService` ◆— `QuoteValidator` | **Composición** | El service crea su validador y le delega las reglas de los presupuestos |
+| `QuoteService` ◆— `QuoteValidator`, `QuotePdfGenerator` | **Composición** | El service crea su validador y su generador de PDF y les delega las reglas y el armado del documento |
 | Form → Controller → Service → `IRepository<T>` | **Asociación** | Cada capa guarda una referencia a la de abajo: el formulario recibe su Controller, el Controller crea su Service en el constructor y el Service recibe sus repositorios |
 
 Para distinguir agregación de composición: *si se borra el todo, ¿las partes siguen teniendo sentido?* Una etiqueta sí (agregación); una línea de catering no (composición).
 
 ## 5. Cálculo del presupuesto
 
-Todos los importes son `decimal`. Los calcula el propio modelo, en `Quote.calculateTotals()`, con los datos copiados en el presupuesto:
+Todos los importes son `decimal`. Los calcula el propio modelo, en `Quote.CalculateTotals()`, con los datos copiados en el presupuesto:
 
 | Concepto | Fórmula |
 |---|---|
 | Subtotal de una línea de catering | `precioAdulto × adultos + precioNiño × niños` |
 | Subtotal de un servicio | su monto fijo |
-| `TotalUbication` | `precioPorHora × duración del evento` |
+| `TotalLocation` | `precioPorHora × duración del evento` |
 | `TotalMenus` | suma de los subtotales de catering |
 | `TotalOptionItems` | suma de los servicios |
-| `Total` | `TotalUbication + suma de los subtotales de todos los ítems` |
+| `Total` | `TotalLocation + TotalMenus + TotalOptionItems` |
 
-El total se suma **polimórficamente** sobre `IQuoteItem`, sin preguntar el tipo de cada ítem:
+Cada grupo de ítems se suma **una sola vez**, con un único método polimórfico que recibe cualquier colección de `IQuoteItem` y no pregunta el tipo de cada uno:
 
 ```csharp
-decimal totalItems = 0;
-foreach (IQuoteItem item in getItems())
+TotalLocation = LocationPrice * EventDuration;
+TotalMenus = SumSubtotals(MenusList);
+TotalOptionItems = SumSubtotals(OptionItemList);
+Total = TotalLocation + TotalMenus + TotalOptionItems;
+
+private decimal SumSubtotals(IEnumerable<IQuoteItem> items)
 {
-    totalItems = totalItems + item.Subtotal;
+    decimal total = 0;
+    foreach (IQuoteItem item in items)
+    {
+        total = total + item.Subtotal;
+    }
+    return total;
 }
-Total = TotalUbication + totalItems;
 ```
+
+`List<DetailMenu>` y `List<DetailOptionItem>` se pueden pasar como `IEnumerable<IQuoteItem>` porque sus elementos implementan la interfaz.
 
 **Ejemplo:** evento de 5 h, 80 adultos y 20 niños, en un salón de $50.000/h. Menú Milanesa ($15.000 por adulto y $8.000 por niño) en tres variantes, y DJ por $200.000.
 
@@ -172,13 +186,14 @@ La integridad se protege en capas sucesivas, y cada regla vive donde está la in
    - Atributos privados y propiedades con **`get` público y `set` privado que valida**. Nadie de afuera puede escribir `ubicacion.Price = -5`.
    - Los constructores asignan a través de las propiedades, así que la validación corre siempre al crear un objeto.
    - Las validaciones comunes están centralizadas en `Common/Validator`: texto obligatorio de hasta 50 caracteres, precio entre 0 y 1.000.000.000 con 2 decimales como máximo, cantidad entre 0 y 10.000.
-   - Los cambios de estado solo ocurren por métodos con guardas: `assignId()` (una sola vez), `deactivate()`, `accept()` y `cancel()` (solo desde Pendiente).
-   - Las referencias obligatorias (ubicación, listas de líneas, menú y servicio de cada línea) rechazan `null`.
+   - Los límites no están repetidos en el código: son constantes con nombre en `Common/Limits` (`MaxTextLength`, `MaxPrice`, `MaxQuantity`, `MaxGuests`, `MinDuration`, `MaxDuration`).
+   - Los cambios de estado solo ocurren por métodos con guardas: `AssignId()` (una sola vez), `Deactivate()`, `Accept()` y `Cancel()` (solo desde Pendiente).
+   - Las referencias obligatorias (ubicación, listas de líneas, menú y servicio de cada línea) rechazan `null` con `ArgumentNullException`: un nulo ahí es un error de programación, no una regla de negocio.
    - Hay un **constructor de lectura** para reconstruir los objetos desde la base sin modificarlos después.
 2. **Reglas que miran varios objetos o la base (Service):** nombres únicos, eventos repetidos, horarios ocupados, elementos dados de baja, etc. (ver la sección 7). Las de los presupuestos están en `QuoteValidator`.
 3. **La base de datos:** claves primarias y foráneas, `UNIQUE` en las etiquetas, borrado en cascada y transacciones.
 
-Cuando una regla no se cumple se lanza `BusinessRuleException` (o `NotFoundException` si un registro no existe). La vista atrapa la excepción y muestra el mensaje con `MessageHelper`.
+Cuando una regla no se cumple se lanza `BusinessRuleException`, y la vista la atrapa y muestra el mensaje con `MessageHelper`. Los demás errores tienen su propia excepción: `NotFoundException` si un registro no existe y `ArgumentNullException` para los nulos; si alguno llega a la vista, lo muestra el manejador general de errores de `Program`.
 
 **Editar no modifica: reemplaza.** Como los `set` son privados, editar siempre es armar un objeto **nuevo** desde el DTO (que se valida entero al nacer) y hacer `UPDATE ... WHERE Id = @id` con sus datos.
 
@@ -210,7 +225,7 @@ Cuando una regla no se cumple se lanza `BusinessRuleException` (o `NotFoundExcep
 - No se puede crear, clonar ni aceptar un presupuesto de un evento que ya pasó.
 
 ### Integridad entre entidades
-- **Baja lógica:** eliminar una ubicación, un menú o un servicio no lo borra; lo marca inactivo con `deactivate()`. Desaparece de las listas, pero los presupuestos que lo usan siguen funcionando y lo muestran como "(dado de baja)".
+- **Baja lógica:** eliminar una ubicación, un menú o un servicio no lo borra; lo marca inactivo con `Deactivate()`. Desaparece de las listas, pero los presupuestos que lo usan siguen funcionando y lo muestran como "(dado de baja)".
 - **Etiquetas:** se borran físicamente, salvo que sean la única etiqueta de algún menú. Los presupuestos no cambian, porque cada línea guarda el texto de la etiqueta.
 - **Eventos:** se borran físicamente junto con todos sus presupuestos, con confirmación.
 - **Presupuestos:** se pueden eliminar en cualquier estado, con confirmación; sus líneas se borran en cascada.
@@ -219,16 +234,16 @@ Cuando una regla no se cumple se lanza `BusinessRuleException` (o `NotFoundExcep
 ## 8. Ciclo de vida del presupuesto
 
 ```
-            accept()
+            Accept()
 Pendiente ───────────▶ Aceptado    (congelado)
     │
-    │ cancel()
+    │ Cancel()
     ▼
 Cancelado   (congelado)
 ```
 
 - Todo presupuesto nuevo o clonado nace **Pendiente**, y solo un Pendiente se puede editar.
-- `State` tiene `set` privado: el estado solo cambia con `accept()` o `cancel()`, que revisan que el presupuesto esté Pendiente (**encapsulamiento** aplicado a un ciclo de vida).
+- `State` tiene `set` privado: el estado solo cambia con `Accept()` o `Cancel()`, que revisan que el presupuesto esté Pendiente (**encapsulamiento** aplicado a un ciclo de vida).
 - Al **aceptar** se revisa que:
   - el evento no haya pasado;
   - los datos del evento no hayan cambiado desde que se guardó el presupuesto (si cambiaron, hay que editarlo y guardarlo antes);
@@ -249,7 +264,7 @@ Un presupuesto acordado no puede cambiar si después se modifica el catálogo o 
 | `DetailOptionItem` | Nombre y precio del servicio |
 
 Se mantiene congelado porque:
-- `calculateTotals()` usa solo las copias y no hace nada si el presupuesto no está Pendiente;
+- `CalculateTotals()` usa solo las copias y no hace nada si el presupuesto no está Pendiente;
 - todos los `set` son privados;
 - la base guarda las copias y los totales, y el constructor de lectura los reconstruye tal cual;
 - `toDto` arma el DTO solo con las copias, así que la vista previa y el PDF muestran exactamente lo guardado.
@@ -258,7 +273,7 @@ Un Pendiente toma los datos y precios actuales solo cuando se edita y se guarda,
 
 ### Clonación
 
-`Quote.clone(evento)` crea un presupuesto **nuevo y Pendiente** con la misma ubicación, catering y servicios:
+`Quote.Clone(evento)` crea un presupuesto **nuevo y Pendiente** con la misma ubicación, catering y servicios:
 
 - **Las líneas se copian nuevas** (`new DetailMenu(...)`): una parte de una composición pertenece a un solo todo, así que no se comparten entre presupuestos.
 - **Las referencias al catálogo se comparten**: la ubicación, los menús y los servicios son asociaciones a objetos que se usan en muchos presupuestos.
@@ -272,21 +287,21 @@ Un Pendiente toma los datos y precios actuales solo cuando se edita y se guarda,
 ```csharp
 internal interface IRepository<T> where T : class
 {
-    void addToRepository(T obj);
-    List<T> getAll();
-    T getById(int id);
-    void update(int id, T obj);
-    void removeById(int id);
+    void AddToRepository(T obj);
+    List<T> GetAll();
+    T GetById(int id);
+    void Update(int id, T obj);
+    void RemoveById(int id);
 }
 ```
 
-- Los seis repositorios implementan `IRepository<T>` y son **Singleton**: constructor privado, atributo estático `instance` y método estático `getInstance()`. Hay una sola base y un solo punto de acceso a cada tabla, compartido por todos los services.
+- Los seis repositorios implementan `IRepository<T>` y son **Singleton**: constructor privado, atributo estático `instance` y método estático `GetInstance()`. Hay una sola base y un solo punto de acceso a cada tabla, compartido por todos los services.
 - `SqliteDatabase` también es Singleton: arma la conexión a `Data/presupuestos.db` con claves foráneas activadas y crea las tablas si no existen.
 - Cada Service **recibe por constructor** los `IRepository<T>` que necesita (*inyección de dependencias*). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales:
 
 ```csharp
 public EventItemService()
-    : this(EventItemRepository.getInstance(), QuoteRepository.getInstance())
+    : this(EventItemRepository.GetInstance(), QuoteRepository.GetInstance())
 {
 }
 
@@ -301,8 +316,8 @@ Los services no se crean entre sí: si uno necesita datos de otra entidad, recib
 
 ### Cómo trabaja un repositorio
 
-- `addToRepository`: `INSERT` con parámetros y `SELECT last_insert_rowid()`; después `obj.assignId(id)`.
-- `getAll` / `getById`: `SELECT` y un método `readX(reader)` que usa el constructor de lectura. Ubicaciones, menús y servicios filtran `WHERE IsActive = 1` en `getAll`; `getById` trae también los inactivos, que los presupuestos viejos necesitan.
+- `addToRepository`: `INSERT` con parámetros y `SELECT last_insert_rowid()`; después `obj.AssignId(id)`.
+- `getAll` / `getById`: `SELECT` y un método `ReadX(reader)` que usa el constructor de lectura. Ubicaciones, menús y servicios filtran `WHERE IsActive = 1` en `getAll`; `getById` trae también los inactivos, que los presupuestos viejos necesitan.
 - `update`: `UPDATE ... WHERE Id = @id`.
 - **Transacciones:** un presupuesto se guarda en `QUOTE`, `DETAIL_MENU` y `DETAIL_OPTION_ITEM` dentro de una transacción (todo o nada). Lo mismo un menú con sus etiquetas.
 - **Parámetros SQL** (`@name`): evitan inyección SQL.
@@ -322,14 +337,16 @@ Un tipo de ítem nuevo implica una clase que implemente `IQuoteItem`, su tabla d
 | **Abstracción** | Las clases del modelo representan el negocio. `IRepository<T>` abstrae "guardar y leer" sin decir cómo. Los DTO abstraen lo que la pantalla necesita |
 | **Encapsulamiento** | `set` privados que validan, estado cambiado solo por métodos con guardas, constructores privados en los Singleton |
 | **Polimorfismo** | Por interfaz en el dominio (`IQuoteItem`: cada ítem calcula su subtotal a su manera) y en la persistencia (`IRepository<T>`). También genéricos y sobrecarga de constructores (creación y lectura) |
-| **Herencia** | Solo donde hay un "es un" real: `NotFoundException : BusinessRuleException : Exception`, y los formularios heredan de `Form`. En el dominio se usa **composición sobre herencia**: un presupuesto *tiene* líneas, no *es* una |
+| **Herencia** | Solo donde hay un "es un" real: las excepciones propias heredan de `Exception` y los formularios de `Form`. En el dominio se usa **composición sobre herencia**: un presupuesto *tiene* líneas, no *es* una |
 | **Composición / agregación / asociación** | Ver la sección 4 |
-| **Responsabilidad única** | Cada capa y cada clase hace una cosa: `QuoteValidator` las reglas, `QuotePdf` la hoja, `MessageHelper` los mensajes, `VisualHelper` la apariencia |
+| **Responsabilidad única** | Cada capa y cada clase hace una cosa: `QuoteValidator` las reglas, `QuotePdfGenerator` el PDF, `MessageHelper` los mensajes, `VisualHelper` la apariencia |
 | **Abierto/cerrado** | El total se calcula sobre `IQuoteItem`: un ítem nuevo se agrega sin modificar el cálculo |
 | **Inversión de dependencias** | Los services dependen de `IRepository<T>` y la reciben por constructor |
 | **Experto en información** | Cada objeto calcula con sus propios datos: la línea sabe su subtotal y el presupuesto sabe sumar sus ítems |
 | **Patrones** | Singleton (repositorios y `SqliteDatabase`), Repository y DTO |
 | **Tipado explícito** | No se usa `var`: todas las variables declaran su tipo |
+| **Convenciones de C#** | Todos los identificadores en inglés. Métodos y propiedades en UpperCamelCase (`CalculateTotals`, `GetById`), parámetros y variables en lowerCamelCase. Los manejadores de eventos mantienen el formato de Visual Studio (`btnSaveQuote_Click`). Los textos que ve el usuario están en castellano: el estado se muestra con `QuoteStateText.GetDisplayName` (Pending → "Pendiente") |
+| **Sin números mágicos** | Los límites del negocio son constantes con nombre en `Limits` |
 
 ## 12. Diagramas
 
@@ -345,4 +362,4 @@ Un tipo de ítem nuevo implica una clase que implemente `IQuoteItem`, su tabla d
 - C# / .NET 8, Windows Forms
 - [MaterialSkin.2](https://github.com/leocb/MaterialSkin) 2.3.1 para la interfaz
 - [Microsoft.Data.Sqlite](https://learn.microsoft.com/dotnet/standard/data/sqlite/) 8.0 para la base de datos
-- `PrintDocument` y "Microsoft Print to PDF" para la vista previa y el PDF
+- [PDFsharp](https://www.pdfsharp.com/) 6.1 (licencia MIT) para generar el PDF

@@ -17,158 +17,167 @@ namespace ProyectoPresupuestoEvento.Service
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
         private IRepository<Quote> repository;
         private IRepository<EventItem> eventItemRepository;
-        private IRepository<Ubication> ubicationRepository;
+        private IRepository<Location> locationRepository;
         private IRepository<Menu> menuRepository;
         private IRepository<OptionItem> optionItemRepository;
         private QuoteValidator validator;
+        private QuotePdfGenerator pdfGenerator;
 
         // el controller usa este: le pasa los repositorios reales al otro constructor
         public QuoteService()
-            : this(QuoteRepository.getInstance(), EventItemRepository.getInstance(), UbicationRepository.getInstance(),
-                  MenuRepository.getInstance(), OptionItemRepository.getInstance())
+            : this(QuoteRepository.GetInstance(), EventItemRepository.GetInstance(), LocationRepository.GetInstance(),
+                  MenuRepository.GetInstance(), OptionItemRepository.GetInstance())
         {
         }
 
         // recibe los repositorios desde afuera (inyeccion de dependencias)
         public QuoteService(IRepository<Quote> repository, IRepository<EventItem> eventItemRepository,
-            IRepository<Ubication> ubicationRepository, IRepository<Menu> menuRepository, IRepository<OptionItem> optionItemRepository)
+            IRepository<Location> locationRepository, IRepository<Menu> menuRepository, IRepository<OptionItem> optionItemRepository)
         {
             this.repository = repository;
             this.eventItemRepository = eventItemRepository;
-            this.ubicationRepository = ubicationRepository;
+            this.locationRepository = locationRepository;
             this.menuRepository = menuRepository;
             this.optionItemRepository = optionItemRepository;
             validator = new QuoteValidator(repository, eventItemRepository);
+            pdfGenerator = new QuotePdfGenerator();
         }
 
         // crea un presupuesto nuevo con los datos actuales del evento, la ubicacion, los menus y los servicios
-        public void addQuote(QuoteDto dto)
+        public void AddQuote(QuoteDto dto)
         {
-            Quote quote = toModel(dto);
+            Quote quote = ToModel(dto);
 
-            validator.validateEventNotPast(quote.EventDate, "crear");
-            validator.validateQuote(quote, null);
+            validator.ValidateEventNotPast(quote.EventDate, "crear");
+            validator.ValidateQuote(quote, null);
 
-            quote.calculateTotals();
-            repository.addToRepository(quote);
+            quote.CalculateTotals();
+            repository.AddToRepository(quote);
         }
 
         // devuelve todos los presupuestos como dto, usando solo sus datos congelados
-        public List<QuoteDto> getQuotes()
+        public List<QuoteDto> GetQuotes()
         {
-            List<Quote> quotes = repository.getAll();
+            List<Quote> quotes = repository.GetAll();
             List<QuoteDto> dtos = new List<QuoteDto>();
 
             foreach (Quote quote in quotes)
             {
-                dtos.Add(toDto(quote));
+                dtos.Add(ToDto(quote));
             }
 
             return dtos;
         }
 
-        public List<QuoteDto> getQuotesByEventItem(int eventItemId)
+        public List<QuoteDto> GetQuotesByEventItem(int eventItemId)
         {
-            List<Quote> quotes = repository.getAll();
+            List<Quote> quotes = repository.GetAll();
             List<QuoteDto> dtos = new List<QuoteDto>();
 
             foreach (Quote quote in quotes)
             {
                 if (quote.EventItemId == eventItemId)
                 {
-                    dtos.Add(toDto(quote));
+                    dtos.Add(ToDto(quote));
                 }
             }
 
             return dtos;
         }
 
-        public QuoteDto getQuoteById(int id)
+        public QuoteDto GetQuoteById(int id)
         {
-            Quote quote = repository.getById(id);
-            return toDto(quote);
+            Quote quote = repository.GetById(id);
+            return ToDto(quote);
         }
 
         // solo edita un pendiente: arma todo de nuevo con toModel, asi toma los datos y precios actuales
-        public void updateQuote(int id, QuoteDto dto)
+        public void UpdateQuote(int id, QuoteDto dto)
         {
-            Quote original = repository.getById(id);
-            if (!original.isEditable())
+            Quote original = repository.GetById(id);
+            if (!original.IsEditable())
             {
                 throw new BusinessRuleException("solo se puede editar un presupuesto pendiente");
             }
 
             // el evento de un presupuesto no se puede cambiar
             dto.EventItemId = original.EventItemId;
-            Quote quote = toModel(dto);
+            Quote quote = ToModel(dto);
 
-            validator.validateQuote(quote, original);
+            validator.ValidateQuote(quote, original);
 
-            quote.calculateTotals();
-            repository.update(id, quote);
+            quote.CalculateTotals();
+            repository.Update(id, quote);
         }
 
-        public void removeQuote(int id)
+        public void RemoveQuote(int id)
         {
-            repository.removeById(id);
+            repository.RemoveById(id);
         }
 
         // acepta un presupuesto: desde ahi queda congelado
-        public void acceptQuote(int id)
+        public void AcceptQuote(int id)
         {
-            Quote quote = repository.getById(id);
+            Quote quote = repository.GetById(id);
             // cambia el estado solo en memoria: si alguna validacion falla, no se guarda nada
-            quote.accept();
+            quote.Accept();
 
-            validator.validateEventNotPast(quote.EventDate, "aceptar");
-            validator.validateEventNotChanged(quote);
-            validator.validateNoOtherAccepted(quote);
-            validator.validateUbicationFree(quote);
+            validator.ValidateEventNotPast(quote.EventDate, "aceptar");
+            validator.ValidateEventNotChanged(quote);
+            validator.ValidateNoOtherAccepted(quote);
+            validator.ValidateLocationFree(quote);
 
             // recien aca se guarda el nuevo estado
-            repository.update(id, quote);
+            repository.Update(id, quote);
         }
 
-        public void cancelQuote(int id)
+        public void CancelQuote(int id)
         {
-            Quote quote = repository.getById(id);
-            quote.cancel();
-            repository.update(id, quote);
+            Quote quote = repository.GetById(id);
+            quote.Cancel();
+            repository.Update(id, quote);
         }
 
         // crea un pendiente nuevo con la misma ubicacion, menus y servicios que el original
-        public void cloneQuote(int id)
+        public void CloneQuote(int id)
         {
-            Quote original = repository.getById(id);
-            validator.validateCanClone(original);
+            Quote original = repository.GetById(id);
+            validator.ValidateCanClone(original);
 
-            EventItem eventItem = getEventItem(original.EventItemId);
-            validator.validateEventNotPast(eventItem.Date, "clonar");
+            EventItem eventItem = GetEventItem(original.EventItemId);
+            validator.ValidateEventNotPast(eventItem.Date, "clonar");
 
             // el clon toma los datos y precios actuales, no las copias del original
-            Quote nuevo = original.clone(eventItem);
+            Quote newQuote = original.Clone(eventItem);
             // las lineas se revisan como si se armara a mano: por ejemplo, el menu puede haber perdido la etiqueta
-            validator.validateQuote(nuevo, null);
+            validator.ValidateQuote(newQuote, null);
 
-            nuevo.calculateTotals();
-            repository.addToRepository(nuevo);
+            newQuote.CalculateTotals();
+            repository.AddToRepository(newQuote);
         }
 
         // calcula los totales mientras se carga el presupuesto, sin guardarlo
-        public QuoteDto calculatePreview(QuoteDto dto)
+        // genera el pdf del presupuesto en la ruta indicada, con sus datos congelados
+        public void ExportPdf(int id, string path)
         {
-            Quote quote = toModel(dto);
-            quote.calculateTotals();
-            return toDto(quote);
+            Quote quote = repository.GetById(id);
+            pdfGenerator.Generate(quote, path);
+        }
+
+        public QuoteDto CalculatePreview(QuoteDto dto)
+        {
+            Quote quote = ToModel(dto);
+            quote.CalculateTotals();
+            return ToDto(quote);
         }
 
 
 
         //auxiliares
 
-        private EventItem getEventItem(int eventItemId)
+        private EventItem GetEventItem(int eventItemId)
         {
-            return eventItemRepository.getById(eventItemId);
+            return eventItemRepository.GetById(eventItemId);
         }
 
 
@@ -176,31 +185,31 @@ namespace ProyectoPresupuestoEvento.Service
         //conversiones
 
         // busca los objetos reales por id en sus repositorios, y el presupuesto y sus lineas copian sus datos
-        public Quote toModel(QuoteDto dto)
+        public Quote ToModel(QuoteDto dto)
         {
-            EventItem eventItem = getEventItem(dto.EventItemId);
-            Ubication ubication = ubicationRepository.getById(dto.UbicationId);
+            EventItem eventItem = GetEventItem(dto.EventItemId);
+            Location location = locationRepository.GetById(dto.LocationId);
 
             List<DetailMenu> menus = new List<DetailMenu>();
             foreach (DetailMenuDto lineDto in dto.MenusList)
             {
-                Menu menu = menuRepository.getById(lineDto.MenuId);
+                Menu menu = menuRepository.GetById(lineDto.MenuId);
                 menus.Add(new DetailMenu(menu, lineDto.TagDescription, lineDto.AdultQuantity, lineDto.ChildQuantity));
             }
 
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
             foreach (DetailOptionItemDto lineDto in dto.OptionItemsList)
             {
-                OptionItem optionItem = optionItemRepository.getById(lineDto.OptionItemId);
+                OptionItem optionItem = optionItemRepository.GetById(lineDto.OptionItemId);
                 optionItems.Add(new DetailOptionItem(optionItem));
             }
 
-            Quote quote = new Quote(eventItem, ubication, menus, optionItems);
+            Quote quote = new Quote(eventItem, location, menus, optionItems);
             return quote;
         }
 
         // pasa al dto solo las copias congeladas, sin consultar otras entidades
-        public QuoteDto toDto(Quote quote)
+        public QuoteDto ToDto(Quote quote)
         {
             List<DetailMenuDto> menusDto = new List<DetailMenuDto>();
             foreach (DetailMenu detailMenu in quote.MenusList)
@@ -223,12 +232,12 @@ namespace ProyectoPresupuestoEvento.Service
                 optionItemsDto.Add(lineDto);
             }
 
-            QuoteDto dto = new QuoteDto(quote.EventItemId, quote.Ubication.Id, menusDto, optionItemsDto);
+            QuoteDto dto = new QuoteDto(quote.EventItemId, quote.Location.Id, menusDto, optionItemsDto);
             dto.Id = quote.Id;
-            dto.UbicationName = quote.UbicationName;
-            dto.UbicationPrice = quote.UbicationPrice;
+            dto.LocationName = quote.LocationName;
+            dto.LocationPrice = quote.LocationPrice;
             dto.State = quote.State;
-            dto.TotalUbication = quote.TotalUbication;
+            dto.TotalLocation = quote.TotalLocation;
             dto.TotalMenus = quote.TotalMenus;
             dto.TotalOptionItems = quote.TotalOptionItems;
             dto.Total = quote.Total;
@@ -237,7 +246,7 @@ namespace ProyectoPresupuestoEvento.Service
             dto.EventClientName = quote.EventClientName;
             dto.EventDate = quote.EventDate;
             dto.EventGuestAdults = quote.EventGuestAdults;
-            dto.EventGuestChilds = quote.EventGuestChilds;
+            dto.EventGuestChildren = quote.EventGuestChildren;
             dto.EventDuration = quote.EventDuration;
             dto.TotalGuests = quote.TotalGuests;
 

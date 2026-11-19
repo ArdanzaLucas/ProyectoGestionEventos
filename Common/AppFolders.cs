@@ -14,7 +14,7 @@ namespace ProyectoPresupuestoEvento.Common
 
         public static string Data
         {
-            get { return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data")); }
+            get { return Path.Combine(AppContext.BaseDirectory, "Data"); }
         }
 
         public static string TempPdf

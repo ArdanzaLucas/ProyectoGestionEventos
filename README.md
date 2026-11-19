@@ -43,8 +43,10 @@ Aplicación de escritorio en **C# (WinForms, .NET 8)** para armar presupuestos d
 **Requisitos:** Windows, [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) y Visual Studio 2022 (o la línea de comandos de `dotnet`).
 
 1. Abrir `ProyectoPresupuestoEvento.sln` en Visual Studio.
-2. Ejecutar con **F5**. Los paquetes NuGet (`MaterialSkin.2` y `Microsoft.Data.Sqlite`) se restauran solos.
-3. La primera vez se crea la base `Data/presupuestos.db` en la carpeta del proyecto y se cargan datos de ejemplo (`Mock/MockData`). La base no forma parte del repositorio.
+2. Ejecutar con **F5**. Los paquetes NuGet (`MaterialSkin.2`, `Microsoft.Data.Sqlite` y `PDFsharp-GDI`) se restauran solos.
+3. La primera vez se crea la base `Data/presupuestos.db` junto al ejecutable (`bin/Debug/net8.0-windows/Data` al correr desde Visual Studio) y, en modo Debug, se cargan datos de ejemplo (`Mock/MockData`). La base no forma parte del repositorio.
+
+La carpeta `Data` se ubica a partir del ejecutable (`AppFolders.Data`), así que la aplicación funciona igual si se copia su carpeta a otro lugar: la base viaja con ella. Si no se puede crear la base (por ejemplo, por falta de permiso de escritura), la aplicación lo avisa con un mensaje y no se abre.
 
 Desde la línea de comandos:
 

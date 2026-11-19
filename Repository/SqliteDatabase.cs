@@ -20,7 +20,7 @@ namespace ProyectoPresupuestoEvento.Repository
 
         private SqliteDatabase()
         {
-            // la carpeta Data queda en la raiz del proyecto: tres carpetas arriba del ejecutable (ver AppFolders)
+            // la carpeta Data queda junto al ejecutable (ver AppFolders)
             string folder = AppFolders.Data;
             Directory.CreateDirectory(folder);
 

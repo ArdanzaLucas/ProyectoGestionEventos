@@ -9,10 +9,20 @@ namespace ProyectoPresupuestoEvento
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += ShowUnexpectedError;
 
-            Repository.SqliteDatabase.GetInstance();
+            try
+            {
+                Repository.SqliteDatabase.GetInstance();
 #if DEBUG
-            Mock.MockData.Load();
+                Mock.MockData.Load();
 #endif
+            }
+            catch (Exception ex)
+            {
+                Common.ErrorLog.Write(ex);
+                View.MessageHelper.ShowError("no se pudo abrir la base de datos en " + Common.AppFolders.Data
+                    + ". Revise que la carpeta tenga permiso de escritura.");
+                return;
+            }
 
             Application.Run(new FormMain());
         }

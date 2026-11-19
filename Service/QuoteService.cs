@@ -26,7 +26,7 @@ namespace ProyectoPresupuestoEvento.Service
         // el controller usa este: le pasa los repositorios, el reloj y el generador de pdf reales al otro constructor
         public QuoteService()
             : this(QuoteRepository.GetInstance(), EventItemRepository.GetInstance(), LocationRepository.GetInstance(),
-                  MenuRepository.GetInstance(), OptionItemRepository.GetInstance(), new SystemClock(), new QuotePdfGenerator())
+                  MenuRepository.GetInstance(), OptionItemRepository.GetInstance(), new SystemClock(), new QuotePdfGenerator(new SystemClock()))
         {
         }
 

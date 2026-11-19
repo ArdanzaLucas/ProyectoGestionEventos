@@ -103,6 +103,8 @@ Tiene dos formularios en el **mismo panel**: `FormIndex` (la lista) y `FormQuote
 
 La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteController.ExportPdf(id, path)`. `QuoteService.ExportPdf` busca el presupuesto y se lo pasa a un `IQuoteDocumentGenerator`. La implementación es `QuotePdfGenerator` (capa Service), que arma la hoja con la librería **PDFsharp** usando los datos congelados del presupuesto. `QuoteService` solo conoce la interfaz y la recibe por constructor: se podría cambiar la librería o el formato sin tocar el service. Así la lógica del documento queda fuera de la vista y no depende de una impresora virtual del sistema.
 
+Si el presupuesto tiene muchas líneas, el generador pasa a una hoja nueva cuando la actual se llena (`EnsureSpace`), repite el encabezado de la tabla de catering y nunca parte el bloque de totales entre dos páginas. La fecha de emisión sale de `IClock`, igual que las reglas de fecha de los services.
+
 El botón **Detalle** genera el PDF en una carpeta propia dentro de la carpeta temporal de Windows (`AppFolders.TempPdf`) y lo abre con el visor del sistema. Esa carpeta se vacía cada vez que se abre la aplicación; si algún PDF sigue abierto en el visor, se saltea sin error.
 
 ## 4. Modelo de dominio

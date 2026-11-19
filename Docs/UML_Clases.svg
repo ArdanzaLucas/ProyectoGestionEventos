@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="5880" height="4499" font-family="Helvetica,Arial" font-size="11">
+<svg xmlns="http://www.w3.org/2000/svg" width="5880" height="4548" font-family="Helvetica,Arial" font-size="11">
 <defs>
 <marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#333" stroke-width="1.3"/></marker>
 <marker id="tri" viewBox="0 0 14 14" refX="13" refY="7" markerWidth="14" markerHeight="14" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L13,7 L1,13 Z" fill="#fff" stroke="#333" stroke-width="1.3"/></marker>
@@ -14,10 +14,10 @@
 <text x="132" y="384" font-size="15" font-weight="bold" fill="#6c8ebf">Vista (View)</text>
 <rect x="120" y="1541" width="3580" height="315" fill="#f4f9f4" stroke="#82b366" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="1565" font-size="15" font-weight="bold" fill="#82b366">Controladores (Controller)</text>
-<rect x="120" y="2056" width="3580" height="856" fill="#fffbf2" stroke="#d6b656" stroke-dasharray="8,4" rx="6"/>
+<rect x="120" y="2056" width="3580" height="961" fill="#fffbf2" stroke="#d6b656" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="2080" font-size="15" font-weight="bold" fill="#d6b656">Servicios (Service)</text>
-<rect x="120" y="3082" width="3580" height="991" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
-<text x="132" y="3106" font-size="15" font-weight="bold" fill="#b85450">Repositorios (Repository + Interface)</text>
+<rect x="120" y="3187" width="3580" height="991" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
+<text x="132" y="3211" font-size="15" font-weight="bold" fill="#b85450">Repositorios (Repository + Interface)</text>
 <rect x="3920" y="360" width="1880" height="1826" fill="#f7f4f9" stroke="#9673a6" stroke-dasharray="8,4" rx="6"/>
 <text x="3932" y="384" font-size="15" font-weight="bold" fill="#9673a6">DTO</text>
 <rect x="3920" y="2256" width="1880" height="1715" fill="#fff8f2" stroke="#d79b00" stroke-dasharray="8,4" rx="6"/>
@@ -349,7 +349,7 @@
 <text x="168" y="2288">+ValidateLocationFree(Quote quote) void</text>
 <text x="168" y="2303">+ValidateCanClone(Quote original) void</text>
 <text x="168" y="2318">-GetInactiveItems(Quote quote) List&lt;string&gt;</text>
-<rect x="230" y="2547" width="430" height="335" fill="#fff" stroke="#d6b656"/>
+<rect x="230" y="2547" width="430" height="440" fill="#fff" stroke="#d6b656"/>
 <rect x="230" y="2547" width="430" height="26" fill="#fff2cc" stroke="#d6b656"/>
 <text x="445" y="2564" text-anchor="middle" font-weight="bold" font-size="12">QuotePdfGenerator</text>
 <text x="238" y="2588">-XFont fontTitle</text>
@@ -357,21 +357,28 @@
 <text x="238" y="2618">-XFont fontText</text>
 <text x="238" y="2633">-XFont fontBold</text>
 <text x="238" y="2648">-XFont fontTotal</text>
-<text x="238" y="2663">-XGraphics g</text>
-<text x="238" y="2678">-double left</text>
-<text x="238" y="2693">-double right</text>
-<text x="238" y="2708">-double y</text>
-<line x1="230" y1="2720" x2="660" y2="2720" stroke="#d6b656"/>
-<text x="238" y="2739">+Generate(Quote quote, string path) void</text>
-<text x="238" y="2754">-DrawHeader(Quote quote) void</text>
-<text x="238" y="2769">-DrawEvent(Quote quote) void</text>
-<text x="238" y="2784">-DrawLocation(Quote quote) void</text>
-<text x="238" y="2799">-DrawMenus(Quote quote) void</text>
-<text x="238" y="2814">-DrawOptionItems(Quote quote) void</text>
-<text x="238" y="2829">-DrawTotals(Quote quote) void</text>
-<text x="238" y="2844">-Write(string text, XFont font, double x) void</text>
-<text x="238" y="2859">-WriteRight(string text, XFont font, double x, double top) void</text>
-<text x="238" y="2874">-Cut(string text, XFont font, double width) string</text>
+<text x="238" y="2663">-IClock clock</text>
+<text x="238" y="2678">-PdfDocument document</text>
+<text x="238" y="2693">-XGraphics g</text>
+<text x="238" y="2708">-double left</text>
+<text x="238" y="2723">-double right</text>
+<text x="238" y="2738">-double bottom</text>
+<text x="238" y="2753">-double y</text>
+<line x1="230" y1="2765" x2="660" y2="2765" stroke="#d6b656"/>
+<text x="238" y="2784">+QuotePdfGenerator(IClock clock)</text>
+<text x="238" y="2799">+Generate(Quote quote, string path) void</text>
+<text x="238" y="2814">-DrawHeader(Quote quote) void</text>
+<text x="238" y="2829">-DrawEvent(Quote quote) void</text>
+<text x="238" y="2844">-DrawLocation(Quote quote) void</text>
+<text x="238" y="2859">-DrawMenus(Quote quote) void</text>
+<text x="238" y="2874">-DrawMenuTableHeader() void</text>
+<text x="238" y="2889">-DrawOptionItems(Quote quote) void</text>
+<text x="238" y="2904">-DrawTotals(Quote quote) void</text>
+<text x="238" y="2919">-NewPage() void</text>
+<text x="238" y="2934">-EnsureSpace(double height) bool</text>
+<text x="238" y="2949">-Write(string text, XFont font, double x) void</text>
+<text x="238" y="2964">-WriteRight(string text, XFont font, double x, double top) void</text>
+<text x="238" y="2979">-Cut(string text, XFont font, double width) string</text>
 <rect x="230" y="2386" width="280" height="81" fill="#fff" stroke="#d6b656"/>
 <rect x="230" y="2386" width="280" height="42" fill="#fff2cc" stroke="#d6b656"/>
 <text x="370" y="2402" text-anchor="middle">&#171;interface&#187;</text>
@@ -462,130 +469,130 @@
 <text x="3228" y="2318">-ValidateUniqueDescription(string description, int editingId) void</text>
 <text x="3228" y="2333">+ToModel(MenuTagDto dto) MenuTag</text>
 <text x="3228" y="2348">+ToDto(MenuTag menuTag) MenuTagDto</text>
-<rect x="2395" y="3122" width="200" height="126" fill="#fff" stroke="#b85450"/>
-<rect x="2395" y="3122" width="200" height="42" fill="#f8cecc" stroke="#b85450"/>
-<text x="2495" y="3138" text-anchor="middle">&#171;interface&#187;</text>
-<text x="2495" y="3155" text-anchor="middle" font-weight="bold" font-size="12">IRepository&lt;T&gt;</text>
-<line x1="2395" y1="3176" x2="2595" y2="3176" stroke="#b85450"/>
-<text x="2403" y="3195">+AddToRepository(T obj) void</text>
-<text x="2403" y="3210">+GetAll() List&lt;T&gt;</text>
-<text x="2403" y="3225">+GetById(int id) T</text>
-<text x="2403" y="3240">+Update(int id, T obj) void</text>
-<rect x="1550" y="3122" width="190" height="81" fill="#fff" stroke="#b85450"/>
-<rect x="1550" y="3122" width="190" height="42" fill="#f8cecc" stroke="#b85450"/>
-<text x="1645" y="3138" text-anchor="middle">&#171;interface&#187;</text>
-<text x="1645" y="3155" text-anchor="middle" font-weight="bold" font-size="12">IRemovableRepository&lt;T&gt;</text>
-<line x1="1550" y1="3176" x2="1740" y2="3176" stroke="#b85450"/>
-<text x="1558" y="3195">+RemoveById(int id) void</text>
-<rect x="815" y="3388" width="530" height="365" fill="#fff" stroke="#b85450"/>
-<rect x="815" y="3388" width="530" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="1080" y="3405" text-anchor="middle" font-weight="bold" font-size="12">QuoteRepository</text>
-<text x="823" y="3429" text-decoration="underline">-QuoteRepository instance</text>
-<text x="823" y="3444">-SqliteDatabase database</text>
-<line x1="815" y1="3456" x2="1345" y2="3456" stroke="#b85450"/>
-<text x="823" y="3475">-QuoteRepository()</text>
-<text x="823" y="3490" text-decoration="underline">+GetInstance() QuoteRepository</text>
-<text x="823" y="3505">+AddToRepository(Quote quote) void</text>
-<text x="823" y="3520">+GetAll() List&lt;Quote&gt;</text>
-<text x="823" y="3535">+GetById(int id) Quote</text>
-<text x="823" y="3550">+Update(int id, Quote quote) void</text>
-<text x="823" y="3565">+RemoveById(int id) void</text>
-<text x="823" y="3580">-AddParameters(SqliteCommand command, Quote quote) void</text>
-<text x="823" y="3595">-ReadQuote(SqliteDataReader reader, SqliteConnection connection,</text>
-<text x="823" y="3610">      Dictionary&lt;int, Location&gt; locationCache, Dictionary&lt;int, Menu&gt; menuCache,</text>
-<text x="823" y="3625">      Dictionary&lt;int, OptionItem&gt; optionItemCache) Quote</text>
-<text x="823" y="3640">-LoadDetailMenus(int quoteId, SqliteConnection connection,</text>
-<text x="823" y="3655">      Dictionary&lt;int, Menu&gt; menuCache) List&lt;DetailMenu&gt;</text>
-<text x="823" y="3670">-LoadDetailOptionItems(int quoteId, SqliteConnection connection,</text>
-<text x="823" y="3685">      Dictionary&lt;int, OptionItem&gt; optionItemCache) List&lt;DetailOptionItem&gt;</text>
-<text x="823" y="3700">-GetCached&lt;T&gt;(int id, Dictionary&lt;int, T&gt; cache,</text>
-<text x="823" y="3715">      IRepository&lt;T&gt; repository) T</text>
-<text x="823" y="3730">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
-<text x="823" y="3745">      SqliteTransaction transaction) void</text>
-<rect x="1475" y="3388" width="340" height="230" fill="#fff" stroke="#b85450"/>
-<rect x="1475" y="3388" width="340" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="1645" y="3405" text-anchor="middle" font-weight="bold" font-size="12">EventItemRepository</text>
-<text x="1483" y="3429" text-decoration="underline">-EventItemRepository instance</text>
-<text x="1483" y="3444">-SqliteDatabase database</text>
-<line x1="1475" y1="3456" x2="1815" y2="3456" stroke="#b85450"/>
-<text x="1483" y="3475">-EventItemRepository()</text>
-<text x="1483" y="3490" text-decoration="underline">+GetInstance() EventItemRepository</text>
-<text x="1483" y="3505">+AddToRepository(EventItem eventItem) void</text>
-<text x="1483" y="3520">+GetAll() List&lt;EventItem&gt;</text>
-<text x="1483" y="3535">+GetById(int id) EventItem</text>
-<text x="1483" y="3550">+Update(int id, EventItem eventItem) void</text>
-<text x="1483" y="3565">+RemoveById(int id) void</text>
-<text x="1483" y="3580">-AddParameters(SqliteCommand command,</text>
-<text x="1483" y="3595">      EventItem eventItem) void</text>
-<text x="1483" y="3610">-ReadEventItem(SqliteDataReader reader) EventItem</text>
-<rect x="1925" y="3388" width="320" height="185" fill="#fff" stroke="#b85450"/>
-<rect x="1925" y="3388" width="320" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2085" y="3405" text-anchor="middle" font-weight="bold" font-size="12">LocationRepository</text>
-<text x="1933" y="3429" text-decoration="underline">-LocationRepository instance</text>
-<text x="1933" y="3444">-SqliteDatabase database</text>
-<line x1="1925" y1="3456" x2="2245" y2="3456" stroke="#b85450"/>
-<text x="1933" y="3475">-LocationRepository()</text>
-<text x="1933" y="3490" text-decoration="underline">+GetInstance() LocationRepository</text>
-<text x="1933" y="3505">+AddToRepository(Location location) void</text>
-<text x="1933" y="3520">+GetAll() List&lt;Location&gt;</text>
-<text x="1933" y="3535">+GetById(int id) Location</text>
-<text x="1933" y="3550">+Update(int id, Location location) void</text>
-<text x="1933" y="3565">-ReadLocation(SqliteDataReader reader) Location</text>
-<rect x="2320" y="3388" width="350" height="185" fill="#fff" stroke="#b85450"/>
-<rect x="2320" y="3388" width="350" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2495" y="3405" text-anchor="middle" font-weight="bold" font-size="12">OptionItemRepository</text>
-<text x="2328" y="3429" text-decoration="underline">-OptionItemRepository instance</text>
-<text x="2328" y="3444">-SqliteDatabase database</text>
-<line x1="2320" y1="3456" x2="2670" y2="3456" stroke="#b85450"/>
-<text x="2328" y="3475">-OptionItemRepository()</text>
-<text x="2328" y="3490" text-decoration="underline">+GetInstance() OptionItemRepository</text>
-<text x="2328" y="3505">+AddToRepository(OptionItem optionItem) void</text>
-<text x="2328" y="3520">+GetAll() List&lt;OptionItem&gt;</text>
-<text x="2328" y="3535">+GetById(int id) OptionItem</text>
-<text x="2328" y="3550">+Update(int id, OptionItem optionItem) void</text>
-<text x="2328" y="3565">-ReadOptionItem(SqliteDataReader reader) OptionItem</text>
-<rect x="2745" y="3388" width="410" height="260" fill="#fff" stroke="#b85450"/>
-<rect x="2745" y="3388" width="410" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2950" y="3405" text-anchor="middle" font-weight="bold" font-size="12">MenuRepository</text>
-<text x="2753" y="3429" text-decoration="underline">-MenuRepository instance</text>
-<text x="2753" y="3444">-SqliteDatabase database</text>
-<line x1="2745" y1="3456" x2="3155" y2="3456" stroke="#b85450"/>
-<text x="2753" y="3475">-MenuRepository()</text>
-<text x="2753" y="3490" text-decoration="underline">+GetInstance() MenuRepository</text>
-<text x="2753" y="3505">+AddToRepository(Menu menu) void</text>
-<text x="2753" y="3520">+GetAll() List&lt;Menu&gt;</text>
-<text x="2753" y="3535">+GetById(int id) Menu</text>
-<text x="2753" y="3550">+Update(int id, Menu menu) void</text>
-<text x="2753" y="3565">-ReadMenu(SqliteDataReader reader,</text>
-<text x="2753" y="3580">      SqliteConnection connection) Menu</text>
-<text x="2753" y="3595">-LoadTags(int menuId,</text>
-<text x="2753" y="3610">      SqliteConnection connection) List&lt;MenuTag&gt;</text>
-<text x="2753" y="3625">-SaveTags(int menuId, Menu menu, SqliteConnection connection,</text>
-<text x="2753" y="3640">      SqliteTransaction transaction) void</text>
-<rect x="3285" y="3388" width="310" height="200" fill="#fff" stroke="#b85450"/>
-<rect x="3285" y="3388" width="310" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="3440" y="3405" text-anchor="middle" font-weight="bold" font-size="12">MenuTagRepository</text>
-<text x="3293" y="3429" text-decoration="underline">-MenuTagRepository instance</text>
-<text x="3293" y="3444">-SqliteDatabase database</text>
-<line x1="3285" y1="3456" x2="3595" y2="3456" stroke="#b85450"/>
-<text x="3293" y="3475">-MenuTagRepository()</text>
-<text x="3293" y="3490" text-decoration="underline">+GetInstance() MenuTagRepository</text>
-<text x="3293" y="3505">+AddToRepository(MenuTag menuTag) void</text>
-<text x="3293" y="3520">+GetAll() List&lt;MenuTag&gt;</text>
-<text x="3293" y="3535">+GetById(int id) MenuTag</text>
-<text x="3293" y="3550">+Update(int id, MenuTag menuTag) void</text>
-<text x="3293" y="3565">+RemoveById(int id) void</text>
-<text x="3293" y="3580">-ReadMenuTag(SqliteDataReader reader) MenuTag</text>
-<rect x="2105" y="3903" width="230" height="140" fill="#fff" stroke="#b85450"/>
-<rect x="2105" y="3903" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2220" y="3920" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
-<text x="2113" y="3944" text-decoration="underline">-SqliteDatabase instance</text>
-<text x="2113" y="3959">-string connectionString</text>
-<line x1="2105" y1="3971" x2="2335" y2="3971" stroke="#b85450"/>
-<text x="2113" y="3990">-SqliteDatabase()</text>
-<text x="2113" y="4005" text-decoration="underline">+GetInstance() SqliteDatabase</text>
-<text x="2113" y="4020">+GetConnection() SqliteConnection</text>
-<text x="2113" y="4035">-CreateTables() void</text>
+<rect x="2395" y="3227" width="200" height="126" fill="#fff" stroke="#b85450"/>
+<rect x="2395" y="3227" width="200" height="42" fill="#f8cecc" stroke="#b85450"/>
+<text x="2495" y="3243" text-anchor="middle">&#171;interface&#187;</text>
+<text x="2495" y="3260" text-anchor="middle" font-weight="bold" font-size="12">IRepository&lt;T&gt;</text>
+<line x1="2395" y1="3281" x2="2595" y2="3281" stroke="#b85450"/>
+<text x="2403" y="3300">+AddToRepository(T obj) void</text>
+<text x="2403" y="3315">+GetAll() List&lt;T&gt;</text>
+<text x="2403" y="3330">+GetById(int id) T</text>
+<text x="2403" y="3345">+Update(int id, T obj) void</text>
+<rect x="1550" y="3227" width="190" height="81" fill="#fff" stroke="#b85450"/>
+<rect x="1550" y="3227" width="190" height="42" fill="#f8cecc" stroke="#b85450"/>
+<text x="1645" y="3243" text-anchor="middle">&#171;interface&#187;</text>
+<text x="1645" y="3260" text-anchor="middle" font-weight="bold" font-size="12">IRemovableRepository&lt;T&gt;</text>
+<line x1="1550" y1="3281" x2="1740" y2="3281" stroke="#b85450"/>
+<text x="1558" y="3300">+RemoveById(int id) void</text>
+<rect x="815" y="3493" width="530" height="365" fill="#fff" stroke="#b85450"/>
+<rect x="815" y="3493" width="530" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="1080" y="3510" text-anchor="middle" font-weight="bold" font-size="12">QuoteRepository</text>
+<text x="823" y="3534" text-decoration="underline">-QuoteRepository instance</text>
+<text x="823" y="3549">-SqliteDatabase database</text>
+<line x1="815" y1="3561" x2="1345" y2="3561" stroke="#b85450"/>
+<text x="823" y="3580">-QuoteRepository()</text>
+<text x="823" y="3595" text-decoration="underline">+GetInstance() QuoteRepository</text>
+<text x="823" y="3610">+AddToRepository(Quote quote) void</text>
+<text x="823" y="3625">+GetAll() List&lt;Quote&gt;</text>
+<text x="823" y="3640">+GetById(int id) Quote</text>
+<text x="823" y="3655">+Update(int id, Quote quote) void</text>
+<text x="823" y="3670">+RemoveById(int id) void</text>
+<text x="823" y="3685">-AddParameters(SqliteCommand command, Quote quote) void</text>
+<text x="823" y="3700">-ReadQuote(SqliteDataReader reader, SqliteConnection connection,</text>
+<text x="823" y="3715">      Dictionary&lt;int, Location&gt; locationCache, Dictionary&lt;int, Menu&gt; menuCache,</text>
+<text x="823" y="3730">      Dictionary&lt;int, OptionItem&gt; optionItemCache) Quote</text>
+<text x="823" y="3745">-LoadDetailMenus(int quoteId, SqliteConnection connection,</text>
+<text x="823" y="3760">      Dictionary&lt;int, Menu&gt; menuCache) List&lt;DetailMenu&gt;</text>
+<text x="823" y="3775">-LoadDetailOptionItems(int quoteId, SqliteConnection connection,</text>
+<text x="823" y="3790">      Dictionary&lt;int, OptionItem&gt; optionItemCache) List&lt;DetailOptionItem&gt;</text>
+<text x="823" y="3805">-GetCached&lt;T&gt;(int id, Dictionary&lt;int, T&gt; cache,</text>
+<text x="823" y="3820">      IRepository&lt;T&gt; repository) T</text>
+<text x="823" y="3835">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
+<text x="823" y="3850">      SqliteTransaction transaction) void</text>
+<rect x="1475" y="3493" width="340" height="230" fill="#fff" stroke="#b85450"/>
+<rect x="1475" y="3493" width="340" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="1645" y="3510" text-anchor="middle" font-weight="bold" font-size="12">EventItemRepository</text>
+<text x="1483" y="3534" text-decoration="underline">-EventItemRepository instance</text>
+<text x="1483" y="3549">-SqliteDatabase database</text>
+<line x1="1475" y1="3561" x2="1815" y2="3561" stroke="#b85450"/>
+<text x="1483" y="3580">-EventItemRepository()</text>
+<text x="1483" y="3595" text-decoration="underline">+GetInstance() EventItemRepository</text>
+<text x="1483" y="3610">+AddToRepository(EventItem eventItem) void</text>
+<text x="1483" y="3625">+GetAll() List&lt;EventItem&gt;</text>
+<text x="1483" y="3640">+GetById(int id) EventItem</text>
+<text x="1483" y="3655">+Update(int id, EventItem eventItem) void</text>
+<text x="1483" y="3670">+RemoveById(int id) void</text>
+<text x="1483" y="3685">-AddParameters(SqliteCommand command,</text>
+<text x="1483" y="3700">      EventItem eventItem) void</text>
+<text x="1483" y="3715">-ReadEventItem(SqliteDataReader reader) EventItem</text>
+<rect x="1925" y="3493" width="320" height="185" fill="#fff" stroke="#b85450"/>
+<rect x="1925" y="3493" width="320" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2085" y="3510" text-anchor="middle" font-weight="bold" font-size="12">LocationRepository</text>
+<text x="1933" y="3534" text-decoration="underline">-LocationRepository instance</text>
+<text x="1933" y="3549">-SqliteDatabase database</text>
+<line x1="1925" y1="3561" x2="2245" y2="3561" stroke="#b85450"/>
+<text x="1933" y="3580">-LocationRepository()</text>
+<text x="1933" y="3595" text-decoration="underline">+GetInstance() LocationRepository</text>
+<text x="1933" y="3610">+AddToRepository(Location location) void</text>
+<text x="1933" y="3625">+GetAll() List&lt;Location&gt;</text>
+<text x="1933" y="3640">+GetById(int id) Location</text>
+<text x="1933" y="3655">+Update(int id, Location location) void</text>
+<text x="1933" y="3670">-ReadLocation(SqliteDataReader reader) Location</text>
+<rect x="2320" y="3493" width="350" height="185" fill="#fff" stroke="#b85450"/>
+<rect x="2320" y="3493" width="350" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2495" y="3510" text-anchor="middle" font-weight="bold" font-size="12">OptionItemRepository</text>
+<text x="2328" y="3534" text-decoration="underline">-OptionItemRepository instance</text>
+<text x="2328" y="3549">-SqliteDatabase database</text>
+<line x1="2320" y1="3561" x2="2670" y2="3561" stroke="#b85450"/>
+<text x="2328" y="3580">-OptionItemRepository()</text>
+<text x="2328" y="3595" text-decoration="underline">+GetInstance() OptionItemRepository</text>
+<text x="2328" y="3610">+AddToRepository(OptionItem optionItem) void</text>
+<text x="2328" y="3625">+GetAll() List&lt;OptionItem&gt;</text>
+<text x="2328" y="3640">+GetById(int id) OptionItem</text>
+<text x="2328" y="3655">+Update(int id, OptionItem optionItem) void</text>
+<text x="2328" y="3670">-ReadOptionItem(SqliteDataReader reader) OptionItem</text>
+<rect x="2745" y="3493" width="410" height="260" fill="#fff" stroke="#b85450"/>
+<rect x="2745" y="3493" width="410" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2950" y="3510" text-anchor="middle" font-weight="bold" font-size="12">MenuRepository</text>
+<text x="2753" y="3534" text-decoration="underline">-MenuRepository instance</text>
+<text x="2753" y="3549">-SqliteDatabase database</text>
+<line x1="2745" y1="3561" x2="3155" y2="3561" stroke="#b85450"/>
+<text x="2753" y="3580">-MenuRepository()</text>
+<text x="2753" y="3595" text-decoration="underline">+GetInstance() MenuRepository</text>
+<text x="2753" y="3610">+AddToRepository(Menu menu) void</text>
+<text x="2753" y="3625">+GetAll() List&lt;Menu&gt;</text>
+<text x="2753" y="3640">+GetById(int id) Menu</text>
+<text x="2753" y="3655">+Update(int id, Menu menu) void</text>
+<text x="2753" y="3670">-ReadMenu(SqliteDataReader reader,</text>
+<text x="2753" y="3685">      SqliteConnection connection) Menu</text>
+<text x="2753" y="3700">-LoadTags(int menuId,</text>
+<text x="2753" y="3715">      SqliteConnection connection) List&lt;MenuTag&gt;</text>
+<text x="2753" y="3730">-SaveTags(int menuId, Menu menu, SqliteConnection connection,</text>
+<text x="2753" y="3745">      SqliteTransaction transaction) void</text>
+<rect x="3285" y="3493" width="310" height="200" fill="#fff" stroke="#b85450"/>
+<rect x="3285" y="3493" width="310" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="3440" y="3510" text-anchor="middle" font-weight="bold" font-size="12">MenuTagRepository</text>
+<text x="3293" y="3534" text-decoration="underline">-MenuTagRepository instance</text>
+<text x="3293" y="3549">-SqliteDatabase database</text>
+<line x1="3285" y1="3561" x2="3595" y2="3561" stroke="#b85450"/>
+<text x="3293" y="3580">-MenuTagRepository()</text>
+<text x="3293" y="3595" text-decoration="underline">+GetInstance() MenuTagRepository</text>
+<text x="3293" y="3610">+AddToRepository(MenuTag menuTag) void</text>
+<text x="3293" y="3625">+GetAll() List&lt;MenuTag&gt;</text>
+<text x="3293" y="3640">+GetById(int id) MenuTag</text>
+<text x="3293" y="3655">+Update(int id, MenuTag menuTag) void</text>
+<text x="3293" y="3670">+RemoveById(int id) void</text>
+<text x="3293" y="3685">-ReadMenuTag(SqliteDataReader reader) MenuTag</text>
+<rect x="2105" y="4008" width="230" height="140" fill="#fff" stroke="#b85450"/>
+<rect x="2105" y="4008" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2220" y="4025" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
+<text x="2113" y="4049" text-decoration="underline">-SqliteDatabase instance</text>
+<text x="2113" y="4064">-string connectionString</text>
+<line x1="2105" y1="4076" x2="2335" y2="4076" stroke="#b85450"/>
+<text x="2113" y="4095">-SqliteDatabase()</text>
+<text x="2113" y="4110" text-decoration="underline">+GetInstance() SqliteDatabase</text>
+<text x="2113" y="4125">+GetConnection() SqliteConnection</text>
+<text x="2113" y="4140">-CreateTables() void</text>
 <rect x="3950" y="410" width="330" height="380" fill="#fff" stroke="#9673a6"/>
 <rect x="3950" y="410" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
 <text x="4115" y="427" text-anchor="middle" font-weight="bold" font-size="12">QuoteDto</text>
@@ -934,33 +941,33 @@
 <path d="M2495.0,1721.0 L2495.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M2950.0,1721.0 L2950.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M3440.0,1751.0 L3440.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1180.0,2536.0 L1180.0,2779.0 L2452.1,2779.0 L2452.1,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2085.0,2296.0 L2085.0,2706.0 L2480.7,2706.0 L2480.7,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2495.0,2296.0 L2495.0,2924.0 L2509.3,2924.0 L2509.3,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2950.0,2341.0 L2950.0,2633.0 L2537.9,2633.0 L2537.9,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3513.3,2356.0 L3513.3,2851.0 L2566.4,2851.0 L2566.4,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M980.0,2536.0 L980.0,2997.0 L1597.5,2997.0 L1597.5,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1645.0,2401.0 L1645.0,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3366.7,2356.0 L3366.7,2560.0 L1692.5,2560.0 L1692.5,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1180.0,2536.0 L1180.0,2824.0 L2452.1,2824.0 L2452.1,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,2296.0 L2085.0,2736.0 L2480.7,2736.0 L2480.7,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,2296.0 L2495.0,2999.0 L2509.3,2999.0 L2509.3,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,2341.0 L2950.0,2648.0 L2537.9,2648.0 L2537.9,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3513.3,2356.0 L3513.3,2911.0 L2566.4,2911.0 L2566.4,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M980.0,2536.0 L980.0,3087.0 L1597.5,3087.0 L1597.5,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,2401.0 L1645.0,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3366.7,2356.0 L3366.7,2560.0 L1692.5,2560.0 L1692.5,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M780.0,2156.0 L590.0,2156.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <text x="768.0" y="2150.0" text-anchor="end" font-size="10" fill="#333">1</text>
 <text x="602.0" y="2150.0" text-anchor="start" font-size="10" fill="#333">1</text>
 <path d="M780.0,2426.5 L510.0,2426.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M445.0,2547.0 L445.0,2507.0 L370.0,2507.0 L370.0,2467.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M185.8,2326.0 L185.8,3070.0 L2423.6,3070.0 L2423.6,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2085.0,3388.0 L2085.0,3272.0 L2445.0,3272.0 L2445.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M2495.0,3388.0 L2495.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M2950.0,3388.0 L2950.0,3303.0 L2545.0,3303.0 L2545.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M1080.0,3388.0 L1080.0,3333.0 L1597.5,3333.0 L1597.5,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M1645.0,3388.0 L1645.0,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M3440.0,3388.0 L3440.0,3364.0 L1692.5,3364.0 L1692.5,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M1740.0,3162.5 L2395.0,3162.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
-<path d="M1080.0,3753.0 L1080.0,3836.0 L2137.9,3836.0 L2137.9,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1645.0,3618.0 L1645.0,3807.0 L2170.7,3807.0 L2170.7,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2085.0,3573.0 L2085.0,3792.0 L2203.6,3792.0 L2203.6,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2495.0,3573.0 L2495.0,3777.0 L2236.4,3777.0 L2236.4,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2950.0,3648.0 L2950.0,3821.0 L2269.3,3821.0 L2269.3,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3440.0,3588.0 L3440.0,3851.0 L2302.1,3851.0 L2302.1,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M185.8,2326.0 L185.8,3175.0 L2423.6,3175.0 L2423.6,3227.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,3493.0 L2085.0,3377.0 L2445.0,3377.0 L2445.0,3353.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M2495.0,3493.0 L2495.0,3353.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M2950.0,3493.0 L2950.0,3408.0 L2545.0,3408.0 L2545.0,3353.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1080.0,3493.0 L1080.0,3438.0 L1597.5,3438.0 L1597.5,3308.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1645.0,3493.0 L1645.0,3308.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M3440.0,3493.0 L3440.0,3469.0 L1692.5,3469.0 L1692.5,3308.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1740.0,3267.5 L2395.0,3267.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
+<path d="M1080.0,3858.0 L1080.0,3941.0 L2137.9,3941.0 L2137.9,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,3723.0 L1645.0,3912.0 L2170.7,3912.0 L2170.7,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,3678.0 L2085.0,3897.0 L2203.6,3897.0 L2203.6,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,3678.0 L2495.0,3882.0 L2236.4,3882.0 L2236.4,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,3753.0 L2950.0,3926.0 L2269.3,3926.0 L2269.3,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3440.0,3693.0 L3440.0,3956.0 L2302.1,3956.0 L2302.1,4008.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M4280.0,510.0 L4520.0,510.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <text x="4292.0" y="504.0" text-anchor="start" font-size="10" fill="#333">1</text>
 <text x="4508.0" y="504.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
@@ -1001,10 +1008,10 @@
 <text x="3810.0" y="1692.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
 <path d="M3700.0,2121.0 L3920.0,2121.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
 <text x="3810.0" y="2115.0" text-anchor="middle" fill="#555" font-style="italic">convierte (toDto / toModel)</text>
-<path d="M3700.0,2584.0 L3920.0,2584.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3810.0" y="2578.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
-<path d="M3700.0,3526.0 L3920.0,3526.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3810.0" y="3520.0" text-anchor="middle" fill="#555" font-style="italic">arma y guarda</text>
+<path d="M3700.0,2636.0 L3920.0,2636.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="2630.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
+<path d="M3700.0,3579.0 L3920.0,3579.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="3573.0" text-anchor="middle" fill="#555" font-style="italic">arma y guarda</text>
 <path d="M4320.0,3971.0 L4320.0,4082.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
 <text x="4320.0" y="4020.5" text-anchor="middle" fill="#555" font-style="italic">valida con</text>
 <rect x="3950" y="3901" width="600" height="61" fill="#fffde7" stroke="#bbb"/>
@@ -1016,20 +1023,20 @@
 <text x="938" y="83">Todos los formularios usan MessageHelper y VisualHelper.</text>
 <text x="938" y="98">MockData usa los Controllers para cargar los datos de prueba y los</text>
 <text x="938" y="113">Repositories para saber si la base esta vacia.</text>
-<rect x="120" y="4133" width="470" height="212" fill="#fff" stroke="#999"/>
-<text x="130" y="4153" font-weight="bold" font-size="12">Notacion</text>
-<path d="M140,4177 L240,4177" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="255" y="4181">Asociacion (guarda una referencia)</text>
-<path d="M140,4203 L240,4203" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
-<text x="255" y="4207">Dependencia (usa o crea dentro de un metodo)</text>
-<path d="M140,4229 L240,4229" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="255" y="4233">Composicion (la parte vive y muere con el todo)</text>
-<path d="M140,4255 L240,4255" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
-<text x="255" y="4259">Agregacion (partes compartidas que viven solas)</text>
-<path d="M140,4281 L240,4281" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<text x="255" y="4285">Realizacion (implementa la interfaz)</text>
-<path d="M140,4307 L240,4307" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
-<text x="255" y="4311">Herencia</text>
-<path d="M140,4333 L240,4333" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
-<text x="255" y="4337">Asociacion en los dos sentidos</text>
+<rect x="120" y="4238" width="470" height="212" fill="#fff" stroke="#999"/>
+<text x="130" y="4258" font-weight="bold" font-size="12">Notacion</text>
+<path d="M140,4282 L240,4282" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="255" y="4286">Asociacion (guarda una referencia)</text>
+<path d="M140,4308 L240,4308" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
+<text x="255" y="4312">Dependencia (usa o crea dentro de un metodo)</text>
+<path d="M140,4334 L240,4334" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="255" y="4338">Composicion (la parte vive y muere con el todo)</text>
+<path d="M140,4360 L240,4360" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
+<text x="255" y="4364">Agregacion (partes compartidas que viven solas)</text>
+<path d="M140,4386 L240,4386" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<text x="255" y="4390">Realizacion (implementa la interfaz)</text>
+<path d="M140,4412 L240,4412" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
+<text x="255" y="4416">Herencia</text>
+<path d="M140,4438 L240,4438" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
+<text x="255" y="4442">Asociacion en los dos sentidos</text>
 </svg>

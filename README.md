@@ -303,18 +303,19 @@ internal interface IRemovableRepository<T> : IRepository<T> where T : class
 - **Segregación de interfaces:** `IRepository<T>` no tiene borrado. Solo los repositorios de entidades que se borran físicamente (eventos, presupuestos y etiquetas) implementan `IRemovableRepository<T>`, que agrega `RemoveById`. Ubicaciones, menús y servicios usan baja lógica, así que no tienen forma de borrarse por error.
 - Los seis repositorios son **Singleton**: constructor privado, atributo estático `instance` y método estático `GetInstance()`. Hay una sola base y un solo punto de acceso a cada tabla, compartido por todos los services.
 - `SqliteDatabase` también es Singleton: arma la conexión a `Data/presupuestos.db` con claves foráneas activadas y crea las tablas si no existen.
-- Cada Service **recibe por constructor** los `IRepository<T>` que necesita (*inyección de dependencias*). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales:
+- Cada Service **recibe por constructor** los repositorios y demás dependencias que necesita (*inyección de dependencias*). El constructor sin parámetros, que usa el Controller, le pasa las implementaciones reales:
 
 ```csharp
 public EventItemService()
-    : this(EventItemRepository.GetInstance(), QuoteRepository.GetInstance())
+    : this(EventItemRepository.GetInstance(), QuoteRepository.GetInstance(), new SystemClock())
 {
 }
 
-public EventItemService(IRepository<EventItem> repository, IRepository<Quote> quoteRepository)
+public EventItemService(IRemovableRepository<EventItem> repository, IRemovableRepository<Quote> quoteRepository, IClock clock)
 {
     this.repository = repository;
     this.quoteRepository = quoteRepository;
+    this.clock = clock;
 }
 ```
 
@@ -325,6 +326,7 @@ Los services no se crean entre sí: si uno necesita datos de otra entidad, recib
 - `addToRepository`: `INSERT` con parámetros y `SELECT last_insert_rowid()`; después `obj.AssignId(id)`.
 - `getAll` / `getById`: `SELECT` y un método `ReadX(reader)` que usa el constructor de lectura. Ubicaciones, menús y servicios filtran `WHERE IsActive = 1` en `getAll`; `getById` trae también los inactivos, que los presupuestos viejos necesitan.
 - `update`: `UPDATE ... WHERE Id = @id`.
+- **Caché de lectura en `QuoteRepository`:** al leer presupuestos, cada ubicación, menú y servicio referenciado se busca una sola vez y se guarda en un `Dictionary<int, T>`; si otro presupuesto usa el mismo, se toma de ahí. El diccionario es una variable local de cada `GetAll` / `GetById`, así que se descarta al terminar y nunca devuelve datos viejos después de editar un menú o darlo de baja.
 - **Transacciones:** un presupuesto se guarda en `QUOTE`, `DETAIL_MENU` y `DETAIL_OPTION_ITEM` dentro de una transacción (todo o nada). Lo mismo un menú con sus etiquetas.
 - **Parámetros SQL** (`@name`): evitan inyección SQL.
 

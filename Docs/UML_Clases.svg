@@ -16,7 +16,7 @@
 <text x="132" y="1565" font-size="15" font-weight="bold" fill="#82b366">Controladores (Controller)</text>
 <rect x="120" y="2056" width="3580" height="856" fill="#fffbf2" stroke="#d6b656" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="2080" font-size="15" font-weight="bold" fill="#d6b656">Servicios (Service)</text>
-<rect x="120" y="3082" width="3580" height="946" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
+<rect x="120" y="3082" width="3580" height="991" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="3106" font-size="15" font-weight="bold" fill="#b85450">Repositorios (Repository + Interface)</text>
 <rect x="3920" y="360" width="1880" height="1826" fill="#f7f4f9" stroke="#9673a6" stroke-dasharray="8,4" rx="6"/>
 <text x="3932" y="384" font-size="15" font-weight="bold" fill="#9673a6">DTO</text>
@@ -476,28 +476,31 @@
 <text x="1645" y="3155" text-anchor="middle" font-weight="bold" font-size="12">IRemovableRepository&lt;T&gt;</text>
 <line x1="1550" y1="3176" x2="1740" y2="3176" stroke="#b85450"/>
 <text x="1558" y="3195">+RemoveById(int id) void</text>
-<rect x="855" y="3388" width="450" height="320" fill="#fff" stroke="#b85450"/>
-<rect x="855" y="3388" width="450" height="26" fill="#f8cecc" stroke="#b85450"/>
+<rect x="815" y="3388" width="530" height="365" fill="#fff" stroke="#b85450"/>
+<rect x="815" y="3388" width="530" height="26" fill="#f8cecc" stroke="#b85450"/>
 <text x="1080" y="3405" text-anchor="middle" font-weight="bold" font-size="12">QuoteRepository</text>
-<text x="863" y="3429" text-decoration="underline">-QuoteRepository instance</text>
-<text x="863" y="3444">-SqliteDatabase database</text>
-<line x1="855" y1="3456" x2="1305" y2="3456" stroke="#b85450"/>
-<text x="863" y="3475">-QuoteRepository()</text>
-<text x="863" y="3490" text-decoration="underline">+GetInstance() QuoteRepository</text>
-<text x="863" y="3505">+AddToRepository(Quote quote) void</text>
-<text x="863" y="3520">+GetAll() List&lt;Quote&gt;</text>
-<text x="863" y="3535">+GetById(int id) Quote</text>
-<text x="863" y="3550">+Update(int id, Quote quote) void</text>
-<text x="863" y="3565">+RemoveById(int id) void</text>
-<text x="863" y="3580">-AddParameters(SqliteCommand command, Quote quote) void</text>
-<text x="863" y="3595">-ReadQuote(SqliteDataReader reader,</text>
-<text x="863" y="3610">      SqliteConnection connection) Quote</text>
-<text x="863" y="3625">-LoadDetailMenus(int quoteId,</text>
-<text x="863" y="3640">      SqliteConnection connection) List&lt;DetailMenu&gt;</text>
-<text x="863" y="3655">-LoadDetailOptionItems(int quoteId,</text>
-<text x="863" y="3670">      SqliteConnection connection) List&lt;DetailOptionItem&gt;</text>
-<text x="863" y="3685">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
-<text x="863" y="3700">      SqliteTransaction transaction) void</text>
+<text x="823" y="3429" text-decoration="underline">-QuoteRepository instance</text>
+<text x="823" y="3444">-SqliteDatabase database</text>
+<line x1="815" y1="3456" x2="1345" y2="3456" stroke="#b85450"/>
+<text x="823" y="3475">-QuoteRepository()</text>
+<text x="823" y="3490" text-decoration="underline">+GetInstance() QuoteRepository</text>
+<text x="823" y="3505">+AddToRepository(Quote quote) void</text>
+<text x="823" y="3520">+GetAll() List&lt;Quote&gt;</text>
+<text x="823" y="3535">+GetById(int id) Quote</text>
+<text x="823" y="3550">+Update(int id, Quote quote) void</text>
+<text x="823" y="3565">+RemoveById(int id) void</text>
+<text x="823" y="3580">-AddParameters(SqliteCommand command, Quote quote) void</text>
+<text x="823" y="3595">-ReadQuote(SqliteDataReader reader, SqliteConnection connection,</text>
+<text x="823" y="3610">      Dictionary&lt;int, Location&gt; locationCache, Dictionary&lt;int, Menu&gt; menuCache,</text>
+<text x="823" y="3625">      Dictionary&lt;int, OptionItem&gt; optionItemCache) Quote</text>
+<text x="823" y="3640">-LoadDetailMenus(int quoteId, SqliteConnection connection,</text>
+<text x="823" y="3655">      Dictionary&lt;int, Menu&gt; menuCache) List&lt;DetailMenu&gt;</text>
+<text x="823" y="3670">-LoadDetailOptionItems(int quoteId, SqliteConnection connection,</text>
+<text x="823" y="3685">      Dictionary&lt;int, OptionItem&gt; optionItemCache) List&lt;DetailOptionItem&gt;</text>
+<text x="823" y="3700">-GetCached&lt;T&gt;(int id, Dictionary&lt;int, T&gt; cache,</text>
+<text x="823" y="3715">      IRepository&lt;T&gt; repository) T</text>
+<text x="823" y="3730">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
+<text x="823" y="3745">      SqliteTransaction transaction) void</text>
 <rect x="1475" y="3388" width="340" height="230" fill="#fff" stroke="#b85450"/>
 <rect x="1475" y="3388" width="340" height="26" fill="#f8cecc" stroke="#b85450"/>
 <text x="1645" y="3405" text-anchor="middle" font-weight="bold" font-size="12">EventItemRepository</text>
@@ -572,16 +575,16 @@
 <text x="3293" y="3550">+Update(int id, MenuTag menuTag) void</text>
 <text x="3293" y="3565">+RemoveById(int id) void</text>
 <text x="3293" y="3580">-ReadMenuTag(SqliteDataReader reader) MenuTag</text>
-<rect x="2105" y="3858" width="230" height="140" fill="#fff" stroke="#b85450"/>
-<rect x="2105" y="3858" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2220" y="3875" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
-<text x="2113" y="3899" text-decoration="underline">-SqliteDatabase instance</text>
-<text x="2113" y="3914">-string connectionString</text>
-<line x1="2105" y1="3926" x2="2335" y2="3926" stroke="#b85450"/>
-<text x="2113" y="3945">-SqliteDatabase()</text>
-<text x="2113" y="3960" text-decoration="underline">+GetInstance() SqliteDatabase</text>
-<text x="2113" y="3975">+GetConnection() SqliteConnection</text>
-<text x="2113" y="3990">-CreateTables() void</text>
+<rect x="2105" y="3903" width="230" height="140" fill="#fff" stroke="#b85450"/>
+<rect x="2105" y="3903" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2220" y="3920" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
+<text x="2113" y="3944" text-decoration="underline">-SqliteDatabase instance</text>
+<text x="2113" y="3959">-string connectionString</text>
+<line x1="2105" y1="3971" x2="2335" y2="3971" stroke="#b85450"/>
+<text x="2113" y="3990">-SqliteDatabase()</text>
+<text x="2113" y="4005" text-decoration="underline">+GetInstance() SqliteDatabase</text>
+<text x="2113" y="4020">+GetConnection() SqliteConnection</text>
+<text x="2113" y="4035">-CreateTables() void</text>
 <rect x="3950" y="410" width="330" height="380" fill="#fff" stroke="#9673a6"/>
 <rect x="3950" y="410" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
 <text x="4115" y="427" text-anchor="middle" font-weight="bold" font-size="12">QuoteDto</text>
@@ -937,12 +940,12 @@
 <path d="M1645.0,3388.0 L1645.0,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
 <path d="M3440.0,3388.0 L3440.0,3364.0 L1692.5,3364.0 L1692.5,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
 <path d="M1740.0,3162.5 L2395.0,3162.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
-<path d="M1080.0,3708.0 L1080.0,3791.0 L2137.9,3791.0 L2137.9,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1645.0,3618.0 L1645.0,3762.0 L2170.7,3762.0 L2170.7,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2085.0,3573.0 L2085.0,3747.0 L2203.6,3747.0 L2203.6,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2495.0,3573.0 L2495.0,3732.0 L2236.4,3732.0 L2236.4,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2950.0,3648.0 L2950.0,3776.0 L2269.3,3776.0 L2269.3,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3440.0,3588.0 L3440.0,3806.0 L2302.1,3806.0 L2302.1,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1080.0,3753.0 L1080.0,3836.0 L2137.9,3836.0 L2137.9,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,3618.0 L1645.0,3807.0 L2170.7,3807.0 L2170.7,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,3573.0 L2085.0,3792.0 L2203.6,3792.0 L2203.6,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,3573.0 L2495.0,3777.0 L2236.4,3777.0 L2236.4,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,3648.0 L2950.0,3821.0 L2269.3,3821.0 L2269.3,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3440.0,3588.0 L3440.0,3851.0 L2302.1,3851.0 L2302.1,3903.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M4280.0,510.0 L4520.0,510.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <text x="4292.0" y="504.0" text-anchor="start" font-size="10" fill="#333">1</text>
 <text x="4508.0" y="504.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
@@ -998,20 +1001,20 @@
 <text x="938" y="83">Todos los formularios usan MessageHelper y VisualHelper.</text>
 <text x="938" y="98">MockData usa los Controllers para cargar los datos de prueba y los</text>
 <text x="938" y="113">Repositories para saber si la base esta vacia.</text>
-<rect x="120" y="4088" width="470" height="212" fill="#fff" stroke="#999"/>
-<text x="130" y="4108" font-weight="bold" font-size="12">Notacion</text>
-<path d="M140,4132 L240,4132" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="255" y="4136">Asociacion (guarda una referencia)</text>
-<path d="M140,4158 L240,4158" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
-<text x="255" y="4162">Dependencia (usa o crea dentro de un metodo)</text>
-<path d="M140,4184 L240,4184" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="255" y="4188">Composicion (la parte vive y muere con el todo)</text>
-<path d="M140,4210 L240,4210" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
-<text x="255" y="4214">Agregacion (partes compartidas que viven solas)</text>
-<path d="M140,4236 L240,4236" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<text x="255" y="4240">Realizacion (implementa la interfaz)</text>
-<path d="M140,4262 L240,4262" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
-<text x="255" y="4266">Herencia</text>
-<path d="M140,4288 L240,4288" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
-<text x="255" y="4292">Asociacion en los dos sentidos</text>
+<rect x="120" y="4133" width="470" height="212" fill="#fff" stroke="#999"/>
+<text x="130" y="4153" font-weight="bold" font-size="12">Notacion</text>
+<path d="M140,4177 L240,4177" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="255" y="4181">Asociacion (guarda una referencia)</text>
+<path d="M140,4203 L240,4203" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
+<text x="255" y="4207">Dependencia (usa o crea dentro de un metodo)</text>
+<path d="M140,4229 L240,4229" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="255" y="4233">Composicion (la parte vive y muere con el todo)</text>
+<path d="M140,4255 L240,4255" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
+<text x="255" y="4259">Agregacion (partes compartidas que viven solas)</text>
+<path d="M140,4281 L240,4281" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<text x="255" y="4285">Realizacion (implementa la interfaz)</text>
+<path d="M140,4307 L240,4307" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
+<text x="255" y="4311">Herencia</text>
+<path d="M140,4333 L240,4333" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
+<text x="255" y="4337">Asociacion en los dos sentidos</text>
 </svg>

@@ -55,9 +55,13 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
+        // los diccionarios duran solo esta lectura: un menu usado en varios presupuestos se busca una sola vez
         public List<Quote> GetAll()
         {
             List<Quote> quotes = new List<Quote>();
+            Dictionary<int, Location> locationCache = new Dictionary<int, Location>();
+            Dictionary<int, Menu> menuCache = new Dictionary<int, Menu>();
+            Dictionary<int, OptionItem> optionItemCache = new Dictionary<int, OptionItem>();
 
             using (SqliteConnection connection = database.GetConnection())
             {
@@ -69,7 +73,7 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     while (reader.Read())
                     {
-                        quotes.Add(ReadQuote(reader, connection));
+                        quotes.Add(ReadQuote(reader, connection, locationCache, menuCache, optionItemCache));
                     }
                 }
             }
@@ -91,7 +95,8 @@ namespace ProyectoPresupuestoEvento.Repository
                 {
                     if (reader.Read())
                     {
-                        return ReadQuote(reader, connection);
+                        return ReadQuote(reader, connection, new Dictionary<int, Location>(),
+                            new Dictionary<int, Menu>(), new Dictionary<int, OptionItem>());
                     }
                 }
             }
@@ -150,12 +155,13 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // arma el presupuesto con sus copias congeladas
-        private Quote ReadQuote(SqliteDataReader reader, SqliteConnection connection)
+        private Quote ReadQuote(SqliteDataReader reader, SqliteConnection connection, Dictionary<int, Location> locationCache,
+            Dictionary<int, Menu> menuCache, Dictionary<int, OptionItem> optionItemCache)
         {
             int id = reader.GetInt32(0);
-            Location location = LocationRepository.GetInstance().GetById(reader.GetInt32(8));
-            List<DetailMenu> menus = LoadDetailMenus(id, connection);
-            List<DetailOptionItem> optionItems = LoadDetailOptionItems(id, connection);
+            Location location = GetCached(reader.GetInt32(8), locationCache, LocationRepository.GetInstance());
+            List<DetailMenu> menus = LoadDetailMenus(id, connection, menuCache);
+            List<DetailOptionItem> optionItems = LoadDetailOptionItems(id, connection, optionItemCache);
 
             // constructor de lectura: recibe las copias guardadas, no los datos actuales
             Quote quote = new Quote(id, (QuoteState)reader.GetInt32(11),
@@ -168,7 +174,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // cada linea se arma con el menu real y los datos congelados guardados
-        private List<DetailMenu> LoadDetailMenus(int quoteId, SqliteConnection connection)
+        private List<DetailMenu> LoadDetailMenus(int quoteId, SqliteConnection connection, Dictionary<int, Menu> menuCache)
         {
             List<DetailMenu> menus = new List<DetailMenu>();
 
@@ -181,7 +187,7 @@ namespace ProyectoPresupuestoEvento.Repository
             {
                 while (reader.Read())
                 {
-                    Menu menu = MenuRepository.GetInstance().GetById(reader.GetInt32(0));
+                    Menu menu = GetCached(reader.GetInt32(0), menuCache, MenuRepository.GetInstance());
                     DetailMenu detailMenu = new DetailMenu(menu, reader.GetString(2), reader.GetString(1), reader.GetInt32(3), reader.GetInt32(4),
                         reader.GetDecimal(5), reader.GetDecimal(6));
                     menus.Add(detailMenu);
@@ -192,7 +198,7 @@ namespace ProyectoPresupuestoEvento.Repository
         }
 
         // igual que las lineas de catering, con el servicio real y su nombre y precio congelados
-        private List<DetailOptionItem> LoadDetailOptionItems(int quoteId, SqliteConnection connection)
+        private List<DetailOptionItem> LoadDetailOptionItems(int quoteId, SqliteConnection connection, Dictionary<int, OptionItem> optionItemCache)
         {
             List<DetailOptionItem> optionItems = new List<DetailOptionItem>();
 
@@ -204,13 +210,23 @@ namespace ProyectoPresupuestoEvento.Repository
             {
                 while (reader.Read())
                 {
-                    OptionItem optionItem = OptionItemRepository.GetInstance().GetById(reader.GetInt32(0));
+                    OptionItem optionItem = GetCached(reader.GetInt32(0), optionItemCache, OptionItemRepository.GetInstance());
                     DetailOptionItem detailOptionItem = new DetailOptionItem(optionItem, reader.GetString(1), reader.GetDecimal(2));
                     optionItems.Add(detailOptionItem);
                 }
             }
 
             return optionItems;
+        }
+
+        // si el objeto ya se busco en esta lectura lo devuelve; si no, lo pide al repositorio y lo guarda
+        private T GetCached<T>(int id, Dictionary<int, T> cache, IRepository<T> repository) where T : class
+        {
+            if (!cache.ContainsKey(id))
+            {
+                cache.Add(id, repository.GetById(id));
+            }
+            return cache[id];
         }
 
         // borra las lineas guardadas del presupuesto e inserta las actuales

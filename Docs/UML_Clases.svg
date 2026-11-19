@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="5860" height="4388" font-family="Helvetica,Arial" font-size="11">
+<svg xmlns="http://www.w3.org/2000/svg" width="5880" height="4484" font-family="Helvetica,Arial" font-size="11">
 <defs>
 <marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#333" stroke-width="1.3"/></marker>
 <marker id="tri" viewBox="0 0 14 14" refX="13" refY="7" markerWidth="14" markerHeight="14" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1,1 L13,7 L1,13 Z" fill="#fff" stroke="#333" stroke-width="1.3"/></marker>
@@ -10,20 +10,20 @@
 <rect width="100%" height="100%" fill="#ffffff"/>
 <rect x="120" y="40" width="750" height="240" fill="#fcfcfc" stroke="#666666" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="64" font-size="15" font-weight="bold" fill="#666666">Arranque</text>
-<rect x="120" y="360" width="3560" height="971" fill="#f5f9fe" stroke="#6c8ebf" stroke-dasharray="8,4" rx="6"/>
+<rect x="120" y="360" width="3580" height="971" fill="#f5f9fe" stroke="#6c8ebf" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="384" font-size="15" font-weight="bold" fill="#6c8ebf">Vista (View)</text>
-<rect x="120" y="1541" width="3560" height="315" fill="#f4f9f4" stroke="#82b366" stroke-dasharray="8,4" rx="6"/>
+<rect x="120" y="1541" width="3580" height="315" fill="#f4f9f4" stroke="#82b366" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="1565" font-size="15" font-weight="bold" fill="#82b366">Controladores (Controller)</text>
-<rect x="120" y="2056" width="3560" height="690" fill="#fffbf2" stroke="#d6b656" stroke-dasharray="8,4" rx="6"/>
+<rect x="120" y="2056" width="3580" height="856" fill="#fffbf2" stroke="#d6b656" stroke-dasharray="8,4" rx="6"/>
 <text x="132" y="2080" font-size="15" font-weight="bold" fill="#d6b656">Servicios (Service)</text>
-<rect x="120" y="2916" width="3560" height="961" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
-<text x="132" y="2940" font-size="15" font-weight="bold" fill="#b85450">Repositorios (Repository + Interface)</text>
-<rect x="3900" y="360" width="1880" height="1826" fill="#f7f4f9" stroke="#9673a6" stroke-dasharray="8,4" rx="6"/>
-<text x="3912" y="384" font-size="15" font-weight="bold" fill="#9673a6">DTO</text>
-<rect x="3900" y="2256" width="1880" height="1715" fill="#fff8f2" stroke="#d79b00" stroke-dasharray="8,4" rx="6"/>
-<text x="3912" y="2280" font-size="15" font-weight="bold" fill="#d79b00">Modelo (Model)</text>
-<rect x="3900" y="4082" width="1880" height="226" fill="#fafafa" stroke="#666666" stroke-dasharray="8,4" rx="6"/>
-<text x="3912" y="4106" font-size="15" font-weight="bold" fill="#666666">Comun (Common)</text>
+<rect x="120" y="3082" width="3580" height="946" fill="#fdf2f2" stroke="#b85450" stroke-dasharray="8,4" rx="6"/>
+<text x="132" y="3106" font-size="15" font-weight="bold" fill="#b85450">Repositorios (Repository + Interface)</text>
+<rect x="3920" y="360" width="1880" height="1826" fill="#f7f4f9" stroke="#9673a6" stroke-dasharray="8,4" rx="6"/>
+<text x="3932" y="384" font-size="15" font-weight="bold" fill="#9673a6">DTO</text>
+<rect x="3920" y="2256" width="1880" height="1715" fill="#fff8f2" stroke="#d79b00" stroke-dasharray="8,4" rx="6"/>
+<text x="3932" y="2280" font-size="15" font-weight="bold" fill="#d79b00">Modelo (Model)</text>
+<rect x="3920" y="4082" width="1880" height="322" fill="#fafafa" stroke="#666666" stroke-dasharray="8,4" rx="6"/>
+<text x="3932" y="4106" font-size="15" font-weight="bold" fill="#666666">Comun (Common)</text>
 <rect x="160" y="80" width="250" height="96" fill="#fff" stroke="#666666"/>
 <rect x="160" y="80" width="250" height="42" fill="#f5f5f5" stroke="#666666"/>
 <text x="285" y="96" text-anchor="middle">&#171;static&#187;</text>
@@ -143,95 +143,95 @@
 <text x="168" y="1263">-ShowLines(List&lt;DetailMenuDto&gt; list, bool withSubtotal) void</text>
 <text x="168" y="1278">-btnBackQuote_Click(sender, e) void</text>
 <text x="168" y="1293">-btnSaveQuote_Click(sender, e) void</text>
-<rect x="1485" y="846" width="300" height="230" fill="#fff" stroke="#6c8ebf"/>
-<rect x="1485" y="846" width="300" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="1635" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormEvents</text>
-<text x="1493" y="887">-EventItemController eventController</text>
-<text x="1493" y="902">-int editingId</text>
-<line x1="1485" y1="914" x2="1785" y2="914" stroke="#6c8ebf"/>
-<text x="1493" y="933">+FormEvents(EventItemController controller)</text>
-<text x="1493" y="948">-FormEvents_Load(sender, e) void</text>
-<text x="1493" y="963">+ResetView() void</text>
-<text x="1493" y="978">-ReloadList() void</text>
-<text x="1493" y="993">-btnEventCreate_Click(sender, e) void</text>
-<text x="1493" y="1008">-mtLvEvents_DoubleClick(sender, e) void</text>
-<text x="1493" y="1023">-btnEventEdit_Click(sender, e) void</text>
-<text x="1493" y="1038">-btnEventRemove_Click(sender, e) void</text>
-<text x="1493" y="1053">-btnBackEvent_Click(sender, e) void</text>
-<text x="1493" y="1068">-btnSaveEvent_Click(sender, e) void</text>
-<rect x="1910" y="846" width="310" height="230" fill="#fff" stroke="#6c8ebf"/>
-<rect x="1910" y="846" width="310" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="2065" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormLocations</text>
-<text x="1918" y="887">-LocationController locationController</text>
-<text x="1918" y="902">-int editingId</text>
-<line x1="1910" y1="914" x2="2220" y2="914" stroke="#6c8ebf"/>
-<text x="1918" y="933">+FormLocations(LocationController controller)</text>
-<text x="1918" y="948">-FormLocations_Load(sender, e) void</text>
-<text x="1918" y="963">+ResetView() void</text>
-<text x="1918" y="978">-ReloadList() void</text>
-<text x="1918" y="993">-btnLocationCreate_Click(sender, e) void</text>
-<text x="1918" y="1008">-mtLvLocations_DoubleClick(sender, e) void</text>
-<text x="1918" y="1023">-btnLocationEdit_Click(sender, e) void</text>
-<text x="1918" y="1038">-btnLocationRemove_Click(sender, e) void</text>
-<text x="1918" y="1053">-btnBack_Click(sender, e) void</text>
-<text x="1918" y="1068">-btnSaveLocation_Click(sender, e) void</text>
-<rect x="2310" y="846" width="330" height="230" fill="#fff" stroke="#6c8ebf"/>
-<rect x="2310" y="846" width="330" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="2475" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormOptionItem</text>
-<text x="2318" y="887">-OptionItemController optionItemController</text>
-<text x="2318" y="902">-int editingId</text>
-<line x1="2310" y1="914" x2="2640" y2="914" stroke="#6c8ebf"/>
-<text x="2318" y="933">+FormOptionItem(OptionItemController controller)</text>
-<text x="2318" y="948">-FormOptionItem_Load(sender, e) void</text>
-<text x="2318" y="963">+ResetView() void</text>
-<text x="2318" y="978">-ReloadList() void</text>
-<text x="2318" y="993">-btnOICreate_Click(sender, e) void</text>
-<text x="2318" y="1008">-mtLvOptionItems_DoubleClick(sender, e) void</text>
-<text x="2318" y="1023">-btnOIEdit_Click(sender, e) void</text>
-<text x="2318" y="1038">-btnOIRemove_Click(sender, e) void</text>
-<text x="2318" y="1053">-btnBack_Click(sender, e) void</text>
-<text x="2318" y="1068">-btnSaveOI_Click(sender, e) void</text>
-<rect x="2765" y="846" width="330" height="320" fill="#fff" stroke="#6c8ebf"/>
-<rect x="2765" y="846" width="330" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="2930" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormMenus</text>
-<text x="2773" y="887">-MenuController menuController</text>
-<text x="2773" y="902">-MenuTagController menuTagController</text>
-<text x="2773" y="917">-FormMenuTags formMenuTags</text>
-<text x="2773" y="932">-int editingId</text>
-<line x1="2765" y1="944" x2="3095" y2="944" stroke="#6c8ebf"/>
-<text x="2773" y="963">+FormMenus(MenuController controller,</text>
-<text x="2773" y="978">      MenuTagController menuTagController)</text>
-<text x="2773" y="993">+SetFormMenuTags(FormMenuTags formMenuTags) void</text>
-<text x="2773" y="1008">-FormMenus_Load(sender, e) void</text>
-<text x="2773" y="1023">+ResetView() void</text>
-<text x="2773" y="1038">+ReloadList() void</text>
-<text x="2773" y="1053">-LoadTags() void</text>
-<text x="2773" y="1068">-btnMenuCreate_Click(sender, e) void</text>
-<text x="2773" y="1083">-mtLvMenus_DoubleClick(sender, e) void</text>
-<text x="2773" y="1098">-btnMenuEdit_Click(sender, e) void</text>
-<text x="2773" y="1113">-btnMenuRemove_Click(sender, e) void</text>
-<text x="2773" y="1128">-btnMenuTags_Click(sender, e) void</text>
-<text x="2773" y="1143">-btnBackMenu_Click(sender, e) void</text>
-<text x="2773" y="1158">-btnSaveMenu_Click(sender, e) void</text>
-<rect x="3270" y="846" width="300" height="275" fill="#fff" stroke="#6c8ebf"/>
-<rect x="3270" y="846" width="300" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
-<text x="3420" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormMenuTags</text>
-<text x="3278" y="887">-MenuTagController menuTagController</text>
-<text x="3278" y="902">-FormMenus formMenus</text>
-<text x="3278" y="917">-int editingId</text>
-<line x1="3270" y1="929" x2="3570" y2="929" stroke="#6c8ebf"/>
-<text x="3278" y="948">+FormMenuTags(MenuTagController controller,</text>
-<text x="3278" y="963">      FormMenus formMenus)</text>
-<text x="3278" y="978">-FormMenuTags_Load(sender, e) void</text>
-<text x="3278" y="993">+ResetView() void</text>
-<text x="3278" y="1008">-ReloadList() void</text>
-<text x="3278" y="1023">-btnMenuTagCreate_Click(sender, e) void</text>
-<text x="3278" y="1038">-mtLvMenuTags_DoubleClick(sender, e) void</text>
-<text x="3278" y="1053">-btnMenuTagEdit_Click(sender, e) void</text>
-<text x="3278" y="1068">-btnMenuTagRemove_Click(sender, e) void</text>
-<text x="3278" y="1083">-btnBackToMenus_Click(sender, e) void</text>
-<text x="3278" y="1098">-btnBack_Click(sender, e) void</text>
-<text x="3278" y="1113">-btnSaveMenuTag_Click(sender, e) void</text>
+<rect x="1495" y="846" width="300" height="230" fill="#fff" stroke="#6c8ebf"/>
+<rect x="1495" y="846" width="300" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="1645" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormEvents</text>
+<text x="1503" y="887">-EventItemController eventController</text>
+<text x="1503" y="902">-int editingId</text>
+<line x1="1495" y1="914" x2="1795" y2="914" stroke="#6c8ebf"/>
+<text x="1503" y="933">+FormEvents(EventItemController controller)</text>
+<text x="1503" y="948">-FormEvents_Load(sender, e) void</text>
+<text x="1503" y="963">+ResetView() void</text>
+<text x="1503" y="978">-ReloadList() void</text>
+<text x="1503" y="993">-btnEventCreate_Click(sender, e) void</text>
+<text x="1503" y="1008">-mtLvEvents_DoubleClick(sender, e) void</text>
+<text x="1503" y="1023">-btnEventEdit_Click(sender, e) void</text>
+<text x="1503" y="1038">-btnEventRemove_Click(sender, e) void</text>
+<text x="1503" y="1053">-btnBackEvent_Click(sender, e) void</text>
+<text x="1503" y="1068">-btnSaveEvent_Click(sender, e) void</text>
+<rect x="1930" y="846" width="310" height="230" fill="#fff" stroke="#6c8ebf"/>
+<rect x="1930" y="846" width="310" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="2085" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormLocations</text>
+<text x="1938" y="887">-LocationController locationController</text>
+<text x="1938" y="902">-int editingId</text>
+<line x1="1930" y1="914" x2="2240" y2="914" stroke="#6c8ebf"/>
+<text x="1938" y="933">+FormLocations(LocationController controller)</text>
+<text x="1938" y="948">-FormLocations_Load(sender, e) void</text>
+<text x="1938" y="963">+ResetView() void</text>
+<text x="1938" y="978">-ReloadList() void</text>
+<text x="1938" y="993">-btnLocationCreate_Click(sender, e) void</text>
+<text x="1938" y="1008">-mtLvLocations_DoubleClick(sender, e) void</text>
+<text x="1938" y="1023">-btnLocationEdit_Click(sender, e) void</text>
+<text x="1938" y="1038">-btnLocationRemove_Click(sender, e) void</text>
+<text x="1938" y="1053">-btnBack_Click(sender, e) void</text>
+<text x="1938" y="1068">-btnSaveLocation_Click(sender, e) void</text>
+<rect x="2330" y="846" width="330" height="230" fill="#fff" stroke="#6c8ebf"/>
+<rect x="2330" y="846" width="330" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="2495" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormOptionItem</text>
+<text x="2338" y="887">-OptionItemController optionItemController</text>
+<text x="2338" y="902">-int editingId</text>
+<line x1="2330" y1="914" x2="2660" y2="914" stroke="#6c8ebf"/>
+<text x="2338" y="933">+FormOptionItem(OptionItemController controller)</text>
+<text x="2338" y="948">-FormOptionItem_Load(sender, e) void</text>
+<text x="2338" y="963">+ResetView() void</text>
+<text x="2338" y="978">-ReloadList() void</text>
+<text x="2338" y="993">-btnOICreate_Click(sender, e) void</text>
+<text x="2338" y="1008">-mtLvOptionItems_DoubleClick(sender, e) void</text>
+<text x="2338" y="1023">-btnOIEdit_Click(sender, e) void</text>
+<text x="2338" y="1038">-btnOIRemove_Click(sender, e) void</text>
+<text x="2338" y="1053">-btnBack_Click(sender, e) void</text>
+<text x="2338" y="1068">-btnSaveOI_Click(sender, e) void</text>
+<rect x="2785" y="846" width="330" height="320" fill="#fff" stroke="#6c8ebf"/>
+<rect x="2785" y="846" width="330" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="2950" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormMenus</text>
+<text x="2793" y="887">-MenuController menuController</text>
+<text x="2793" y="902">-MenuTagController menuTagController</text>
+<text x="2793" y="917">-FormMenuTags formMenuTags</text>
+<text x="2793" y="932">-int editingId</text>
+<line x1="2785" y1="944" x2="3115" y2="944" stroke="#6c8ebf"/>
+<text x="2793" y="963">+FormMenus(MenuController controller,</text>
+<text x="2793" y="978">      MenuTagController menuTagController)</text>
+<text x="2793" y="993">+SetFormMenuTags(FormMenuTags formMenuTags) void</text>
+<text x="2793" y="1008">-FormMenus_Load(sender, e) void</text>
+<text x="2793" y="1023">+ResetView() void</text>
+<text x="2793" y="1038">+ReloadList() void</text>
+<text x="2793" y="1053">-LoadTags() void</text>
+<text x="2793" y="1068">-btnMenuCreate_Click(sender, e) void</text>
+<text x="2793" y="1083">-mtLvMenus_DoubleClick(sender, e) void</text>
+<text x="2793" y="1098">-btnMenuEdit_Click(sender, e) void</text>
+<text x="2793" y="1113">-btnMenuRemove_Click(sender, e) void</text>
+<text x="2793" y="1128">-btnMenuTags_Click(sender, e) void</text>
+<text x="2793" y="1143">-btnBackMenu_Click(sender, e) void</text>
+<text x="2793" y="1158">-btnSaveMenu_Click(sender, e) void</text>
+<rect x="3290" y="846" width="300" height="275" fill="#fff" stroke="#6c8ebf"/>
+<rect x="3290" y="846" width="300" height="26" fill="#dae8fc" stroke="#6c8ebf"/>
+<text x="3440" y="863" text-anchor="middle" font-weight="bold" font-size="12">FormMenuTags</text>
+<text x="3298" y="887">-MenuTagController menuTagController</text>
+<text x="3298" y="902">-FormMenus formMenus</text>
+<text x="3298" y="917">-int editingId</text>
+<line x1="3290" y1="929" x2="3590" y2="929" stroke="#6c8ebf"/>
+<text x="3298" y="948">+FormMenuTags(MenuTagController controller,</text>
+<text x="3298" y="963">      FormMenus formMenus)</text>
+<text x="3298" y="978">-FormMenuTags_Load(sender, e) void</text>
+<text x="3298" y="993">+ResetView() void</text>
+<text x="3298" y="1008">-ReloadList() void</text>
+<text x="3298" y="1023">-btnMenuTagCreate_Click(sender, e) void</text>
+<text x="3298" y="1038">-mtLvMenuTags_DoubleClick(sender, e) void</text>
+<text x="3298" y="1053">-btnMenuTagEdit_Click(sender, e) void</text>
+<text x="3298" y="1068">-btnMenuTagRemove_Click(sender, e) void</text>
+<text x="3298" y="1083">-btnBackToMenus_Click(sender, e) void</text>
+<text x="3298" y="1098">-btnBack_Click(sender, e) void</text>
+<text x="3298" y="1113">-btnSaveMenuTag_Click(sender, e) void</text>
 <rect x="900" y="1581" width="360" height="245" fill="#fff" stroke="#82b366"/>
 <rect x="900" y="1581" width="360" height="26" fill="#d5e8d4" stroke="#82b366"/>
 <text x="1080" y="1598" text-anchor="middle" font-weight="bold" font-size="12">QuoteController</text>
@@ -249,744 +249,769 @@
 <text x="908" y="1788">+CloneQuote(int id) void</text>
 <text x="908" y="1803">+CalculatePreview(QuoteDto dto) QuoteDto</text>
 <text x="908" y="1818">+ExportPdf(int id, string path) void</text>
-<rect x="1475" y="1581" width="320" height="155" fill="#fff" stroke="#82b366"/>
-<rect x="1475" y="1581" width="320" height="26" fill="#d5e8d4" stroke="#82b366"/>
-<text x="1635" y="1598" text-anchor="middle" font-weight="bold" font-size="12">EventItemController</text>
-<text x="1483" y="1622">-EventItemService service</text>
-<line x1="1475" y1="1634" x2="1795" y2="1634" stroke="#82b366"/>
-<text x="1483" y="1653">+EventItemController()</text>
-<text x="1483" y="1668">+AddToRepository(EventItemDto dto) void</text>
-<text x="1483" y="1683">+GetEventItems() List&lt;EventItemDto&gt;</text>
-<text x="1483" y="1698">+UpdateEventItem(int id, EventItemDto dto) void</text>
-<text x="1483" y="1713">+RemoveEventItem(int id) void</text>
-<text x="1483" y="1728">+CountQuotes(int id) int</text>
-<rect x="1910" y="1581" width="310" height="140" fill="#fff" stroke="#82b366"/>
-<rect x="1910" y="1581" width="310" height="26" fill="#d5e8d4" stroke="#82b366"/>
-<text x="2065" y="1598" text-anchor="middle" font-weight="bold" font-size="12">LocationController</text>
-<text x="1918" y="1622">-LocationService service</text>
-<line x1="1910" y1="1634" x2="2220" y2="1634" stroke="#82b366"/>
-<text x="1918" y="1653">+LocationController()</text>
-<text x="1918" y="1668">+AddToRepository(LocationDto dto) void</text>
-<text x="1918" y="1683">+GetLocations() List&lt;LocationDto&gt;</text>
-<text x="1918" y="1698">+UpdateLocation(int id, LocationDto dto) void</text>
-<text x="1918" y="1713">+RemoveLocation(int id) void</text>
-<rect x="2305" y="1581" width="340" height="140" fill="#fff" stroke="#82b366"/>
-<rect x="2305" y="1581" width="340" height="26" fill="#d5e8d4" stroke="#82b366"/>
-<text x="2475" y="1598" text-anchor="middle" font-weight="bold" font-size="12">OptionItemController</text>
-<text x="2313" y="1622">-OptionItemService service</text>
-<line x1="2305" y1="1634" x2="2645" y2="1634" stroke="#82b366"/>
-<text x="2313" y="1653">+OptionItemController()</text>
-<text x="2313" y="1668">+AddToRepository(OptionItemDto dto) void</text>
-<text x="2313" y="1683">+GetOptionItems() List&lt;OptionItemDto&gt;</text>
-<text x="2313" y="1698">+UpdateOptionItem(int id, OptionItemDto dto) void</text>
-<text x="2313" y="1713">+RemoveOptionItem(int id) void</text>
-<rect x="2800" y="1581" width="260" height="140" fill="#fff" stroke="#82b366"/>
-<rect x="2800" y="1581" width="260" height="26" fill="#d5e8d4" stroke="#82b366"/>
-<text x="2930" y="1598" text-anchor="middle" font-weight="bold" font-size="12">MenuController</text>
-<text x="2808" y="1622">-MenuService service</text>
-<line x1="2800" y1="1634" x2="3060" y2="1634" stroke="#82b366"/>
-<text x="2808" y="1653">+MenuController()</text>
-<text x="2808" y="1668">+AddToRepository(MenuDto dto) void</text>
-<text x="2808" y="1683">+GetMenus() List&lt;MenuDto&gt;</text>
-<text x="2808" y="1698">+UpdateMenu(int id, MenuDto dto) void</text>
-<text x="2808" y="1713">+RemoveMenu(int id) void</text>
-<rect x="3265" y="1581" width="310" height="170" fill="#fff" stroke="#82b366"/>
-<rect x="3265" y="1581" width="310" height="26" fill="#d5e8d4" stroke="#82b366"/>
-<text x="3420" y="1598" text-anchor="middle" font-weight="bold" font-size="12">MenuTagController</text>
-<text x="3273" y="1622">-MenuTagService service</text>
-<line x1="3265" y1="1634" x2="3575" y2="1634" stroke="#82b366"/>
-<text x="3273" y="1653">+MenuTagController()</text>
-<text x="3273" y="1668">+AddToRepository(MenuTagDto dto) void</text>
-<text x="3273" y="1683">+GetMenuTags() List&lt;MenuTagDto&gt;</text>
-<text x="3273" y="1698">+UpdateMenuTag(int id, MenuTagDto dto) void</text>
-<text x="3273" y="1713">+RemoveMenuTag(int id) void</text>
-<text x="3273" y="1728">+GetMenusWithOnlyThisTag(int id) List&lt;string&gt;</text>
-<text x="3273" y="1743">+CountMenusUsing(int id) int</text>
-<rect x="780" y="2096" width="600" height="425" fill="#fff" stroke="#d6b656"/>
+<rect x="1485" y="1581" width="320" height="155" fill="#fff" stroke="#82b366"/>
+<rect x="1485" y="1581" width="320" height="26" fill="#d5e8d4" stroke="#82b366"/>
+<text x="1645" y="1598" text-anchor="middle" font-weight="bold" font-size="12">EventItemController</text>
+<text x="1493" y="1622">-EventItemService service</text>
+<line x1="1485" y1="1634" x2="1805" y2="1634" stroke="#82b366"/>
+<text x="1493" y="1653">+EventItemController()</text>
+<text x="1493" y="1668">+AddToRepository(EventItemDto dto) void</text>
+<text x="1493" y="1683">+GetEventItems() List&lt;EventItemDto&gt;</text>
+<text x="1493" y="1698">+UpdateEventItem(int id, EventItemDto dto) void</text>
+<text x="1493" y="1713">+RemoveEventItem(int id) void</text>
+<text x="1493" y="1728">+CountQuotes(int id) int</text>
+<rect x="1930" y="1581" width="310" height="140" fill="#fff" stroke="#82b366"/>
+<rect x="1930" y="1581" width="310" height="26" fill="#d5e8d4" stroke="#82b366"/>
+<text x="2085" y="1598" text-anchor="middle" font-weight="bold" font-size="12">LocationController</text>
+<text x="1938" y="1622">-LocationService service</text>
+<line x1="1930" y1="1634" x2="2240" y2="1634" stroke="#82b366"/>
+<text x="1938" y="1653">+LocationController()</text>
+<text x="1938" y="1668">+AddToRepository(LocationDto dto) void</text>
+<text x="1938" y="1683">+GetLocations() List&lt;LocationDto&gt;</text>
+<text x="1938" y="1698">+UpdateLocation(int id, LocationDto dto) void</text>
+<text x="1938" y="1713">+RemoveLocation(int id) void</text>
+<rect x="2325" y="1581" width="340" height="140" fill="#fff" stroke="#82b366"/>
+<rect x="2325" y="1581" width="340" height="26" fill="#d5e8d4" stroke="#82b366"/>
+<text x="2495" y="1598" text-anchor="middle" font-weight="bold" font-size="12">OptionItemController</text>
+<text x="2333" y="1622">-OptionItemService service</text>
+<line x1="2325" y1="1634" x2="2665" y2="1634" stroke="#82b366"/>
+<text x="2333" y="1653">+OptionItemController()</text>
+<text x="2333" y="1668">+AddToRepository(OptionItemDto dto) void</text>
+<text x="2333" y="1683">+GetOptionItems() List&lt;OptionItemDto&gt;</text>
+<text x="2333" y="1698">+UpdateOptionItem(int id, OptionItemDto dto) void</text>
+<text x="2333" y="1713">+RemoveOptionItem(int id) void</text>
+<rect x="2820" y="1581" width="260" height="140" fill="#fff" stroke="#82b366"/>
+<rect x="2820" y="1581" width="260" height="26" fill="#d5e8d4" stroke="#82b366"/>
+<text x="2950" y="1598" text-anchor="middle" font-weight="bold" font-size="12">MenuController</text>
+<text x="2828" y="1622">-MenuService service</text>
+<line x1="2820" y1="1634" x2="3080" y2="1634" stroke="#82b366"/>
+<text x="2828" y="1653">+MenuController()</text>
+<text x="2828" y="1668">+AddToRepository(MenuDto dto) void</text>
+<text x="2828" y="1683">+GetMenus() List&lt;MenuDto&gt;</text>
+<text x="2828" y="1698">+UpdateMenu(int id, MenuDto dto) void</text>
+<text x="2828" y="1713">+RemoveMenu(int id) void</text>
+<rect x="3285" y="1581" width="310" height="170" fill="#fff" stroke="#82b366"/>
+<rect x="3285" y="1581" width="310" height="26" fill="#d5e8d4" stroke="#82b366"/>
+<text x="3440" y="1598" text-anchor="middle" font-weight="bold" font-size="12">MenuTagController</text>
+<text x="3293" y="1622">-MenuTagService service</text>
+<line x1="3285" y1="1634" x2="3595" y2="1634" stroke="#82b366"/>
+<text x="3293" y="1653">+MenuTagController()</text>
+<text x="3293" y="1668">+AddToRepository(MenuTagDto dto) void</text>
+<text x="3293" y="1683">+GetMenuTags() List&lt;MenuTagDto&gt;</text>
+<text x="3293" y="1698">+UpdateMenuTag(int id, MenuTagDto dto) void</text>
+<text x="3293" y="1713">+RemoveMenuTag(int id) void</text>
+<text x="3293" y="1728">+GetMenusWithOnlyThisTag(int id) List&lt;string&gt;</text>
+<text x="3293" y="1743">+CountMenusUsing(int id) int</text>
+<rect x="780" y="2096" width="600" height="440" fill="#fff" stroke="#d6b656"/>
 <rect x="780" y="2096" width="600" height="26" fill="#fff2cc" stroke="#d6b656"/>
 <text x="1080" y="2113" text-anchor="middle" font-weight="bold" font-size="12">QuoteService</text>
-<text x="788" y="2137">-IRepository&lt;Quote&gt; repository</text>
+<text x="788" y="2137">-IRemovableRepository&lt;Quote&gt; repository</text>
 <text x="788" y="2152">-IRepository&lt;EventItem&gt; eventItemRepository</text>
 <text x="788" y="2167">-IRepository&lt;Location&gt; locationRepository</text>
 <text x="788" y="2182">-IRepository&lt;Menu&gt; menuRepository</text>
 <text x="788" y="2197">-IRepository&lt;OptionItem&gt; optionItemRepository</text>
-<text x="788" y="2212">-QuoteValidator validator</text>
-<text x="788" y="2227">-QuotePdfGenerator pdfGenerator</text>
+<text x="788" y="2212">-IQuoteDocumentGenerator documentGenerator</text>
+<text x="788" y="2227">-QuoteValidator validator</text>
 <line x1="780" y1="2239" x2="1380" y2="2239" stroke="#d6b656"/>
 <text x="788" y="2258">+QuoteService()</text>
-<text x="788" y="2273">+QuoteService(IRepository&lt;Quote&gt; repository,</text>
+<text x="788" y="2273">+QuoteService(IRemovableRepository&lt;Quote&gt; repository,</text>
 <text x="788" y="2288">      IRepository&lt;EventItem&gt; eventItemRepository, IRepository&lt;Location&gt; locationRepository,</text>
-<text x="788" y="2303">      IRepository&lt;Menu&gt; menuRepository, IRepository&lt;OptionItem&gt; optionItemRepository)</text>
-<text x="788" y="2318">+AddQuote(QuoteDto dto) void</text>
-<text x="788" y="2333">+GetQuotes() List&lt;QuoteDto&gt;</text>
-<text x="788" y="2348">+GetQuotesByEventItem(int eventItemId) List&lt;QuoteDto&gt;</text>
-<text x="788" y="2363">+GetQuoteById(int id) QuoteDto</text>
-<text x="788" y="2378">+UpdateQuote(int id, QuoteDto dto) void</text>
-<text x="788" y="2393">+RemoveQuote(int id) void</text>
-<text x="788" y="2408">+AcceptQuote(int id) void</text>
-<text x="788" y="2423">+CancelQuote(int id) void</text>
-<text x="788" y="2438">+CloneQuote(int id) void</text>
-<text x="788" y="2453">+ExportPdf(int id, string path) void</text>
-<text x="788" y="2468">+CalculatePreview(QuoteDto dto) QuoteDto</text>
-<text x="788" y="2483">-GetEventItem(int eventItemId) EventItem</text>
-<text x="788" y="2498">+ToModel(QuoteDto dto) Quote</text>
-<text x="788" y="2513">+ToDto(Quote quote) QuoteDto</text>
-<rect x="160" y="2096" width="410" height="215" fill="#fff" stroke="#d6b656"/>
-<rect x="160" y="2096" width="410" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="365" y="2113" text-anchor="middle" font-weight="bold" font-size="12">QuoteValidator</text>
+<text x="788" y="2303">      IRepository&lt;Menu&gt; menuRepository, IRepository&lt;OptionItem&gt; optionItemRepository,</text>
+<text x="788" y="2318">      IClock clock, IQuoteDocumentGenerator documentGenerator)</text>
+<text x="788" y="2333">+AddQuote(QuoteDto dto) void</text>
+<text x="788" y="2348">+GetQuotes() List&lt;QuoteDto&gt;</text>
+<text x="788" y="2363">+GetQuotesByEventItem(int eventItemId) List&lt;QuoteDto&gt;</text>
+<text x="788" y="2378">+GetQuoteById(int id) QuoteDto</text>
+<text x="788" y="2393">+UpdateQuote(int id, QuoteDto dto) void</text>
+<text x="788" y="2408">+RemoveQuote(int id) void</text>
+<text x="788" y="2423">+AcceptQuote(int id) void</text>
+<text x="788" y="2438">+CancelQuote(int id) void</text>
+<text x="788" y="2453">+CloneQuote(int id) void</text>
+<text x="788" y="2468">+ExportPdf(int id, string path) void</text>
+<text x="788" y="2483">+CalculatePreview(QuoteDto dto) QuoteDto</text>
+<text x="788" y="2498">-GetEventItem(int eventItemId) EventItem</text>
+<text x="788" y="2513">+ToModel(QuoteDto dto) Quote</text>
+<text x="788" y="2528">+ToDto(Quote quote) QuoteDto</text>
+<rect x="160" y="2096" width="430" height="230" fill="#fff" stroke="#d6b656"/>
+<rect x="160" y="2096" width="430" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="375" y="2113" text-anchor="middle" font-weight="bold" font-size="12">QuoteValidator</text>
 <text x="168" y="2137">-IRepository&lt;Quote&gt; quoteRepository</text>
 <text x="168" y="2152">-IRepository&lt;EventItem&gt; eventItemRepository</text>
-<line x1="160" y1="2164" x2="570" y2="2164" stroke="#d6b656"/>
-<text x="168" y="2183">+QuoteValidator(IRepository&lt;Quote&gt; quoteRepository,</text>
-<text x="168" y="2198">      IRepository&lt;EventItem&gt; eventItemRepository)</text>
-<text x="168" y="2213">+ValidateQuote(Quote quote, Quote original) void</text>
-<text x="168" y="2228">+ValidateEventNotPast(DateTime eventDate, string action) void</text>
-<text x="168" y="2243">+ValidateEventNotChanged(Quote quote) void</text>
-<text x="168" y="2258">+ValidateNoOtherAccepted(Quote quote) void</text>
-<text x="168" y="2273">+ValidateLocationFree(Quote quote) void</text>
-<text x="168" y="2288">+ValidateCanClone(Quote original) void</text>
-<text x="168" y="2303">-GetInactiveItems(Quote quote) List&lt;string&gt;</text>
-<rect x="230" y="2381" width="430" height="335" fill="#fff" stroke="#d6b656"/>
-<rect x="230" y="2381" width="430" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="445" y="2398" text-anchor="middle" font-weight="bold" font-size="12">QuotePdfGenerator</text>
-<text x="238" y="2422">-XFont fontTitle</text>
-<text x="238" y="2437">-XFont fontSection</text>
-<text x="238" y="2452">-XFont fontText</text>
-<text x="238" y="2467">-XFont fontBold</text>
-<text x="238" y="2482">-XFont fontTotal</text>
-<text x="238" y="2497">-XGraphics g</text>
-<text x="238" y="2512">-double left</text>
-<text x="238" y="2527">-double right</text>
-<text x="238" y="2542">-double y</text>
-<line x1="230" y1="2554" x2="660" y2="2554" stroke="#d6b656"/>
-<text x="238" y="2573">+Generate(Quote quote, string path) void</text>
-<text x="238" y="2588">-DrawHeader(Quote quote) void</text>
-<text x="238" y="2603">-DrawEvent(Quote quote) void</text>
-<text x="238" y="2618">-DrawLocation(Quote quote) void</text>
-<text x="238" y="2633">-DrawMenus(Quote quote) void</text>
-<text x="238" y="2648">-DrawOptionItems(Quote quote) void</text>
-<text x="238" y="2663">-DrawTotals(Quote quote) void</text>
-<text x="238" y="2678">-Write(string text, XFont font, double x) void</text>
-<text x="238" y="2693">-WriteRight(string text, XFont font, double x, double top) void</text>
-<text x="238" y="2708">-Cut(string text, XFont font, double width) string</text>
-<rect x="1430" y="2096" width="410" height="290" fill="#fff" stroke="#d6b656"/>
-<rect x="1430" y="2096" width="410" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="1635" y="2113" text-anchor="middle" font-weight="bold" font-size="12">EventItemService</text>
-<text x="1438" y="2137">-IRepository&lt;EventItem&gt; repository</text>
-<text x="1438" y="2152">-IRepository&lt;Quote&gt; quoteRepository</text>
-<line x1="1430" y1="2164" x2="1840" y2="2164" stroke="#d6b656"/>
-<text x="1438" y="2183">+EventItemService()</text>
-<text x="1438" y="2198">+EventItemService(IRepository&lt;EventItem&gt; repository,</text>
-<text x="1438" y="2213">      IRepository&lt;Quote&gt; quoteRepository)</text>
-<text x="1438" y="2228">+AddToRepository(EventItemDto dto) void</text>
-<text x="1438" y="2243">+GetEventItems() List&lt;EventItemDto&gt;</text>
-<text x="1438" y="2258">+UpdateEventItem(int id, EventItemDto dto) void</text>
-<text x="1438" y="2273">-ValidateScheduleChange(int id, EventItem eventItem) void</text>
-<text x="1438" y="2288">-ValidateHasGuests(EventItem eventItem) void</text>
-<text x="1438" y="2303">-ValidateNotRepeated(EventItem eventItem, int editingId) void</text>
-<text x="1438" y="2318">+RemoveEventItem(int id) void</text>
-<text x="1438" y="2333">+CountQuotes(int id) int</text>
-<text x="1438" y="2348">-GetQuotes(int eventItemId) List&lt;Quote&gt;</text>
-<text x="1438" y="2363">+ToModel(EventItemDto dto) EventItem</text>
-<text x="1438" y="2378">+ToDto(EventItem eventItem) EventItemDto</text>
-<rect x="1890" y="2096" width="350" height="200" fill="#fff" stroke="#d6b656"/>
-<rect x="1890" y="2096" width="350" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="2065" y="2113" text-anchor="middle" font-weight="bold" font-size="12">LocationService</text>
-<text x="1898" y="2137">-IRepository&lt;Location&gt; repository</text>
-<line x1="1890" y1="2149" x2="2240" y2="2149" stroke="#d6b656"/>
-<text x="1898" y="2168">+LocationService()</text>
-<text x="1898" y="2183">+LocationService(IRepository&lt;Location&gt; repository)</text>
-<text x="1898" y="2198">+AddToRepository(LocationDto dto) void</text>
-<text x="1898" y="2213">+GetLocations() List&lt;LocationDto&gt;</text>
-<text x="1898" y="2228">+UpdateLocation(int id, LocationDto dto) void</text>
-<text x="1898" y="2243">-ValidateUniqueName(string name, int editingId) void</text>
-<text x="1898" y="2258">+ToModel(LocationDto dto) Location</text>
-<text x="1898" y="2273">+ToDto(Location location) LocationDto</text>
-<text x="1898" y="2288">+RemoveLocation(int id) void</text>
-<rect x="2290" y="2096" width="370" height="200" fill="#fff" stroke="#d6b656"/>
-<rect x="2290" y="2096" width="370" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="2475" y="2113" text-anchor="middle" font-weight="bold" font-size="12">OptionItemService</text>
-<text x="2298" y="2137">-IRepository&lt;OptionItem&gt; repository</text>
-<line x1="2290" y1="2149" x2="2660" y2="2149" stroke="#d6b656"/>
-<text x="2298" y="2168">+OptionItemService()</text>
-<text x="2298" y="2183">+OptionItemService(IRepository&lt;OptionItem&gt; repository)</text>
-<text x="2298" y="2198">+AddToRepository(OptionItemDto dto) void</text>
-<text x="2298" y="2213">+GetOptionItems() List&lt;OptionItemDto&gt;</text>
-<text x="2298" y="2228">+UpdateOptionItem(int id, OptionItemDto dto) void</text>
-<text x="2298" y="2243">-ValidateUniqueName(string name, int editingId) void</text>
-<text x="2298" y="2258">+RemoveOptionItem(int id) void</text>
-<text x="2298" y="2273">+ToModel(OptionItemDto dto) OptionItem</text>
-<text x="2298" y="2288">+ToDto(OptionItem optionItem) OptionItemDto</text>
-<rect x="2710" y="2096" width="440" height="245" fill="#fff" stroke="#d6b656"/>
-<rect x="2710" y="2096" width="440" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="2930" y="2113" text-anchor="middle" font-weight="bold" font-size="12">MenuService</text>
-<text x="2718" y="2137">-IRepository&lt;Menu&gt; repository</text>
-<text x="2718" y="2152">-IRepository&lt;MenuTag&gt; menuTagRepository</text>
-<line x1="2710" y1="2164" x2="3150" y2="2164" stroke="#d6b656"/>
-<text x="2718" y="2183">+MenuService()</text>
-<text x="2718" y="2198">+MenuService(IRepository&lt;Menu&gt; repository,</text>
-<text x="2718" y="2213">      IRepository&lt;MenuTag&gt; menuTagRepository)</text>
-<text x="2718" y="2228">+AddToRepository(MenuDto dto) void</text>
-<text x="2718" y="2243">+GetMenus() List&lt;MenuDto&gt;</text>
-<text x="2718" y="2258">+UpdateMenu(int id, MenuDto dto) void</text>
-<text x="2718" y="2273">-ValidateHasTags(Menu menu) void</text>
-<text x="2718" y="2288">-ValidateUniqueDescription(string description, int editingId) void</text>
-<text x="2718" y="2303">+RemoveMenu(int id) void</text>
-<text x="2718" y="2318">+ToModel(MenuDto dto) Menu</text>
-<text x="2718" y="2333">+ToDto(Menu menu) MenuDto</text>
-<rect x="3200" y="2096" width="440" height="260" fill="#fff" stroke="#d6b656"/>
-<rect x="3200" y="2096" width="440" height="26" fill="#fff2cc" stroke="#d6b656"/>
-<text x="3420" y="2113" text-anchor="middle" font-weight="bold" font-size="12">MenuTagService</text>
-<text x="3208" y="2137">-IRepository&lt;MenuTag&gt; repository</text>
-<text x="3208" y="2152">-IRepository&lt;Menu&gt; menuRepository</text>
-<line x1="3200" y1="2164" x2="3640" y2="2164" stroke="#d6b656"/>
-<text x="3208" y="2183">+MenuTagService()</text>
-<text x="3208" y="2198">+MenuTagService(IRepository&lt;MenuTag&gt; repository,</text>
-<text x="3208" y="2213">      IRepository&lt;Menu&gt; menuRepository)</text>
-<text x="3208" y="2228">+AddToRepository(MenuTagDto dto) void</text>
-<text x="3208" y="2243">+GetMenuTags() List&lt;MenuTagDto&gt;</text>
-<text x="3208" y="2258">+UpdateMenuTag(int id, MenuTagDto dto) void</text>
-<text x="3208" y="2273">+RemoveMenuTag(int id) void</text>
-<text x="3208" y="2288">+GetMenusWithOnlyThisTag(int id) List&lt;string&gt;</text>
-<text x="3208" y="2303">+CountMenusUsing(int id) int</text>
-<text x="3208" y="2318">-ValidateUniqueDescription(string description, int editingId) void</text>
-<text x="3208" y="2333">+ToModel(MenuTagDto dto) MenuTag</text>
-<text x="3208" y="2348">+ToDto(MenuTag menuTag) MenuTagDto</text>
-<rect x="2110" y="2956" width="200" height="141" fill="#fff" stroke="#b85450"/>
-<rect x="2110" y="2956" width="200" height="42" fill="#f8cecc" stroke="#b85450"/>
-<text x="2210" y="2972" text-anchor="middle">&#171;interface&#187;</text>
-<text x="2210" y="2989" text-anchor="middle" font-weight="bold" font-size="12">IRepository&lt;T&gt;</text>
-<line x1="2110" y1="3010" x2="2310" y2="3010" stroke="#b85450"/>
-<text x="2118" y="3029">+AddToRepository(T obj) void</text>
-<text x="2118" y="3044">+GetAll() List&lt;T&gt;</text>
-<text x="2118" y="3059">+GetById(int id) T</text>
-<text x="2118" y="3074">+Update(int id, T obj) void</text>
-<text x="2118" y="3089">+RemoveById(int id) void</text>
-<rect x="855" y="3237" width="450" height="320" fill="#fff" stroke="#b85450"/>
-<rect x="855" y="3237" width="450" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="1080" y="3254" text-anchor="middle" font-weight="bold" font-size="12">QuoteRepository</text>
-<text x="863" y="3278" text-decoration="underline">-QuoteRepository instance</text>
-<text x="863" y="3293">-SqliteDatabase database</text>
-<line x1="855" y1="3305" x2="1305" y2="3305" stroke="#b85450"/>
-<text x="863" y="3324">-QuoteRepository()</text>
-<text x="863" y="3339" text-decoration="underline">+GetInstance() QuoteRepository</text>
-<text x="863" y="3354">+AddToRepository(Quote quote) void</text>
-<text x="863" y="3369">+GetAll() List&lt;Quote&gt;</text>
-<text x="863" y="3384">+GetById(int id) Quote</text>
-<text x="863" y="3399">+Update(int id, Quote quote) void</text>
-<text x="863" y="3414">+RemoveById(int id) void</text>
-<text x="863" y="3429">-AddParameters(SqliteCommand command, Quote quote) void</text>
-<text x="863" y="3444">-ReadQuote(SqliteDataReader reader,</text>
-<text x="863" y="3459">      SqliteConnection connection) Quote</text>
-<text x="863" y="3474">-LoadDetailMenus(int quoteId,</text>
-<text x="863" y="3489">      SqliteConnection connection) List&lt;DetailMenu&gt;</text>
-<text x="863" y="3504">-LoadDetailOptionItems(int quoteId,</text>
-<text x="863" y="3519">      SqliteConnection connection) List&lt;DetailOptionItem&gt;</text>
-<text x="863" y="3534">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
-<text x="863" y="3549">      SqliteTransaction transaction) void</text>
-<rect x="1465" y="3237" width="340" height="230" fill="#fff" stroke="#b85450"/>
-<rect x="1465" y="3237" width="340" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="1635" y="3254" text-anchor="middle" font-weight="bold" font-size="12">EventItemRepository</text>
-<text x="1473" y="3278" text-decoration="underline">-EventItemRepository instance</text>
-<text x="1473" y="3293">-SqliteDatabase database</text>
-<line x1="1465" y1="3305" x2="1805" y2="3305" stroke="#b85450"/>
-<text x="1473" y="3324">-EventItemRepository()</text>
-<text x="1473" y="3339" text-decoration="underline">+GetInstance() EventItemRepository</text>
-<text x="1473" y="3354">+AddToRepository(EventItem eventItem) void</text>
-<text x="1473" y="3369">+GetAll() List&lt;EventItem&gt;</text>
-<text x="1473" y="3384">+GetById(int id) EventItem</text>
-<text x="1473" y="3399">+Update(int id, EventItem eventItem) void</text>
-<text x="1473" y="3414">+RemoveById(int id) void</text>
-<text x="1473" y="3429">-AddParameters(SqliteCommand command,</text>
-<text x="1473" y="3444">      EventItem eventItem) void</text>
-<text x="1473" y="3459">-ReadEventItem(SqliteDataReader reader) EventItem</text>
-<rect x="1905" y="3237" width="320" height="200" fill="#fff" stroke="#b85450"/>
-<rect x="1905" y="3237" width="320" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2065" y="3254" text-anchor="middle" font-weight="bold" font-size="12">LocationRepository</text>
-<text x="1913" y="3278" text-decoration="underline">-LocationRepository instance</text>
-<text x="1913" y="3293">-SqliteDatabase database</text>
-<line x1="1905" y1="3305" x2="2225" y2="3305" stroke="#b85450"/>
-<text x="1913" y="3324">-LocationRepository()</text>
-<text x="1913" y="3339" text-decoration="underline">+GetInstance() LocationRepository</text>
-<text x="1913" y="3354">+AddToRepository(Location location) void</text>
-<text x="1913" y="3369">+GetAll() List&lt;Location&gt;</text>
-<text x="1913" y="3384">+GetById(int id) Location</text>
-<text x="1913" y="3399">+Update(int id, Location location) void</text>
-<text x="1913" y="3414">+RemoveById(int id) void</text>
-<text x="1913" y="3429">-ReadLocation(SqliteDataReader reader) Location</text>
-<rect x="2300" y="3237" width="350" height="200" fill="#fff" stroke="#b85450"/>
-<rect x="2300" y="3237" width="350" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2475" y="3254" text-anchor="middle" font-weight="bold" font-size="12">OptionItemRepository</text>
-<text x="2308" y="3278" text-decoration="underline">-OptionItemRepository instance</text>
-<text x="2308" y="3293">-SqliteDatabase database</text>
-<line x1="2300" y1="3305" x2="2650" y2="3305" stroke="#b85450"/>
-<text x="2308" y="3324">-OptionItemRepository()</text>
-<text x="2308" y="3339" text-decoration="underline">+GetInstance() OptionItemRepository</text>
-<text x="2308" y="3354">+AddToRepository(OptionItem optionItem) void</text>
-<text x="2308" y="3369">+GetAll() List&lt;OptionItem&gt;</text>
-<text x="2308" y="3384">+GetById(int id) OptionItem</text>
-<text x="2308" y="3399">+Update(int id, OptionItem optionItem) void</text>
-<text x="2308" y="3414">+RemoveById(int id) void</text>
-<text x="2308" y="3429">-ReadOptionItem(SqliteDataReader reader) OptionItem</text>
-<rect x="2725" y="3237" width="410" height="275" fill="#fff" stroke="#b85450"/>
-<rect x="2725" y="3237" width="410" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2930" y="3254" text-anchor="middle" font-weight="bold" font-size="12">MenuRepository</text>
-<text x="2733" y="3278" text-decoration="underline">-MenuRepository instance</text>
-<text x="2733" y="3293">-SqliteDatabase database</text>
-<line x1="2725" y1="3305" x2="3135" y2="3305" stroke="#b85450"/>
-<text x="2733" y="3324">-MenuRepository()</text>
-<text x="2733" y="3339" text-decoration="underline">+GetInstance() MenuRepository</text>
-<text x="2733" y="3354">+AddToRepository(Menu menu) void</text>
-<text x="2733" y="3369">+GetAll() List&lt;Menu&gt;</text>
-<text x="2733" y="3384">+GetById(int id) Menu</text>
-<text x="2733" y="3399">+Update(int id, Menu menu) void</text>
-<text x="2733" y="3414">+RemoveById(int id) void</text>
-<text x="2733" y="3429">-ReadMenu(SqliteDataReader reader,</text>
-<text x="2733" y="3444">      SqliteConnection connection) Menu</text>
-<text x="2733" y="3459">-LoadTags(int menuId,</text>
-<text x="2733" y="3474">      SqliteConnection connection) List&lt;MenuTag&gt;</text>
-<text x="2733" y="3489">-SaveTags(int menuId, Menu menu, SqliteConnection connection,</text>
-<text x="2733" y="3504">      SqliteTransaction transaction) void</text>
-<rect x="3265" y="3237" width="310" height="200" fill="#fff" stroke="#b85450"/>
-<rect x="3265" y="3237" width="310" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="3420" y="3254" text-anchor="middle" font-weight="bold" font-size="12">MenuTagRepository</text>
-<text x="3273" y="3278" text-decoration="underline">-MenuTagRepository instance</text>
-<text x="3273" y="3293">-SqliteDatabase database</text>
-<line x1="3265" y1="3305" x2="3575" y2="3305" stroke="#b85450"/>
-<text x="3273" y="3324">-MenuTagRepository()</text>
-<text x="3273" y="3339" text-decoration="underline">+GetInstance() MenuTagRepository</text>
-<text x="3273" y="3354">+AddToRepository(MenuTag menuTag) void</text>
-<text x="3273" y="3369">+GetAll() List&lt;MenuTag&gt;</text>
-<text x="3273" y="3384">+GetById(int id) MenuTag</text>
-<text x="3273" y="3399">+Update(int id, MenuTag menuTag) void</text>
-<text x="3273" y="3414">+RemoveById(int id) void</text>
-<text x="3273" y="3429">-ReadMenuTag(SqliteDataReader reader) MenuTag</text>
-<rect x="2095" y="3707" width="230" height="140" fill="#fff" stroke="#b85450"/>
-<rect x="2095" y="3707" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
-<text x="2210" y="3724" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
-<text x="2103" y="3748" text-decoration="underline">-SqliteDatabase instance</text>
-<text x="2103" y="3763">-string connectionString</text>
-<line x1="2095" y1="3775" x2="2325" y2="3775" stroke="#b85450"/>
-<text x="2103" y="3794">-SqliteDatabase()</text>
-<text x="2103" y="3809" text-decoration="underline">+GetInstance() SqliteDatabase</text>
-<text x="2103" y="3824">+GetConnection() SqliteConnection</text>
-<text x="2103" y="3839">-CreateTables() void</text>
-<rect x="3930" y="410" width="330" height="380" fill="#fff" stroke="#9673a6"/>
-<rect x="3930" y="410" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4095" y="427" text-anchor="middle" font-weight="bold" font-size="12">QuoteDto</text>
-<text x="3938" y="451">+int Id</text>
-<text x="3938" y="466">+int EventItemId</text>
-<text x="3938" y="481">+string EventItemName</text>
-<text x="3938" y="496">+string EventClientName</text>
-<text x="3938" y="511">+DateTime EventDate</text>
-<text x="3938" y="526">+int EventGuestAdults</text>
-<text x="3938" y="541">+int EventGuestChildren</text>
-<text x="3938" y="556">+int EventDuration</text>
-<text x="3938" y="571">+int TotalGuests</text>
-<text x="3938" y="586">+int LocationId</text>
-<text x="3938" y="601">+string LocationName</text>
-<text x="3938" y="616">+decimal LocationPrice</text>
-<text x="3938" y="631">+List&lt;DetailMenuDto&gt; MenusList</text>
-<text x="3938" y="646">+List&lt;DetailOptionItemDto&gt; OptionItemsList</text>
-<text x="3938" y="661">+QuoteState State</text>
-<text x="3938" y="676">+decimal TotalLocation</text>
-<text x="3938" y="691">+decimal TotalMenus</text>
-<text x="3938" y="706">+decimal TotalOptionItems</text>
-<text x="3938" y="721">+decimal Total</text>
-<line x1="3930" y1="733" x2="4260" y2="733" stroke="#9673a6"/>
-<text x="3938" y="752">+QuoteDto(int eventItemId, int locationId,</text>
-<text x="3938" y="767">      List&lt;DetailMenuDto&gt; menusList,</text>
-<text x="3938" y="782">      List&lt;DetailOptionItemDto&gt; optionItemsList)</text>
-<rect x="4500" y="450" width="340" height="200" fill="#fff" stroke="#9673a6"/>
-<rect x="4500" y="450" width="340" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4670" y="467" text-anchor="middle" font-weight="bold" font-size="12">DetailMenuDto</text>
-<text x="4508" y="491">+int MenuId</text>
-<text x="4508" y="506">+string MenuDescription</text>
-<text x="4508" y="521">+string TagDescription</text>
-<text x="4508" y="536">+int AdultQuantity</text>
-<text x="4508" y="551">+int ChildQuantity</text>
-<text x="4508" y="566">+decimal UnitPriceAdult</text>
-<text x="4508" y="581">+decimal UnitPriceChild</text>
-<text x="4508" y="596">+decimal Subtotal</text>
-<line x1="4500" y1="608" x2="4840" y2="608" stroke="#9673a6"/>
-<text x="4508" y="627">+DetailMenuDto(int menuId, string tagDescription,</text>
-<text x="4508" y="642">      int adultQuantity, int childQuantity)</text>
-<rect x="4500" y="710" width="270" height="110" fill="#fff" stroke="#9673a6"/>
-<rect x="4500" y="710" width="270" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4635" y="727" text-anchor="middle" font-weight="bold" font-size="12">DetailOptionItemDto</text>
-<text x="4508" y="751">+int OptionItemId</text>
-<text x="4508" y="766">+string OptionItemName</text>
-<text x="4508" y="781">+decimal UnitPrice</text>
-<line x1="4500" y1="793" x2="4770" y2="793" stroke="#9673a6"/>
-<text x="4508" y="812">+DetailOptionItemDto(int optionItemId)</text>
-<rect x="3930" y="890" width="460" height="230" fill="#fff" stroke="#9673a6"/>
-<rect x="3930" y="890" width="460" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4160" y="907" text-anchor="middle" font-weight="bold" font-size="12">EventItemDto</text>
-<text x="3938" y="931">+int Id</text>
-<text x="3938" y="946">+string Name</text>
-<text x="3938" y="961">+string ClientName</text>
-<text x="3938" y="976">+DateTime Date</text>
-<text x="3938" y="991">+int GuestAdults</text>
-<text x="3938" y="1006">+int GuestChildren</text>
-<text x="3938" y="1021">+int Duration</text>
-<text x="3938" y="1036">+string DisplayName</text>
-<line x1="3930" y1="1048" x2="4390" y2="1048" stroke="#9673a6"/>
-<text x="3938" y="1067">+EventItemDto(int id, string name, string clientName, DateTime date,</text>
-<text x="3938" y="1082">      int guestAdults, int guestChildren, int duration)</text>
-<text x="3938" y="1097">+EventItemDto(string name, string clientName, DateTime date,</text>
-<text x="3938" y="1112">      int guestAdults, int guestChildren, int duration)</text>
-<rect x="4500" y="890" width="330" height="125" fill="#fff" stroke="#9673a6"/>
-<rect x="4500" y="890" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4665" y="907" text-anchor="middle" font-weight="bold" font-size="12">LocationDto</text>
-<text x="4508" y="931">+int Id</text>
-<text x="4508" y="946">+string Name</text>
-<text x="4508" y="961">+decimal Price</text>
-<line x1="4500" y1="973" x2="4830" y2="973" stroke="#9673a6"/>
-<text x="4508" y="992">+LocationDto(int id, string name, decimal price)</text>
-<text x="4508" y="1007">+LocationDto(string name, decimal price)</text>
-<rect x="3930" y="1190" width="380" height="185" fill="#fff" stroke="#9673a6"/>
-<rect x="3930" y="1190" width="380" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4120" y="1207" text-anchor="middle" font-weight="bold" font-size="12">MenuDto</text>
-<text x="3938" y="1231">+int Id</text>
-<text x="3938" y="1246">+string Description</text>
-<text x="3938" y="1261">+decimal PriceAdult</text>
-<text x="3938" y="1276">+decimal PriceChild</text>
-<text x="3938" y="1291">+List&lt;MenuTagDto&gt; TagList</text>
-<line x1="3930" y1="1303" x2="4310" y2="1303" stroke="#9673a6"/>
-<text x="3938" y="1322">+MenuDto(int id, string description, decimal priceAdult,</text>
-<text x="3938" y="1337">      decimal priceChild, List&lt;MenuTagDto&gt; tagList)</text>
-<text x="3938" y="1352">+MenuDto(string description, decimal priceAdult,</text>
-<text x="3938" y="1367">      decimal priceChild, List&lt;MenuTagDto&gt; tagList)</text>
-<rect x="4500" y="1200" width="270" height="110" fill="#fff" stroke="#9673a6"/>
-<rect x="4500" y="1200" width="270" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4635" y="1217" text-anchor="middle" font-weight="bold" font-size="12">MenuTagDto</text>
-<text x="4508" y="1241">+int Id</text>
-<text x="4508" y="1256">+string Description</text>
-<line x1="4500" y1="1268" x2="4770" y2="1268" stroke="#9673a6"/>
-<text x="4508" y="1287">+MenuTagDto(int id, string description)</text>
-<text x="4508" y="1302">+MenuTagDto(string description)</text>
-<rect x="4500" y="1370" width="340" height="125" fill="#fff" stroke="#9673a6"/>
-<rect x="4500" y="1370" width="340" height="26" fill="#e1d5e7" stroke="#9673a6"/>
-<text x="4670" y="1387" text-anchor="middle" font-weight="bold" font-size="12">OptionItemDto</text>
-<text x="4508" y="1411">+int Id</text>
-<text x="4508" y="1426">+string Name</text>
-<text x="4508" y="1441">+decimal Price</text>
-<line x1="4500" y1="1453" x2="4840" y2="1453" stroke="#9673a6"/>
-<text x="4508" y="1472">+OptionItemDto(int id, string name, decimal price)</text>
-<text x="4508" y="1487">+OptionItemDto(string name, decimal price)</text>
-<rect x="3930" y="2346" width="440" height="245" fill="#fff" stroke="#d79b00"/>
-<rect x="3930" y="2346" width="440" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4150" y="2363" text-anchor="middle" font-weight="bold" font-size="12">EventItem</text>
-<text x="3938" y="2387">-int _id</text>
-<text x="3938" y="2402">-string _name</text>
-<text x="3938" y="2417">-string _clientName</text>
-<text x="3938" y="2432">-DateTime _date</text>
-<text x="3938" y="2447">-int _guestAdults</text>
-<text x="3938" y="2462">-int _guestChildren</text>
-<text x="3938" y="2477">-int _duration</text>
-<text x="3938" y="2492">+/int TotalGuests</text>
-<line x1="3930" y1="2504" x2="4370" y2="2504" stroke="#d79b00"/>
-<text x="3938" y="2523">+EventItem(string name, string clientName, DateTime date,</text>
-<text x="3938" y="2538">      int guestAdults, int guestChildren, int duration)</text>
-<text x="3938" y="2553">+EventItem(int id, string name, string clientName, DateTime date,</text>
-<text x="3938" y="2568">      int guestAdults, int guestChildren, int duration)</text>
-<text x="3938" y="2583">+AssignId(int id) void</text>
-<rect x="4580" y="2306" width="480" height="590" fill="#fff" stroke="#d79b00"/>
-<rect x="4580" y="2306" width="480" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4820" y="2323" text-anchor="middle" font-weight="bold" font-size="12">Quote</text>
-<text x="4588" y="2347">-int _id</text>
-<text x="4588" y="2362">-int _eventItemId</text>
-<text x="4588" y="2377">-string _eventName</text>
-<text x="4588" y="2392">-string _eventClientName</text>
-<text x="4588" y="2407">-DateTime _eventDate</text>
-<text x="4588" y="2422">-int _eventGuestAdults</text>
-<text x="4588" y="2437">-int _eventGuestChildren</text>
-<text x="4588" y="2452">-int _eventDuration</text>
-<text x="4588" y="2467">-Location _location</text>
-<text x="4588" y="2482">-string _locationName</text>
-<text x="4588" y="2497">-decimal _locationPrice</text>
-<text x="4588" y="2512">-List&lt;DetailMenu&gt; _menusList</text>
-<text x="4588" y="2527">-List&lt;DetailOptionItem&gt; _optionItemList</text>
-<text x="4588" y="2542">-QuoteState _state</text>
-<text x="4588" y="2557">-decimal _totalLocation</text>
-<text x="4588" y="2572">-decimal _totalMenus</text>
-<text x="4588" y="2587">-decimal _totalOptionItems</text>
-<text x="4588" y="2602">-decimal _total</text>
-<text x="4588" y="2617">+/int TotalGuests</text>
-<line x1="4580" y1="2629" x2="5060" y2="2629" stroke="#d79b00"/>
-<text x="4588" y="2648">+Quote(EventItem eventItem, Location location,</text>
-<text x="4588" y="2663">      List&lt;DetailMenu&gt; menusList, List&lt;DetailOptionItem&gt; optionItemList)</text>
-<text x="4588" y="2678">+Quote(int id, QuoteState state, int eventItemId,</text>
-<text x="4588" y="2693">      string eventName, string eventClientName, DateTime eventDate,</text>
-<text x="4588" y="2708">      int eventGuestAdults, int eventGuestChildren, int eventDuration,</text>
-<text x="4588" y="2723">      Location location, string locationName, decimal locationPrice,</text>
-<text x="4588" y="2738">      List&lt;DetailMenu&gt; menusList, List&lt;DetailOptionItem&gt; optionItemList,</text>
-<text x="4588" y="2753">      decimal totalLocation, decimal totalMenus,</text>
-<text x="4588" y="2768">      decimal totalOptionItems, decimal total)</text>
-<text x="4588" y="2783">+AssignId(int id) void</text>
-<text x="4588" y="2798">+CalculateTotals() void</text>
-<text x="4588" y="2813">-SumSubtotals(IEnumerable&lt;IQuoteItem&gt; items) decimal</text>
-<text x="4588" y="2828">+Accept() void</text>
-<text x="4588" y="2843">+Cancel() void</text>
-<text x="4588" y="2858">+IsEditable() bool</text>
-<text x="4588" y="2873">+OverlapsWith(Quote other) bool</text>
-<text x="4588" y="2888">+Clone(EventItem eventItem) Quote</text>
-<rect x="5190" y="2346" width="410" height="170" fill="#fff" stroke="#d79b00"/>
-<rect x="5190" y="2346" width="410" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="5395" y="2363" text-anchor="middle" font-weight="bold" font-size="12">Location</text>
-<text x="5198" y="2387">-int _id</text>
-<text x="5198" y="2402">-string _name</text>
-<text x="5198" y="2417">-decimal _price</text>
-<text x="5198" y="2432">-bool _isActive</text>
-<line x1="5190" y1="2444" x2="5600" y2="2444" stroke="#d79b00"/>
-<text x="5198" y="2463">+Location(string name, decimal price)</text>
-<text x="5198" y="2478">+Location(int id, string name, decimal price, bool isActive)</text>
-<text x="5198" y="2493">+AssignId(int id) void</text>
-<text x="5198" y="2508">+Deactivate() void</text>
-<rect x="4580" y="3016" width="460" height="260" fill="#fff" stroke="#d79b00"/>
-<rect x="4580" y="3016" width="460" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4810" y="3033" text-anchor="middle" font-weight="bold" font-size="12">DetailMenu</text>
-<text x="4588" y="3057">-Menu _menu</text>
-<text x="4588" y="3072">-string _menuDescription</text>
-<text x="4588" y="3087">-string _tagDescription</text>
-<text x="4588" y="3102">-int _adultQuantity</text>
-<text x="4588" y="3117">-int _childQuantity</text>
-<text x="4588" y="3132">-decimal _unitPriceAdult</text>
-<text x="4588" y="3147">-decimal _unitPriceChild</text>
-<text x="4588" y="3162">+/string Description</text>
-<text x="4588" y="3177">+/decimal Subtotal</text>
-<line x1="4580" y1="3189" x2="5040" y2="3189" stroke="#d79b00"/>
-<text x="4588" y="3208">+DetailMenu(Menu menu, string tagDescription,</text>
-<text x="4588" y="3223">      int adultQuantity, int childQuantity)</text>
-<text x="4588" y="3238">+DetailMenu(Menu menu, string menuDescription, string tagDescription,</text>
-<text x="4588" y="3253">      int adultQuantity, int childQuantity,</text>
-<text x="4588" y="3268">      decimal unitPriceAdult, decimal unitPriceChild)</text>
-<rect x="5190" y="3016" width="320" height="170" fill="#fff" stroke="#d79b00"/>
-<rect x="5190" y="3016" width="320" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="5350" y="3033" text-anchor="middle" font-weight="bold" font-size="12">DetailOptionItem</text>
-<text x="5198" y="3057">-OptionItem _optionItem</text>
-<text x="5198" y="3072">-string _optionItemName</text>
-<text x="5198" y="3087">-decimal _unitPrice</text>
-<text x="5198" y="3102">+/string Description</text>
-<text x="5198" y="3117">+/decimal Subtotal</text>
-<line x1="5190" y1="3129" x2="5510" y2="3129" stroke="#d79b00"/>
-<text x="5198" y="3148">+DetailOptionItem(OptionItem optionItem)</text>
-<text x="5198" y="3163">+DetailOptionItem(OptionItem optionItem,</text>
-<text x="5198" y="3178">      string optionItemName, decimal unitPrice)</text>
-<rect x="4580" y="3376" width="430" height="245" fill="#fff" stroke="#d79b00"/>
-<rect x="4580" y="3376" width="430" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4795" y="3393" text-anchor="middle" font-weight="bold" font-size="12">Menu</text>
-<text x="4588" y="3417">-int _id</text>
-<text x="4588" y="3432">-string _description</text>
-<text x="4588" y="3447">-decimal _priceAdult</text>
-<text x="4588" y="3462">-decimal _priceChild</text>
-<text x="4588" y="3477">-List&lt;MenuTag&gt; _tagList</text>
-<text x="4588" y="3492">-bool _isActive</text>
-<line x1="4580" y1="3504" x2="5010" y2="3504" stroke="#d79b00"/>
-<text x="4588" y="3523">+Menu(string description, decimal priceAdult,</text>
-<text x="4588" y="3538">      decimal priceChild, List&lt;MenuTag&gt; tagList)</text>
-<text x="4588" y="3553">+Menu(int id, string description, decimal priceAdult,</text>
-<text x="4588" y="3568">      decimal priceChild, List&lt;MenuTag&gt; tagList, bool isActive)</text>
-<text x="4588" y="3583">+AssignId(int id) void</text>
-<text x="4588" y="3598">+Deactivate() void</text>
-<text x="4588" y="3613">+HasTag(int tagId) bool</text>
-<rect x="5190" y="3376" width="420" height="170" fill="#fff" stroke="#d79b00"/>
-<rect x="5190" y="3376" width="420" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="5400" y="3393" text-anchor="middle" font-weight="bold" font-size="12">OptionItem</text>
-<text x="5198" y="3417">-int _id</text>
-<text x="5198" y="3432">-string _name</text>
-<text x="5198" y="3447">-decimal _price</text>
-<text x="5198" y="3462">-bool _isActive</text>
-<line x1="5190" y1="3474" x2="5610" y2="3474" stroke="#d79b00"/>
-<text x="5198" y="3493">+OptionItem(string name, decimal price)</text>
-<text x="5198" y="3508">+OptionItem(int id, string name, decimal price, bool isActive)</text>
-<text x="5198" y="3523">+AssignId(int id) void</text>
-<text x="5198" y="3538">+Deactivate() void</text>
-<rect x="4580" y="3721" width="250" height="125" fill="#fff" stroke="#d79b00"/>
-<rect x="4580" y="3721" width="250" height="26" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4705" y="3738" text-anchor="middle" font-weight="bold" font-size="12">MenuTag</text>
-<text x="4588" y="3762">-int _id</text>
-<text x="4588" y="3777">-string _description</text>
-<line x1="4580" y1="3789" x2="4830" y2="3789" stroke="#d79b00"/>
-<text x="4588" y="3808">+MenuTag(string description)</text>
-<text x="4588" y="3823">+MenuTag(int id, string description)</text>
-<text x="4588" y="3838">+AssignId(int id) void</text>
-<rect x="4065" y="3046" width="170" height="96" fill="#fff" stroke="#d79b00"/>
-<rect x="4065" y="3046" width="170" height="42" fill="#ffe6cc" stroke="#d79b00"/>
-<text x="4150" y="3062" text-anchor="middle">&#171;interface&#187;</text>
-<text x="4150" y="3079" text-anchor="middle" font-weight="bold" font-size="12">IQuoteItem</text>
-<line x1="4065" y1="3100" x2="4235" y2="3100" stroke="#d79b00"/>
-<text x="4073" y="3119">+Description string</text>
-<text x="4073" y="3134">+Subtotal decimal</text>
-<rect x="3930" y="4122" width="340" height="111" fill="#fff" stroke="#666666"/>
-<rect x="3930" y="4122" width="340" height="42" fill="#eeeeee" stroke="#666666"/>
-<text x="4100" y="4138" text-anchor="middle">&#171;static&#187;</text>
-<text x="4100" y="4155" text-anchor="middle" font-weight="bold" font-size="12">Validator</text>
-<line x1="3930" y1="4176" x2="4270" y2="4176" stroke="#666666"/>
-<text x="3938" y="4195" text-decoration="underline">+RequireText(string value, string message) string</text>
-<text x="3938" y="4210" text-decoration="underline">+RequirePrice(decimal value, string name) decimal</text>
-<text x="3938" y="4225" text-decoration="underline">+RequireQuantity(int value, string name) int</text>
-<rect x="4320" y="4122" width="270" height="65" fill="#fff" stroke="#666666"/>
-<rect x="4320" y="4122" width="270" height="26" fill="#eeeeee" stroke="#666666"/>
-<text x="4455" y="4139" text-anchor="middle" font-weight="bold" font-size="12">BusinessRuleException</text>
-<line x1="4320" y1="4160" x2="4590" y2="4160" stroke="#666666"/>
-<text x="4328" y="4179">+BusinessRuleException(string message)</text>
-<rect x="4700" y="4122" width="240" height="65" fill="#fff" stroke="#666666"/>
-<rect x="4700" y="4122" width="240" height="26" fill="#eeeeee" stroke="#666666"/>
-<text x="4820" y="4139" text-anchor="middle" font-weight="bold" font-size="12">NotFoundException</text>
-<line x1="4700" y1="4160" x2="4940" y2="4160" stroke="#666666"/>
-<text x="4708" y="4179">+NotFoundException(string message)</text>
-<rect x="4990" y="4122" width="170" height="111" fill="#fff" stroke="#666666"/>
-<rect x="4990" y="4122" width="170" height="42" fill="#eeeeee" stroke="#666666"/>
-<text x="5075" y="4138" text-anchor="middle">&#171;enumeration&#187;</text>
-<text x="5075" y="4155" text-anchor="middle" font-weight="bold" font-size="12">QuoteState</text>
-<text x="4998" y="4179">Pending</text>
-<text x="4998" y="4194">Accepted</text>
-<text x="4998" y="4209">Cancelled</text>
-<line x1="4990" y1="4221" x2="5160" y2="4221" stroke="#666666"/>
-<rect x="5210" y="4122" width="280" height="81" fill="#fff" stroke="#666666"/>
-<rect x="5210" y="4122" width="280" height="42" fill="#eeeeee" stroke="#666666"/>
-<text x="5350" y="4138" text-anchor="middle">&#171;static&#187;</text>
-<text x="5350" y="4155" text-anchor="middle" font-weight="bold" font-size="12">QuoteStateText</text>
-<line x1="5210" y1="4176" x2="5490" y2="4176" stroke="#666666"/>
-<text x="5218" y="4195" text-decoration="underline">+GetDisplayName(QuoteState state) string</text>
-<rect x="5540" y="4122" width="210" height="156" fill="#fff" stroke="#666666"/>
-<rect x="5540" y="4122" width="210" height="42" fill="#eeeeee" stroke="#666666"/>
-<text x="5645" y="4138" text-anchor="middle">&#171;static&#187;</text>
-<text x="5645" y="4155" text-anchor="middle" font-weight="bold" font-size="12">Limits</text>
-<text x="5548" y="4179" text-decoration="underline">+MaxTextLength int = 50</text>
-<text x="5548" y="4194" text-decoration="underline">+MaxPrice decimal = 1000000000</text>
-<text x="5548" y="4209" text-decoration="underline">+MaxQuantity int = 10000</text>
-<text x="5548" y="4224" text-decoration="underline">+MaxGuests int = 10000</text>
-<text x="5548" y="4239" text-decoration="underline">+MinDuration int = 1</text>
-<text x="5548" y="4254" text-decoration="underline">+MaxDuration int = 24</text>
-<line x1="5540" y1="4266" x2="5750" y2="4266" stroke="#666666"/>
+<text x="168" y="2167">-IClock clock</text>
+<line x1="160" y1="2179" x2="590" y2="2179" stroke="#d6b656"/>
+<text x="168" y="2198">+QuoteValidator(IRepository&lt;Quote&gt; quoteRepository,</text>
+<text x="168" y="2213">      IRepository&lt;EventItem&gt; eventItemRepository, IClock clock)</text>
+<text x="168" y="2228">+ValidateQuote(Quote quote, Quote original) void</text>
+<text x="168" y="2243">+ValidateEventNotPast(DateTime eventDate, string action) void</text>
+<text x="168" y="2258">+ValidateEventNotChanged(Quote quote) void</text>
+<text x="168" y="2273">+ValidateNoOtherAccepted(Quote quote) void</text>
+<text x="168" y="2288">+ValidateLocationFree(Quote quote) void</text>
+<text x="168" y="2303">+ValidateCanClone(Quote original) void</text>
+<text x="168" y="2318">-GetInactiveItems(Quote quote) List&lt;string&gt;</text>
+<rect x="230" y="2547" width="430" height="335" fill="#fff" stroke="#d6b656"/>
+<rect x="230" y="2547" width="430" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="445" y="2564" text-anchor="middle" font-weight="bold" font-size="12">QuotePdfGenerator</text>
+<text x="238" y="2588">-XFont fontTitle</text>
+<text x="238" y="2603">-XFont fontSection</text>
+<text x="238" y="2618">-XFont fontText</text>
+<text x="238" y="2633">-XFont fontBold</text>
+<text x="238" y="2648">-XFont fontTotal</text>
+<text x="238" y="2663">-XGraphics g</text>
+<text x="238" y="2678">-double left</text>
+<text x="238" y="2693">-double right</text>
+<text x="238" y="2708">-double y</text>
+<line x1="230" y1="2720" x2="660" y2="2720" stroke="#d6b656"/>
+<text x="238" y="2739">+Generate(Quote quote, string path) void</text>
+<text x="238" y="2754">-DrawHeader(Quote quote) void</text>
+<text x="238" y="2769">-DrawEvent(Quote quote) void</text>
+<text x="238" y="2784">-DrawLocation(Quote quote) void</text>
+<text x="238" y="2799">-DrawMenus(Quote quote) void</text>
+<text x="238" y="2814">-DrawOptionItems(Quote quote) void</text>
+<text x="238" y="2829">-DrawTotals(Quote quote) void</text>
+<text x="238" y="2844">-Write(string text, XFont font, double x) void</text>
+<text x="238" y="2859">-WriteRight(string text, XFont font, double x, double top) void</text>
+<text x="238" y="2874">-Cut(string text, XFont font, double width) string</text>
+<rect x="230" y="2386" width="280" height="81" fill="#fff" stroke="#d6b656"/>
+<rect x="230" y="2386" width="280" height="42" fill="#fff2cc" stroke="#d6b656"/>
+<text x="370" y="2402" text-anchor="middle">&#171;interface&#187;</text>
+<text x="370" y="2419" text-anchor="middle" font-weight="bold" font-size="12">IQuoteDocumentGenerator</text>
+<line x1="230" y1="2440" x2="510" y2="2440" stroke="#d6b656"/>
+<text x="238" y="2459">+Generate(Quote quote, string path) void</text>
+<rect x="1430" y="2096" width="430" height="305" fill="#fff" stroke="#d6b656"/>
+<rect x="1430" y="2096" width="430" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="1645" y="2113" text-anchor="middle" font-weight="bold" font-size="12">EventItemService</text>
+<text x="1438" y="2137">-IRemovableRepository&lt;EventItem&gt; repository</text>
+<text x="1438" y="2152">-IRemovableRepository&lt;Quote&gt; quoteRepository</text>
+<text x="1438" y="2167">-IClock clock</text>
+<line x1="1430" y1="2179" x2="1860" y2="2179" stroke="#d6b656"/>
+<text x="1438" y="2198">+EventItemService()</text>
+<text x="1438" y="2213">+EventItemService(IRemovableRepository&lt;EventItem&gt; repository,</text>
+<text x="1438" y="2228">      IRemovableRepository&lt;Quote&gt; quoteRepository, IClock clock)</text>
+<text x="1438" y="2243">+AddToRepository(EventItemDto dto) void</text>
+<text x="1438" y="2258">+GetEventItems() List&lt;EventItemDto&gt;</text>
+<text x="1438" y="2273">+UpdateEventItem(int id, EventItemDto dto) void</text>
+<text x="1438" y="2288">-ValidateScheduleChange(int id, EventItem eventItem) void</text>
+<text x="1438" y="2303">-ValidateHasGuests(EventItem eventItem) void</text>
+<text x="1438" y="2318">-ValidateNotRepeated(EventItem eventItem, int editingId) void</text>
+<text x="1438" y="2333">+RemoveEventItem(int id) void</text>
+<text x="1438" y="2348">+CountQuotes(int id) int</text>
+<text x="1438" y="2363">-GetQuotes(int eventItemId) List&lt;Quote&gt;</text>
+<text x="1438" y="2378">+ToModel(EventItemDto dto) EventItem</text>
+<text x="1438" y="2393">+ToDto(EventItem eventItem) EventItemDto</text>
+<rect x="1910" y="2096" width="350" height="200" fill="#fff" stroke="#d6b656"/>
+<rect x="1910" y="2096" width="350" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="2085" y="2113" text-anchor="middle" font-weight="bold" font-size="12">LocationService</text>
+<text x="1918" y="2137">-IRepository&lt;Location&gt; repository</text>
+<line x1="1910" y1="2149" x2="2260" y2="2149" stroke="#d6b656"/>
+<text x="1918" y="2168">+LocationService()</text>
+<text x="1918" y="2183">+LocationService(IRepository&lt;Location&gt; repository)</text>
+<text x="1918" y="2198">+AddToRepository(LocationDto dto) void</text>
+<text x="1918" y="2213">+GetLocations() List&lt;LocationDto&gt;</text>
+<text x="1918" y="2228">+UpdateLocation(int id, LocationDto dto) void</text>
+<text x="1918" y="2243">-ValidateUniqueName(string name, int editingId) void</text>
+<text x="1918" y="2258">+ToModel(LocationDto dto) Location</text>
+<text x="1918" y="2273">+ToDto(Location location) LocationDto</text>
+<text x="1918" y="2288">+RemoveLocation(int id) void</text>
+<rect x="2310" y="2096" width="370" height="200" fill="#fff" stroke="#d6b656"/>
+<rect x="2310" y="2096" width="370" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="2495" y="2113" text-anchor="middle" font-weight="bold" font-size="12">OptionItemService</text>
+<text x="2318" y="2137">-IRepository&lt;OptionItem&gt; repository</text>
+<line x1="2310" y1="2149" x2="2680" y2="2149" stroke="#d6b656"/>
+<text x="2318" y="2168">+OptionItemService()</text>
+<text x="2318" y="2183">+OptionItemService(IRepository&lt;OptionItem&gt; repository)</text>
+<text x="2318" y="2198">+AddToRepository(OptionItemDto dto) void</text>
+<text x="2318" y="2213">+GetOptionItems() List&lt;OptionItemDto&gt;</text>
+<text x="2318" y="2228">+UpdateOptionItem(int id, OptionItemDto dto) void</text>
+<text x="2318" y="2243">-ValidateUniqueName(string name, int editingId) void</text>
+<text x="2318" y="2258">+RemoveOptionItem(int id) void</text>
+<text x="2318" y="2273">+ToModel(OptionItemDto dto) OptionItem</text>
+<text x="2318" y="2288">+ToDto(OptionItem optionItem) OptionItemDto</text>
+<rect x="2730" y="2096" width="440" height="245" fill="#fff" stroke="#d6b656"/>
+<rect x="2730" y="2096" width="440" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="2950" y="2113" text-anchor="middle" font-weight="bold" font-size="12">MenuService</text>
+<text x="2738" y="2137">-IRepository&lt;Menu&gt; repository</text>
+<text x="2738" y="2152">-IRepository&lt;MenuTag&gt; menuTagRepository</text>
+<line x1="2730" y1="2164" x2="3170" y2="2164" stroke="#d6b656"/>
+<text x="2738" y="2183">+MenuService()</text>
+<text x="2738" y="2198">+MenuService(IRepository&lt;Menu&gt; repository,</text>
+<text x="2738" y="2213">      IRepository&lt;MenuTag&gt; menuTagRepository)</text>
+<text x="2738" y="2228">+AddToRepository(MenuDto dto) void</text>
+<text x="2738" y="2243">+GetMenus() List&lt;MenuDto&gt;</text>
+<text x="2738" y="2258">+UpdateMenu(int id, MenuDto dto) void</text>
+<text x="2738" y="2273">-ValidateHasTags(Menu menu) void</text>
+<text x="2738" y="2288">-ValidateUniqueDescription(string description, int editingId) void</text>
+<text x="2738" y="2303">+RemoveMenu(int id) void</text>
+<text x="2738" y="2318">+ToModel(MenuDto dto) Menu</text>
+<text x="2738" y="2333">+ToDto(Menu menu) MenuDto</text>
+<rect x="3220" y="2096" width="440" height="260" fill="#fff" stroke="#d6b656"/>
+<rect x="3220" y="2096" width="440" height="26" fill="#fff2cc" stroke="#d6b656"/>
+<text x="3440" y="2113" text-anchor="middle" font-weight="bold" font-size="12">MenuTagService</text>
+<text x="3228" y="2137">-IRemovableRepository&lt;MenuTag&gt; repository</text>
+<text x="3228" y="2152">-IRepository&lt;Menu&gt; menuRepository</text>
+<line x1="3220" y1="2164" x2="3660" y2="2164" stroke="#d6b656"/>
+<text x="3228" y="2183">+MenuTagService()</text>
+<text x="3228" y="2198">+MenuTagService(IRemovableRepository&lt;MenuTag&gt; repository,</text>
+<text x="3228" y="2213">      IRepository&lt;Menu&gt; menuRepository)</text>
+<text x="3228" y="2228">+AddToRepository(MenuTagDto dto) void</text>
+<text x="3228" y="2243">+GetMenuTags() List&lt;MenuTagDto&gt;</text>
+<text x="3228" y="2258">+UpdateMenuTag(int id, MenuTagDto dto) void</text>
+<text x="3228" y="2273">+RemoveMenuTag(int id) void</text>
+<text x="3228" y="2288">+GetMenusWithOnlyThisTag(int id) List&lt;string&gt;</text>
+<text x="3228" y="2303">+CountMenusUsing(int id) int</text>
+<text x="3228" y="2318">-ValidateUniqueDescription(string description, int editingId) void</text>
+<text x="3228" y="2333">+ToModel(MenuTagDto dto) MenuTag</text>
+<text x="3228" y="2348">+ToDto(MenuTag menuTag) MenuTagDto</text>
+<rect x="2395" y="3122" width="200" height="126" fill="#fff" stroke="#b85450"/>
+<rect x="2395" y="3122" width="200" height="42" fill="#f8cecc" stroke="#b85450"/>
+<text x="2495" y="3138" text-anchor="middle">&#171;interface&#187;</text>
+<text x="2495" y="3155" text-anchor="middle" font-weight="bold" font-size="12">IRepository&lt;T&gt;</text>
+<line x1="2395" y1="3176" x2="2595" y2="3176" stroke="#b85450"/>
+<text x="2403" y="3195">+AddToRepository(T obj) void</text>
+<text x="2403" y="3210">+GetAll() List&lt;T&gt;</text>
+<text x="2403" y="3225">+GetById(int id) T</text>
+<text x="2403" y="3240">+Update(int id, T obj) void</text>
+<rect x="1550" y="3122" width="190" height="81" fill="#fff" stroke="#b85450"/>
+<rect x="1550" y="3122" width="190" height="42" fill="#f8cecc" stroke="#b85450"/>
+<text x="1645" y="3138" text-anchor="middle">&#171;interface&#187;</text>
+<text x="1645" y="3155" text-anchor="middle" font-weight="bold" font-size="12">IRemovableRepository&lt;T&gt;</text>
+<line x1="1550" y1="3176" x2="1740" y2="3176" stroke="#b85450"/>
+<text x="1558" y="3195">+RemoveById(int id) void</text>
+<rect x="855" y="3388" width="450" height="320" fill="#fff" stroke="#b85450"/>
+<rect x="855" y="3388" width="450" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="1080" y="3405" text-anchor="middle" font-weight="bold" font-size="12">QuoteRepository</text>
+<text x="863" y="3429" text-decoration="underline">-QuoteRepository instance</text>
+<text x="863" y="3444">-SqliteDatabase database</text>
+<line x1="855" y1="3456" x2="1305" y2="3456" stroke="#b85450"/>
+<text x="863" y="3475">-QuoteRepository()</text>
+<text x="863" y="3490" text-decoration="underline">+GetInstance() QuoteRepository</text>
+<text x="863" y="3505">+AddToRepository(Quote quote) void</text>
+<text x="863" y="3520">+GetAll() List&lt;Quote&gt;</text>
+<text x="863" y="3535">+GetById(int id) Quote</text>
+<text x="863" y="3550">+Update(int id, Quote quote) void</text>
+<text x="863" y="3565">+RemoveById(int id) void</text>
+<text x="863" y="3580">-AddParameters(SqliteCommand command, Quote quote) void</text>
+<text x="863" y="3595">-ReadQuote(SqliteDataReader reader,</text>
+<text x="863" y="3610">      SqliteConnection connection) Quote</text>
+<text x="863" y="3625">-LoadDetailMenus(int quoteId,</text>
+<text x="863" y="3640">      SqliteConnection connection) List&lt;DetailMenu&gt;</text>
+<text x="863" y="3655">-LoadDetailOptionItems(int quoteId,</text>
+<text x="863" y="3670">      SqliteConnection connection) List&lt;DetailOptionItem&gt;</text>
+<text x="863" y="3685">-SaveDetails(int quoteId, Quote quote, SqliteConnection connection,</text>
+<text x="863" y="3700">      SqliteTransaction transaction) void</text>
+<rect x="1475" y="3388" width="340" height="230" fill="#fff" stroke="#b85450"/>
+<rect x="1475" y="3388" width="340" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="1645" y="3405" text-anchor="middle" font-weight="bold" font-size="12">EventItemRepository</text>
+<text x="1483" y="3429" text-decoration="underline">-EventItemRepository instance</text>
+<text x="1483" y="3444">-SqliteDatabase database</text>
+<line x1="1475" y1="3456" x2="1815" y2="3456" stroke="#b85450"/>
+<text x="1483" y="3475">-EventItemRepository()</text>
+<text x="1483" y="3490" text-decoration="underline">+GetInstance() EventItemRepository</text>
+<text x="1483" y="3505">+AddToRepository(EventItem eventItem) void</text>
+<text x="1483" y="3520">+GetAll() List&lt;EventItem&gt;</text>
+<text x="1483" y="3535">+GetById(int id) EventItem</text>
+<text x="1483" y="3550">+Update(int id, EventItem eventItem) void</text>
+<text x="1483" y="3565">+RemoveById(int id) void</text>
+<text x="1483" y="3580">-AddParameters(SqliteCommand command,</text>
+<text x="1483" y="3595">      EventItem eventItem) void</text>
+<text x="1483" y="3610">-ReadEventItem(SqliteDataReader reader) EventItem</text>
+<rect x="1925" y="3388" width="320" height="185" fill="#fff" stroke="#b85450"/>
+<rect x="1925" y="3388" width="320" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2085" y="3405" text-anchor="middle" font-weight="bold" font-size="12">LocationRepository</text>
+<text x="1933" y="3429" text-decoration="underline">-LocationRepository instance</text>
+<text x="1933" y="3444">-SqliteDatabase database</text>
+<line x1="1925" y1="3456" x2="2245" y2="3456" stroke="#b85450"/>
+<text x="1933" y="3475">-LocationRepository()</text>
+<text x="1933" y="3490" text-decoration="underline">+GetInstance() LocationRepository</text>
+<text x="1933" y="3505">+AddToRepository(Location location) void</text>
+<text x="1933" y="3520">+GetAll() List&lt;Location&gt;</text>
+<text x="1933" y="3535">+GetById(int id) Location</text>
+<text x="1933" y="3550">+Update(int id, Location location) void</text>
+<text x="1933" y="3565">-ReadLocation(SqliteDataReader reader) Location</text>
+<rect x="2320" y="3388" width="350" height="185" fill="#fff" stroke="#b85450"/>
+<rect x="2320" y="3388" width="350" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2495" y="3405" text-anchor="middle" font-weight="bold" font-size="12">OptionItemRepository</text>
+<text x="2328" y="3429" text-decoration="underline">-OptionItemRepository instance</text>
+<text x="2328" y="3444">-SqliteDatabase database</text>
+<line x1="2320" y1="3456" x2="2670" y2="3456" stroke="#b85450"/>
+<text x="2328" y="3475">-OptionItemRepository()</text>
+<text x="2328" y="3490" text-decoration="underline">+GetInstance() OptionItemRepository</text>
+<text x="2328" y="3505">+AddToRepository(OptionItem optionItem) void</text>
+<text x="2328" y="3520">+GetAll() List&lt;OptionItem&gt;</text>
+<text x="2328" y="3535">+GetById(int id) OptionItem</text>
+<text x="2328" y="3550">+Update(int id, OptionItem optionItem) void</text>
+<text x="2328" y="3565">-ReadOptionItem(SqliteDataReader reader) OptionItem</text>
+<rect x="2745" y="3388" width="410" height="260" fill="#fff" stroke="#b85450"/>
+<rect x="2745" y="3388" width="410" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2950" y="3405" text-anchor="middle" font-weight="bold" font-size="12">MenuRepository</text>
+<text x="2753" y="3429" text-decoration="underline">-MenuRepository instance</text>
+<text x="2753" y="3444">-SqliteDatabase database</text>
+<line x1="2745" y1="3456" x2="3155" y2="3456" stroke="#b85450"/>
+<text x="2753" y="3475">-MenuRepository()</text>
+<text x="2753" y="3490" text-decoration="underline">+GetInstance() MenuRepository</text>
+<text x="2753" y="3505">+AddToRepository(Menu menu) void</text>
+<text x="2753" y="3520">+GetAll() List&lt;Menu&gt;</text>
+<text x="2753" y="3535">+GetById(int id) Menu</text>
+<text x="2753" y="3550">+Update(int id, Menu menu) void</text>
+<text x="2753" y="3565">-ReadMenu(SqliteDataReader reader,</text>
+<text x="2753" y="3580">      SqliteConnection connection) Menu</text>
+<text x="2753" y="3595">-LoadTags(int menuId,</text>
+<text x="2753" y="3610">      SqliteConnection connection) List&lt;MenuTag&gt;</text>
+<text x="2753" y="3625">-SaveTags(int menuId, Menu menu, SqliteConnection connection,</text>
+<text x="2753" y="3640">      SqliteTransaction transaction) void</text>
+<rect x="3285" y="3388" width="310" height="200" fill="#fff" stroke="#b85450"/>
+<rect x="3285" y="3388" width="310" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="3440" y="3405" text-anchor="middle" font-weight="bold" font-size="12">MenuTagRepository</text>
+<text x="3293" y="3429" text-decoration="underline">-MenuTagRepository instance</text>
+<text x="3293" y="3444">-SqliteDatabase database</text>
+<line x1="3285" y1="3456" x2="3595" y2="3456" stroke="#b85450"/>
+<text x="3293" y="3475">-MenuTagRepository()</text>
+<text x="3293" y="3490" text-decoration="underline">+GetInstance() MenuTagRepository</text>
+<text x="3293" y="3505">+AddToRepository(MenuTag menuTag) void</text>
+<text x="3293" y="3520">+GetAll() List&lt;MenuTag&gt;</text>
+<text x="3293" y="3535">+GetById(int id) MenuTag</text>
+<text x="3293" y="3550">+Update(int id, MenuTag menuTag) void</text>
+<text x="3293" y="3565">+RemoveById(int id) void</text>
+<text x="3293" y="3580">-ReadMenuTag(SqliteDataReader reader) MenuTag</text>
+<rect x="2105" y="3858" width="230" height="140" fill="#fff" stroke="#b85450"/>
+<rect x="2105" y="3858" width="230" height="26" fill="#f8cecc" stroke="#b85450"/>
+<text x="2220" y="3875" text-anchor="middle" font-weight="bold" font-size="12">SqliteDatabase</text>
+<text x="2113" y="3899" text-decoration="underline">-SqliteDatabase instance</text>
+<text x="2113" y="3914">-string connectionString</text>
+<line x1="2105" y1="3926" x2="2335" y2="3926" stroke="#b85450"/>
+<text x="2113" y="3945">-SqliteDatabase()</text>
+<text x="2113" y="3960" text-decoration="underline">+GetInstance() SqliteDatabase</text>
+<text x="2113" y="3975">+GetConnection() SqliteConnection</text>
+<text x="2113" y="3990">-CreateTables() void</text>
+<rect x="3950" y="410" width="330" height="380" fill="#fff" stroke="#9673a6"/>
+<rect x="3950" y="410" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4115" y="427" text-anchor="middle" font-weight="bold" font-size="12">QuoteDto</text>
+<text x="3958" y="451">+int Id</text>
+<text x="3958" y="466">+int EventItemId</text>
+<text x="3958" y="481">+string EventItemName</text>
+<text x="3958" y="496">+string EventClientName</text>
+<text x="3958" y="511">+DateTime EventDate</text>
+<text x="3958" y="526">+int EventGuestAdults</text>
+<text x="3958" y="541">+int EventGuestChildren</text>
+<text x="3958" y="556">+int EventDuration</text>
+<text x="3958" y="571">+int TotalGuests</text>
+<text x="3958" y="586">+int LocationId</text>
+<text x="3958" y="601">+string LocationName</text>
+<text x="3958" y="616">+decimal LocationPrice</text>
+<text x="3958" y="631">+List&lt;DetailMenuDto&gt; MenusList</text>
+<text x="3958" y="646">+List&lt;DetailOptionItemDto&gt; OptionItemsList</text>
+<text x="3958" y="661">+QuoteState State</text>
+<text x="3958" y="676">+decimal TotalLocation</text>
+<text x="3958" y="691">+decimal TotalMenus</text>
+<text x="3958" y="706">+decimal TotalOptionItems</text>
+<text x="3958" y="721">+decimal Total</text>
+<line x1="3950" y1="733" x2="4280" y2="733" stroke="#9673a6"/>
+<text x="3958" y="752">+QuoteDto(int eventItemId, int locationId,</text>
+<text x="3958" y="767">      List&lt;DetailMenuDto&gt; menusList,</text>
+<text x="3958" y="782">      List&lt;DetailOptionItemDto&gt; optionItemsList)</text>
+<rect x="4520" y="450" width="340" height="200" fill="#fff" stroke="#9673a6"/>
+<rect x="4520" y="450" width="340" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4690" y="467" text-anchor="middle" font-weight="bold" font-size="12">DetailMenuDto</text>
+<text x="4528" y="491">+int MenuId</text>
+<text x="4528" y="506">+string MenuDescription</text>
+<text x="4528" y="521">+string TagDescription</text>
+<text x="4528" y="536">+int AdultQuantity</text>
+<text x="4528" y="551">+int ChildQuantity</text>
+<text x="4528" y="566">+decimal UnitPriceAdult</text>
+<text x="4528" y="581">+decimal UnitPriceChild</text>
+<text x="4528" y="596">+decimal Subtotal</text>
+<line x1="4520" y1="608" x2="4860" y2="608" stroke="#9673a6"/>
+<text x="4528" y="627">+DetailMenuDto(int menuId, string tagDescription,</text>
+<text x="4528" y="642">      int adultQuantity, int childQuantity)</text>
+<rect x="4520" y="710" width="270" height="110" fill="#fff" stroke="#9673a6"/>
+<rect x="4520" y="710" width="270" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4655" y="727" text-anchor="middle" font-weight="bold" font-size="12">DetailOptionItemDto</text>
+<text x="4528" y="751">+int OptionItemId</text>
+<text x="4528" y="766">+string OptionItemName</text>
+<text x="4528" y="781">+decimal UnitPrice</text>
+<line x1="4520" y1="793" x2="4790" y2="793" stroke="#9673a6"/>
+<text x="4528" y="812">+DetailOptionItemDto(int optionItemId)</text>
+<rect x="3950" y="890" width="460" height="230" fill="#fff" stroke="#9673a6"/>
+<rect x="3950" y="890" width="460" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4180" y="907" text-anchor="middle" font-weight="bold" font-size="12">EventItemDto</text>
+<text x="3958" y="931">+int Id</text>
+<text x="3958" y="946">+string Name</text>
+<text x="3958" y="961">+string ClientName</text>
+<text x="3958" y="976">+DateTime Date</text>
+<text x="3958" y="991">+int GuestAdults</text>
+<text x="3958" y="1006">+int GuestChildren</text>
+<text x="3958" y="1021">+int Duration</text>
+<text x="3958" y="1036">+string DisplayName</text>
+<line x1="3950" y1="1048" x2="4410" y2="1048" stroke="#9673a6"/>
+<text x="3958" y="1067">+EventItemDto(int id, string name, string clientName, DateTime date,</text>
+<text x="3958" y="1082">      int guestAdults, int guestChildren, int duration)</text>
+<text x="3958" y="1097">+EventItemDto(string name, string clientName, DateTime date,</text>
+<text x="3958" y="1112">      int guestAdults, int guestChildren, int duration)</text>
+<rect x="4520" y="890" width="330" height="125" fill="#fff" stroke="#9673a6"/>
+<rect x="4520" y="890" width="330" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4685" y="907" text-anchor="middle" font-weight="bold" font-size="12">LocationDto</text>
+<text x="4528" y="931">+int Id</text>
+<text x="4528" y="946">+string Name</text>
+<text x="4528" y="961">+decimal Price</text>
+<line x1="4520" y1="973" x2="4850" y2="973" stroke="#9673a6"/>
+<text x="4528" y="992">+LocationDto(int id, string name, decimal price)</text>
+<text x="4528" y="1007">+LocationDto(string name, decimal price)</text>
+<rect x="3950" y="1190" width="380" height="185" fill="#fff" stroke="#9673a6"/>
+<rect x="3950" y="1190" width="380" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4140" y="1207" text-anchor="middle" font-weight="bold" font-size="12">MenuDto</text>
+<text x="3958" y="1231">+int Id</text>
+<text x="3958" y="1246">+string Description</text>
+<text x="3958" y="1261">+decimal PriceAdult</text>
+<text x="3958" y="1276">+decimal PriceChild</text>
+<text x="3958" y="1291">+List&lt;MenuTagDto&gt; TagList</text>
+<line x1="3950" y1="1303" x2="4330" y2="1303" stroke="#9673a6"/>
+<text x="3958" y="1322">+MenuDto(int id, string description, decimal priceAdult,</text>
+<text x="3958" y="1337">      decimal priceChild, List&lt;MenuTagDto&gt; tagList)</text>
+<text x="3958" y="1352">+MenuDto(string description, decimal priceAdult,</text>
+<text x="3958" y="1367">      decimal priceChild, List&lt;MenuTagDto&gt; tagList)</text>
+<rect x="4520" y="1200" width="270" height="110" fill="#fff" stroke="#9673a6"/>
+<rect x="4520" y="1200" width="270" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4655" y="1217" text-anchor="middle" font-weight="bold" font-size="12">MenuTagDto</text>
+<text x="4528" y="1241">+int Id</text>
+<text x="4528" y="1256">+string Description</text>
+<line x1="4520" y1="1268" x2="4790" y2="1268" stroke="#9673a6"/>
+<text x="4528" y="1287">+MenuTagDto(int id, string description)</text>
+<text x="4528" y="1302">+MenuTagDto(string description)</text>
+<rect x="4520" y="1370" width="340" height="125" fill="#fff" stroke="#9673a6"/>
+<rect x="4520" y="1370" width="340" height="26" fill="#e1d5e7" stroke="#9673a6"/>
+<text x="4690" y="1387" text-anchor="middle" font-weight="bold" font-size="12">OptionItemDto</text>
+<text x="4528" y="1411">+int Id</text>
+<text x="4528" y="1426">+string Name</text>
+<text x="4528" y="1441">+decimal Price</text>
+<line x1="4520" y1="1453" x2="4860" y2="1453" stroke="#9673a6"/>
+<text x="4528" y="1472">+OptionItemDto(int id, string name, decimal price)</text>
+<text x="4528" y="1487">+OptionItemDto(string name, decimal price)</text>
+<rect x="3950" y="2346" width="440" height="245" fill="#fff" stroke="#d79b00"/>
+<rect x="3950" y="2346" width="440" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4170" y="2363" text-anchor="middle" font-weight="bold" font-size="12">EventItem</text>
+<text x="3958" y="2387">-int _id</text>
+<text x="3958" y="2402">-string _name</text>
+<text x="3958" y="2417">-string _clientName</text>
+<text x="3958" y="2432">-DateTime _date</text>
+<text x="3958" y="2447">-int _guestAdults</text>
+<text x="3958" y="2462">-int _guestChildren</text>
+<text x="3958" y="2477">-int _duration</text>
+<text x="3958" y="2492">+/int TotalGuests</text>
+<line x1="3950" y1="2504" x2="4390" y2="2504" stroke="#d79b00"/>
+<text x="3958" y="2523">+EventItem(string name, string clientName, DateTime date,</text>
+<text x="3958" y="2538">      int guestAdults, int guestChildren, int duration)</text>
+<text x="3958" y="2553">+EventItem(int id, string name, string clientName, DateTime date,</text>
+<text x="3958" y="2568">      int guestAdults, int guestChildren, int duration)</text>
+<text x="3958" y="2583">+AssignId(int id) void</text>
+<rect x="4600" y="2306" width="480" height="590" fill="#fff" stroke="#d79b00"/>
+<rect x="4600" y="2306" width="480" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4840" y="2323" text-anchor="middle" font-weight="bold" font-size="12">Quote</text>
+<text x="4608" y="2347">-int _id</text>
+<text x="4608" y="2362">-int _eventItemId</text>
+<text x="4608" y="2377">-string _eventName</text>
+<text x="4608" y="2392">-string _eventClientName</text>
+<text x="4608" y="2407">-DateTime _eventDate</text>
+<text x="4608" y="2422">-int _eventGuestAdults</text>
+<text x="4608" y="2437">-int _eventGuestChildren</text>
+<text x="4608" y="2452">-int _eventDuration</text>
+<text x="4608" y="2467">-Location _location</text>
+<text x="4608" y="2482">-string _locationName</text>
+<text x="4608" y="2497">-decimal _locationPrice</text>
+<text x="4608" y="2512">-List&lt;DetailMenu&gt; _menusList</text>
+<text x="4608" y="2527">-List&lt;DetailOptionItem&gt; _optionItemList</text>
+<text x="4608" y="2542">-QuoteState _state</text>
+<text x="4608" y="2557">-decimal _totalLocation</text>
+<text x="4608" y="2572">-decimal _totalMenus</text>
+<text x="4608" y="2587">-decimal _totalOptionItems</text>
+<text x="4608" y="2602">-decimal _total</text>
+<text x="4608" y="2617">+/int TotalGuests</text>
+<line x1="4600" y1="2629" x2="5080" y2="2629" stroke="#d79b00"/>
+<text x="4608" y="2648">+Quote(EventItem eventItem, Location location,</text>
+<text x="4608" y="2663">      List&lt;DetailMenu&gt; menusList, List&lt;DetailOptionItem&gt; optionItemList)</text>
+<text x="4608" y="2678">+Quote(int id, QuoteState state, int eventItemId,</text>
+<text x="4608" y="2693">      string eventName, string eventClientName, DateTime eventDate,</text>
+<text x="4608" y="2708">      int eventGuestAdults, int eventGuestChildren, int eventDuration,</text>
+<text x="4608" y="2723">      Location location, string locationName, decimal locationPrice,</text>
+<text x="4608" y="2738">      List&lt;DetailMenu&gt; menusList, List&lt;DetailOptionItem&gt; optionItemList,</text>
+<text x="4608" y="2753">      decimal totalLocation, decimal totalMenus,</text>
+<text x="4608" y="2768">      decimal totalOptionItems, decimal total)</text>
+<text x="4608" y="2783">+AssignId(int id) void</text>
+<text x="4608" y="2798">+CalculateTotals() void</text>
+<text x="4608" y="2813">-SumSubtotals(IEnumerable&lt;IQuoteItem&gt; items) decimal</text>
+<text x="4608" y="2828">+Accept() void</text>
+<text x="4608" y="2843">+Cancel() void</text>
+<text x="4608" y="2858">+IsEditable() bool</text>
+<text x="4608" y="2873">+OverlapsWith(Quote other) bool</text>
+<text x="4608" y="2888">+Clone(EventItem eventItem) Quote</text>
+<rect x="5210" y="2346" width="410" height="170" fill="#fff" stroke="#d79b00"/>
+<rect x="5210" y="2346" width="410" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="5415" y="2363" text-anchor="middle" font-weight="bold" font-size="12">Location</text>
+<text x="5218" y="2387">-int _id</text>
+<text x="5218" y="2402">-string _name</text>
+<text x="5218" y="2417">-decimal _price</text>
+<text x="5218" y="2432">-bool _isActive</text>
+<line x1="5210" y1="2444" x2="5620" y2="2444" stroke="#d79b00"/>
+<text x="5218" y="2463">+Location(string name, decimal price)</text>
+<text x="5218" y="2478">+Location(int id, string name, decimal price, bool isActive)</text>
+<text x="5218" y="2493">+AssignId(int id) void</text>
+<text x="5218" y="2508">+Deactivate() void</text>
+<rect x="4600" y="3016" width="460" height="260" fill="#fff" stroke="#d79b00"/>
+<rect x="4600" y="3016" width="460" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4830" y="3033" text-anchor="middle" font-weight="bold" font-size="12">DetailMenu</text>
+<text x="4608" y="3057">-Menu _menu</text>
+<text x="4608" y="3072">-string _menuDescription</text>
+<text x="4608" y="3087">-string _tagDescription</text>
+<text x="4608" y="3102">-int _adultQuantity</text>
+<text x="4608" y="3117">-int _childQuantity</text>
+<text x="4608" y="3132">-decimal _unitPriceAdult</text>
+<text x="4608" y="3147">-decimal _unitPriceChild</text>
+<text x="4608" y="3162">+/string Description</text>
+<text x="4608" y="3177">+/decimal Subtotal</text>
+<line x1="4600" y1="3189" x2="5060" y2="3189" stroke="#d79b00"/>
+<text x="4608" y="3208">+DetailMenu(Menu menu, string tagDescription,</text>
+<text x="4608" y="3223">      int adultQuantity, int childQuantity)</text>
+<text x="4608" y="3238">+DetailMenu(Menu menu, string menuDescription, string tagDescription,</text>
+<text x="4608" y="3253">      int adultQuantity, int childQuantity,</text>
+<text x="4608" y="3268">      decimal unitPriceAdult, decimal unitPriceChild)</text>
+<rect x="5210" y="3016" width="320" height="170" fill="#fff" stroke="#d79b00"/>
+<rect x="5210" y="3016" width="320" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="5370" y="3033" text-anchor="middle" font-weight="bold" font-size="12">DetailOptionItem</text>
+<text x="5218" y="3057">-OptionItem _optionItem</text>
+<text x="5218" y="3072">-string _optionItemName</text>
+<text x="5218" y="3087">-decimal _unitPrice</text>
+<text x="5218" y="3102">+/string Description</text>
+<text x="5218" y="3117">+/decimal Subtotal</text>
+<line x1="5210" y1="3129" x2="5530" y2="3129" stroke="#d79b00"/>
+<text x="5218" y="3148">+DetailOptionItem(OptionItem optionItem)</text>
+<text x="5218" y="3163">+DetailOptionItem(OptionItem optionItem,</text>
+<text x="5218" y="3178">      string optionItemName, decimal unitPrice)</text>
+<rect x="4600" y="3376" width="430" height="245" fill="#fff" stroke="#d79b00"/>
+<rect x="4600" y="3376" width="430" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4815" y="3393" text-anchor="middle" font-weight="bold" font-size="12">Menu</text>
+<text x="4608" y="3417">-int _id</text>
+<text x="4608" y="3432">-string _description</text>
+<text x="4608" y="3447">-decimal _priceAdult</text>
+<text x="4608" y="3462">-decimal _priceChild</text>
+<text x="4608" y="3477">-List&lt;MenuTag&gt; _tagList</text>
+<text x="4608" y="3492">-bool _isActive</text>
+<line x1="4600" y1="3504" x2="5030" y2="3504" stroke="#d79b00"/>
+<text x="4608" y="3523">+Menu(string description, decimal priceAdult,</text>
+<text x="4608" y="3538">      decimal priceChild, List&lt;MenuTag&gt; tagList)</text>
+<text x="4608" y="3553">+Menu(int id, string description, decimal priceAdult,</text>
+<text x="4608" y="3568">      decimal priceChild, List&lt;MenuTag&gt; tagList, bool isActive)</text>
+<text x="4608" y="3583">+AssignId(int id) void</text>
+<text x="4608" y="3598">+Deactivate() void</text>
+<text x="4608" y="3613">+HasTag(int tagId) bool</text>
+<rect x="5210" y="3376" width="420" height="170" fill="#fff" stroke="#d79b00"/>
+<rect x="5210" y="3376" width="420" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="5420" y="3393" text-anchor="middle" font-weight="bold" font-size="12">OptionItem</text>
+<text x="5218" y="3417">-int _id</text>
+<text x="5218" y="3432">-string _name</text>
+<text x="5218" y="3447">-decimal _price</text>
+<text x="5218" y="3462">-bool _isActive</text>
+<line x1="5210" y1="3474" x2="5630" y2="3474" stroke="#d79b00"/>
+<text x="5218" y="3493">+OptionItem(string name, decimal price)</text>
+<text x="5218" y="3508">+OptionItem(int id, string name, decimal price, bool isActive)</text>
+<text x="5218" y="3523">+AssignId(int id) void</text>
+<text x="5218" y="3538">+Deactivate() void</text>
+<rect x="4600" y="3721" width="250" height="125" fill="#fff" stroke="#d79b00"/>
+<rect x="4600" y="3721" width="250" height="26" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4725" y="3738" text-anchor="middle" font-weight="bold" font-size="12">MenuTag</text>
+<text x="4608" y="3762">-int _id</text>
+<text x="4608" y="3777">-string _description</text>
+<line x1="4600" y1="3789" x2="4850" y2="3789" stroke="#d79b00"/>
+<text x="4608" y="3808">+MenuTag(string description)</text>
+<text x="4608" y="3823">+MenuTag(int id, string description)</text>
+<text x="4608" y="3838">+AssignId(int id) void</text>
+<rect x="4085" y="3046" width="170" height="96" fill="#fff" stroke="#d79b00"/>
+<rect x="4085" y="3046" width="170" height="42" fill="#ffe6cc" stroke="#d79b00"/>
+<text x="4170" y="3062" text-anchor="middle">&#171;interface&#187;</text>
+<text x="4170" y="3079" text-anchor="middle" font-weight="bold" font-size="12">IQuoteItem</text>
+<line x1="4085" y1="3100" x2="4255" y2="3100" stroke="#d79b00"/>
+<text x="4093" y="3119">+Description string</text>
+<text x="4093" y="3134">+Subtotal decimal</text>
+<rect x="3950" y="4122" width="340" height="111" fill="#fff" stroke="#666666"/>
+<rect x="3950" y="4122" width="340" height="42" fill="#eeeeee" stroke="#666666"/>
+<text x="4120" y="4138" text-anchor="middle">&#171;static&#187;</text>
+<text x="4120" y="4155" text-anchor="middle" font-weight="bold" font-size="12">Validator</text>
+<line x1="3950" y1="4176" x2="4290" y2="4176" stroke="#666666"/>
+<text x="3958" y="4195" text-decoration="underline">+RequireText(string value, string message) string</text>
+<text x="3958" y="4210" text-decoration="underline">+RequirePrice(decimal value, string name) decimal</text>
+<text x="3958" y="4225" text-decoration="underline">+RequireQuantity(int value, string name) int</text>
+<rect x="4340" y="4122" width="270" height="65" fill="#fff" stroke="#666666"/>
+<rect x="4340" y="4122" width="270" height="26" fill="#eeeeee" stroke="#666666"/>
+<text x="4475" y="4139" text-anchor="middle" font-weight="bold" font-size="12">BusinessRuleException</text>
+<line x1="4340" y1="4160" x2="4610" y2="4160" stroke="#666666"/>
+<text x="4348" y="4179">+BusinessRuleException(string message)</text>
+<rect x="4720" y="4122" width="240" height="65" fill="#fff" stroke="#666666"/>
+<rect x="4720" y="4122" width="240" height="26" fill="#eeeeee" stroke="#666666"/>
+<text x="4840" y="4139" text-anchor="middle" font-weight="bold" font-size="12">NotFoundException</text>
+<line x1="4720" y1="4160" x2="4960" y2="4160" stroke="#666666"/>
+<text x="4728" y="4179">+NotFoundException(string message)</text>
+<rect x="5010" y="4122" width="170" height="111" fill="#fff" stroke="#666666"/>
+<rect x="5010" y="4122" width="170" height="42" fill="#eeeeee" stroke="#666666"/>
+<text x="5095" y="4138" text-anchor="middle">&#171;enumeration&#187;</text>
+<text x="5095" y="4155" text-anchor="middle" font-weight="bold" font-size="12">QuoteState</text>
+<text x="5018" y="4179">Pending</text>
+<text x="5018" y="4194">Accepted</text>
+<text x="5018" y="4209">Cancelled</text>
+<line x1="5010" y1="4221" x2="5180" y2="4221" stroke="#666666"/>
+<rect x="3950" y="4293" width="170" height="81" fill="#fff" stroke="#666666"/>
+<rect x="3950" y="4293" width="170" height="42" fill="#eeeeee" stroke="#666666"/>
+<text x="4035" y="4309" text-anchor="middle">&#171;interface&#187;</text>
+<text x="4035" y="4326" text-anchor="middle" font-weight="bold" font-size="12">IClock</text>
+<line x1="3950" y1="4347" x2="4120" y2="4347" stroke="#666666"/>
+<text x="3958" y="4366">+Today DateTime</text>
+<rect x="4240" y="4293" width="170" height="65" fill="#fff" stroke="#666666"/>
+<rect x="4240" y="4293" width="170" height="26" fill="#eeeeee" stroke="#666666"/>
+<text x="4325" y="4310" text-anchor="middle" font-weight="bold" font-size="12">SystemClock</text>
+<line x1="4240" y1="4331" x2="4410" y2="4331" stroke="#666666"/>
+<text x="4248" y="4350">+Today DateTime</text>
+<rect x="5230" y="4122" width="280" height="81" fill="#fff" stroke="#666666"/>
+<rect x="5230" y="4122" width="280" height="42" fill="#eeeeee" stroke="#666666"/>
+<text x="5370" y="4138" text-anchor="middle">&#171;static&#187;</text>
+<text x="5370" y="4155" text-anchor="middle" font-weight="bold" font-size="12">QuoteStateText</text>
+<line x1="5230" y1="4176" x2="5510" y2="4176" stroke="#666666"/>
+<text x="5238" y="4195" text-decoration="underline">+GetDisplayName(QuoteState state) string</text>
+<rect x="5560" y="4122" width="210" height="156" fill="#fff" stroke="#666666"/>
+<rect x="5560" y="4122" width="210" height="42" fill="#eeeeee" stroke="#666666"/>
+<text x="5665" y="4138" text-anchor="middle">&#171;static&#187;</text>
+<text x="5665" y="4155" text-anchor="middle" font-weight="bold" font-size="12">Limits</text>
+<text x="5568" y="4179" text-decoration="underline">+MaxTextLength int = 50</text>
+<text x="5568" y="4194" text-decoration="underline">+MaxPrice decimal = 1000000000</text>
+<text x="5568" y="4209" text-decoration="underline">+MaxQuantity int = 10000</text>
+<text x="5568" y="4224" text-decoration="underline">+MaxGuests int = 10000</text>
+<text x="5568" y="4239" text-decoration="underline">+MinDuration int = 1</text>
+<text x="5568" y="4254" text-decoration="underline">+MaxDuration int = 24</text>
+<line x1="5560" y1="4266" x2="5770" y2="4266" stroke="#666666"/>
 <path d="M285.0,176.0 L285.0,320.0 L1075.0,320.0 L1075.0,400.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
 <text x="680.0" y="315.0" text-anchor="middle" fill="#555" font-style="italic">crea</text>
 <path d="M410.0,128.0 L500.0,128.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
 <text x="455.0" y="123.0" text-anchor="middle" fill="#555" font-style="italic">load()</text>
 <path d="M958.8,706.0 L958.8,783.0 L430.0,783.0 L430.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <path d="M997.5,706.0 L997.5,794.0 L1080.0,794.0 L1080.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<path d="M1036.2,706.0 L1036.2,773.0 L1635.0,773.0 L1635.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<path d="M1075.0,706.0 L1075.0,762.0 L2065.0,762.0 L2065.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<path d="M1113.8,706.0 L1113.8,751.0 L2475.0,751.0 L2475.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<path d="M1152.5,706.0 L1152.5,741.0 L2930.0,741.0 L2930.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<path d="M1191.2,706.0 L1191.2,730.0 L3420.0,730.0 L3420.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1036.2,706.0 L1036.2,773.0 L1645.0,773.0 L1645.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1075.0,706.0 L1075.0,762.0 L2085.0,762.0 L2085.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1113.8,706.0 L1113.8,751.0 L2495.0,751.0 L2495.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1152.5,706.0 L1152.5,741.0 L2950.0,741.0 L2950.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1191.2,706.0 L1191.2,730.0 L3440.0,730.0 L3440.0,846.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <path d="M1230.0,460.0 L1350.0,460.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
 <path d="M700.0,906.0 L815.0,906.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
-<path d="M3095.0,906.0 L3270.0,906.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
+<path d="M3115.0,906.0 L3290.0,906.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
 <path d="M991.7,1226.0 L991.7,1376.0 L1140.0,1376.0 L1140.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1635.0,1076.0 L1635.0,1427.0 L1715.0,1427.0 L1715.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2065.0,1076.0 L2065.0,1512.0 L2116.7,1512.0 L2116.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2475.0,1076.0 L2475.0,1325.0 L2531.7,1325.0 L2531.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2875.0,1166.0 L2875.0,1359.0 L2973.3,1359.0 L2973.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3420.0,1121.0 L3420.0,1444.0 L3471.7,1444.0 L3471.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1168.3,1226.0 L1168.3,1478.0 L1635.0,1478.0 L1635.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,1076.0 L1645.0,1427.0 L1725.0,1427.0 L1725.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,1076.0 L2085.0,1512.0 L2136.7,1512.0 L2136.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,1076.0 L2495.0,1325.0 L2551.7,1325.0 L2551.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2895.0,1166.0 L2895.0,1359.0 L2993.3,1359.0 L2993.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3440.0,1121.0 L3440.0,1444.0 L3491.7,1444.0 L3491.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1168.3,1226.0 L1168.3,1478.0 L1645.0,1478.0 L1645.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M250.0,1301.0 L250.0,1529.0 L1020.0,1529.0 L1020.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M340.0,1301.0 L340.0,1495.0 L1555.0,1495.0 L1555.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M430.0,1301.0 L430.0,1461.0 L2013.3,1461.0 L2013.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M520.0,1301.0 L520.0,1410.0 L2418.3,1410.0 L2418.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M610.0,1301.0 L610.0,1393.0 L2886.7,1393.0 L2886.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2985.0,1166.0 L2985.0,1342.0 L3368.3,1342.0 L3368.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M340.0,1301.0 L340.0,1495.0 L1565.0,1495.0 L1565.0,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M430.0,1301.0 L430.0,1461.0 L2033.3,1461.0 L2033.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M520.0,1301.0 L520.0,1410.0 L2438.3,1410.0 L2438.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M610.0,1301.0 L610.0,1393.0 L2906.7,1393.0 L2906.7,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3005.0,1166.0 L3005.0,1342.0 L3388.3,1342.0 L3388.3,1581.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
 <path d="M1080.0,1826.0 L1080.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1635.0,1736.0 L1635.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2065.0,1721.0 L2065.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2475.0,1721.0 L2475.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2930.0,1721.0 L2930.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3420.0,1751.0 L3420.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1080.0,2521.0 L1080.0,2844.0 L2160.0,2844.0 L2160.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1635.0,2386.0 L1635.0,2724.0 L2185.0,2724.0 L2185.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2065.0,2296.0 L2065.0,2665.0 L2210.0,2665.0 L2210.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2475.0,2296.0 L2475.0,2545.0 L2235.0,2545.0 L2235.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2930.0,2341.0 L2930.0,2605.0 L2260.0,2605.0 L2260.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3420.0,2356.0 L3420.0,2784.0 L2285.0,2784.0 L2285.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M780.0,2156.0 L570.0,2156.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<path d="M1645.0,1736.0 L1645.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,1721.0 L2085.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,1721.0 L2495.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,1721.0 L2950.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3440.0,1751.0 L3440.0,2096.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1180.0,2536.0 L1180.0,2779.0 L2452.1,2779.0 L2452.1,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,2296.0 L2085.0,2706.0 L2480.7,2706.0 L2480.7,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,2296.0 L2495.0,2924.0 L2509.3,2924.0 L2509.3,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,2341.0 L2950.0,2633.0 L2537.9,2633.0 L2537.9,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3513.3,2356.0 L3513.3,2851.0 L2566.4,2851.0 L2566.4,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M980.0,2536.0 L980.0,2997.0 L1597.5,2997.0 L1597.5,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,2401.0 L1645.0,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3366.7,2356.0 L3366.7,2560.0 L1692.5,2560.0 L1692.5,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M780.0,2156.0 L590.0,2156.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
 <text x="768.0" y="2150.0" text-anchor="end" font-size="10" fill="#333">1</text>
-<text x="582.0" y="2150.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<path d="M780.0,2441.0 L660.0,2441.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="768.0" y="2435.0" text-anchor="end" font-size="10" fill="#333">1</text>
-<text x="672.0" y="2435.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<path d="M184.6,2311.0 L184.6,2904.0 L2135.0,2904.0 L2135.0,2956.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1080.0,3237.0 L1080.0,3176.0 L2138.6,3176.0 L2138.6,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M1635.0,3237.0 L1635.0,3195.0 L2167.1,3195.0 L2167.1,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M2065.0,3237.0 L2065.0,3213.0 L2195.7,3213.0 L2195.7,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M2475.0,3237.0 L2475.0,3158.0 L2224.3,3158.0 L2224.3,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M2930.0,3237.0 L2930.0,3139.0 L2252.9,3139.0 L2252.9,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M3420.0,3237.0 L3420.0,3121.0 L2281.4,3121.0 L2281.4,3097.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M1080.0,3557.0 L1080.0,3611.0 L2127.9,3611.0 L2127.9,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M1635.0,3467.0 L1635.0,3596.0 L2160.7,3596.0 L2160.7,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2065.0,3437.0 L2065.0,3581.0 L2193.6,3581.0 L2193.6,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2475.0,3437.0 L2475.0,3625.0 L2226.4,3625.0 L2226.4,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M2930.0,3512.0 L2930.0,3640.0 L2259.3,3640.0 L2259.3,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M3420.0,3437.0 L3420.0,3655.0 L2292.1,3655.0 L2292.1,3707.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<path d="M4260.0,510.0 L4500.0,510.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="4272.0" y="504.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<text x="4488.0" y="504.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
-<path d="M4260.0,750.0 L4500.0,750.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="4272.0" y="744.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<text x="4488.0" y="744.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
-<path d="M4310.0,1255.0 L4500.0,1255.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
-<text x="4322.0" y="1249.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<text x="4488.0" y="1249.0" text-anchor="end" font-size="10" fill="#333">1..*</text>
-<path d="M4370.0,2406.0 L4580.0,2406.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="4475.0" y="2401.0" text-anchor="middle" fill="#555" font-style="italic">por EventItemId</text>
-<text x="4382.0" y="2400.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<text x="4568.0" y="2400.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
-<path d="M5060.0,2406.0 L5190.0,2406.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="5072.0" y="2400.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<text x="5178.0" y="2400.0" text-anchor="end" font-size="10" fill="#333">1</text>
-<path d="M4810.0,2896.0 L4810.0,3016.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="4816.0" y="2916.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<text x="4816.0" y="3000.0" text-anchor="start" font-size="10" fill="#333">1..*</text>
-<path d="M4900.0,2896.0 L4900.0,2942.0 L5350.0,2942.0 L5350.0,3016.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="4906.0" y="2916.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<text x="5356.0" y="3000.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<path d="M4795.0,3276.0 L4795.0,3376.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="4801.0" y="3296.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<text x="4801.0" y="3360.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<path d="M5350.0,3186.0 L5350.0,3376.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="5356.0" y="3206.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<text x="5356.0" y="3360.0" text-anchor="start" font-size="10" fill="#333">1</text>
-<path d="M4580.0,3094.0 L4235.0,3094.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M5296.7,3186.0 L5296.7,3321.0 L4150.0,3321.0 L4150.0,3142.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<path d="M4705.0,3621.0 L4705.0,3721.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
-<text x="4711.0" y="3641.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
-<text x="4711.0" y="3705.0" text-anchor="start" font-size="10" fill="#333">1..*</text>
-<path d="M3680.0,846.0 L3900.0,846.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3790.0" y="840.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
-<path d="M3680.0,1698.0 L3900.0,1698.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3790.0" y="1692.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
-<path d="M3680.0,2121.0 L3900.0,2121.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3790.0" y="2115.0" text-anchor="middle" fill="#555" font-style="italic">convierte (toDto / toModel)</text>
-<path d="M3680.0,2501.0 L3900.0,2501.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3790.0" y="2495.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
-<path d="M3680.0,3396.0 L3900.0,3396.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="3790.0" y="3390.0" text-anchor="middle" fill="#555" font-style="italic">arma y guarda</text>
-<path d="M4300.0,3971.0 L4300.0,4082.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
-<text x="4300.0" y="4020.5" text-anchor="middle" fill="#555" font-style="italic">valida con</text>
-<rect x="3930" y="3901" width="600" height="61" fill="#fffde7" stroke="#bbb"/>
-<text x="3938" y="3919">Cada atributo del modelo tiene su propiedad publica de solo lectura</text>
-<text x="3938" y="3934">(get publico y set privado que valida). EventItem-Quote es composicion:</text>
-<text x="3938" y="3949">se implementa con EventItemId y borrado en cascada (ON DELETE CASCADE).</text>
+<text x="602.0" y="2150.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<path d="M780.0,2426.5 L510.0,2426.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M445.0,2547.0 L445.0,2507.0 L370.0,2507.0 L370.0,2467.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M185.8,2326.0 L185.8,3070.0 L2423.6,3070.0 L2423.6,3122.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,3388.0 L2085.0,3272.0 L2445.0,3272.0 L2445.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M2495.0,3388.0 L2495.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M2950.0,3388.0 L2950.0,3303.0 L2545.0,3303.0 L2545.0,3248.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1080.0,3388.0 L1080.0,3333.0 L1597.5,3333.0 L1597.5,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1645.0,3388.0 L1645.0,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M3440.0,3388.0 L3440.0,3364.0 L1692.5,3364.0 L1692.5,3203.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M1740.0,3162.5 L2395.0,3162.5" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
+<path d="M1080.0,3708.0 L1080.0,3791.0 L2137.9,3791.0 L2137.9,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M1645.0,3618.0 L1645.0,3762.0 L2170.7,3762.0 L2170.7,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2085.0,3573.0 L2085.0,3747.0 L2203.6,3747.0 L2203.6,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2495.0,3573.0 L2495.0,3732.0 L2236.4,3732.0 L2236.4,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M2950.0,3648.0 L2950.0,3776.0 L2269.3,3776.0 L2269.3,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M3440.0,3588.0 L3440.0,3806.0 L2302.1,3806.0 L2302.1,3858.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<path d="M4280.0,510.0 L4520.0,510.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="4292.0" y="504.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<text x="4508.0" y="504.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
+<path d="M4280.0,750.0 L4520.0,750.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="4292.0" y="744.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<text x="4508.0" y="744.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
+<path d="M4330.0,1255.0 L4520.0,1255.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
+<text x="4342.0" y="1249.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<text x="4508.0" y="1249.0" text-anchor="end" font-size="10" fill="#333">1..*</text>
+<path d="M4390.0,2406.0 L4600.0,2406.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="4495.0" y="2401.0" text-anchor="middle" fill="#555" font-style="italic">por EventItemId</text>
+<text x="4402.0" y="2400.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<text x="4588.0" y="2400.0" text-anchor="end" font-size="10" fill="#333">0..*</text>
+<path d="M5080.0,2406.0 L5210.0,2406.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="5092.0" y="2400.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<text x="5198.0" y="2400.0" text-anchor="end" font-size="10" fill="#333">1</text>
+<path d="M4830.0,2896.0 L4830.0,3016.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="4836.0" y="2916.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<text x="4836.0" y="3000.0" text-anchor="start" font-size="10" fill="#333">1..*</text>
+<path d="M4920.0,2896.0 L4920.0,2942.0 L5370.0,2942.0 L5370.0,3016.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="4926.0" y="2916.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<text x="5376.0" y="3000.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<path d="M4815.0,3276.0 L4815.0,3376.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="4821.0" y="3296.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<text x="4821.0" y="3360.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<path d="M5370.0,3186.0 L5370.0,3376.0" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="5376.0" y="3206.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<text x="5376.0" y="3360.0" text-anchor="start" font-size="10" fill="#333">1</text>
+<path d="M4600.0,3094.0 L4255.0,3094.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M5316.7,3186.0 L5316.7,3321.0 L4170.0,3321.0 L4170.0,3142.0" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M4240.0,4325.5 L4120.0,4325.5" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<path d="M4725.0,3621.0 L4725.0,3721.0" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
+<text x="4731.0" y="3641.0" text-anchor="start" font-size="10" fill="#333">0..*</text>
+<text x="4731.0" y="3705.0" text-anchor="start" font-size="10" fill="#333">1..*</text>
+<path d="M3700.0,846.0 L3920.0,846.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="840.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
+<path d="M3700.0,1698.0 L3920.0,1698.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="1692.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
+<path d="M3700.0,2121.0 L3920.0,2121.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="2115.0" text-anchor="middle" fill="#555" font-style="italic">convierte (toDto / toModel)</text>
+<path d="M3700.0,2584.0 L3920.0,2584.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="2578.0" text-anchor="middle" fill="#555" font-style="italic">usa</text>
+<path d="M3700.0,3526.0 L3920.0,3526.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="3810.0" y="3520.0" text-anchor="middle" fill="#555" font-style="italic">arma y guarda</text>
+<path d="M4320.0,3971.0 L4320.0,4082.0" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8,5" marker-end="url(#open)"/>
+<text x="4320.0" y="4020.5" text-anchor="middle" fill="#555" font-style="italic">valida con</text>
+<rect x="3950" y="3901" width="600" height="61" fill="#fffde7" stroke="#bbb"/>
+<text x="3958" y="3919">Cada atributo del modelo tiene su propiedad publica de solo lectura</text>
+<text x="3958" y="3934">(get publico y set privado que valida). EventItem-Quote es composicion:</text>
+<text x="3958" y="3949">se implementa con EventItemId y borrado en cascada (ON DELETE CASCADE).</text>
 <rect x="930" y="50" width="560" height="76" fill="#fffde7" stroke="#bbb"/>
 <text x="938" y="68">FormMain crea los 6 Controllers y le pasa a cada formulario los que necesita.</text>
 <text x="938" y="83">Todos los formularios usan MessageHelper y VisualHelper.</text>
 <text x="938" y="98">MockData usa los Controllers para cargar los datos de prueba y los</text>
 <text x="938" y="113">Repositories para saber si la base esta vacia.</text>
-<rect x="120" y="3937" width="470" height="212" fill="#fff" stroke="#999"/>
-<text x="130" y="3957" font-weight="bold" font-size="12">Notacion</text>
-<path d="M140,3981 L240,3981" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
-<text x="255" y="3985">Asociacion (guarda una referencia)</text>
-<path d="M140,4007 L240,4007" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
-<text x="255" y="4011">Dependencia (usa o crea dentro de un metodo)</text>
-<path d="M140,4033 L240,4033" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
-<text x="255" y="4037">Composicion (la parte vive y muere con el todo)</text>
-<path d="M140,4059 L240,4059" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
-<text x="255" y="4063">Agregacion (partes compartidas que viven solas)</text>
-<path d="M140,4085 L240,4085" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
-<text x="255" y="4089">Realizacion (implementa la interfaz)</text>
-<path d="M140,4111 L240,4111" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
-<text x="255" y="4115">Herencia</text>
-<path d="M140,4137 L240,4137" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
-<text x="255" y="4141">Asociacion en los dos sentidos</text>
+<rect x="120" y="4088" width="470" height="212" fill="#fff" stroke="#999"/>
+<text x="130" y="4108" font-weight="bold" font-size="12">Notacion</text>
+<path d="M140,4132 L240,4132" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#open)"/>
+<text x="255" y="4136">Asociacion (guarda una referencia)</text>
+<path d="M140,4158 L240,4158" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#open)"/>
+<text x="255" y="4162">Dependencia (usa o crea dentro de un metodo)</text>
+<path d="M140,4184 L240,4184" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dfull)"/>
+<text x="255" y="4188">Composicion (la parte vive y muere con el todo)</text>
+<path d="M140,4210 L240,4210" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#dempty)"/>
+<text x="255" y="4214">Agregacion (partes compartidas que viven solas)</text>
+<path d="M140,4236 L240,4236" fill="none" stroke="#333" stroke-width="1.2" stroke-dasharray="6,4" marker-end="url(#tri)"/>
+<text x="255" y="4240">Realizacion (implementa la interfaz)</text>
+<path d="M140,4262 L240,4262" fill="none" stroke="#333" stroke-width="1.2" marker-end="url(#tri)"/>
+<text x="255" y="4266">Herencia</text>
+<path d="M140,4288 L240,4288" fill="none" stroke="#333" stroke-width="1.2" marker-start="url(#open)" marker-end="url(#open)"/>
+<text x="255" y="4292">Asociacion en los dos sentidos</text>
 </svg>

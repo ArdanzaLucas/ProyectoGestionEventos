@@ -15,26 +15,28 @@ namespace ProyectoPresupuestoEvento.Service
     internal class EventItemService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
-        private IRepository<EventItem> repository;
-        private IRepository<Quote> quoteRepository;
+        private IRemovableRepository<EventItem> repository;
+        private IRemovableRepository<Quote> quoteRepository;
+        private IClock clock;
 
-        // el controller usa este: le pasa los repositorios reales al otro constructor
+        // el controller usa este: le pasa los repositorios y el reloj reales al otro constructor
         public EventItemService()
-            : this(EventItemRepository.GetInstance(), QuoteRepository.GetInstance())
+            : this(EventItemRepository.GetInstance(), QuoteRepository.GetInstance(), new SystemClock())
         {
         }
 
-        // recibe los repositorios desde afuera (inyeccion de dependencias)
-        public EventItemService(IRepository<EventItem> repository, IRepository<Quote> quoteRepository)
+        // recibe sus dependencias desde afuera (inyeccion de dependencias)
+        public EventItemService(IRemovableRepository<EventItem> repository, IRemovableRepository<Quote> quoteRepository, IClock clock)
         {
             this.repository = repository;
             this.quoteRepository = quoteRepository;
+            this.clock = clock;
         }
 
         // crea un evento: la fecha no puede ser anterior a hoy
         public void AddToRepository(EventItemDto dto)
         {
-            if (dto.Date.Date < DateTime.Today)
+            if (dto.Date.Date < clock.Today)
             {
                 throw new BusinessRuleException("la fecha del evento no puede ser anterior a hoy");
             }

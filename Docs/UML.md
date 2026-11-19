@@ -43,7 +43,8 @@ Las flechas gruesas punteadas entre franjas resumen dependencias que tienen casi
 | Punteada con flecha abierta | **Dependencia**: la usa o la crea dentro de un método | `Program` → `FormMain`, `FormMain` → `VisualHelper` |
 | Rombo lleno | **Composición**: la parte vive y muere con el todo | `FormMain` → formularios, `Quote` → sus líneas, `EventItem` → `Quote`, `QuoteDto` → sus líneas |
 | Rombo vacío | **Agregación**: partes compartidas que existen solas | `Menu` → `MenuTag`, `MenuDto` → `MenuTagDto` |
-| Punteada con triángulo vacío | **Realización**: implementa una interfaz | Los seis repositorios → `IRepository<T>`, `DetailMenu` y `DetailOptionItem` → `IQuoteItem` |
+| Punteada con triángulo vacío | **Realización**: implementa una interfaz | Repositorios → `IRepository<T>` o `IRemovableRepository<T>`, `DetailMenu` y `DetailOptionItem` → `IQuoteItem`, `QuotePdfGenerator` → `IQuoteDocumentGenerator`, `SystemClock` → `IClock` |
+| Línea con triángulo vacío | **Herencia de interfaces** | `IRemovableRepository<T>` → `IRepository<T>` |
 | Flecha en las dos puntas | Asociación en los dos sentidos | `FormIndex` ↔ `FormQuoteEdit`, `FormMenus` ↔ `FormMenuTags` |
 
 Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calculada.
@@ -65,12 +66,12 @@ Miembros: `-` privado, `+` público, subrayado = estático, `/` = propiedad calc
 - Los services no se crean entre sí. Cada uno recibe por constructor los repositorios que necesita: `QuoteService` los de eventos, ubicaciones, menús y servicios; `EventItemService` el de presupuestos; `MenuService` el de etiquetas y `MenuTagService` el de menús. Así no hay acoplamiento entre services ni ciclos.
 
 **Service → `IRepository<T>`**
-- Es **asociación con la interfaz**: cada Service recibe por constructor los `IRepository<T>` que necesita (inyección de dependencias). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales con `XRepository.GetInstance()`. El Service no sabe que los datos están en SQLite.
+- Es **asociación con la interfaz**: cada Service recibe por constructor los `IRepository<T>` que necesita (inyección de dependencias). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales con `XRepository.GetInstance()`, y además `new SystemClock()` y `new QuotePdfGenerator()` donde hacen falta. El Service no sabe que los datos están en SQLite.
 
 **Repositorios**
 - Son **singleton**: constructor privado, atributo estático `instance` y `GetInstance()`.
 - Cada uno guarda la referencia a `SqliteDatabase`, que también es singleton.
-- `removeById` existe en todos porque lo pide la interfaz, aunque Ubicación, Menú y Servicio usan baja lógica.
+- `IRepository<T>` no tiene borrado. Eventos, presupuestos y etiquetas implementan `IRemovableRepository<T>`, que agrega `RemoveById`; ubicaciones, menús y servicios (baja lógica) no lo tienen.
 
 **Modelo**
 - Cada atributo tiene su propiedad pública de **solo lectura** (get público, set privado que valida). Para no duplicar cada línea, el diagrama muestra solo los atributos.

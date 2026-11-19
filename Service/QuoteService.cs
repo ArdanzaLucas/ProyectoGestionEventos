@@ -15,32 +15,33 @@ namespace ProyectoPresupuestoEvento.Service
     internal class QuoteService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
-        private IRepository<Quote> repository;
+        private IRemovableRepository<Quote> repository;
         private IRepository<EventItem> eventItemRepository;
         private IRepository<Location> locationRepository;
         private IRepository<Menu> menuRepository;
         private IRepository<OptionItem> optionItemRepository;
+        private IQuoteDocumentGenerator documentGenerator;
         private QuoteValidator validator;
-        private QuotePdfGenerator pdfGenerator;
 
-        // el controller usa este: le pasa los repositorios reales al otro constructor
+        // el controller usa este: le pasa los repositorios, el reloj y el generador de pdf reales al otro constructor
         public QuoteService()
             : this(QuoteRepository.GetInstance(), EventItemRepository.GetInstance(), LocationRepository.GetInstance(),
-                  MenuRepository.GetInstance(), OptionItemRepository.GetInstance())
+                  MenuRepository.GetInstance(), OptionItemRepository.GetInstance(), new SystemClock(), new QuotePdfGenerator())
         {
         }
 
-        // recibe los repositorios desde afuera (inyeccion de dependencias)
-        public QuoteService(IRepository<Quote> repository, IRepository<EventItem> eventItemRepository,
-            IRepository<Location> locationRepository, IRepository<Menu> menuRepository, IRepository<OptionItem> optionItemRepository)
+        // recibe sus dependencias desde afuera (inyeccion de dependencias)
+        public QuoteService(IRemovableRepository<Quote> repository, IRepository<EventItem> eventItemRepository,
+            IRepository<Location> locationRepository, IRepository<Menu> menuRepository, IRepository<OptionItem> optionItemRepository,
+            IClock clock, IQuoteDocumentGenerator documentGenerator)
         {
             this.repository = repository;
             this.eventItemRepository = eventItemRepository;
             this.locationRepository = locationRepository;
             this.menuRepository = menuRepository;
             this.optionItemRepository = optionItemRepository;
-            validator = new QuoteValidator(repository, eventItemRepository);
-            pdfGenerator = new QuotePdfGenerator();
+            this.documentGenerator = documentGenerator;
+            validator = new QuoteValidator(repository, eventItemRepository, clock);
         }
 
         // crea un presupuesto nuevo con los datos actuales del evento, la ubicacion, los menus y los servicios
@@ -161,7 +162,7 @@ namespace ProyectoPresupuestoEvento.Service
         public void ExportPdf(int id, string path)
         {
             Quote quote = repository.GetById(id);
-            pdfGenerator.Generate(quote, path);
+            documentGenerator.Generate(quote, path);
         }
 
         public QuoteDto CalculatePreview(QuoteDto dto)

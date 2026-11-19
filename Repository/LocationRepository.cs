@@ -104,17 +104,6 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
-        // no se usa: el service hace baja logica, pero la interfaz lo pide
-        public void RemoveById(int id)
-        {
-            using (SqliteConnection connection = database.GetConnection())
-            {
-                SqliteCommand command = connection.CreateCommand();
-                command.CommandText = "DELETE FROM LOCATION WHERE Id = @id";
-                command.Parameters.AddWithValue("@id", id);
-                command.ExecuteNonQuery();
-            }
-        }
 
         // arma un objeto del modelo con una fila, en el orden de las columnas del SELECT
         private Location ReadLocation(SqliteDataReader reader)

@@ -116,17 +116,6 @@ namespace ProyectoPresupuestoEvento.Repository
             }
         }
 
-        // no se usa: el service hace baja logica, pero la interfaz lo pide
-        public void RemoveById(int id)
-        {
-            using (SqliteConnection connection = database.GetConnection())
-            {
-                SqliteCommand command = connection.CreateCommand();
-                command.CommandText = "DELETE FROM MENU WHERE Id = @id";
-                command.Parameters.AddWithValue("@id", id);
-                command.ExecuteNonQuery();
-            }
-        }
 
         // arma el menu y carga sus etiquetas con otra consulta sobre la misma conexion
         private Menu ReadMenu(SqliteDataReader reader, SqliteConnection connection)

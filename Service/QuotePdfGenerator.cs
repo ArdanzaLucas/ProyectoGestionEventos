@@ -8,11 +8,12 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using ProyectoPresupuestoEvento.Model;
 using ProyectoPresupuestoEvento.Common;
+using ProyectoPresupuestoEvento.Interface;
 
 namespace ProyectoPresupuestoEvento.Service
 {
     // arma el pdf del presupuesto con la libreria PDFsharp; lo usa QuoteService
-    internal class QuotePdfGenerator
+    internal class QuotePdfGenerator : IQuoteDocumentGenerator
     {
         private XFont fontTitle = new XFont("Georgia", 18, XFontStyleEx.Bold);
         private XFont fontSection = new XFont("Georgia", 12, XFontStyleEx.Bold);

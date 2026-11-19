@@ -11,7 +11,7 @@ using ProyectoPresupuestoEvento.Interface;
 namespace ProyectoPresupuestoEvento.Repository
 {
     // guarda y lee etiquetas en la tabla MENU_TAG
-    public class MenuTagRepository : IRepository<MenuTag>
+    public class MenuTagRepository : IRemovableRepository<MenuTag>
     {
 
         private static MenuTagRepository instance;

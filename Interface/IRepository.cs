@@ -15,11 +15,6 @@ namespace ProyectoPresupuestoEvento.Interface
 
         public T GetById(int id);
 
-        public void RemoveById(int id);
-
-        public void Update( int id, T obj);
-
-
-
+        public void Update(int id, T obj);
     }
 }

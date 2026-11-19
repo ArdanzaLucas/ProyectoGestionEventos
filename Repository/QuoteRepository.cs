@@ -11,7 +11,7 @@ using ProyectoPresupuestoEvento.Interface;
 namespace ProyectoPresupuestoEvento.Repository
 {
     // guarda y lee los presupuestos con sus lineas de catering y de servicios
-    public class QuoteRepository : IRepository<Quote>
+    public class QuoteRepository : IRemovableRepository<Quote>
     {
 
         private static QuoteRepository instance;

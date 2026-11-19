@@ -15,7 +15,7 @@ namespace ProyectoPresupuestoEvento.Service
     internal class MenuTagService
     {
         // se guardan como la interfaz: el service no sabe que los datos estan en SQLite
-        private IRepository<MenuTag> repository;
+        private IRemovableRepository<MenuTag> repository;
         private IRepository<Menu> menuRepository;
 
         // el controller usa este: le pasa los repositorios reales al otro constructor
@@ -25,7 +25,7 @@ namespace ProyectoPresupuestoEvento.Service
         }
 
         // recibe los repositorios desde afuera (inyeccion de dependencias)
-        public MenuTagService(IRepository<MenuTag> repository, IRepository<Menu> menuRepository)
+        public MenuTagService(IRemovableRepository<MenuTag> repository, IRepository<Menu> menuRepository)
         {
             this.repository = repository;
             this.menuRepository = menuRepository;

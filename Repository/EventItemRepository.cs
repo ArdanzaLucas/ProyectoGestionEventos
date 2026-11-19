@@ -11,7 +11,7 @@ using ProyectoPresupuestoEvento.Interface;
 namespace ProyectoPresupuestoEvento.Repository
 {
     // guarda y lee eventos en la tabla EVENT_ITEM
-    public class EventItemRepository : IRepository<EventItem>
+    public class EventItemRepository : IRemovableRepository<EventItem>
     {
 
         private static EventItemRepository instance;

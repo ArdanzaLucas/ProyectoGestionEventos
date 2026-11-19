@@ -14,11 +14,13 @@ namespace ProyectoPresupuestoEvento.Service
     {
         private IRepository<Quote> quoteRepository;
         private IRepository<EventItem> eventItemRepository;
+        private IClock clock;
 
-        public QuoteValidator(IRepository<Quote> quoteRepository, IRepository<EventItem> eventItemRepository)
+        public QuoteValidator(IRepository<Quote> quoteRepository, IRepository<EventItem> eventItemRepository, IClock clock)
         {
             this.quoteRepository = quoteRepository;
             this.eventItemRepository = eventItemRepository;
+            this.clock = clock;
         }
 
         // reglas de las lineas: platos, variantes repetidas, etiquetas del menu, servicios repetidos y elementos de baja
@@ -85,7 +87,7 @@ namespace ProyectoPresupuestoEvento.Service
 
         public void ValidateEventNotPast(DateTime eventDate, string action)
         {
-            if (eventDate.Date < DateTime.Today)
+            if (eventDate.Date < clock.Today)
             {
                 throw new BusinessRuleException("no se puede " + action + " un presupuesto de un evento que ya paso");
             }

@@ -101,7 +101,7 @@ Tiene dos formularios en el **mismo panel**: `FormIndex` (la lista) y `FormQuote
 
 ### El PDF
 
-La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteController.ExportPdf(id, path)`. `QuoteService.ExportPdf` busca el presupuesto y se lo pasa a `QuotePdfGenerator` (capa Service), que arma la hoja con la librería **PDFsharp** usando los datos congelados del presupuesto. `QuoteService` lo usa por **composición**, igual que a `QuoteValidator`. Así la lógica del documento queda fuera de la vista y no depende de una impresora virtual del sistema.
+La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteController.ExportPdf(id, path)`. `QuoteService.ExportPdf` busca el presupuesto y se lo pasa a un `IQuoteDocumentGenerator`. La implementación es `QuotePdfGenerator` (capa Service), que arma la hoja con la librería **PDFsharp** usando los datos congelados del presupuesto. `QuoteService` solo conoce la interfaz y la recibe por constructor: se podría cambiar la librería o el formato sin tocar el service. Así la lógica del documento queda fuera de la vista y no depende de una impresora virtual del sistema.
 
 ## 4. Modelo de dominio
 
@@ -126,6 +126,7 @@ La vista no dibuja el PDF: solo elige dónde guardarlo y llama a `quoteControlle
 | `Menu` ◇— `MenuTag` | **Agregación** | Las etiquetas existen solas, se comparten entre menús (muchos a muchos) y sobreviven al menú |
 | `Quote` → `Location`, `DetailMenu` → `Menu`, `DetailOptionItem` → `OptionItem` | **Asociación** | Son elementos del catálogo que el presupuesto usa, con su propio ciclo de vida. Los precios no se leen por la referencia: se copian |
 | `DetailMenu`, `DetailOptionItem` ⇢ `IQuoteItem` | **Realización** | Implementan el contrato de ítem del presupuesto |
+| `QuotePdfGenerator` ⇢ `IQuoteDocumentGenerator`, `SystemClock` ⇢ `IClock` | **Realización** | Implementaciones reales de las interfaces que reciben los services |
 | `QuoteService` ◆— `QuoteValidator`, `QuotePdfGenerator` | **Composición** | El service crea su validador y su generador de PDF y les delega las reglas y el armado del documento |
 | Form → Controller → Service → `IRepository<T>` | **Asociación** | Cada capa guarda una referencia a la de abajo: el formulario recibe su Controller, el Controller crea su Service en el constructor y el Service recibe sus repositorios |
 
@@ -291,11 +292,16 @@ internal interface IRepository<T> where T : class
     List<T> GetAll();
     T GetById(int id);
     void Update(int id, T obj);
+}
+
+internal interface IRemovableRepository<T> : IRepository<T> where T : class
+{
     void RemoveById(int id);
 }
 ```
 
-- Los seis repositorios implementan `IRepository<T>` y son **Singleton**: constructor privado, atributo estático `instance` y método estático `GetInstance()`. Hay una sola base y un solo punto de acceso a cada tabla, compartido por todos los services.
+- **Segregación de interfaces:** `IRepository<T>` no tiene borrado. Solo los repositorios de entidades que se borran físicamente (eventos, presupuestos y etiquetas) implementan `IRemovableRepository<T>`, que agrega `RemoveById`. Ubicaciones, menús y servicios usan baja lógica, así que no tienen forma de borrarse por error.
+- Los seis repositorios son **Singleton**: constructor privado, atributo estático `instance` y método estático `GetInstance()`. Hay una sola base y un solo punto de acceso a cada tabla, compartido por todos los services.
 - `SqliteDatabase` también es Singleton: arma la conexión a `Data/presupuestos.db` con claves foráneas activadas y crea las tablas si no existen.
 - Cada Service **recibe por constructor** los `IRepository<T>` que necesita (*inyección de dependencias*). El constructor sin parámetros, que usa el Controller, le pasa los repositorios reales:
 
@@ -341,7 +347,9 @@ Un tipo de ítem nuevo implica una clase que implemente `IQuoteItem`, su tabla d
 | **Composición / agregación / asociación** | Ver la sección 4 |
 | **Responsabilidad única** | Cada capa y cada clase hace una cosa: `QuoteValidator` las reglas, `QuotePdfGenerator` el PDF, `MessageHelper` los mensajes, `VisualHelper` la apariencia |
 | **Abierto/cerrado** | El total se calcula sobre `IQuoteItem`: un ítem nuevo se agrega sin modificar el cálculo |
-| **Inversión de dependencias** | Los services dependen de `IRepository<T>` y la reciben por constructor |
+| **Inversión de dependencias** | Los services dependen de abstracciones y las reciben por constructor: `IRepository<T>` / `IRemovableRepository<T>` para los datos, `IQuoteDocumentGenerator` para el PDF e `IClock` para la fecha de hoy |
+| **Segregación de interfaces** | `IRepository<T>` no obliga a borrar; `IRemovableRepository<T>` lo agrega solo donde corresponde |
+| **Reloj inyectable** | Las reglas que dependen de la fecha ("el evento ya pasó") usan `IClock.Today`, no `DateTime.Today`, así que se pueden probar con una fecha fija |
 | **Experto en información** | Cada objeto calcula con sus propios datos: la línea sabe su subtotal y el presupuesto sabe sumar sus ítems |
 | **Patrones** | Singleton (repositorios y `SqliteDatabase`), Repository y DTO |
 | **Tipado explícito** | No se usa `var`: todas las variables declaran su tipo |
